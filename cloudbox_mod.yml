@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  vars_files:
+    - settings.yml
+    - ['~/cloudbox/accounts.yml', '~/cloudbox/accounts.yml.default']
+    - ['~/cloudbox/settings.yml', '~/cloudbox/settings.yml.default']
+    - ['~/cloudbox/adv_settings.yml', '~/cloudbox/adv_settings.yml.default']
+  roles:
+    - { role: pre_tasks }
+    - { role: myrole, tags: ['myrole'] }

@@ -1,4 +1,14 @@
-# Community-Wiki
-Community Wiki Site
+# Community Repo
 
-- A place for crowdsourced guides, that may make it's way into official Wiki site. 
+Community Wiki and Repo for addons
+
+
+## Visit the Wiki:
+
+https://github.com/Cloudbox/Community/wiki
+
+## Clone this repo:
+
+```bash
+git clone https://github.com/Cloudbox/Community.git ~/community
+```

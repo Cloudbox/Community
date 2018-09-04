@@ -12,3 +12,7 @@
     - { role: calibre-web, tags: ['calibre-web'] }
     - { role: airsonic, tags: ['airsonic'] }
     - { role: lazylibrarian, tags: ['lazylibrarian'] }
+    - { role: monitorr, tags: ['monitorr'] }
+    - { role: logarr, tags: ['logarr'] }
+    - { role: radarr1080, tags: ['radarr1080'] }
+    - { role: sonarr1080, tags: ['sonarr1080'] }

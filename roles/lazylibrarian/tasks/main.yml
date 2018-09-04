@@ -1,0 +1,52 @@
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: lazylibrarian
+
+- name: "Get {{user}} uid"
+  shell: "id -u {{user}}"
+  register: uid
+
+- name: "Get {{user}} gid"
+  shell: "id -g {{user}}"
+  register: gid
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: lazylibrarian
+    state: absent
+
+- name: Create lazylibrarian directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - /opt/calibre
+
+- name: Create and start container
+  docker_container:
+    name: lazylibrarian
+    image: thraxis/lazylibrarian-calibre
+    pull: yes
+    published_ports:
+      - "127.0.0.1:5299:5299"
+    env:
+      PUID: "{{uid.stdout}}"
+      PGID: "{{gid.stdout}}"
+      VIRTUAL_HOST: "lazylibrarian.{{domain}}"
+      VIRTUAL_PORT: 5299
+      LETSENCRYPT_HOST: "lazylibrarian.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/calibre:/config"
+      - "/mnt/unionfs/Media/Books:/books"
+      - "/mnt/unionfs/Media/AudioBooks:/audiobooks"
+      - "/mnt/unionfs/Media/Magazines:/magazines"
+      - "/mnt:/mnt"
+    networks:
+      - name: cloudbox
+        aliases:
+          - lazylibrarian
+    purge_networks: yes
+    restart_policy: always
+    state: started

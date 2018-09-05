@@ -3,14 +3,6 @@
     name: cloudflare
   vars:
     subdomain: calibreweb
-    
-- name: "Get {{user}} uid"
-  shell: "id -u {{user}}"
-  register: uid
-
-- name: "Get {{user}} gid"
-  shell: "id -g {{user}}"
-  register: gid
 
 - name: Stop and remove any existing container
   docker_container:
@@ -30,8 +22,8 @@
     published_ports:
       - "127.0.0.1:8083:8083"
     env:
-      PUID: "{{uid.stdout}}"
-      GUID: "{{gid.stdout}}"
+      PUID: "{{uid}}"
+      GUID: "{{gid}}"
       VIRTUAL_HOST: "calibreweb.{{domain}}"
       VIRTUAL_PORT: 8083
       LETSENCRYPT_HOST: "calibreweb.{{domain}}"

@@ -3,7 +3,7 @@
     name: cloudflare
   vars:
     subdomain: calibrerdp
-    
+
 - name: Create htpasswd
   htpasswd:
     path: "/opt/nginx-proxy/htpasswd/{{item}}.{{domain}}"
@@ -14,14 +14,6 @@
     mode: 0664
   with_items:
     - calibrerdp
-
-- name: "Get {{user}} uid"
-  shell: "id -u {{user}}"
-  register: uid
-
-- name: "Get {{user}} gid"
-  shell: "id -g {{user}}"
-  register: gid
 
 - name: Stop and remove any existing container
   docker_container:
@@ -42,8 +34,8 @@
       - "127.0.0.1:8080:8080"
       - "127.0.0.1:8081:8081"
     env:
-      USER_ID: "{{uid.stdout}}"
-      GROUP_ID: "{{gid.stdout}}"
+      USER_ID: "{{uid}}"
+      GROUP_ID: "{{gid}}"
       TZ: "America/New_York"
       LIBRARYINTERNALPATH: "/library"
       EDGE: "0"

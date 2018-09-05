@@ -4,14 +4,6 @@
   vars:
     subdomain: logarr
 
-- name: "Get {{user}} uid"
-  shell: "id -u {{user}}"
-  register: uid
-
-- name: "Get {{user}} gid"
-  shell: "id -g {{user}}"
-  register: gid
-
 - name: Stop and remove any existing container
   docker_container:
     name: logarr
@@ -28,8 +20,8 @@
     image: monitorr/logarr:develop
     pull: yes
     env:
-      PUID: "{{uid.stdout}}"
-      PGID: "{{gid.stdout}}"
+      PUID: "{{uid}}"
+      PGID: "{{gid}}"
       VIRTUAL_HOST: "logarr.{{domain}}"
       VIRTUAL_PORT: 80
       LETSENCRYPT_HOST: "logarr.{{domain}}"

@@ -22,8 +22,8 @@
     published_ports:
       - "127.0.0.1:5299:5299"
     env:
-      PUID: "{{uid.stdout}}"
-      PGID: "{{gid.stdout}}"
+      PUID: "{{uid}}"
+      PGID: "{{gid}}"
       VIRTUAL_HOST: "lazylibrarian.{{domain}}"
       VIRTUAL_PORT: 5299
       LETSENCRYPT_HOST: "lazylibrarian.{{domain}}"

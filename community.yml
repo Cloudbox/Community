@@ -16,3 +16,4 @@
     - { role: logarr, tags: ['logarr'] }
     - { role: radarr1080, tags: ['radarr1080'] }
     - { role: sonarr1080, tags: ['sonarr1080'] }
+    - { role: sonarrv3, tags: ['sonarrv3'] }

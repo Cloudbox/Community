@@ -22,8 +22,8 @@
     published_ports:
       - "127.0.0.1:4040:4040"
     env:
-      PUID: "{{uid.stdout}}"
-      PGID: "{{gid.stdout}}"
+      PUID: "{{uid}}"
+      PGID: "{{gid}}"
       VIRTUAL_HOST: "airsonic.{{domain}}"
       VIRTUAL_PORT: 4040
       LETSENCRYPT_HOST: "airsonic.{{domain}}"

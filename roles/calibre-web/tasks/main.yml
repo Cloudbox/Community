@@ -22,8 +22,8 @@
     published_ports:
       - "127.0.0.1:8083:8083"
     env:
-      PUID: "{{uid.stdout}}"
-      GUID: "{{gid.stdout}}"
+      PUID: "{{uid}}"
+      GUID: "{{gid}}"
       VIRTUAL_HOST: "calibreweb.{{domain}}"
       VIRTUAL_PORT: 8083
       LETSENCRYPT_HOST: "calibreweb.{{domain}}"

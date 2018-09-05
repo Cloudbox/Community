@@ -34,8 +34,8 @@
       - "127.0.0.1:8080:8080"
       - "127.0.0.1:8081:8081"
     env:
-      USER_ID: "{{uid.stdout}}"
-      GROUP_ID: "{{gid.stdout}}"
+      USER_ID: "{{uid}}"
+      GROUP_ID: "{{gid}}"
       TZ: "America/New_York"
       LIBRARYINTERNALPATH: "/library"
       EDGE: "0"

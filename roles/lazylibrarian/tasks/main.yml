@@ -20,7 +20,7 @@
 - name: Create lazylibrarian directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - /opt/calibre
+    - /opt/lazylibrarian
 
 - name: Create and start container
   docker_container:
@@ -38,7 +38,7 @@
       LETSENCRYPT_EMAIL: "{{email}}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/calibre:/config"
+      - "/opt/lazylibrarian:/config"
       - "/mnt/unionfs/Media/Books:/books"
       - "/mnt/unionfs/Media/AudioBooks:/audiobooks"
       - "/mnt/unionfs/Media/Magazines:/magazines"

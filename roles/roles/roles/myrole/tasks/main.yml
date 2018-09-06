@@ -1,0 +1,14 @@
+---
+- name: "Get {{ user }} UID"
+  shell: "id -u {{user}}"
+  register: uid
+
+- name: "Get {{ user }} GID"
+  shell: "id -g {{ user }}"
+  register: gid
+
+- debug:
+    msg: "Your UID is {{ uid.stdout }}. Your GID is {{ gid.stdout }}."
+
+- debug:
+    msg: "Your favorite color is {{ favorite_color }}!"

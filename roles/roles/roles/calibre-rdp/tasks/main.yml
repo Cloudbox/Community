@@ -1,0 +1,57 @@
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: calibrerdp
+
+- name: Create htpasswd
+  htpasswd:
+    path: "/opt/nginx-proxy/htpasswd/{{item}}.{{domain}}"
+    name: "{{user}}"
+    password: "{{passwd}}"
+    owner: "{{user}}"
+    group: "{{user}}"
+    mode: 0664
+  with_items:
+    - calibrerdp
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: calibrerdp
+    state: absent
+
+- name: Create calibre directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+   - /opt/calibre
+
+- name: Create and start container
+  docker_container:
+    name: calibrerdp
+    image: cgspeck/docker-rdp-calibre
+    pull: yes
+    published_ports:
+      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:8081:8081"
+    env:
+      USER_ID: "{{uid}}"
+      GROUP_ID: "{{gid}}"
+      TZ: "America/New_York"
+      LIBRARYINTERNALPATH: "/library"
+      EDGE: "0"
+      WIDTH: "1280"
+      HEIGHT: "720"
+      VIRTUAL_HOST: "calibrerdp.{{domain}}"
+      VIRTUAL_PORT: 8080
+      LETSENCRYPT_HOST: "calibrerdp.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+    volumes:
+      - "/opt/calibre:/config"
+      - "/mnt/unionfs/Media/Books:/library"
+    networks:
+      - name: cloudbox
+        aliases:
+          - calibrerdp
+    purge_networks: yes
+    restart_policy: always
+    state: started

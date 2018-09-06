@@ -1,0 +1,44 @@
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: airsonic
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: airsonic
+    state: absent
+
+- name: Create airsonic directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - /opt/airsonic
+
+- name: Create and start container
+  docker_container:
+    name: airsonic
+    image: linuxserver/airsonic
+    pull: yes
+    published_ports:
+      - "127.0.0.1:4040:4040"
+    env:
+      PUID: "{{uid}}"
+      PGID: "{{gid}}"
+      VIRTUAL_HOST: "airsonic.{{domain}}"
+      VIRTUAL_PORT: 4040
+      LETSENCRYPT_HOST: "airsonic.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/airsonic:/config"
+      - "/mnt/unionfs/Media/Music:/music"
+      - "/mnt/unionfs/Media/Podcasts:/podcasts"
+      - "/mnt/unionfs/Media/Playlists:/playlists"
+      - "/mnt:/mnt"
+    networks:
+      - name: cloudbox
+        aliases:
+          - airsonic
+    purge_networks: yes
+    restart_policy: always
+    state: started

@@ -1,0 +1,42 @@
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: calibreweb
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: calibreweb
+    state: absent
+
+- name: Create calibre directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+   - /opt/calibre
+
+- name: Create and start container
+  docker_container:
+    name: calibreweb
+    image: linuxserver/calibre-web
+    pull: yes
+    published_ports:
+      - "127.0.0.1:8083:8083"
+    env:
+      PUID: "{{uid}}"
+      GUID: "{{gid}}"
+      VIRTUAL_HOST: "calibreweb.{{domain}}"
+      VIRTUAL_PORT: 8083
+      LETSENCRYPT_HOST: "calibreweb.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/calibre:/config"
+      - "/mnt/unionfs/Media/Books:/books"
+      - "/mnt:/mnt"
+    networks:
+      - name: cloudbox
+        aliases:
+          - calibreweb
+    purge_networks: yes
+    restart_policy: always
+    state: started

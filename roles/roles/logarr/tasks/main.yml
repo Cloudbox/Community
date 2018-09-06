@@ -1,0 +1,39 @@
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: logarr
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: logarr
+    state: absent
+
+- name: Create logarr directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - /opt/logarr
+
+- name: Create and start container
+  docker_container:
+    name: logarr
+    image: monitorr/logarr:develop
+    pull: yes
+    env:
+      PUID: "{{uid}}"
+      PGID: "{{gid}}"
+      VIRTUAL_HOST: "logarr.{{domain}}"
+      VIRTUAL_PORT: 80
+      LETSENCRYPT_HOST: "logarr.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/logarr:/config"
+      - "/opt:/opt"
+      - "/opt/logarr/logs:/var/log/logarrlogs"
+    networks:
+      - name: cloudbox
+        aliases:
+          - logarr
+    restart_policy: always
+    state: started

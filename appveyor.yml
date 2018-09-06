@@ -1,0 +1,38 @@
+---
+skip_tags: true
+
+skip_commits:
+  files:
+    - '*.md'
+    - '*.yml.default'
+  message: /\[minor\]/
+
+image: ubuntu
+
+environment:
+  COMMUNITY_FOLDER: "/home/appveyor/projects/community/"
+
+init:
+  - sh: curl -s https://cloudbox.rocks/dep.sh | sudo -H sh
+
+install:
+  - sh: cd ${COMMUNITY_FOLDER}
+  - sh: sudo ansible-playbook cloudbox.yml --syntax-check
+  - sh: sudo ansible-playbook cloudbox.yml --tags core
+  - sh: sudo ansible-playbook cloudbox.yml --tags airsonic
+  - sh: sudo ansible-playbook cloudbox.yml --tags calibre-rdp
+  - sh: sudo ansible-playbook cloudbox.yml --tags calibre-web
+  - sh: sudo ansible-playbook cloudbox.yml --tags lazylibrarian
+  - sh: sudo ansible-playbook cloudbox.yml --tags monitorr
+  - sh: sudo ansible-playbook cloudbox.yml --tags logarr
+  - sh: sudo ansible-playbook cloudbox.yml --tags radarr1080
+  - sh: sudo ansible-playbook cloudbox.yml --tags sonarr1080
+  - sh: sudo ansible-playbook cloudbox.yml --tags sonarrv3
+  - sh: sudo ansible-playbook cloudbox.yml --tags mylar
+  - sh: sudo ansible-playbook cloudbox.yml --tags deluge
+
+matrix:
+  fast_finish: true
+
+# to disable automatic builds
+build: off

@@ -31,4 +31,4 @@ sudo ansible-playbook community.yml --tags myrole
 **sonarr1080** - Additional Sonarr for 1080 Remux -- Media path set to /Media/TV1080Remux\
 **sonarrv3** - Sonar phantom (v3) branch based role\
 **deluge** - Deluge torrent client\
-**mylar** - automated comic book downloader\
+**mylar** - automated comic book downloader

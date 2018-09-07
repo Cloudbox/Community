@@ -31,9 +31,6 @@
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/airsonic:/config"
-      - "/mnt/unionfs/Media/Music:/music"
-      - "/mnt/unionfs/Media/Podcasts:/podcasts"
-      - "/mnt/unionfs/Media/Playlists:/playlists"
       - "/mnt:/mnt"
     networks:
       - name: cloudbox

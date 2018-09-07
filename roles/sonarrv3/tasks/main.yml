@@ -9,7 +9,7 @@
     name: sonarrv3
     state: absent
 
-- name: Create sonarr1080 directories
+- name: Create sonarrv3 directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
     - /opt/sonarrv3

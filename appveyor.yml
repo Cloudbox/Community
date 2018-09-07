@@ -14,6 +14,7 @@ environment:
 
 init:
   - sh: curl -s https://cloudbox.rocks/dep.sh | sudo -H sh
+  - sh: curl -s https://cloudbox.rocks/repo.sh | bash
 
 install:
   - sh: cd ${COMMUNITY_PATH}

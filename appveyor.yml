@@ -10,7 +10,8 @@ skip_commits:
 image: ubuntu
 
 environment:
-  COMMUNITY_PATH: "/home/appveyor/projects/community/"
+  CLOUDBOX_PATH: "/home/appveyor/cloudbox"
+  COMMUNITY_PATH: "/home/appveyor/projects/community"
 
 init:
   - sh: curl -s https://cloudbox.rocks/dep.sh | sudo -H sh
@@ -19,7 +20,7 @@ init:
 install:
   - sh: cd ${COMMUNITY_PATH}
   - sh: sudo ansible-playbook community.yml --syntax-check
-  - sh: sudo ansible-playbook community.yml --tags core
+  - sh: sudo ansible-playbook "${CLOUDBOX_PATH}/cloudbox.yml" --tags core --extra-vars '{"continuous_integration":true}'
   - sh: sudo ansible-playbook community.yml --tags airsonic
   - sh: sudo ansible-playbook community.yml --tags calibre-rdp
   - sh: sudo ansible-playbook community.yml --tags calibre-web

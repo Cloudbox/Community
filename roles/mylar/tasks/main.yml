@@ -30,7 +30,7 @@
       LETSENCRYPT_EMAIL: "{{email}}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/mylarr:/config"
+      - "/opt/mylar:/config"
       - "/mnt/local/downloads/nzbs:/downloads/nzbs"
       - "/mnt/unionfs/Media/Comics:/comics"
     networks:

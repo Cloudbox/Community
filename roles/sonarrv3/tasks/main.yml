@@ -20,7 +20,6 @@
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/sonarrv3:/config"
       - "/opt/scripts:/scripts"
-      - "/mnt/unionfs/Media/TV:/tv"
       - "/mnt:/mnt"
 
 - name: Create and start container

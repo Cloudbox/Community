@@ -21,7 +21,6 @@
       - "/opt/sonarr1080:/config"
       - "/opt/scripts:/scripts"
       - "/mnt:/mnt"
-      - "/mnt/unionfs/Media/TV1080Remux:/tv1080"
 
 - name: Create and start container
   docker_container:

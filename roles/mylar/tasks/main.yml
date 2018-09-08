@@ -13,6 +13,7 @@
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
     - /opt/mylar
+    - /mnt/local/Media/Comics
 
 - name: Create and start container
   docker_container:
@@ -30,7 +31,7 @@
       LETSENCRYPT_EMAIL: "{{email}}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/mylarr:/config"
+      - "/opt/mylar:/config"
       - "/mnt/local/downloads/nzbs:/downloads/nzbs"
       - "/mnt/unionfs/Media/Comics:/comics"
     networks:

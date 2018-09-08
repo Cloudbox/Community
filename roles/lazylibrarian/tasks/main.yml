@@ -31,9 +31,6 @@
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/lazylibrarian:/config"
-      - "/mnt/unionfs/Media/Books:/books"
-      - "/mnt/unionfs/Media/AudioBooks:/audiobooks"
-      - "/mnt/unionfs/Media/Magazines:/magazines"
       - "/mnt:/mnt"
     networks:
       - name: cloudbox

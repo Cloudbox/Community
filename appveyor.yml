@@ -32,6 +32,7 @@ install:
   - sh: sudo ansible-playbook community.yml --tags sonarrv3
   - sh: sudo ansible-playbook community.yml --tags mylar
   - sh: sudo ansible-playbook community.yml --tags deluge
+  - sh: sudo ansible-playbook community.yml --tags mellow
 
 matrix:
   fast_finish: true

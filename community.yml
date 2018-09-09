@@ -19,3 +19,4 @@
     - { role: sonarrv3, tags: ['sonarrv3'] }
     - { role: mylar, tags: ['mylar'] }
     - { role: deluge, tags: ['deluge'] }
+    - { role: mellow, tags: ['mellow'] }

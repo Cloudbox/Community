@@ -2,40 +2,38 @@
   include_role:
     name: cloudflare
   vars:
-    subdomain: lazylibrarian
+    subdomain: mellow
 
 - name: Stop and remove any existing container
   docker_container:
-    name: lazylibrarian
+    name: mellow
     state: absent
 
-- name: Create lazylibrarian directories
+- name: Create mellow directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - /opt/lazylibrarian
+    - /opt/mellow
 
 - name: Create and start container
   docker_container:
-    name: lazylibrarian
-    image: thraxis/lazylibrarian-calibre
+    name: mellow
+    image: voidp/mellow
     pull: yes
     published_ports:
-      - "127.0.0.1:5299:5299"
+      - "127.0.0.1:5060:5060"
     env:
       PUID: "{{uid}}"
       PGID: "{{gid}}"
-      VIRTUAL_HOST: "lazylibrarian.{{domain}}"
-      VIRTUAL_PORT: 5299
-      LETSENCRYPT_HOST: "lazylibrarian.{{domain}}"
+      VIRTUAL_HOST: "mellow.{{domain}}"
+      VIRTUAL_PORT: 5060
+      LETSENCRYPT_HOST: "mellow.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/lazylibrarian:/config"
-      - "/mnt:/mnt"
+      - "/opt/mellow:/usr/src/app/data/"
     networks:
       - name: cloudbox
         aliases:
-          - lazylibrarian
-    purge_networks: yes
+          - mellow
     restart_policy: always
     state: started

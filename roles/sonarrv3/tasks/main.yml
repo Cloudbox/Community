@@ -2,42 +2,42 @@
   include_role:
     name: cloudflare
   vars:
-    subdomain: radarr1080
+    subdomain: sonarrv3
 
 - name: Stop and remove any existing container
   docker_container:
-    name: radarr1080
+    name: sonarrv3
     state: absent
 
-- name: Create radarr1080 directories
+- name: Create sonarrv3 directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - /opt/radarr1080
+    - /opt/sonarrv3
 
 - name: Set default_volumes variable
   set_fact:
     default_volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/radarr1080:/config"
+      - "/opt/sonarrv3:/config"
       - "/opt/scripts:/scripts"
       - "/mnt:/mnt"
 
 - name: Create and start container
   docker_container:
-    name: radarr1080
-    image: hotio/suitarr:radarr
+    name: sonarrv3
+    image: "lsiodev/sonarr-preview"
     pull: yes
     published_ports:
-      - "127.0.0.1:7880:7878"
+      - "127.0.0.1:8992:8989"
     env:
       VERSION: "unstable"
+      BACKUP: "no"
       PUID: "{{uid}}"
       PGID: "{{gid}}"
-      BACKUP: "no"
       MONO_TLS_PROVIDER: legacy
-      VIRTUAL_HOST: "radarr1080.{{domain}}"
-      VIRTUAL_PORT: 7878
-      LETSENCRYPT_HOST: "radarr1080.{{domain}}"
+      VIRTUAL_HOST: "sonarrv3.{{domain}}"
+      VIRTUAL_PORT: 8989
+      LETSENCRYPT_HOST: "sonarrv3.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
     volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) + old_nzbget_downloads_path|default([]) + old_rutorrent_downloads_path|default([]) }}"
     labels:
@@ -45,7 +45,7 @@
     networks:
       - name: cloudbox
         aliases:
-          - radarr1080
+          - sonarrv3
     purge_networks: yes
     restart_policy: always
     state: started

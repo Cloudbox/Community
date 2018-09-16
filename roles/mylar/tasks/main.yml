@@ -2,40 +2,42 @@
   include_role:
     name: cloudflare
   vars:
-    subdomain: lazylibrarian
+    subdomain: mylar
 
 - name: Stop and remove any existing container
   docker_container:
-    name: lazylibrarian
+    name: mylar
     state: absent
 
-- name: Create lazylibrarian directories
+- name: Create mylar directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - /opt/lazylibrarian
+    - /opt/mylar
+    - /mnt/local/Media/Comics
 
 - name: Create and start container
   docker_container:
-    name: lazylibrarian
-    image: thraxis/lazylibrarian-calibre
+    name: mylar
+    image: linuxserver/mylar
     pull: yes
     published_ports:
-      - "127.0.0.1:5299:5299"
+      - "127.0.0.1:8090:8090"
     env:
       PUID: "{{uid}}"
       PGID: "{{gid}}"
-      VIRTUAL_HOST: "lazylibrarian.{{domain}}"
-      VIRTUAL_PORT: 5299
-      LETSENCRYPT_HOST: "lazylibrarian.{{domain}}"
+      VIRTUAL_HOST: "mylar.{{domain}}"
+      VIRTUAL_PORT: 8090
+      LETSENCRYPT_HOST: "mylar.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/lazylibrarian:/config"
-      - "/mnt:/mnt"
+      - "/opt/mylar:/config"
+      - "/mnt/local/downloads/nzbs:/downloads/nzbs"
+      - "/mnt/unionfs/Media/Comics:/comics"
     networks:
       - name: cloudbox
         aliases:
-          - lazylibrarian
+          - mylar
     purge_networks: yes
     restart_policy: always
     state: started

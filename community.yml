@@ -2,12 +2,11 @@
 - hosts: localhost
   vars_files:
     - settings.yml
-    - ['~/cloudbox/accounts.yml', '~/cloudbox/accounts.yml.default']
-    - ['~/cloudbox/settings.yml', '~/cloudbox/settings.yml.default']
-    - ['~/cloudbox/adv_settings.yml', '~/cloudbox/adv_settings.yml.default']
+    - ['~/cloudbox/accounts.yml', '~/cloudbox/defaults/accounts.yml.default']
+    - ['~/cloudbox/settings.yml', '~/cloudbox/defaults/settings.yml.default']
+    - ['~/cloudbox/adv_settings.yml', '~/cloudbox/defaults/adv_settings.yml.default']
   roles:
     - { role: pre_tasks }
-    - { role: myrole, tags: ['myrole'] }
     - { role: calibre-rdp, tags: ['calibre-rdp'] }
     - { role: calibre-web, tags: ['calibre-web'] }
     - { role: airsonic, tags: ['airsonic'] }
@@ -16,3 +15,7 @@
     - { role: logarr, tags: ['logarr'] }
     - { role: radarr1080, tags: ['radarr1080'] }
     - { role: sonarr1080, tags: ['sonarr1080'] }
+    - { role: sonarrv3, tags: ['sonarrv3'] }
+    - { role: mylar, tags: ['mylar'] }
+    - { role: deluge, tags: ['deluge'] }
+    - { role: mellow, tags: ['mellow'] }

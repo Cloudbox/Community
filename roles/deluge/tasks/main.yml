@@ -2,40 +2,43 @@
   include_role:
     name: cloudflare
   vars:
-    subdomain: lazylibrarian
+    subdomain: deluge
 
 - name: Stop and remove any existing container
   docker_container:
-    name: lazylibrarian
+    name: deluge
     state: absent
 
-- name: Create lazylibrarian directories
+- name: Create deluge directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - /opt/lazylibrarian
+    - /opt/deluge
 
 - name: Create and start container
   docker_container:
-    name: lazylibrarian
-    image: thraxis/lazylibrarian-calibre
+    name: deluge
+    image: linuxserver/deluge
     pull: yes
     published_ports:
-      - "127.0.0.1:5299:5299"
+      - "127.0.0.1:8112:8112"
     env:
       PUID: "{{uid}}"
       PGID: "{{gid}}"
-      VIRTUAL_HOST: "lazylibrarian.{{domain}}"
-      VIRTUAL_PORT: 5299
-      LETSENCRYPT_HOST: "lazylibrarian.{{domain}}"
+      VIRTUAL_HOST: "deluge.{{domain}}"
+      VIRTUAL_PORT: 8112
+      LETSENCRYPT_HOST: "deluge.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
+      UMASK_SET: 002
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/lazylibrarian:/config"
-      - "/mnt:/mnt"
+      - "/opt/deluge:/config"
+      - "/mnt/local/downloads/torrents:/downloads/torrents"
     networks:
       - name: cloudbox
         aliases:
-          - lazylibrarian
+          - deluge
     purge_networks: yes
     restart_policy: always
     state: started
+
+

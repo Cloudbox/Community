@@ -29,6 +29,8 @@
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/monitorr:/app"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
     networks:
       - name: cloudbox
         aliases:

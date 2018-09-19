@@ -49,6 +49,8 @@
     volumes:
       - "/opt/calibre:/config"
       - "/mnt/unionfs/Media/Books:/library"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
     networks:
       - name: cloudbox
         aliases:

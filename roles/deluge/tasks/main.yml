@@ -33,6 +33,8 @@
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/deluge:/config"
       - "/mnt/local/downloads/torrents:/downloads/torrents"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
     networks:
       - name: cloudbox
         aliases:

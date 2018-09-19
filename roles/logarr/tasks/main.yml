@@ -31,6 +31,8 @@
       - "/opt/logarr:/config"
       - "/opt:/opt"
       - "/opt/logarr/logs:/var/log/logarrlogs"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
     networks:
       - name: cloudbox
         aliases:

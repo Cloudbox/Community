@@ -33,6 +33,7 @@ install:
   - sh: sudo ansible-playbook community.yml --tags mylar
   - sh: sudo ansible-playbook community.yml --tags deluge
   - sh: sudo ansible-playbook community.yml --tags mellow
+  - sh: sudo ansible-playbook community.yml --tags telly2
 
 matrix:
   fast_finish: true

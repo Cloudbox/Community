@@ -34,7 +34,7 @@ install:
   - sh: sudo ansible-playbook community.yml --tags deluge
   - sh: sudo ansible-playbook community.yml --tags mellow
   - sh: sudo ansible-playbook community.yml --tags telly2
-
+  - sh: sudo ansible-playbook community.yml --tags beets
 matrix:
   fast_finish: true
 

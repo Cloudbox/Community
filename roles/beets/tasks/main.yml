@@ -62,7 +62,7 @@
     name: "Beets Import"
     user: "{{user}}"
     special_time: hourly
-    job: "docker exec -u abc -it beets /bin/bash -c 'beet import /downloads'"
+    job: "docker exec -u abc -it beets /bin/bash -c 'beet import -q /downloads'"
     state: present
 
 - name: Wait for config.yaml to be created

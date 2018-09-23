@@ -14,8 +14,8 @@ environment:
   COMMUNITY_PATH: "/home/appveyor/projects/community"
 
 init:
-  - sh: curl -s https://cloudbox.rocks/dep.sh | sudo -H sh
-  - sh: curl -s https://cloudbox.rocks/repo.sh | bash
+  - sh: curl -s https://cloudbox.works/dep.sh | sudo -H sh
+  - sh: curl -s https://cloudbox.works/repo.sh | bash
 
 install:
   - sh: cd ${COMMUNITY_PATH}

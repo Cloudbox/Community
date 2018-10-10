@@ -21,7 +21,8 @@
       - "/opt/sonarrv3:/config"
       - "/opt/scripts:/scripts"
       - "/mnt:/mnt"
-
+      - "/mnt/unionfs/Media/TV:/tv"
+      
 - name: Create and start container
   docker_container:
     name: sonarrv3

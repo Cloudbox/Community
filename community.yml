@@ -21,3 +21,5 @@
     - { role: mellow, tags: ['mellow'] }
     - { role: telly2, tags: ['telly2'] }
     - { role: beets, tags: ['beets'] }
+    - { role: sonarrx, tags: ['sonarrx'] }
+

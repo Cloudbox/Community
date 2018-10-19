@@ -1,5 +1,8 @@
 - name: "Execute SonarrX roles"
-  include: template.yml rolename={{ role }} roleport={{ 18989 + index }}
+  include_tasks: template.yml
+  vars:
+    rolename: "{{ role }}"
+    roleport: "{{ 18989 + index }}"
   with_items: "{{ sonarrx.roles }}"
   loop_control:
     loop_var: role

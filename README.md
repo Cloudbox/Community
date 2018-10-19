@@ -61,4 +61,5 @@ sudo ansible-playbook community.yml --tags ROLE
 - **radarr1080** - Additional Radarr
 - **sonarr1080** - Additional Sonarr
 - **sonarrv3** - Sonar phantom (v3) branch based role
-- **[sonarrX](../../wiki/SonarrX)** - Experimental Sonarr v3 role to create x roles
+- **[sonarrX](../../wiki/SonarrX)** - Experimental Sonarr v3 role to create multiple roles
+- **[bitwarden](../../wiki/Bitwarden)** - [Bitwarden](https://bitwarden.com/) self-hosted server.

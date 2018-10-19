@@ -1,0 +1,41 @@
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: bitwarden
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: bitwarden
+    state: absent
+
+- name: Create opt directory
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - /opt/bitwarden
+
+- name: Create and start container
+  docker_container:
+    name: bitwarden
+    image: mprasil/bitwarden:latest
+    pull: yes
+    env:
+      SERVER_ADMIN_EMAIL: "{{email}}"
+      PUID: "{{uid}}"
+      PGID: "{{gid}}"
+      VIRTUAL_HOST: "bitwarden.{{domain}}"
+      VIRTUAL_PORT: 80
+      LETSENCRYPT_HOST: "bitwarden.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/bitwarden:/data"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - bitwarden
+    restart_policy: always
+    state: started

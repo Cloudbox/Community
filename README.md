@@ -63,3 +63,4 @@ sudo ansible-playbook community.yml --tags ROLE
 - **sonarrv3** - Sonar phantom (v3) branch based role
 - **[sonarrX](../../wiki/SonarrX)** - Experimental Sonarr v3 role to create multiple roles
 - **[bitwarden](../../wiki/Bitwarden)** - [Bitwarden](https://bitwarden.com/) self-hosted server.
+- **kitana** - A responsive Plex plugin web frontend

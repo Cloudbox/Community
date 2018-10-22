@@ -23,3 +23,4 @@
     - { role: beets, tags: ['beets'] }
     - { role: sonarrx, tags: ['sonarrx'] }
     - { role: bitwarden, tags: ['bitwarden'] }
+    - { role: kitana, tags: ['kitana'] }

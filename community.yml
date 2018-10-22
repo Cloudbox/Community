@@ -24,3 +24,4 @@
     - { role: sonarrx, tags: ['sonarrx'] }
     - { role: bitwarden, tags: ['bitwarden'] }
     - { role: kitana, tags: ['kitana'] }
+    - { role: qbittorrent, tags: ['qbittorrent'] }

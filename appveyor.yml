@@ -35,7 +35,10 @@ install:
   - sh: sudo ansible-playbook community.yml --tags mellow
   - sh: sudo ansible-playbook community.yml --tags telly2
   - sh: sudo ansible-playbook community.yml --tags beets
+  - sh: sudo ansible-playbook community.yml --tags sonarrx
+  - sh: sudo ansible-playbook community.yml --tags bitwarden
   - sh: sudo ansible-playbook community.yml --tags kitana
+  - sh: sudo ansible-playbook community.yml --tags qbittorrent
 matrix:
   fast_finish: true
 

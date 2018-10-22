@@ -1,0 +1,42 @@
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: kitana
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: kitana
+    state: absent
+
+- name: Create kitana directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - /opt/kitana
+
+- name: Create and start container
+  docker_container:
+    name: kitana
+    image: "pannal/kitana"
+    pull: yes
+    published_ports:
+      - "127.0.0.1:31337:31337"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/kitana:/data"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    env:
+      VIRTUAL_HOST: "kitana.{{domain}}"
+      VIRTUAL_PORT: 31337
+      LETSENCRYPT_HOST: "kitana.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - kitana
+    purge_networks: yes
+    restart_policy: always
+    state: started
+

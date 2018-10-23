@@ -30,7 +30,6 @@
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/deluge:/config"
       - "/opt/scripts:/scripts"
-      - "{{downloads.torrents}}:/downloads/torrents"
       - "/mnt:/mnt"
 
 - name: Create and start container

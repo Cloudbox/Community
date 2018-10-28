@@ -19,3 +19,9 @@
     - { role: mylar, tags: ['mylar'] }
     - { role: deluge, tags: ['deluge'] }
     - { role: mellow, tags: ['mellow'] }
+    - { role: telly2, tags: ['telly2'] }
+    - { role: beets, tags: ['beets'] }
+    - { role: sonarrx, tags: ['sonarrx'] }
+    - { role: bitwarden, tags: ['bitwarden'] }
+    - { role: kitana, tags: ['kitana'] }
+    - { role: qbittorrent, tags: ['qbittorrent'] }

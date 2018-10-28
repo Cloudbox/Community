@@ -14,8 +14,8 @@ environment:
   COMMUNITY_PATH: "/home/appveyor/projects/community"
 
 init:
-  - sh: curl -s https://cloudbox.rocks/dep.sh | sudo -H sh
-  - sh: curl -s https://cloudbox.rocks/repo.sh | bash
+  - sh: curl -s https://cloudbox.works/dep.sh | sudo -H sh
+  - sh: curl -s https://cloudbox.works/repo.sh | bash
 
 install:
   - sh: cd ${COMMUNITY_PATH}
@@ -33,7 +33,12 @@ install:
   - sh: sudo ansible-playbook community.yml --tags mylar
   - sh: sudo ansible-playbook community.yml --tags deluge
   - sh: sudo ansible-playbook community.yml --tags mellow
-
+  - sh: sudo ansible-playbook community.yml --tags telly2
+  - sh: sudo ansible-playbook community.yml --tags beets
+  - sh: sudo ansible-playbook community.yml --tags sonarrx
+  - sh: sudo ansible-playbook community.yml --tags bitwarden
+  - sh: sudo ansible-playbook community.yml --tags kitana
+  - sh: sudo ansible-playbook community.yml --tags qbittorrent
 matrix:
   fast_finish: true
 

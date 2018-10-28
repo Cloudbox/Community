@@ -1,44 +1,47 @@
+- name: "Install named sonarr role"
+  debug:
+    msg: "Installing {{ rolename }} using port {{ roleport }}"
+
 - name: "Set DNS Record on CloudFlare"
   include_role:
     name: cloudflare
   vars:
-    subdomain: sonarrv3
+    subdomain: "sonarr{{ rolename }}"
 
 - name: Stop and remove any existing container
   docker_container:
-    name: sonarrv3
+    name: "sonarr{{ rolename }}"
     state: absent
 
-- name: Create sonarrv3 directories
+- name: Create sonarrx directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - /opt/sonarrv3
+    - "/opt/sonarr{{ rolename }}"
 
 - name: Set default_volumes variable
   set_fact:
     default_volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/sonarrv3:/config"
+      - "/opt/sonarr{{ rolename }}:/config"
       - "/opt/scripts:/scripts"
       - "/mnt:/mnt"
-      - "/mnt/unionfs/Media/TV:/tv"
-      
+
 - name: Create and start container
   docker_container:
-    name: sonarrv3
+    name: "sonarr{{ rolename }}"
     image: "lsiodev/sonarr-preview"
     pull: yes
     published_ports:
-      - "127.0.0.1:8992:8989"
+      - "127.0.0.1:{{ roleport }}:8989"
     env:
       VERSION: "unstable"
       BACKUP: "no"
       PUID: "{{uid}}"
       PGID: "{{gid}}"
       MONO_TLS_PROVIDER: legacy
-      VIRTUAL_HOST: "sonarrv3.{{domain}}"
+      VIRTUAL_HOST: "sonarr{{ rolename }}.{{domain}}"
       VIRTUAL_PORT: 8989
-      LETSENCRYPT_HOST: "sonarrv3.{{domain}}"
+      LETSENCRYPT_HOST: "sonarr{{ rolename }}.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
     volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) + old_nzbget_downloads_path|default([]) + old_rutorrent_downloads_path|default([]) }}"
     labels:
@@ -46,7 +49,7 @@
     networks:
       - name: cloudbox
         aliases:
-          - sonarrv3
+          - "sonarr{{ rolename }}"
     purge_networks: yes
     restart_policy: always
     state: started

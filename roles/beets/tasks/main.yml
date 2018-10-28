@@ -1,0 +1,88 @@
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: beets
+
+- name: Create htpasswd
+  htpasswd:
+    path: "/opt/nginx-proxy/htpasswd/{{item}}.{{domain}}"
+    name: "{{user}}"
+    password: "{{passwd}}"
+    owner: "{{user}}"
+    group: "{{user}}"
+    mode: 0664
+  with_items:
+    - beets
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: beets
+    state: absent
+
+- name: Create beets directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - /opt/beets
+    - /mnt/local/Media/Music
+    - /mnt/local/downloads/music
+
+- name: Create and start container
+  docker_container:
+    name: beets
+    image: linuxserver/beets
+    pull: yes
+    published_ports:
+      - "127.0.0.1:8337:8337"
+    env:
+      PUID: "{{uid}}"
+      PGID: "{{gid}}"
+      VIRTUAL_HOST: "beets.{{domain}}"
+      VIRTUAL_PORT: 8337
+      LETSENCRYPT_HOST: "beets.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+      
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/beets:/config"
+      - "/mnt/unionfs/Media/Music:/music"
+      - "/mnt/local/downloads/music:/downloads"      
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - beets
+    purge_networks: yes
+    restart_policy: always
+    state: started
+
+- name: Add cron schedule for aurtomatic importing
+  cron:
+    name: "Beets Import"
+    user: "{{user}}"
+    special_time: hourly
+    job: "docker exec -u abc -it beets /bin/bash -c 'beet import -q /downloads'"
+    state: present
+
+- name: Wait for config.yaml to be created
+  wait_for:
+    path: "/opt/beets/config.yaml"
+    state: present
+
+- name: Stop container to customize config.yaml
+  docker_container:
+    name: beets
+    state: stopped
+
+- name: Set filename length
+  lineinfile:
+    path: "/opt/beets/config.yaml"
+    line: "max_filename_length: 255"
+    insertafter: per_disc*
+    state: present
+
+- name: Start container to apply changes
+  docker_container:
+    name: beets
+    state: started

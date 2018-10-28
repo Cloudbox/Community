@@ -1,1 +1,3 @@
 ---
+sonarrx:
+    roles: [1080webdl, 1080remux]

@@ -7,13 +7,13 @@ Community Repository for Unofficial Cloudbox Add-ons
 - [Cloudbox](https://github.com/Cloudbox/Cloudbox/)
 
 
-## Clone Repo:
+## Clone Repo
 
 ```bash
 git clone https://github.com/Cloudbox/Community.git ~/community && cd ~/community
 ```
 
-## Password File:
+## Password File
 
 If you have setup an Ansible vault password file for Cloudbox, you will need to add its location to the Community Repo folder's `ansible.cfg` file.
 
@@ -45,7 +45,7 @@ If you have setup an Ansible vault password file for Cloudbox, you will need to 
 1. Save and exit: <kbd class="platform-all">Ctrl + X</kbd> <kbd class="platform-all">Y</kbd> <kbd class="platform-all">Enter</kbd>
 
 
-## Usage:
+## Usage
 
 ```bash
 sudo ansible-playbook community.yml --tags <ROLENAME>
@@ -54,7 +54,7 @@ sudo ansible-playbook community.yml --tags <ROLENAME>
 See [wiki](https://github.com/Cloudbox/Community/wiki) for setup guides.
 
 
-## Roles:
+## Roles
 
 - **airsonic**
 - **calibre-rdp** - Media path set to `/Media/Books`

@@ -1,34 +1,36 @@
-# Community Wiki
-
-https://github.com/Cloudbox/Community/wiki
-
-
 # Community Repo
 
-Community Repo for addons
+Community Repository for Unofficial Cloudbox Add-ons
+
+## Requiremements
+
+- [Cloudbox](https://github.com/Cloudbox/Cloudbox/)
 
 
-## Cloning the Repo:
+## Clone Repo:
 
 ```bash
-git clone https://github.com/Cloudbox/Community.git ~/community
+git clone https://github.com/Cloudbox/Community.git ~/community && cd ~/community
 ```
 
-## Password File Setup:
+## Password File:
 
-If you have setup an Ansible vault password file for Cloudbox, you will need to add its location to `~/community/ansible.cfg`:
+If you have setup an Ansible vault password file for Cloudbox, you will need to add its location to the Community Repo folder's `ansible.cfg` file.
 
-1. To edit:
+1. Open `~/community/ansible.cfg`
+
    ```bash
    nano ~/community/ansible.cfg
    ```
 
-2. Add line (with path to your vault password file):
+2. Add entry for `vault_password_file` pointing to the path of your Cloudbox vault password file.
+
    ```ini
    vault_password_file = ~/.ansible_vault
    ```
 
 3. Should now look like this:
+
    ```ini
    [defaults]
    inventory = ~/cloudbox/inventories/local
@@ -40,13 +42,18 @@ If you have setup an Ansible vault password file for Cloudbox, you will need to 
    vault_password_file = ~/.ansible_vault
    ```
 
+1. Save and exit: <kbd class="platform-all">Ctrl + X</kbd> <kbd class="platform-all">Y</kbd> <kbd class="platform-all">Enter</kbd>
+
 
 ## Usage:
 
 ```bash
-cd ~/community
-sudo ansible-playbook community.yml --tags ROLE
+sudo ansible-playbook community.yml --tags <ROLENAME>
 ```
+
+See [wiki](https://github.com/Cloudbox/Community/wiki) for setup guides.
+
+
 ## Roles:
 
 - **airsonic**

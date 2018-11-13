@@ -1,0 +1,55 @@
+- name: "Install named radarr role"
+  debug:
+    msg: "Installing {{ rolename }} using port {{ roleport }}"
+
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: "radarr{{ rolename }}"
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: "radarr{{ rolename }}"
+    state: absent
+
+- name: Create radarrx directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - "/opt/radarr{{ rolename }}"
+
+- name: Set default_volumes variable
+  set_fact:
+    default_volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/radarr{{ rolename }}:/config"
+      - "/opt/scripts:/scripts"
+      - "/mnt:/mnt"
+
+- name: Create and start container
+  docker_container:
+    name: "radarr{{ rolename }}"
+    image: "hotio/suitarr:radarr"
+    pull: yes
+    published_ports:
+      - "127.0.0.1:{{ roleport }}:7878"
+    env:
+      VERSION: "unstable"
+      BACKUP: "no"
+      PUID: "{{uid}}"
+      PGID: "{{gid}}"
+      MONO_TLS_PROVIDER: legacy
+      VIRTUAL_HOST: "radarr{{ rolename }}.{{domain}}"
+      VIRTUAL_PORT: 7878
+      LETSENCRYPT_HOST: "radarr{{ rolename }}.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+    volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) + old_nzbget_downloads_path|default([]) + old_rutorrent_downloads_path|default([]) }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - "radarr{{ rolename }}"
+    purge_networks: yes
+    restart_policy: always
+    state: started

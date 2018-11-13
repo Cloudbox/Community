@@ -39,6 +39,7 @@ install:
   - sh: sudo ansible-playbook community.yml --tags bitwarden
   - sh: sudo ansible-playbook community.yml --tags kitana
   - sh: sudo ansible-playbook community.yml --tags qbittorrent
+  - sh: sudo ansible-playbook community.yml --tags radarrx
 matrix:
   fast_finish: true
 

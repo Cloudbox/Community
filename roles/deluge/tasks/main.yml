@@ -48,7 +48,7 @@
       VIRTUAL_PORT: 8112
       LETSENCRYPT_HOST: "deluge.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
-      UMASK_SET: 002
+      UMASK_SET: 022
     volumes: "{{ default_volumes + torrents_downloads_path|default([]) }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

@@ -25,6 +25,7 @@
       - "/opt/sonarr{{ rolename }}:/config"
       - "/opt/scripts:/scripts"
       - "/mnt:/mnt"
+      - "/mnt/unionfs/Media/TV:/tv"
 
 - name: Create and start container
   docker_container:

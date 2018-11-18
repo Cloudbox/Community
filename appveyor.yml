@@ -40,6 +40,7 @@ install:
   - sh: sudo ansible-playbook community.yml --tags kitana
   - sh: sudo ansible-playbook community.yml --tags qbittorrent
   - sh: sudo ansible-playbook community.yml --tags radarrx
+  - sh: sudo ansible-playbook community.yml --tags embystats
 matrix:
   fast_finish: true
 

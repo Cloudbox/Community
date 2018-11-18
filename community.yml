@@ -29,3 +29,4 @@
     - { role: kitana, tags: ['kitana'] }
     - { role: qbittorrent, tags: ['qbittorrent'] }
     - { role: radarrx, tags: ['radarrx'] }
+    - { role: embystats, tags: ['embystats'] }

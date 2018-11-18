@@ -1,0 +1,42 @@
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: embystats
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: embystats
+    state: absent
+
+- name: Create embystats directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - /opt/embystats
+
+- name: Create and start container
+  docker_container:
+    name: embystats
+    image: "uping/embystat:beta-linux"
+    pull: yes
+    published_ports:
+      - "127.0.0.1:9049:80"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/embystats:/data"
+      - "/opt/embystats:/config"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    env:
+      VIRTUAL_HOST: "embystats.{{domain}}"
+      VIRTUAL_PORT: 80
+      LETSENCRYPT_HOST: "embystats.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - embystats
+    purge_networks: yes
+    restart_policy: always
+    state: started

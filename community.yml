@@ -27,3 +27,4 @@
     - { role: qbittorrent, tags: ['qbittorrent'] }
     - { role: radarrx, tags: ['radarrx'] }
     - { role: embystats, tags: ['embystats'] }
+    - { role: embystats, tags: ['myjdownloader'] }

@@ -25,6 +25,7 @@
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/mnt/local/downloads/myjdownloader/output:/output:rw"
+      - "/mnt:/mnt:rw"
       - "/opt/myjdownloader/config:/config:rw"
       - "/var/run/docker.sock:/var/run/docker.sock"
     env:

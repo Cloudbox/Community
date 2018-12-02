@@ -10,7 +10,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 ## Clone Repo
 
 ```bash
-git clone https://github.com/Cloudbox/Community.git ~/community && cd ~/community
+git clone https://github.com/Cloudbox/Community.git ~/community && cd ~/community && cp -n ansible.cfg.default ansible.cfg
 ```
 
 ## Password File

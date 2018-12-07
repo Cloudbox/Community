@@ -45,7 +45,7 @@
     published_ports:
       - "0.0.0.0:9876:9876"
     env:
-      URL: "mediabutler.{{domain}}"
+      URL: "https://mediabutler.{{domain}}/"
       DB_URL: "mongodb://mongo:27017/mediabutler"
       PLEX_MACHINE_ID: "{{plex.machine}}"
       PLEX_URL: "https://plex.{{domain}}"

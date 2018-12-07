@@ -3,5 +3,3 @@ sonarrx:
     roles: [1080webdl, 1080remux]
 radarrx:
     roles: [1080webdl, 1080remux]
-plex:
-    machine:

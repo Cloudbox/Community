@@ -10,12 +10,34 @@
     - mediabutler
     - mongodb
 
-- name: Create required  directories
+- name: Create required directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
     - "/opt/mediabutler"
     - "/opt/mongodb"
-    
+
+- name: "Check if plex 'Preferences.xml' exists"
+  stat:
+    path: "/opt/plex/Library/Application Support/Plex Media Server/Preferences.xml"
+  register: plex_preferences_xml
+
+- name: "When plex 'Preferences.xml' exists, pull machine id"
+  block:
+
+  - name: Pull plex machine id
+    xml:
+      path: "/opt/plex/Library/Application Support/Plex Media Server/Preferences.xml"
+      xpath: /Preferences
+      content: attribute
+      attribute: ProcessedMachineIdentifier
+    register: xmlresp
+
+  - name: Set 'plex_machine_id' var
+    set_fact:
+      plex_machine_id: "{{ xmlresp.matches[0].Preferences.ProcessedMachineIdentifier }}"
+
+  when: plex_preferences_xml.stat.exists
+
 - name: Create and start mongodb container
   docker_container:
     name: "mongo"
@@ -47,7 +69,7 @@
     env:
       URL: "https://mediabutler.{{domain}}/"
       DB_URL: "mongodb://mongo:27017/mediabutler"
-      PLEX_MACHINE_ID: "{{plex.machine}}"
+      PLEX_MACHINE_ID: "{{ plex_machine_id | default('',true) }}"
       PLEX_URL: "https://plex.{{domain}}"
       UID: "{{uid}}"
       GID: "{{gid}}"

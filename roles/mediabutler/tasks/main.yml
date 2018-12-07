@@ -1,0 +1,70 @@
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: mediabutler
+
+- name: Stop and remove any existing container
+  docker_container: "name={{item}} state=absent"
+  with_items:
+    - mediabutler
+    - mongodb
+
+- name: Create required  directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - "/opt/mediabutler"
+    - "/opt/mongodb"
+    
+- name: Create and start mongodb container
+  docker_container:
+    name: "mongo"
+    image: "mongo:latest"
+    pull: yes
+    env:
+      MONGO_DATA_DIR: "/data/db"
+      MONGO_LOG_DIR: "/dev/null"
+      MONGO_URL: "mongodb://mongo:27017/"
+    volumes:
+      - "/opt/mongodb:/data/db:rw"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - "mongodb"
+    purge_networks: yes
+    restart_policy: always
+    state: started
+
+- name: Create and start mediabutler container
+  docker_container:
+    name: "mediabutler"
+    image: "mediabutler/server"
+    pull: yes
+    published_ports:
+      - "0.0.0.0:9876:9876"
+    env:
+      URL: "https://mediabutler.{{domain}}/"
+      DB_URL: "mongodb://mongo:27017/mediabutler"
+      PLEX_MACHINE_ID: "{{plex.machine}}"
+      PLEX_URL: "https://plex.{{domain}}"
+      UID: "{{uid}}"
+      GID: "{{gid}}"
+      VIRTUAL_HOST: "mediabutler.{{domain}}"
+      VIRTUAL_PORT: 9876
+      LETSENCRYPT_HOST: "mediabutler.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/mediabutler:/config:rw"
+      - "/mnt:/mnt"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - "mediabutler"
+    purge_networks: yes
+    restart_policy: always
+    state: started

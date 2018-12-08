@@ -69,7 +69,7 @@
     env:
       URL: "https://mediabutler.{{domain}}/"
       DB_URL: "mongodb://mongo:27017/mediabutler"
-      PLEX_MACHINE_ID: "{{ plex_machine_id | default ('',true) }}"
+      PLEX_MACHINE_ID: "{{ plex_machine_id | default('',true) }}"
       PLEX_URL: "https://plex.{{domain}}"
       UID: "{{uid}}"
       GID: "{{gid}}"

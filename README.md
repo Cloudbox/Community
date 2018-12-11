@@ -65,6 +65,7 @@ See [wiki](https://github.com/Cloudbox/Community/wiki) for setup guides.
 - **[mellow](../../wiki/Mellow-Discord-Bot)** - Discord Bot
 - **monitorr**
 - **mylar** - automated comic book downloader
+- **gazee** - comic book reader
 - **radarr1080** - Additional Radarr
 - **sonarr1080** - Additional Sonarr
 - **sonarrv3** - Sonar phantom (v3) branch based role

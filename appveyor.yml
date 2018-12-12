@@ -42,6 +42,7 @@ install:
   - sh: sudo ansible-playbook community.yml --tags radarrx
   - sh: sudo ansible-playbook community.yml --tags embystats
   - sh: sudo ansible-playbook community.yml --tags myjdownloader
+  - sh: sudo ansible-playbook community.yml --tags jellyfin
 matrix:
   fast_finish: true
 

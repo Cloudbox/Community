@@ -2,21 +2,21 @@
   include_role:
     name: cloudflare
   vars:
-    subdomain: calibreweb
+    subdomain: books
 
 - name: Stop and remove any existing container
   docker_container:
-    name: calibreweb
+    name: calibre-web
     state: absent
 
 - name: Create calibre directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-   - /opt/calibre
+   - /opt/calibre-web
 
 - name: Create and start container
   docker_container:
-    name: calibreweb
+    name: calibre-web
     image: linuxserver/calibre-web
     pull: yes
     published_ports:
@@ -28,17 +28,19 @@
       VIRTUAL_PORT: 8083
       LETSENCRYPT_HOST: "books.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
+      USE_CONFIG_DIR: true
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/calibre:/config"
       - "/mnt/unionfs/Media/Books:/books"
+      - "/opt/calibre-web/config:/config"
+      - "/opt/calibre-web:/calibre-web"
       - "/mnt:/mnt"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
       - name: cloudbox
         aliases:
-          - calibreweb
+          - calibre-web
     purge_networks: yes
     restart_policy: always
     state: started

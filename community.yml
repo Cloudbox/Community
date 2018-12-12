@@ -28,4 +28,4 @@
     - { role: radarrx, tags: ['radarrx'] }
     - { role: embystats, tags: ['embystats'] }
     - { role: myjdownloader, tags: ['myjdownloader'] }
-    - { role: jellyfin, tags: ['jellyfin'] }
+    - { role: mediabutler, tags: ['mediabutler'] }

@@ -24,9 +24,9 @@
     env:
       PUID: "{{uid}}"
       GUID: "{{gid}}"
-      VIRTUAL_HOST: "calibreweb.{{domain}}"
+      VIRTUAL_HOST: "books.{{domain}}"
       VIRTUAL_PORT: 8083
-      LETSENCRYPT_HOST: "calibreweb.{{domain}}"
+      LETSENCRYPT_HOST: "books.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"

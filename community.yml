@@ -29,3 +29,4 @@
     - { role: embystats, tags: ['embystats'] }
     - { role: myjdownloader, tags: ['myjdownloader'] }
     - { role: mediabutler, tags: ['mediabutler'] }
+    - { role: mediabutler, tags: ['jellyfin'] }

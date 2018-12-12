@@ -51,3 +51,4 @@ install:
   - sh: sudo ansible-playbook community.yml --tags embystats
   - sh: sudo ansible-playbook community.yml --tags myjdownloader
   - sh: sudo ansible-playbook community.yml --tags mediabutler
+  - sh: sudo ansible-playbook community.yml --tags jellyfin

@@ -9,10 +9,26 @@
     name: calibre-web
     state: absent
 
+- name: Delete caliblur config
+  file:
+    path: "/opt/nginx-proxy/vhost.d/books.{{domain}}_location"
+    state: absent
+  when: not (calibre-web.caliblur | default(true,true))
+
 - name: Create calibre directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
    - /opt/calibre-web
+
+- name: Import caliblur config
+  copy:
+    src: "caliblur-nginx-conf"
+    dest: "/opt/nginx-proxy/vhost.d/books.{{domain}}_location"
+    owner: "{{user}}"
+    group: "{{user}}"
+    mode: 0775
+    force: yes
+  when: (calibre-web.caliblur | default(true,true))
 
 - name: Create and start container
   docker_container:

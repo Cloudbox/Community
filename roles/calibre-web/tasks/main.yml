@@ -13,7 +13,7 @@
   file:
     path: "/opt/nginx-proxy/vhost.d/books.{{domain}}_location"
     state: absent
-  when: not (calibre-web.caliblur | default(true,true))
+  when: not (calibreweb.caliblur | default(true,true))
 
 - name: Create calibre directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
@@ -28,7 +28,7 @@
     group: "{{user}}"
     mode: 0775
     force: yes
-  when: (calibre-web.caliblur | default(true,true))
+  when: (calibreweb.caliblur | default(true,true))
 
 - name: Create and start container
   docker_container:

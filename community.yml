@@ -30,3 +30,4 @@
     - { role: myjdownloader, tags: ['myjdownloader'] }
     - { role: mediabutler, tags: ['mediabutler'] }
     - { role: gazee, tags: ['gazee'] }
+    - { role: goplaxt, tags: ['goplaxt'] }

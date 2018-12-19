@@ -2,60 +2,60 @@
   include_role:
     name: cloudflare
   vars:
-    subdomain: deluge
+    subdomain: qbittorrent
 
 - name: Stop and remove any existing container
   docker_container:
-    name: deluge
+    name: qbittorrent
     state: absent
 
-- name: Create deluge directories
+- name: Create qbittorrent directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - /opt/deluge
+    - /opt/qbittorrent
 
 - name: Create new downloads directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}} recurse=yes"
   with_items:
     - "{{downloads.torrents}}"
-    - "{{downloads.torrents}}/deluge"
-    - "{{downloads.torrents}}/deluge/completed"
-    - "{{downloads.torrents}}/deluge/incoming"
-    - "{{downloads.torrents}}/deluge/watched"
+    - "{{downloads.torrents}}/qbittorrent"
+    - "{{downloads.torrents}}/qbittorrent/completed"
+    - "{{downloads.torrents}}/qbittorrent/incoming"
+    - "{{downloads.torrents}}/qbittorrent/watched"
+    - "{{downloads.torrents}}/qbittorrent/torrents"
   when: (torrents_downloads_path is defined)|default(false)
 
 - name: Set default_volumes variable
   set_fact:
     default_volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/deluge:/config"
+      - "/opt/qbittorrent:/config"
       - "/opt/scripts:/scripts"
       - "/mnt:/mnt"
 
 - name: Create and start container
   docker_container:
-    name: deluge
-    image: linuxserver/deluge
+    name: qbittorrent
+    image: linuxserver/qbittorrent
     pull: yes
     published_ports:
-      - "127.0.0.1:8112:8112"
-      - "58112:58112"
-      - "58846:58846"
+      - "56881:56881"
+      - "56881:56881/udp"
     env:
       PUID: "{{uid}}"
       PGID: "{{gid}}"
-      VIRTUAL_HOST: "deluge.{{domain}}"
-      VIRTUAL_PORT: 8112
-      LETSENCRYPT_HOST: "deluge.{{domain}}"
+      VIRTUAL_HOST: "qbittorrent.{{domain}}"
+      VIRTUAL_PORT: 8080
+      LETSENCRYPT_HOST: "qbittorrent.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
-      UMASK_SET: 022
+      UMASK_SET: 002
     volumes: "{{ default_volumes + torrents_downloads_path|default([]) }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
       - name: cloudbox
         aliases:
-          - deluge
+          - qbittorrent
     purge_networks: yes
     restart_policy: always
     state: started

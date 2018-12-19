@@ -31,6 +31,8 @@
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/mellow:/usr/src/app/data/"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
     networks:
       - name: cloudbox
         aliases:

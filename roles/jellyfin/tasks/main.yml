@@ -1,0 +1,53 @@
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: jellyfin
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: jellyfin
+    state: absent
+
+- name: Create jellyfin directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - /opt/jellyfin
+    
+- name: "Check if '/dev/dri' exists"
+  stat:
+    path: "/dev/dri"
+  register: dev_dri
+
+- name: Create and start container
+  docker_container:
+    name: jellyfin
+    image: "jellyfin/jellyfin:latest"
+    pull: yes
+    published_ports:
+      - "127.0.0.1:9096:8096"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/mnt/local/downloads/jellyfin/output:/output:rw"
+      - "/mnt:/mnt:rw"
+      - "/mnt/strm:/strm:rw"
+      - "{{plex.transcodes}}:/transcode"
+      - "/opt/jellyfin/config:/config:rw"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    devices: "{{ '/dev/dri:/dev/dri' if dev_dri.stat.exists == True | default(false) else omit }}"
+    env:
+      VIRTUAL_HOST: "jellyfin.{{domain}}"
+      VIRTUAL_PORT: 8096
+      LETSENCRYPT_HOST: "jellyfin.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+      PUID: "{{uid}}"
+      PGID: "{{gid}}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - jellyfin
+    purge_networks: yes
+    restart_policy: always
+    state: started

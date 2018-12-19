@@ -34,6 +34,8 @@
       - "/opt/mylar:/config"
       - "/mnt/local/downloads/nzbs:/downloads/nzbs"
       - "/mnt/unionfs/Media/Comics:/comics"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
     networks:
       - name: cloudbox
         aliases:

@@ -1,43 +1,42 @@
-- name: "Setting CloudFlare DNS Record"
+- name: "Set DNS Record on CloudFlare"
   include_role:
     name: cloudflare
   vars:
-    subdomain: airsonic
+    subdomain: kitana
 
 - name: Stop and remove any existing container
   docker_container:
-    name: airsonic
+    name: kitana
     state: absent
 
-- name: Create airsonic directories
+- name: Create kitana directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - /opt/airsonic
+    - /opt/kitana
 
 - name: Create and start container
   docker_container:
-    name: airsonic
-    image: linuxserver/airsonic
+    name: kitana
+    image: "pannal/kitana"
     pull: yes
     published_ports:
-      - "127.0.0.1:4040:4040"
-    env:
-      PUID: "{{uid}}"
-      PGID: "{{gid}}"
-      VIRTUAL_HOST: "airsonic.{{domain}}"
-      VIRTUAL_PORT: 4040
-      LETSENCRYPT_HOST: "airsonic.{{domain}}"
-      LETSENCRYPT_EMAIL: "{{email}}"
+      - "127.0.0.1:31337:31337"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/airsonic:/config"
-      - "/mnt:/mnt"
+      - "/opt/kitana:/data"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    env:
+      VIRTUAL_HOST: "kitana.{{domain}}"
+      VIRTUAL_PORT: 31337
+      LETSENCRYPT_HOST: "kitana.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
       - name: cloudbox
         aliases:
-          - airsonic
+          - kitana
     purge_networks: yes
     restart_policy: always
     state: started
+

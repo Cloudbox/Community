@@ -2,42 +2,44 @@
   include_role:
     name: cloudflare
   vars:
-    subdomain: airsonic
+    subdomain: gazee
 
 - name: Stop and remove any existing container
   docker_container:
-    name: airsonic
+    name: gazee
     state: absent
 
-- name: Create airsonic directories
+- name: Create gazee directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - /opt/airsonic
+    - /opt/gazee
+    - /mnt/local/Media/Comics
 
 - name: Create and start container
   docker_container:
-    name: airsonic
-    image: linuxserver/airsonic
+    name: gazee
+    image: linuxserver/gazee
     pull: yes
     published_ports:
-      - "127.0.0.1:4040:4040"
+      - "127.0.0.1:4242:4242"
     env:
       PUID: "{{uid}}"
       PGID: "{{gid}}"
-      VIRTUAL_HOST: "airsonic.{{domain}}"
-      VIRTUAL_PORT: 4040
-      LETSENCRYPT_HOST: "airsonic.{{domain}}"
+      VIRTUAL_HOST: "gazee.{{domain}}"
+      VIRTUAL_PORT: 4242
+      LETSENCRYPT_HOST: "gazee.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/airsonic:/config"
-      - "/mnt:/mnt"
+      - "/opt/gazee:/config"
+      - "/mnt/local/downloads/nzbs:/downloads/nzbs"
+      - "/mnt/unionfs/Media/Comics:/comics"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
       - name: cloudbox
         aliases:
-          - airsonic
+          - gazee
     purge_networks: yes
     restart_policy: always
     state: started

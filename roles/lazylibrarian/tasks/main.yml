@@ -32,6 +32,8 @@
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/lazylibrarian:/config"
       - "/mnt:/mnt"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
     networks:
       - name: cloudbox
         aliases:

@@ -10,7 +10,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 ## Clone Repo
 
 ```bash
-git clone https://github.com/Cloudbox/Community.git ~/community && cd ~/community && cp -n ansible.cfg.default ansible.cfg
+git clone https://github.com/Cloudbox/Community.git ~/community && cd ~/community && cp -n ansible.cfg.default ansible.cfg && cp -n settings.yml.sample settings.yml
 ```
 
 ## Password File
@@ -57,19 +57,28 @@ See [wiki](https://github.com/Cloudbox/Community/wiki) for setup guides.
 ## Roles
 
 - **airsonic**
+- **beets**
+- **[bitwarden](../../wiki/Bitwarden)** - [Bitwarden](https://bitwarden.com/) self-hosted server.
 - **calibre-rdp** - Media path set to `/Media/Books`
 - **calibre-web** - Loads opt/calibre  (uses calibre-rdp db)
 - **[deluge](../../wiki/Deluge)** - Deluge torrent client
+- **embystats**
+- **gazee** - comic book reader
+- **[goplaxt](../../wiki/Goplaxt)** - [goplaxt](https://github.com/XanderStrike/goplaxt) Plex/Trakt Scrobbler
+- **jellyfin** - [jellyfin](https://github.com/jellyfin/jellyfin) emby fork
+- **kitana** - A responsive Plex plugin web frontend
 - **lazylibrarian** - (uses calibre-rdp db)
 - **logarr**
+- **[mediabutler](../../wiki/Mediabutler)** - Discord bot
 - **[mellow](../../wiki/Mellow-Discord-Bot)** - Discord Bot
 - **monitorr**
+- **myjdownloader**
 - **mylar** - automated comic book downloader
-- **gazee** - comic book reader
+- **[qbittorrent](../../wiki/qBitorrent)** - qBitorrent torrent client
 - **radarr1080** - Additional Radarr
+- **radarrX** - Similar to [sonarrX](../../wiki/SonarrX) but for radarr, to create multiple roles
 - **sonarr1080** - Additional Sonarr
 - **sonarrv3** - Sonar phantom (v3) branch based role
 - **[sonarrX](../../wiki/SonarrX)** - Experimental Sonarr v3 role to create multiple roles
-- **[bitwarden](../../wiki/Bitwarden)** - [Bitwarden](https://bitwarden.com/) self-hosted server.
-- **kitana** - A responsive Plex plugin web frontend
-- **[qbittorrent](../../wiki/qBitorrent)** - qBitorrent torrent client
+- **telly2**
+

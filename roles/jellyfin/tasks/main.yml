@@ -28,7 +28,6 @@
       - "127.0.0.1:9096:8096"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/mnt/local/downloads/jellyfin/output:/output:rw"
       - "/mnt:/mnt:rw"
       - "/mnt/strm:/strm:rw"
       - "{{plex.transcodes}}:/transcode"

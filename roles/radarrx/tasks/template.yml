@@ -1,4 +1,4 @@
-- name: "Install named sonarr role"
+- name: "Install named radarr role"
   debug:
     msg: "Installing {{ rolename }} using port {{ roleport }}"
 
@@ -6,43 +6,43 @@
   include_role:
     name: cloudflare
   vars:
-    subdomain: "sonarr{{ rolename }}"
+    subdomain: "radarr{{ rolename }}"
 
 - name: Stop and remove any existing container
   docker_container:
-    name: "sonarr{{ rolename }}"
+    name: "radarr{{ rolename }}"
     state: absent
 
-- name: Create sonarrx directories
+- name: Create radarrx directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - "/opt/sonarr{{ rolename }}"
+    - "/opt/radarr{{ rolename }}"
 
 - name: Set default_volumes variable
   set_fact:
     default_volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/sonarr{{ rolename }}:/config"
+      - "/opt/radarr{{ rolename }}:/config"
       - "/opt/scripts:/scripts"
       - "/mnt:/mnt"
-      - "/mnt/unionfs/Media/TV:/tv"
+      - "/mnt/unionfs/Media/Movies:/movies"
 
 - name: Create and start container
   docker_container:
-    name: "sonarr{{ rolename }}"
-    image: "lsiodev/sonarr-preview"
+    name: "radarr{{ rolename }}"
+    image: "hotio/suitarr:radarr"
     pull: yes
     published_ports:
-      - "127.0.0.1:{{ roleport }}:8989"
+      - "127.0.0.1:{{ roleport }}:7878"
     env:
       VERSION: "unstable"
       BACKUP: "no"
       PUID: "{{uid}}"
       PGID: "{{gid}}"
       MONO_TLS_PROVIDER: legacy
-      VIRTUAL_HOST: "sonarr{{ rolename }}.{{domain}}"
-      VIRTUAL_PORT: 8989
-      LETSENCRYPT_HOST: "sonarr{{ rolename }}.{{domain}}"
+      VIRTUAL_HOST: "radarr{{ rolename }}.{{domain}}"
+      VIRTUAL_PORT: 7878
+      LETSENCRYPT_HOST: "radarr{{ rolename }}.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
     volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) + old_nzbget_downloads_path|default([]) + old_rutorrent_downloads_path|default([]) }}"
     labels:
@@ -50,7 +50,7 @@
     networks:
       - name: cloudbox
         aliases:
-          - "sonarr{{ rolename }}"
+          - "radarr{{ rolename }}"
     purge_networks: yes
     restart_policy: always
     state: started

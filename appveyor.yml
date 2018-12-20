@@ -9,6 +9,12 @@ skip_commits:
 
 image: ubuntu
 
+matrix:
+  fast_finish: true
+
+# to disable automatic builds
+build: off
+
 environment:
   CLOUDBOX_PATH: "/home/appveyor/cloudbox"
   COMMUNITY_PATH: "/home/appveyor/projects/community"
@@ -19,6 +25,8 @@ init:
 
 install:
   - sh: cd ${COMMUNITY_PATH}
+  - sh: cp -n ansible.cfg.default ansible.cfg
+  - sh: cp -n settings.yml.sample settings.yml
   - sh: sudo ansible-playbook community.yml --syntax-check
   - sh: sudo ansible-playbook "${CLOUDBOX_PATH}/cloudbox.yml" --tags core --skip-tags settings --extra-vars '{"continuous_integration":true}'
   - sh: sudo ansible-playbook community.yml --tags airsonic
@@ -39,8 +47,10 @@ install:
   - sh: sudo ansible-playbook community.yml --tags bitwarden
   - sh: sudo ansible-playbook community.yml --tags kitana
   - sh: sudo ansible-playbook community.yml --tags qbittorrent
-matrix:
-  fast_finish: true
-
-# to disable automatic builds
-build: off
+  - sh: sudo ansible-playbook community.yml --tags radarrx
+  - sh: sudo ansible-playbook community.yml --tags embystats
+  - sh: sudo ansible-playbook community.yml --tags myjdownloader
+  - sh: sudo ansible-playbook community.yml --tags mediabutler
+  - sh: sudo ansible-playbook community.yml --tags jellyfin
+  - sh: sudo ansible-playbook community.yml --tags gazee
+  - sh: sudo ansible-playbook community.yml --tags goplaxt

@@ -1,0 +1,9 @@
+# MacOS
+.DS_Store
+
+# Ansible
+/cloudbox.retry
+
+# Community
+/ansible.cfg
+/settings.yml

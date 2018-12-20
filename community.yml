@@ -25,3 +25,10 @@
     - { role: bitwarden, tags: ['bitwarden'] }
     - { role: kitana, tags: ['kitana'] }
     - { role: qbittorrent, tags: ['qbittorrent'] }
+    - { role: radarrx, tags: ['radarrx'] }
+    - { role: embystats, tags: ['embystats'] }
+    - { role: myjdownloader, tags: ['myjdownloader'] }
+    - { role: mediabutler, tags: ['mediabutler'] }
+    - { role: jellyfin, tags: ['jellyfin'] }
+    - { role: gazee, tags: ['gazee'] }
+    - { role: goplaxt, tags: ['goplaxt'] }

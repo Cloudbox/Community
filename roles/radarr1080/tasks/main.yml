@@ -21,6 +21,7 @@
       - "/opt/radarr1080:/config"
       - "/opt/scripts:/scripts"
       - "/mnt:/mnt"
+      - "/mnt/unionfs/Media/Movies:/movies"
 
 - name: Create and start container
   docker_container:

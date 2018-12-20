@@ -5,3 +5,6 @@ radarrx:
     roles: [1080webdl, 1080remux]
 calibreweb:
    caliblur: yes
+goplaxt:
+   trakt_id:
+   trakt_secret:

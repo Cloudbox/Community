@@ -81,4 +81,5 @@ See [wiki](https://github.com/Cloudbox/Community/wiki) for setup guides.
 - **sonarrv3** - Sonar phantom (v3) branch based role
 - **[sonarrX](../../wiki/SonarrX)** - Experimental Sonarr v3 role to create multiple roles
 - **telly2**
+- **[varken](../../wiki/Varken)** - [Varken](https://github.com/Boerderij/Varken) role with influxdb and grafana dockers
 

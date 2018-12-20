@@ -64,7 +64,7 @@ See [wiki](https://github.com/Cloudbox/Community/wiki) for setup guides.
 - **[deluge](../../wiki/Deluge)** - Deluge torrent client
 - **embystats**
 - **gazee** - comic book reader
-- **goplaxt**
+- **goplaxt** -[goplaxt](https://github.com/XanderStrike/goplaxt) Plex/Trakt Scrobbler
 - **jellyfin**
 - **kitana** - A responsive Plex plugin web frontend
 - **lazylibrarian** - (uses calibre-rdp db)

@@ -53,3 +53,4 @@ install:
   - sh: sudo ansible-playbook community.yml --tags mediabutler
   - sh: sudo ansible-playbook community.yml --tags jellyfin
   - sh: sudo ansible-playbook community.yml --tags gazee
+  - sh: sudo ansible-playbook community.yml --tags goplaxt

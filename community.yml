@@ -32,3 +32,4 @@
     - { role: jellyfin, tags: ['jellyfin'] }
     - { role: gazee, tags: ['gazee'] }
     - { role: goplaxt, tags: ['goplaxt'] }
+    - { role: varken, tags: ['varken'] }

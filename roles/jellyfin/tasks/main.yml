@@ -39,8 +39,6 @@
       VIRTUAL_PORT: 8096
       LETSENCRYPT_HOST: "jellyfin.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
-      PUID: "{{uid}}"
-      PGID: "{{gid}}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

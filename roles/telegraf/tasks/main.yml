@@ -1,0 +1,63 @@
+- name: Stop and remove any existing container
+  docker_container:
+    name: telegraf
+    state: absent
+
+- name: Create telegraf directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - /opt/telegraf
+
+- name: Check if telegraf config exists
+  stat:
+    path: "/opt/telegraf/telegraf.conf"
+  register: telegraf_conf
+
+- name: Do the following tasks when telegraf config does not exist.
+  block:
+
+  - name: Import telegraf config if needed
+    template:
+      src: telegraf.conf
+      dest: /opt/telegraf/telegraf.conf
+      owner: "{{uid}}"
+      group: "{{gid}}"
+      mode: 0775
+
+  - name: "Get Remote IP for InfluxDB"
+    pause:
+      prompt: "Enter your Influx DB address/remote IP (ie 8.8.8.8)"
+    register: influx_db
+
+  - name: Update IP address in config
+    replace:
+      path: /opt/telegraf/telegraf.conf
+      regexp: 'INFLUXDBIPREPLACE'
+      replace: '{{ influx_db.user_input }}'
+
+  when: not telegraf_conf.stat.exists
+
+- name: Create and start container
+  docker_container:
+    name: telegraf
+    image: "telegraf"
+    pull: yes
+    env:
+      PUID: "{{uid}}"
+      PGID: "{{gid}}"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/telegraf:/etc/telegraf:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "/sys:/host/sys:ro"
+      - "/proc:/host/proc:ro"
+      - "/etc:/host/etc:ro"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - telegraf
+    purge_networks: yes
+    restart_policy: always
+    state: started

@@ -33,3 +33,4 @@
     - { role: gazee, tags: ['gazee'] }
     - { role: goplaxt, tags: ['goplaxt'] }
     - { role: varken, tags: ['varken'] }
+    - { role: telegraf, tags: ['telegraf'] }

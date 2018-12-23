@@ -79,7 +79,7 @@
 - name: Create and start varken container
   docker_container:
     name: varken
-    image: boerderij/varken
+    image: boerderij/varken:nightly
     pull: yes
     env:
       PUID: "{{uid}}"

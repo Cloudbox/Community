@@ -31,7 +31,7 @@
       - "/mnt:/mnt:rw"
       - "/mnt/strm:/strm:rw"
       - "{{plex.transcodes}}:/transcode"
-      - "/opt/jellyfin/config:/config:rw"
+      - "/opt/jellyfin:/config:rw"
       - "/var/run/docker.sock:/var/run/docker.sock"
     devices: "{{ '/dev/dri:/dev/dri' if dev_dri.stat.exists == True | default(false) else omit }}"
     user: "{{uid}}:{{gid}}"
@@ -56,7 +56,7 @@
 
 - name: "Ensure config folder has the correct permissions"
   file:
-    path: "/opt/jellyfin/config"
+    path: "/opt/jellyfin"
     owner: "{{user}}"
     group: "{{user}}"
     mode: 0775

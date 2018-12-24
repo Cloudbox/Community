@@ -49,3 +49,15 @@
     purge_networks: yes
     restart_policy: always
     state: started
+# we need this here because sometimes after a restore, docker will set this transcodes folder to root, dont ask why, but it does...
+- name: "Wait 5 seconds"
+  wait_for:
+    timeout: 5
+
+- name: "Ensure config folder has the correct permissions"
+  file:
+    path: "/opt/jellyfin/config"
+    owner: "{{user}}"
+    group: "{{user}}"
+    mode: 0775
+    recurse: yes

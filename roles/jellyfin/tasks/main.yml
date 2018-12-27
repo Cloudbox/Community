@@ -22,7 +22,7 @@
 - name: Create and start container
   docker_container:
     name: jellyfin
-    image: "jellyfin/jellyfin:latest"
+    image: "jellyfin/jellyfin"
     pull: yes
     published_ports:
       - "127.0.0.1:9096:8096"
@@ -34,13 +34,12 @@
       - "/opt/jellyfin/config:/config:rw"
       - "/var/run/docker.sock:/var/run/docker.sock"
     devices: "{{ '/dev/dri:/dev/dri' if dev_dri.stat.exists == True | default(false) else omit }}"
+    user: "{{uid}}:{{gid}}"
     env:
       VIRTUAL_HOST: "jellyfin.{{domain}}"
       VIRTUAL_PORT: 8096
       LETSENCRYPT_HOST: "jellyfin.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
-      PUID: "{{uid}}"
-      PGID: "{{gid}}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

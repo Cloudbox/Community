@@ -54,5 +54,4 @@ install:
   - sh: sudo ansible-playbook community.yml --tags jellyfin
   - sh: sudo ansible-playbook community.yml --tags gazee
   - sh: sudo ansible-playbook community.yml --tags goplaxt
-  - sh: sudo ansible-playbook community.yml --tags varken
-  - sh: sudo ansible-playbook community.yml --tags telegraf
+  - sh: sudo ansible-playbook community.yml --tags xteve

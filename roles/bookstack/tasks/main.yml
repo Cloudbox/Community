@@ -14,6 +14,9 @@
   with_items:
     - bookstack
 
+- name: Install the Python MySQLB module
+  pip: name=MySQL-python
+
 - name: Create new database with name bookstackapp
   mysql_db:
     name: bookstackapp

@@ -8,3 +8,5 @@ calibreweb:
 goplaxt:
    trakt_id:
    trakt_secret:
+bookstack:
+    subdomain: bookstack

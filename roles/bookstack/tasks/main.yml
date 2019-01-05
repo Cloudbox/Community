@@ -7,7 +7,7 @@
   include_role:
     name: cloudflare
   vars:
-    subdomain: bookstack
+    subdomain: "{{ bookstack.subdomain|default('bookstack',true) }}"
 
 - name: Stop and remove any existing containers
   docker_container: "name={{item}} state=absent"
@@ -33,10 +33,10 @@
       DB_USER: root
       DB_PASS: password321
       DB_DATABASE: bookstackapp
-      VIRTUAL_HOST: "bookstack.{{domain}}"
+      VIRTUAL_HOST: "{{ bookstack.subdomain|default('bookstack',true) }}.{{domain}}"
       VIRTUAL_PORT: 443
       VIRTUAL_PROTO: https
-      LETSENCRYPT_HOST: "bookstack.{{domain}}"
+      LETSENCRYPT_HOST: "{{ bookstack.subdomain|default('bookstack',true) }}.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"

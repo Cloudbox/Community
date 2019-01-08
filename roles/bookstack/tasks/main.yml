@@ -14,17 +14,9 @@
   with_items:
     - bookstack
 
-- name: Install the Python MySQLB module
-  pip: name=MySQL-python
-
-- name: Create new database with name bookstackapp
-  mysql_db:
-    name: bookstackapp
-    state: present
-    login_host: mariadb
-    login_port: 3306
-    login_user: root
-    login_password: password321
+- name: "Create bookstack database"
+  command: "docker exec mariadb mysql -u root -ppassword321 -e 'create schema bookstackapp;'"
+  ignore_errors: yes
 
 - name: Create required directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"

@@ -56,5 +56,3 @@ install:
   - sh: sudo ansible-playbook community.yml --tags goplaxt
   - sh: sudo ansible-playbook community.yml --tags xteve
   - sh: sudo ansible-playbook community.yml --tags bookstack
-  - sh: sudo ansible-playbook community.yml --tags rclone-mount
-  - sh: sudo ansible-playbook community.yml --tags mergerfs

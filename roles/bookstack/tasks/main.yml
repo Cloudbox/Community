@@ -14,6 +14,10 @@
   with_items:
     - bookstack
 
+- name: "Create bookstack database"
+  command: "docker exec mariadb mysql -u root -ppassword321 -e 'create schema bookstackapp;'"
+  ignore_errors: yes
+
 - name: Create required directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:

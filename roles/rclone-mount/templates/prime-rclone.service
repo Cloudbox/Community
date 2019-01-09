@@ -1,0 +1,20 @@
+[Unit]
+Description=prime rclone vfs
+
+Requires=rclone.service
+After=rclone.service
+
+AssertPathIsMountPoint=/mnt/rclone
+AssertPathExists=/mnt/rclone/mounted.bin
+
+[Service]
+Type=oneshot
+ExecStartPre=/bin/sleep 10
+ExecStart=/usr/bin/rclone --config /home/seed/.config/rclone/rclone.conf rc --rc-addr=localhost:5572 vfs/refresh recursive=true --timeout=15m -vvv --log-file=/home/seed/logs/vfs-warmup.log
+RemainAfterExit=yes
+RemainAfterExit=yes
+User=seed
+Group=seed
+
+[Install]
+WantedBy=default.target

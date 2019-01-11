@@ -5,7 +5,7 @@ Requires=network-online.target
 After=network-online.target
 # Check directories
 AssertPathIsDirectory=/mnt/rclone
-Wants=unionfs.service
+Wants=mnt-unionfs.mount
 
 [Service]
 Type=notify

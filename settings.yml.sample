@@ -12,3 +12,5 @@ bookstack:
   subdomain: bookstack
 invoiceninja:
   subdomain: invoiceninja
+rclone:
+  gdrive_remote: gdrive

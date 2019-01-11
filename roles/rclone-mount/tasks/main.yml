@@ -1,0 +1,48 @@
+---
+- name: Check if rclone service exists
+  stat:
+    path: "/etc/systemd/system/rclone.service"
+  register: rclone_service
+
+- name: Populate Service Facts
+  service_facts:
+  when: rclone_service.stat.exists
+
+- name: Get rclone service state
+  set_fact:
+    rclone_service_running: "{{ (services['rclone.service']['state'] == \"running\") }}"
+  when: rclone_service.stat.exists
+
+- name: Stop existing rclone service
+  systemd: state=stopped name=rclone
+  when: rclone_service.stat.exists and rclone_service_running
+
+- name: Create /mnt/rclone
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}} recurse=yes"
+  with_items:
+    - /mnt/rclone
+
+- name: Import rclone.service
+  template:
+    src: rclone.service
+    dest: /etc/systemd/system/rclone.service
+    force: yes
+  when: not rclone_service.stat.exists
+
+- name: Start rclone service
+  systemd: state=started name=rclone daemon_reload=yes enabled=yes
+
+- name: Import prime-rclone.service
+  template:
+    src: prime-rclone.service
+    dest: /etc/systemd/system/prime-rclone.service
+    force: yes
+
+- name: ensure /mnt/rclone/mounted.bin exists
+  copy:
+    content: ""
+    dest: /mnt/rclone/mounted.bin
+    force: no
+    group: seed
+    owner: seed
+    mode: 0444

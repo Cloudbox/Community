@@ -34,3 +34,5 @@
     - { role: goplaxt, tags: ['goplaxt'] }
     - { role: xteve, tags: ['xteve'] }
     - { role: bookstack, tags: ['bookstack'] }
+    - { role: funkwhale, tags: ['funkwhale'] }
+    

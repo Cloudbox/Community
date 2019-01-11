@@ -43,6 +43,6 @@
     content: ""
     dest: /mnt/rclone/mounted.bin
     force: no
-    group: {{user}}
-    owner: {{user}}
+    group: "{{user}}"
+    owner: "{{user}}"
     mode: 0444

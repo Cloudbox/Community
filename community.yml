@@ -35,4 +35,5 @@
     - { role: xteve, tags: ['xteve'] }
     - { role: bookstack, tags: ['bookstack'] }
     - { role: funkwhale, tags: ['funkwhale'] }
+    - { role: invoiceninja, tags: ['invoiceninja'] }
     

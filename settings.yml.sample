@@ -10,3 +10,5 @@ goplaxt:
   trakt_secret:
 bookstack:
   subdomain: bookstack
+invoiceninja:
+  subdomain: invoiceninja

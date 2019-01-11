@@ -43,6 +43,6 @@
     content: ""
     dest: /mnt/rclone/mounted.bin
     force: no
-    group: seed
-    owner: seed
+    group: {{user}}
+    owner: {{user}}
     mode: 0444

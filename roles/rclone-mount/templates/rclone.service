@@ -10,12 +10,12 @@ Wants=mnt-unionfs.mount
 [Service]
 Type=notify
 
-User=seed
-Group=seed
+User={{user}}
+Group={{user}}
 
 # Mount command
 ExecStart=/usr/bin/rclone mount \
-  --config=/home/seed/.config/rclone/rclone.conf \
+  --config=/home/{{user}}/.config/rclone/rclone.conf \
   --allow-other \
   --rc \
   --fast-list \

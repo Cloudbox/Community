@@ -34,5 +34,7 @@
     - { role: goplaxt, tags: ['goplaxt'] }
     - { role: xteve, tags: ['xteve'] }
     - { role: bookstack, tags: ['bookstack'] }
+    - { role: funkwhale, tags: ['funkwhale'] }
+    - { role: invoiceninja, tags: ['invoiceninja'] }
     - { role: mergerfs, tags: ['mergerfs'] }
     - { role: rclone-mount, tags: ['rclone-mount'] }

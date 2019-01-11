@@ -1,0 +1,71 @@
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: funkwhale
+    
+- name: "Stop and remove funkwhale container"
+  docker_container:
+    name: funkwhale
+    state: absent
+
+- name: "Create funkwhale directories"
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - /opt/funkwhale
+    - /opt/funkwhale/data
+
+- name: "Check if funkwhale env file exists"
+  stat:
+    path: "/opt/funkwhale/env"
+  register: funkwhale_env
+
+- name: "Import env file if it doesnt exist"
+  template:
+    src: funkwhale_env.js2
+    dest: /opt/funkwhale/env
+    force: yes
+    owner: "{{user}}"
+    group: "{{user}}"
+    mode: 0775
+  when: not funkwhale_env.stat.exists
+  
+- name: "Create and start funkwhale container"
+  docker_container:
+    name: funkwhale
+    image: thetarkus/funkwhale:latest
+    pull: yes
+    published_ports:
+      - "127.0.0.1:6969:80"
+    env:
+      FUNKWHALE_URL: "funkwhale.{{domain}}"
+      VIRTUAL_HOST: "funkwhale.{{domain}}"
+      LETSENCRYPT_HOST: "funkwhale.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+      VIRTUAL_PORT: 80
+      PUID: "{{uid}}"
+      PGID: "{{gid}}"
+    env_file: /opt/funkwhale/env
+    volumes:
+      - "/opt/funkwhale/data:/data"
+      - "/mnt/unionfs/:/music:ro"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - funkwhale
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started
+
+- name: "sleep for 10 seconds and continue" 
+  wait_for: timeout=10
+
+- name: "Create Admin User"
+  command: docker exec -i funkwhale /usr/bin/python3 /app/api/manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('{{user}}', '{{email}}', '{{passwd}}')"
+  ignore_errors: yes
+  no_log: True
+
+

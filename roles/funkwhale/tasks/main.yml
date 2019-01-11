@@ -34,7 +34,7 @@
 - name: "Create and start funkwhale container"
   docker_container:
     name: funkwhale
-    image: thetarkus/funkwhale:next-0.17
+    image: thetarkus/funkwhale:latest
     pull: yes
     published_ports:
       - "127.0.0.1:6969:80"

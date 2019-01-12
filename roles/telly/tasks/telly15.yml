@@ -1,0 +1,57 @@
+#########################################################################
+# Title:         Cloudbox Community: Telly 1.5 Role                     #
+# Author(s):     EnorMOZ, Desimaniac                                    #
+# URL:           https://github.com/Cloudbox/Community                  #
+# Docker Image:  tellytv/telly                                          #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Version Info
+  debug:
+    msg: "Installing Telly version: {{telly.version}}"
+
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: telly
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: telly
+    state: absent
+
+- name: Create telly directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - "/opt/telly"
+    - "/opt/telly/telly.db"
+
+- name: Create and start container
+  docker_container:
+    name: telly
+    image: "tellytv/telly:v1.5.0"
+    pull: yes
+    user: "{{uid}}:{{gid}}"
+    command: --database.file="/telly/telly.db"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/telly/telly.db:/telly/"
+    env:
+      TELLY_LOG_LEVEL: "debug"
+      VIRTUAL_HOST: "telly.{{domain}}"
+      VIRTUAL_PORT: 6077
+      LETSENCRYPT_HOST: "telly.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - telly
+    purge_networks: yes
+    restart_policy: always
+    state: started

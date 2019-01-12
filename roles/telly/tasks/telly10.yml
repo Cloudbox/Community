@@ -1,0 +1,63 @@
+#########################################################################
+# Title:         Cloudbox Community: Telly 1.0 Role                     #
+# Author(s):     EnorMOZ, desimaniac                                    #
+# URL:           https://github.com/cloudbox/cloudbox                   #
+# Docker Image:  tombowditch/telly                                      #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Version Info
+  debug:
+    msg: "Installing Telly version: {{telly.version}}"
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: telly
+    state: absent
+
+- name: Create telly directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - "/opt/telly"
+
+- name: Create and start container
+  docker_container:
+    name: telly
+    image: "tellytv/telly"
+    pull: yes
+    volumes:
+    - "/etc/localtime:/etc/localtime:ro"
+    - "/opt/telly:/opt/telly"
+    env:
+      PUID: "{{uid}}"
+      PGID: "{{gid}}"
+      TELLY_WEB_BASE_ADDRESS: "telly:6077"
+      TELLY_FILTER_REGEX_MODE: "{{ telly10.TELLY_FILTER_REGEX_MODE | default(false) }}"
+      TELLY_FILTER_REGEX: "{{ telly10.TELLY_FILTER_REGEX | default('.*') }}"
+      TELLY_IPTV_PLAYLIST: "{{ telly10.TELLY_IPTV_PLAYLIST | default('') }}"
+      TELLY_LOG_LEVEL: "{{ telly10.TELLY_LOG_LEVEL | default('Info') }}"
+      TELLY_LOG_REQUESTS: "{{ telly10.TELLY_LOG_REQUESTS | default(false) }}"
+      TELLY_IPTV_DIRECT: "{{ telly10.TELLY_IPTV_DIRECT | default(false) }}"
+      TELLY_IPTV_STARTING_CHANNEL: "{{ telly10.TELLY_IPTV_STARTING_CHANNEL | default('10000') }}"
+      TELLY_IPTV_STREAMS:  "{{ telly10.TELLY_IPTV_STREAMS | default('1') }}"
+      TELLY_WEB_LISTEN_ADDRESS: "0.0.0.0:6077"
+      TELLY_DISCOVERY_DEVICE_ID: "{{ telly10.TELLY_DISCOVERY_DEVICE_ID | default('12345678') }}"
+      TELLY_DISCOVERY_DEVICE_FRIENDLY_NAME: "{{ telly10.TELLY_DISCOVERY_DEVICE_FRIENDLY_NAME | default('telly') }}"
+      TELLY_DISCOVERY_DEVICE_AUTH: "{{ telly10.TELLY_DISCOVERY_DEVICE_AUTH | default('telly123') }}"
+      TELLY_DISCOVERY_DEVICE_MANUFACTURER: "{{ telly10.TELLY_DISCOVERY_DEVICE_MANUFACTURER | default('Silicondust') }}"
+      TELLY_DISCOVERY_DEVICE_MODEL_NUMBER: "{{ telly10.TELLY_DISCOVERY_DEVICE_MODEL_NUMBER | default('HDTC-2US') }}"
+      TELLY_DISCOVERY_DEVICE_FIRMWARE_NAME: "{{ telly10.TELLY_DISCOVERY_DEVICE_FIRMWARE_NAME | default('hdhomeruntc_atsc') }}"
+      TELLY_DISCOVERY_DEVICE_FIRMWARE_VERSION: "{{ telly10.TELLY_DISCOVERY_DEVICE_FIRMWARE_VERSION | default('20150826') }}"
+      TELLY_DISCOVERY_SSDP: "{{ telly10.TELLY_DISCOVERY_SSDP | default(true,true) }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - telly
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

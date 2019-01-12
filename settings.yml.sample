@@ -14,7 +14,7 @@ invoiceninja:
   subdomain: invoiceninja
 rclone:
   gdrive_remote: gdrive
-telly11:
+tellydev:
   streams: 1
   provider_name: CloudTV
   m3u_url: /opt/telly/file.m3u or URL2M3U

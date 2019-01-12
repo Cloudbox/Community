@@ -8,3 +8,9 @@ calibreweb:
 goplaxt:
    trakt_id:
    trakt_secret:
+telly11:
+   streams: 1
+   provider_name: CloudTV
+   m3u_url: /opt/telly/file.m3u or URL2M3U
+   epg_url: /opt/telly/file.xml or URL2XML
+   filter: USA

@@ -9,7 +9,6 @@
 #########################################################################
 ---
 - name: Import vars
-  include_vars: "../../telly.yml"
   include_vars: "{{ item }}"
   with_first_found:
     - "../../telly.yml"

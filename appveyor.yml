@@ -54,3 +54,7 @@ install:
   - sh: sudo ansible-playbook community.yml --tags jellyfin
   - sh: sudo ansible-playbook community.yml --tags gazee
   - sh: sudo ansible-playbook community.yml --tags goplaxt
+  - sh: sudo ansible-playbook community.yml --tags xteve
+  - sh: sudo ansible-playbook community.yml --tags bookstack
+  - sh: sudo ansible-playbook community.yml --tags funkwhale
+  - sh: sudo ansible-playbook community.yml --tags invoiceninja

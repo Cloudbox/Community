@@ -1,0 +1,77 @@
+---
+- name: MariaDB Role
+  include_role:
+    name: mariadb
+    
+- name: "sleep for 20 seconds and continue" 
+  wait_for: timeout=20
+
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: "{{ invoiceninja.subdomain|default('invoiceninja',true) }}"
+
+- name: Stop and remove any existing containers
+  docker_container: "name={{item}} state=absent"
+  with_items:
+    - invoiceninja
+
+- name: Create required directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - /opt/invoiceninja
+    - /opt/invoiceninja/public/logo
+    - /opt/invoiceninja/storage
+
+- name: "Check if invoiceninja env file exists"
+  stat:
+    path: "/opt/invoiceninja/env"
+  register: invoiceninja_env
+
+- name: "Import env file if it doesnt exist"
+  template:
+    src: invoiceninja_env.js2
+    dest: /opt/invoiceninja/env
+    force: yes
+    owner: "{{user}}"
+    group: "{{user}}"
+    mode: 0775
+  when: not invoiceninja_env.stat.exists
+
+    
+- name: "Create invoiceninja database"
+  command: "docker exec mariadb mysql -u root -ppassword321 -e 'create schema invoiceninja DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;'"
+  ignore_errors: yes
+
+- name: Create and start invoiceninja container
+  docker_container:
+    name: invoiceninja
+    image: "rxwatcher/docker-invoiceninja-nginx"
+    pull: yes
+    env:
+      PUID: "{{uid}}"
+      PGID: "{{gid}}"
+      DB_HOST: "mariadb:3306"
+      DB_USER: root
+      DB_PASS: password321
+      DB_DATABASE: invoiceninja
+      VIRTUAL_HOST: "{{ invoiceninja.subdomain|default('invoiceninja',true) }}.{{domain}}"
+      VIRTUAL_PORT: 80
+      VIRTUAL_PROTO: http
+      LETSENCRYPT_HOST: "{{ invoiceninja.subdomain|default('invoiceninja',true) }}.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/invoiceninja/public/logo:/var/www/app/public/logo"
+      - "/opt/invoiceninja/storage:/var/www/app/storage"
+      - /opt/invoiceninja/env:/var/www/app/.env
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - invoiceninja
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

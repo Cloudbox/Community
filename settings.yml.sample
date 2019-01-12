@@ -1,16 +1,22 @@
 ---
 sonarrx:
-    roles: [1080webdl, 1080remux]
+  roles: [1080webdl, 1080remux]
 radarrx:
-    roles: [1080webdl, 1080remux]
+  roles: [1080webdl, 1080remux]
 calibreweb:
-   caliblur: yes
+  caliblur: yes
 goplaxt:
-   trakt_id:
-   trakt_secret:
+  trakt_id:
+  trakt_secret:
+bookstack:
+  subdomain: bookstack
+invoiceninja:
+  subdomain: invoiceninja
+rclone:
+  gdrive_remote: gdrive
 telly11:
-   streams: 1
-   provider_name: CloudTV
-   m3u_url: /opt/telly/file.m3u or URL2M3U
-   epg_url: /opt/telly/file.xml or URL2XML
-   filter: USA
+  streams: 1
+  provider_name: CloudTV
+  m3u_url: /opt/telly/file.m3u or URL2M3U
+  epg_url: /opt/telly/file.xml or URL2XML
+  filter: USA

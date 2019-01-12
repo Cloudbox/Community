@@ -28,7 +28,7 @@ install:
   - sh: cp -n ansible.cfg.default ansible.cfg
   - sh: cp -n settings.yml.sample settings.yml
   - sh: sudo ansible-playbook community.yml --syntax-check
-  - sh: sudo ansible-playbook "${CLOUDBOX_PATH}/cloudbox.yml" --tags core --skip-tags settings --extra-vars '{"continuous_integration":true}'
+  - sh: sudo ansible-playbook "${CLOUDBOX_PATH}/cloudbox.yml" --skip-tags settings --extra-vars '{"continuous_integration":true}' --tags core
   - sh: sudo ansible-playbook community.yml --tags airsonic
   - sh: sudo ansible-playbook community.yml --tags calibre-rdp
   - sh: sudo ansible-playbook community.yml --tags calibre-web
@@ -41,7 +41,6 @@ install:
   - sh: sudo ansible-playbook community.yml --tags mylar
   - sh: sudo ansible-playbook community.yml --tags deluge
   - sh: sudo ansible-playbook community.yml --tags mellow
-  - sh: sudo ansible-playbook community.yml --tags telly2
   - sh: sudo ansible-playbook community.yml --tags beets
   - sh: sudo ansible-playbook community.yml --tags sonarrx
   - sh: sudo ansible-playbook community.yml --tags bitwarden
@@ -58,4 +57,3 @@ install:
   - sh: sudo ansible-playbook community.yml --tags bookstack
   - sh: sudo ansible-playbook community.yml --tags funkwhale
   - sh: sudo ansible-playbook community.yml --tags invoiceninja
-  - sh: sudo ansible-playbook community.yml --tags tellydev

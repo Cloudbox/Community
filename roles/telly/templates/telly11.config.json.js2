@@ -11,7 +11,7 @@
     "SSDP": true
   },
   "IPTV": {
-    "Streams": {{tellydev.streams}},
+    "Streams": {{telly11.streams}},
     "Starting-Channel": 10000,
     "XMLTV-Channels": true
   },
@@ -20,16 +20,16 @@
     "Requests": true
   },
   "Web": {
-    "Base-Address": "tellydev:6077",
+    "Base-Address": "telly:6077",
     "Listen-Address": "0.0.0.0:6077"
   },
   "Source": [
     {
-      "Name": "{{tellydev.provider_name}}",
+      "Name": "{{telly11.provider_name}}",
       "Provider": "Custom",
-      "M3U": "{{tellydev.m3u_url}}",
-      "EPG": "{{tellydev.epg_url}}",
-      "Filter": "{{tellydev.filter}}",
+      "M3U": "{{telly11.m3u_url}}",
+      "EPG": "{{telly11.epg_url}}",
+      "Filter": "{{telly11.filter}}",
       "FilterKey": "group-title",
       "FilterRaw": false,
       "Sort": "group-title"

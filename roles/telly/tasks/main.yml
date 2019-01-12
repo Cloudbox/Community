@@ -1,0 +1,24 @@
+#########################################################################
+# Title:         Cloudbox Community: Telly Role                         #
+# Author(s):     Desimaniac                                             #
+# URL:           https://github.com/Cloudbox/Community                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Import vars
+  include_vars: "../../telly.yml"
+
+- name: Installing Telly 1.0
+  include_tasks: "telly10.yml"
+  when: telly.version == "1.0" or telly.version == 1.0
+
+- name: Installing Telly 1.1
+  include_tasks: "telly11.yml"
+  when: telly.version == "1.1" or telly.version == 1.1
+
+- name: Installing Telly 1.5
+  include_tasks: "telly15.yml"
+  when: telly.version == "1.5" or telly.version == 1.5

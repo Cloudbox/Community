@@ -12,3 +12,11 @@ bookstack:
   subdomain: bookstack
 invoiceninja:
   subdomain: invoiceninja
+rclone:
+  gdrive_remote: gdrive
+tellydev:
+  streams: 1
+  provider_name: CloudTV
+  m3u_url: /opt/telly/file.m3u or URL2M3U
+  epg_url: /opt/telly/file.xml or URL2XML
+  filter: USA

@@ -57,3 +57,4 @@ install:
   - sh: sudo ansible-playbook community.yml --tags bookstack
   - sh: sudo ansible-playbook community.yml --tags funkwhale
   - sh: sudo ansible-playbook community.yml --tags invoiceninja
+  - sh: sudo ansible-playbook community.yml --tags tellydev

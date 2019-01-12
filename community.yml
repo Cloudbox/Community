@@ -38,3 +38,4 @@
     - { role: invoiceninja, tags: ['invoiceninja'] }
     - { role: mergerfs, tags: ['mergerfs'] }
     - { role: rclone-mount, tags: ['rclone-mount'] }
+    - { role: tellydev, tags: ['tellydev'] }

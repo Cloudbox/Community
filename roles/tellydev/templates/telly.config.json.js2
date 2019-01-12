@@ -1,0 +1,38 @@
+{
+  "Discovery": {
+    "Device-Auth": "telly123",
+    "Device-ID": 12345678,
+    "Device-UUID": "",
+    "Device-Firmware-Name": "hdhomeruntc_atsc",
+    "Device-Firmware-Version": "20150826",
+    "Device-Friendly-Name": "telly",
+    "Device-Manufacturer": "Silicondust",
+    "Device-Model-Number": "HDTC-2US",
+    "SSDP": true
+  },
+  "IPTV": {
+    "Streams": {{tellydev.streams}},
+    "Starting-Channel": 10000,
+    "XMLTV-Channels": true
+  },
+  "Log": {
+    "Level": "info",
+    "Requests": true
+  },
+  "Web": {
+    "Base-Address": "tellydev:6077",
+    "Listen-Address": "0.0.0.0:6077"
+  },
+  "Source": [
+    {
+      "Name": "{{tellydev.provider_name}}",
+      "Provider": "Custom",
+      "M3U": "{{tellydev.m3u_url}}",
+      "EPG": "{{tellydev.epg_url}}",
+      "Filter": "{{tellydev.filter}}",
+      "FilterKey": "group-title",
+      "FilterRaw": false,
+      "Sort": "group-title"
+    }
+  ]
+}

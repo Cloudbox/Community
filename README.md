@@ -2,7 +2,7 @@
 
 Community Repository for Unofficial Cloudbox Add-ons
 
-## Requiremements
+## Requirements
 
 - [Cloudbox](https://github.com/Cloudbox/Cloudbox/)
 
@@ -85,5 +85,6 @@ See [wiki](https://github.com/Cloudbox/Community/wiki) for setup guides.
 - **sonarr1080** - Additional Sonarr
 - **sonarrv3** - Sonar phantom (v3) branch based role
 - **[sonarrX](../../wiki/SonarrX)** - Experimental Sonarr v3 role to create multiple roles
-- **telly2**
+- **tellydev** - telly dev branch, version 1.1
+- **telly2** - unsupported alpha build of telly 1.5
 - **[varken](../../wiki/Varken)** - [Varken](https://github.com/Boerderij/Varken) role with influxdb and grafana dockers

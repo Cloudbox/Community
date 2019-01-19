@@ -15,24 +15,47 @@
   with_items:
     - /opt/bitwarden
 
+- name: "Check if bitwarden env file exists"
+  stat:
+    path: "/opt/bitwarden/env"
+  register: bitwarden_env
+
+- name: "Generate Admin token"
+  shell: /usr/bin/openssl rand -base64 48
+  register: admin_token
+  when: not bitwarden_env.stat.exists
+
+- name: "Import env file if it doesnt exist"
+  template:
+    src: bitwarden_env.js2
+    dest: /opt/bitwarden/env
+    force: yes
+    owner: "{{user}}"
+    group: "{{user}}"
+    mode: 0775
+  when: not bitwarden_env.stat.exists
+  
+
 - name: Create and start container
   docker_container:
     name: bitwarden
     image: mprasil/bitwarden:latest
     pull: yes
+    published_ports:
+      - "127.0.0.1:6423:6423"
     env:
-      SERVER_ADMIN_EMAIL: "{{email}}"
-      PUID: "{{uid}}"
-      PGID: "{{gid}}"
+      ROCKET_PORT: 6423
       VIRTUAL_HOST: "bitwarden.{{domain}}"
-      VIRTUAL_PORT: 80
+      VIRTUAL_PORT: 6423
       LETSENCRYPT_HOST: "bitwarden.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/bitwarden:/data"
+      - "/opt/bitwarden/env:/.env"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
+    user: "{{uid}}:{{gid}}"
     networks:
       - name: cloudbox
         aliases:

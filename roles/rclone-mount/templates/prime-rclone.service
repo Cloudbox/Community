@@ -10,7 +10,7 @@ AssertPathExists=/mnt/rclone/mounted.bin
 [Service]
 Type=oneshot
 ExecStartPre=/bin/sleep 10
-ExecStart=/usr/bin/rclone --config /home/{{user}}/.config/rclone/rclone.conf rc --rc-addr=localhost:5572 vfs/refresh recursive=true --timeout=15m -vvv --log-file=/home/{{user}}/logs/vfs-warmup.log
+ExecStart=/usr/bin/rclone --config /home/{{user}}/.config/rclone/rclone.conf rc --rc-addr=localhost:5572 vfs/refresh dir=Media recursive=true --timeout=15m -vvv --log-file=/home/{{user}}/logs/vfs-warmup.log
 RemainAfterExit=yes
 RemainAfterExit=yes
 User={{user}}

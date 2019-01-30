@@ -32,3 +32,5 @@
     - { role: jellyfin, tags: ['jellyfin'] }
     - { role: gazee, tags: ['gazee'] }
     - { role: goplaxt, tags: ['goplaxt'] }
+    - { role: bazarr, tags: ['bazarr'] }
+    - { role: bazarr4k, tags: ['bazarr4k'] }

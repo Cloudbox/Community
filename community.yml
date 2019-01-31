@@ -37,3 +37,4 @@
     - { role: funkwhale, tags: ['funkwhale'] }
     - { role: invoiceninja, tags: ['invoiceninja'] }
     - { role: subsonic, tags: ['subsonic'] }
+    - { role: bazarrx, tags: ['bazarrx'] }

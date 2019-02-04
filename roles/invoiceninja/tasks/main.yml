@@ -23,6 +23,9 @@
     - /opt/invoiceninja
     - /opt/invoiceninja/public/logo
     - /opt/invoiceninja/storage
+    - /opt/invoiceninja/logs
+    - /opt/invoiceninja/logs/cron
+    - /opt/invoiceninja/logs/nginx
 
 - name: "Check if invoiceninja env file exists"
   stat:
@@ -65,6 +68,8 @@
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/invoiceninja/public/logo:/var/www/app/public/logo"
       - "/opt/invoiceninja/storage:/var/www/app/storage"
+      - "/opt/invoiceninja/logs/cron:/var/log/ninja_cron"
+      - "/opt/invoiceninja/logs/nginx:/var/log/nginx"
       - /opt/invoiceninja/env:/var/www/app/.env
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

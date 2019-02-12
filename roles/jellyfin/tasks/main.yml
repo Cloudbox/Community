@@ -13,6 +13,15 @@
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
     - /opt/jellyfin
+    - /opt/jellyfin/config
+    - /opt/jellyfin/config/users
+    - "{{plex.transcodes}}/5"
+    - "{{plex.transcodes}}/6"
+    
+#- name: "Check if 'system.xml' exists"
+#  stat:
+#    path: "/opt/jellyfin/config/system.xml"
+#  register: jellyfin_system_xml
     
 - name: "Check if '/dev/dri' exists"
   stat:
@@ -30,7 +39,8 @@
       - "/etc/localtime:/etc/localtime:ro"
       - "/mnt:/mnt:rw"
       - "/mnt/strm:/strm:rw"
-      - "{{plex.transcodes}}:/transcode"
+      - "{{plex.transcodes}}/5:/transcode"
+      - "{{plex.transcodes}}/6:/transcodes"
       - "/opt/jellyfin:/config:rw"
       - "/var/run/docker.sock:/var/run/docker.sock"
     devices: "{{ '/dev/dri:/dev/dri' if dev_dri.stat.exists == True | default(false) else omit }}"
@@ -61,3 +71,11 @@
     group: "{{user}}"
     mode: 0775
     recurse: yes
+    
+- name: Settings Tasks
+  include_tasks: "jellyfin_settings.yml"
+  when: not (
+        (jellyfin_system_xml.exists)
+        or
+        (continuous_integration)
+    )

@@ -6,3 +6,5 @@ services:
     environment:
       - VIRTUAL_HOST=myolddomain.net
       - REDIRECT_TARGET=mydomain.net
+      
+# https://github.com/MorbZ/docker-web-redirect

@@ -1,0 +1,8 @@
+version: '3'
+services:
+  redirect:
+    image: morbz/docker-web-redirect
+    restart: always
+    environment:
+      - VIRTUAL_HOST=myolddomain.net
+      - REDIRECT_TARGET=mydomain.net

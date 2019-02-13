@@ -1,0 +1,11 @@
+# mpatton/audioserve
+# https://hub.docker.com/r/mpatton/audioserve
+docker run -d --name audioserve -p 3000:3000 \
+    -v /path/to/your/audiobooks1:/collection1 \
+    -v /path/to/your/audiobooks2:/collection2 \
+    -e DIRS=/collection1 /collection2 \
+    -e SECRET=mypassword \
+    -e SSLKEY= \
+    -e SSLPASS= \
+    -e OTHER_ARGS=--search-cache \
+    audioserve

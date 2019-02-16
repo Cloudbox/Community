@@ -18,6 +18,9 @@ build: off
 environment:
   CLOUDBOX_PATH: "/home/appveyor/cloudbox"
   COMMUNITY_PATH: "/home/appveyor/projects/community"
+  TAGS:
+    - airsonic
+    - calibre-rdp
 
 init:
   - sh: curl -s https://cloudbox.works/scripts/dep.sh | sudo -H sh
@@ -29,34 +32,35 @@ install:
   - sh: cp -n settings.yml.sample settings.yml
   - sh: sudo ansible-playbook community.yml --syntax-check
   - sh: sudo ansible-playbook "${CLOUDBOX_PATH}/cloudbox.yml" --skip-tags settings --extra-vars '{"continuous_integration":true}' --tags core
-  - sh: sudo ansible-playbook community.yml --tags airsonic
-  - sh: sudo ansible-playbook community.yml --tags calibre-rdp
-  - sh: sudo ansible-playbook community.yml --tags calibre-web
-  - sh: sudo ansible-playbook community.yml --tags lazylibrarian
-  - sh: sudo ansible-playbook community.yml --tags monitorr
-  - sh: sudo ansible-playbook community.yml --tags logarr
-  - sh: sudo ansible-playbook community.yml --tags radarr1080
-  - sh: sudo ansible-playbook community.yml --tags sonarr1080
-  - sh: sudo ansible-playbook community.yml --tags sonarrv3
-  - sh: sudo ansible-playbook community.yml --tags mylar
-  - sh: sudo ansible-playbook community.yml --tags deluge
-  - sh: sudo ansible-playbook community.yml --tags mellow
-  - sh: sudo ansible-playbook community.yml --tags beets
-  - sh: sudo ansible-playbook community.yml --tags sonarrx
-  - sh: sudo ansible-playbook community.yml --tags bitwarden
-  - sh: sudo ansible-playbook community.yml --tags kitana
-  - sh: sudo ansible-playbook community.yml --tags qbittorrent
-  - sh: sudo ansible-playbook community.yml --tags radarrx
-  - sh: sudo ansible-playbook community.yml --tags embystats
-  - sh: sudo ansible-playbook community.yml --tags myjdownloader
-  - sh: sudo ansible-playbook community.yml --tags mediabutler
-  - sh: sudo ansible-playbook community.yml --tags jellyfin
-  - sh: sudo ansible-playbook community.yml --tags gazee
-  - sh: sudo ansible-playbook community.yml --tags goplaxt
-  - sh: sudo ansible-playbook community.yml --tags xteve
-  - sh: sudo ansible-playbook community.yml --tags bookstack
-  - sh: sudo ansible-playbook community.yml --tags funkwhale
-  - sh: sudo ansible-playbook community.yml --tags invoiceninja
-  - sh: sudo ansible-playbook community.yml --tags subsonic
-  - sh: sudo ansible-playbook community.yml --tags bazarrx
+  - sh: for TAG in $TAGS; do sudo ansible-playbook community.yml --tags; done;
+  # - sh: sudo ansible-playbook community.yml --tags airsonic
+  # - sh: sudo ansible-playbook community.yml --tags calibre-rdp
+  # - sh: sudo ansible-playbook community.yml --tags calibre-web
+  # - sh: sudo ansible-playbook community.yml --tags lazylibrarian
+  # - sh: sudo ansible-playbook community.yml --tags monitorr
+  # - sh: sudo ansible-playbook community.yml --tags logarr
+  # - sh: sudo ansible-playbook community.yml --tags radarr1080
+  # - sh: sudo ansible-playbook community.yml --tags sonarr1080
+  # - sh: sudo ansible-playbook community.yml --tags sonarrv3
+  # - sh: sudo ansible-playbook community.yml --tags mylar
+  # - sh: sudo ansible-playbook community.yml --tags deluge
+  # - sh: sudo ansible-playbook community.yml --tags mellow
+  # - sh: sudo ansible-playbook community.yml --tags beets
+  # - sh: sudo ansible-playbook community.yml --tags sonarrx
+  # - sh: sudo ansible-playbook community.yml --tags bitwarden
+  # - sh: sudo ansible-playbook community.yml --tags kitana
+  # - sh: sudo ansible-playbook community.yml --tags qbittorrent
+  # - sh: sudo ansible-playbook community.yml --tags radarrx
+  # - sh: sudo ansible-playbook community.yml --tags embystats
+  # - sh: sudo ansible-playbook community.yml --tags myjdownloader
+  # - sh: sudo ansible-playbook community.yml --tags mediabutler
+  # - sh: sudo ansible-playbook community.yml --tags jellyfin
+  # - sh: sudo ansible-playbook community.yml --tags gazee
+  # - sh: sudo ansible-playbook community.yml --tags goplaxt
+  # - sh: sudo ansible-playbook community.yml --tags xteve
+  # - sh: sudo ansible-playbook community.yml --tags bookstack
+  # - sh: sudo ansible-playbook community.yml --tags funkwhale
+  # - sh: sudo ansible-playbook community.yml --tags invoiceninja
+  # - sh: sudo ansible-playbook community.yml --tags subsonic
+  # - sh: sudo ansible-playbook community.yml --tags bazarrx
   

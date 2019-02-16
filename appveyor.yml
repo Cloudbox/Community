@@ -59,7 +59,11 @@ install:
   - sh: cp -n ansible.cfg.default ansible.cfg
   - sh: cp -n settings.yml.sample settings.yml
   - sh: sudo ansible-playbook community.yml --syntax-check
-  - sh: sudo ansible-playbook "${CLOUDBOX_PATH}/cloudbox.yml" --tags core --skip-tags settings --extra-vars '{"continuous_integration":true}'
+  - sh: |
+      sudo ansible-playbook "${CLOUDBOX_PATH}/cloudbox.yml" --tags core \
+        --skip-tags settings \
+        --extra-vars '{"continuous_integration":true}' \
+        &> /dev/null
   - sh: |
       for TAG in $TAGS
       do

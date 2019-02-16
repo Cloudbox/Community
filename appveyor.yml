@@ -63,10 +63,12 @@ install:
   - sh: |
       for TAG in $TAGS
       do
+          echo ""
+          echo -----------------
+          echo ""
           echo Running Tag: $TAG
           sudo ansible-playbook community.yml --tags $TAG
           docker stop $TAG &> /dev/null || true
           docker rm $TAG &> /dev/null || true
       done
-
   

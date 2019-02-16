@@ -64,6 +64,8 @@ install:
       for TAG in $TAGS
       do
         echo $TAG
+        docker stop $TAG &> /dev/null || true
+        docker rm $TAG &> /dev/null || true
       done
 
   

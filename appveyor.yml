@@ -51,21 +51,25 @@ environment:
     bazarrx
 
 init:
-  # - sh: curl -s https://cloudbox.works/scripts/dep.sh | sudo -H sh
-  # - sh: curl -s https://cloudbox.works/scripts/repo.sh | bash
+  - sh: curl -s https://cloudbox.works/scripts/dep.sh | sudo -H sh
+  - sh: curl -s https://cloudbox.works/scripts/repo.sh | bash
 
 install:
-  # - sh: cd ${COMMUNITY_PATH}
-  # - sh: cp -n ansible.cfg.default ansible.cfg
-  # - sh: cp -n settings.yml.sample settings.yml
-  # - sh: sudo ansible-playbook community.yml --syntax-check
-  # - sh: sudo ansible-playbook "${CLOUDBOX_PATH}/cloudbox.yml" --skip-tags settings --extra-vars '{"continuous_integration":true}' --tags core
+  - sh: cd ${COMMUNITY_PATH}
+  - sh: cp -n ansible.cfg.default ansible.cfg
+  - sh: cp -n settings.yml.sample settings.yml
+  - sh: sudo ansible-playbook community.yml --syntax-check
+  - sh: >
+      sudo ansible-playbook "${CLOUDBOX_PATH}/cloudbox.yml" --tags core
+          --skip-tags settings
+          --extra-vars '{"continuous_integration":true}'
   - sh: |
       for TAG in $TAGS
       do
-        echo $TAG
-        docker stop $TAG &> /dev/null || true
-        docker rm $TAG &> /dev/null || true
+          echo Running Tag: $TAG
+          sudo ansible-playbook community.yml --tags $TAG
+          docker stop $TAG &> /dev/null || true
+          docker rm $TAG &> /dev/null || true
       done
 
   

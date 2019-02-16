@@ -19,7 +19,6 @@ environment:
   CLOUDBOX_PATH: "/home/appveyor/cloudbox"
   COMMUNITY_PATH: "/home/appveyor/projects/community"
   TAGS: >
-    "
     airsonic
     calibre-rdp
     calibre-web
@@ -30,7 +29,6 @@ environment:
     sonarr1080
     sonarrv3
     mylar
-    "
 
 init:
   # - sh: curl -s https://cloudbox.works/scripts/dep.sh | sudo -H sh

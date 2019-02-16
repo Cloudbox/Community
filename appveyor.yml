@@ -32,7 +32,7 @@ install:
   - sh: cp -n settings.yml.sample settings.yml
   - sh: sudo ansible-playbook community.yml --syntax-check
   - sh: sudo ansible-playbook "${CLOUDBOX_PATH}/cloudbox.yml" --skip-tags settings --extra-vars '{"continuous_integration":true}' --tags core
-  - sh: for TAG in $TAGS; do sudo ansible-playbook community.yml --tags; done;
+  - sh: for TAG in $TAGS; do sudo ansible-playbook community.yml --tags; done; 
   # - sh: sudo ansible-playbook community.yml --tags airsonic
   # - sh: sudo ansible-playbook community.yml --tags calibre-rdp
   # - sh: sudo ansible-playbook community.yml --tags calibre-web

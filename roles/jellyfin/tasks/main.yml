@@ -15,6 +15,7 @@
     - /opt/jellyfin
     - /opt/jellyfin/config
     - /opt/jellyfin/config/users
+    - /opt/jellyfin/cache
     - "{{plex.transcodes}}/5"
     - "{{plex.transcodes}}/6"
 
@@ -47,8 +48,8 @@
     name: jellyfin
     image: "jellyfin/jellyfin:latest"
     pull: yes
-    published_ports:
-      - "127.0.0.1:9096:8096"
+    # published_ports:
+    #   - "127.0.0.1:9096:8096"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/mnt:/mnt:rw"
@@ -57,6 +58,9 @@
       - "{{plex.transcodes}}/6:/transcodes"
       - "/opt/jellyfin:/config:rw"
       - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/mnt/unionfs/Media:/data"
+      - "/mnt/unionfs/Media:/media"
+      - "/opt/jellyfin/cache:/cache:rw"
     devices: "{{ '/dev/dri:/dev/dri' if dev_dri.stat.exists == True | default(false) else omit }}"
     user: "{{uid}}:{{gid}}"
     env:

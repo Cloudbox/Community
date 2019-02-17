@@ -41,18 +41,6 @@
     xpath: /ServerConfiguration/PublicHttpsPort
     value: "443"
 
-- name: "Set 'HttpServerPortNumber' to '9096'"
-  xml:
-    path: "/opt/jellyfin/config/system.xml"
-    xpath: /ServerConfiguration/HttpServerPortNumber
-    value: "9096"
-
-- name: "Set 'HttpsPortNumber' to '9920'"
-  xml:
-    path: "/opt/jellyfin/config/system.xml"
-    xpath: /ServerConfiguration/HttpsPortNumber
-    value: "9920"
-
 - name: "Set 'EnableHttps' to 'true'"
   xml:
     path: "/opt/jellyfin/config/system.xml"

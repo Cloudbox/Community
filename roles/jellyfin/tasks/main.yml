@@ -18,10 +18,10 @@
     - "{{plex.transcodes}}/5"
     - "{{plex.transcodes}}/6"
     
-#- name: "Check if 'system.xml' exists"
-#  stat:
-#    path: "/opt/jellyfin/config/system.xml"
-#  register: jellyfin_system_xml
+- name: "Check if 'system.xml' exists"
+  stat:
+    path: "/opt/jellyfin/config/system.xml"
+  register: jellyfin_system_xml
     
 - name: "Check if '/dev/dri' exists"
   stat:

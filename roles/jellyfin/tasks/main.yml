@@ -47,8 +47,8 @@
     name: jellyfin
     image: "jellyfin/jellyfin:latest"
     pull: yes
-    published_ports:
-      - "127.0.0.1:9096:8096"
+    # published_ports:
+    #   - "127.0.0.1:9096:8096"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/mnt:/mnt:rw"

@@ -2,7 +2,7 @@
 # Title:         Cloudbox: jellyfin - Settings Tasks                        #
 # Author(s):     desimaniac                                             #
 # URL:           https://github.com/cloudbox/cloudbox                   #
-# Docker Image:  jellyfin/jellyfinserver                                        #
+# Docker Image:  jellyfin/jellyfin:latest                                       #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -41,6 +41,18 @@
     xpath: /ServerConfiguration/PublicHttpsPort
     value: "443"
 
+- name: "Set 'HttpServerPortNumber' to '9096'"
+  xml:
+    path: "/opt/jellyfin/config/system.xml"
+    xpath: /ServerConfiguration/HttpServerPortNumber
+    value: "9096"
+
+- name: "Set 'HttpsPortNumber' to '9920'"
+  xml:
+    path: "/opt/jellyfin/config/system.xml"
+    xpath: /ServerConfiguration/HttpsPortNumber
+    value: "9920"
+
 - name: "Set 'EnableHttps' to 'true'"
   xml:
     path: "/opt/jellyfin/config/system.xml"
@@ -69,6 +81,12 @@
   xml:
     path: "/opt/jellyfin/config/system.xml"
     xpath: /ServerConfiguration/IsBehindProxy
+    value: "true"
+
+- name: "Set 'EnableFolderView' to 'true'"
+  xml:
+    path: "/opt/jellyfin/config/system.xml"
+    xpath: /ServerConfiguration/EnableFolderView
     value: "true"
 
 - name: Start container to apply changes

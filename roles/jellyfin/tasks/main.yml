@@ -17,6 +17,20 @@
     - /opt/jellyfin/config/users
     - "{{plex.transcodes}}/5"
     - "{{plex.transcodes}}/6"
+
+- name: Import dlna config
+  copy:
+    src: "dlna.xml"
+    dest: "/opt/jellyfin/config/dlna.xml"
+    owner: "{{user}}"
+    group: "{{user}}"
+    mode: 0775
+    force: yes
+  # when: not (
+  #       ("/opt/jellyfin/config/dlna.xml".exists)
+  #       or
+  #       (continuous_integration)
+  #   )
     
 - name: "Check if 'system.xml' exists"
   stat:

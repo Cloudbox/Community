@@ -14,6 +14,24 @@
   with_items:
     - /opt/myjdownloader
 
+- name: Import 7zip 1509
+  copy:
+    src: "sevenzipjbinding1509.jar"
+    dest: "/opt/myjdownloader/config/libs/sevenzipjbinding1509.jar"
+    owner: "{{user}}"
+    group: "{{user}}"
+    mode: 0775
+    force: yes
+
+- name: Import 7zip 1509Linux
+  copy:
+    src: "sevenzipjbinding1509Linux.jar"
+    dest: "/opt/myjdownloader/config/libs/sevenzipjbinding1509Linux.jar"
+    owner: "{{user}}"
+    group: "{{user}}"
+    mode: 0775
+    force: yes
+
 - name: Create and start container
   docker_container:
     name: myjdownloader

@@ -21,7 +21,6 @@
     owner: "{{user}}"
     group: "{{user}}"
     mode: 0775
-    force: yes
 
 - name: Import 7zip 1509Linux
   copy:
@@ -30,7 +29,6 @@
     owner: "{{user}}"
     group: "{{user}}"
     mode: 0775
-    force: yes
 
 - name: Create and start container
   docker_container:

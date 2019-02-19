@@ -26,7 +26,6 @@
     owner: "{{user}}"
     group: "{{user}}"
     mode: 0775
-    force: yes
     
 - name: "Check if 'system.xml' exists"
   stat:

@@ -26,7 +26,7 @@
 - name: Create and start container
   docker_container:
     name: sonarr1080
-    image: "hotio/suitarr:sonarr"
+    image: "hotio/sonarr"
     pull: yes
     published_ports:
       - "127.0.0.1:8991:8989"

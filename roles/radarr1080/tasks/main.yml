@@ -26,7 +26,7 @@
 - name: Create and start container
   docker_container:
     name: radarr1080
-    image: hotio/suitarr:radarr
+    image: hotio/radarr
     pull: yes
     published_ports:
       - "127.0.0.1:7880:7878"

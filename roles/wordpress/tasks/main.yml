@@ -39,6 +39,9 @@
       WORDPRESS_DATABASE_USER: root
       WORDPRESS_DATABASE_PASSWORD: password321
       WORDPRESS_DATABASE_NAME: wordpress
+      WORDPRESS_EMAIL: "{{email}}"
+      WORDPRESS_USERNAME: "{{user}}"
+      WORDPRESS_PASSWORD: "{{passwd}}"
       VIRTUAL_HOST: "{{ wordpress.subdomain|default('wordpress',true) }}.{{domain}}"
       VIRTUAL_PORT: 80
       VIRTUAL_PROTO: http

@@ -26,11 +26,7 @@
       mode: 0664
       force: yes
     when: not file0.stat.exists
-
-  - name: Install yyq
-    import_role:
-      name: yyq
-    
+  
   # Decryption Tasks
   - name: Decryption Block
     block:

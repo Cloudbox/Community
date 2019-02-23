@@ -14,7 +14,7 @@
     version: 0.15.35
     executable: pip3
 
-- name: "Get 'cloudbox.yml' info."
+- name: "Get 'community.yml' info."
   stat:
     path: "{{playbook_dir}}/community.yml"
   register: community_yml

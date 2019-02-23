@@ -8,7 +8,7 @@
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
-- name: Cloudbox Settings Updater Block
+- name: Community Settings Updater Block
   block:
 
   # Check for and import settings files.

@@ -17,8 +17,8 @@
   copy:
     src: "{{playbook_dir}}/defaults/{{item}}.default"
     dest: "{{playbook_dir}}/{{item}}"
-    owner: "{{cloudbox_yml.stat.uid}}"
-    group: "{{cloudbox_yml.stat.gid}}"
+    owner: "{{community_yml.stat.uid}}"
+    group: "{{community_yml.stat.gid}}"
     mode: 0664
     force: yes
   when: not file.stat.exists

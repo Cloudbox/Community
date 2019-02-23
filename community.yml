@@ -6,7 +6,6 @@
     - ['~/cloudbox/settings.yml', '~/cloudbox/defaults/settings.yml.default']
     - ['~/cloudbox/adv_settings.yml', '~/cloudbox/defaults/adv_settings.yml.default']
   roles:
-    - { role: pre_tasks }
     - { role: settings, tags: ['always', 'settings'] }
     - { role: calibre-rdp, tags: ['calibre-rdp'] }
     - { role: calibre-web, tags: ['calibre-web'] }

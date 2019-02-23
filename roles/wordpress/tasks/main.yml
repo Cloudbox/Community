@@ -5,7 +5,7 @@
     
 - name: "sleep for 20 seconds and continue" 
   wait_for: timeout=20
-
+  
 - name: "Set DNS Record on CloudFlare"
   include_role:
     name: cloudflare
@@ -22,26 +22,18 @@
   with_items:
     - /opt/wordpress
    
-- name: "Create wordpress database"
-  command: "docker exec mariadb mysql -u root -ppassword321 -e 'create schema wordpress DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;'"
-  ignore_errors: yes
-
 - name: Create and start wordpress container
   docker_container:
     name: wordpress
-    image: "bitnami/wordpress"
+    image: "wordpress"
     pull: yes
     env:
       PUID: "{{uid}}"
       PGID: "{{gid}}"
-      MARIADB_HOST: mariadb
-      MARIADB_PORT_NUMBER: 3306
-      WORDPRESS_DATABASE_USER: root
-      WORDPRESS_DATABASE_PASSWORD: password321
-      WORDPRESS_DATABASE_NAME: wordpress
-      WORDPRESS_EMAIL: "{{email}}"
-      WORDPRESS_USERNAME: "{{user}}"
-      WORDPRESS_PASSWORD: "{{passwd}}"
+      WORDPRESS_DB_HOST: mariadb:3306
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: password321
+      WORDPRESS_DB_NAME: wordpress
       VIRTUAL_HOST: "{{ wordpress.subdomain|default('wordpress',true) }}.{{domain}}"
       VIRTUAL_PORT: 80
       VIRTUAL_PROTO: http
@@ -49,7 +41,7 @@
       LETSENCRYPT_EMAIL: "{{email}}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/wordpress:/bitnami"
+      - "/opt/wordpress:/var/www/html"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
@@ -59,3 +51,4 @@
     purge_networks: yes
     restart_policy: unless-stopped
     state: started
+

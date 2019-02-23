@@ -49,6 +49,7 @@ environment:
     invoiceninja
     subsonic
     bazarrx
+    wordpress
 
 init:
   - sh: curl -s https://cloudbox.works/scripts/dep.sh | sudo -H sh &> /dev/null

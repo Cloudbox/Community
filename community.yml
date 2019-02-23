@@ -39,3 +39,4 @@
     - { role: subsonic, tags: ['subsonic'] }
     - { role: bazarrx, tags: ['bazarrx'] }
     - { role: guacamole, tags: ['guacamole'] }
+    - { role: wordpress, tags: ['wordpress'] }

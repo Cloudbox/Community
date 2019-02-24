@@ -20,36 +20,33 @@ environment:
   COMMUNITY_PATH: "/home/appveyor/projects/community"
   TAGS: >
     airsonic
+    bazarrx
+    beets
+    bitwarden
+    bookstack
     calibre-rdp
     calibre-web
-    lazylibrarian
-    monitorr
-    logarr
-    radarr1080
-    sonarr1080
-    sonarrv3
-    mylar
     deluge
-    mellow
-    beets
-    sonarrx
-    bitwarden
-    kitana
-    qbittorrent
-    radarrx
     embystats
-    myjdownloader
-    mediabutler
-    jellyfin
+    funkwhale
     gazee
     goplaxt
-    xteve
-    bookstack
-    funkwhale
     invoiceninja
+    jellyfin
+    kitana
+    lazylibrarian
+    logarr
+    mediabutler
+    mellow
+    monitorr
+    myjdownloader
+    mylar
+    qbittorrent
+    radarrx
+    sonarrx
     subsonic
-    bazarrx
     wordpress
+    xteve
 
 init:
   - sh: curl -s https://cloudbox.works/scripts/dep.sh | sudo -H sh &> /dev/null

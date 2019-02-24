@@ -7,3 +7,4 @@
 # Community
 /ansible.cfg
 /settings.yml
+.vscode/sftp.json

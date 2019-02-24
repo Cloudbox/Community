@@ -54,7 +54,7 @@
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "/mnt/unionfs/Media:/media"
       - "/opt/jellyfin/cache:/cache:rw"
-    devices: devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"
+    devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"
     user: "{{uid}}:{{gid}}"
     env:
       VIRTUAL_HOST: "jellyfin.{{domain}}"

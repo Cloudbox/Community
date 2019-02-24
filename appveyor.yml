@@ -62,8 +62,8 @@ install:
       cp -n settings.yml.sample settings.yml && \
       sudo ansible-playbook community.yml --syntax-check
   - sh: |
-      git clone https://github.com/Cloudbox/Cloudbox ${CLOUDBOX_PATH} && \
       cd ${CLOUDBOX_PATH} && \
+      rm settings.yml accounts.yml adv_settings.yml && \
       git checkout develop && \
       sudo ansible-playbook cloudbox.yml --tags core \
         --skip-tags settings \

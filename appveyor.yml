@@ -50,7 +50,6 @@ environment:
     subsonic
     bazarrx
     wordpress
-
 init:
   - sh: curl -s https://cloudbox.works/scripts/dep.sh | sudo -H sh &> /dev/null
   - sh: curl -s https://cloudbox.works/scripts/repo.sh | bash &> /dev/null
@@ -58,8 +57,8 @@ init:
 install:
   - sh: |
       cd ${COMMUNITY_PATH} && \
-      cp -n ansible.cfg.default ansible.cfg && \
-      cp -n settings.yml.sample settings.yml && \
+      cp -n defaults/ansible.cfg.default ansible.cfg && \
+      cp -n defaults/settings.yml.default settings.yml && \
       sudo ansible-playbook community.yml --syntax-check
   - sh: |
       cd ${CLOUDBOX_PATH} && \

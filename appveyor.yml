@@ -61,6 +61,7 @@ install:
   - sh: cp -n settings.yml.sample settings.yml
   - sh: sudo ansible-playbook community.yml --syntax-check
   - sh: |
+      git -C "${CLOUDBOX_PATH}" checkout develop && \
       sudo ansible-playbook "${CLOUDBOX_PATH}/cloudbox.yml" --tags core \
         --skip-tags settings \
         --extra-vars '{"continuous_integration":true}' \

@@ -6,11 +6,16 @@ Community Repository for Unofficial Cloudbox Add-ons
 
 - [Cloudbox](https://github.com/Cloudbox/Cloudbox/)
 
-
-## Clone Repo
+## Download Community Repository
 
 ```bash
-git clone https://github.com/Cloudbox/Community.git ~/community && cd ~/community && cp -n ansible.cfg.default ansible.cfg && cp -n settings.yml.sample settings.yml
+curl -s https://cloudbox.works/scripts/cmrepo.sh | bash >/dev/null 2>&1; cd ~/community
+```
+
+## Copy Template Files
+
+```bash
+cd ~/community && cp -n ansible.cfg.default ansible.cfg && cp -n settings.yml.sample settings.yml
 ```
 
 ## Password File

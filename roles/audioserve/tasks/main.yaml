@@ -1,5 +1,8 @@
 # mpatton/audioserve
 # https://github.com/izderadicka/audioserve
+
+# /Media/Books/Audiobooks
+
 docker run -d --name audioserve -p 3000:3000 \
     -v /path/to/your/audiobooks1:/collection1 \
     -v /path/to/your/audiobooks2:/collection2 \

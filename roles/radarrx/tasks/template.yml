@@ -30,7 +30,7 @@
 - name: Create and start container
   docker_container:
     name: "radarr{{ rolename }}"
-    image: "hotio/suitarr:radarr"
+    image: "hotio/radarr"
     pull: yes
     published_ports:
       - "127.0.0.1:{{ roleport }}:7878"
@@ -44,7 +44,7 @@
       VIRTUAL_PORT: 7878
       LETSENCRYPT_HOST: "radarr{{ rolename }}.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
-    volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) + old_nzbget_downloads_path|default([]) + old_rutorrent_downloads_path|default([]) }}"
+    volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

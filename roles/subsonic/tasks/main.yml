@@ -1,0 +1,45 @@
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: subsonic
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: subsonic
+    state: absent
+
+- name: Create subsonic directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - /opt/subsonic
+
+- name: Create and start container
+  docker_container:
+    name: subsonic
+    image: theultimatecoder/subsonic
+    pull: yes
+    published_ports:
+      - "127.0.0.1:4041:4040"
+    env:
+      SUBSONIC_UID: "{{uid}}"
+      SUBSONIC_GID: "{{gid}}"
+      VIRTUAL_HOST: "subsonic.{{domain}}"
+      VIRTUAL_PORT: 4040
+      LETSENCRYPT_HOST: "subsonic.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+      SUBSONIC_MAX_MEMORY: 1024
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/subsonic:/opt/app/state"
+      - "/mnt:/mnt"
+      - "/mnt/unionfs/Media/Music:/mnt/music"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - subsonic
+    purge_networks: yes
+    restart_policy: always
+    state: started

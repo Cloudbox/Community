@@ -1,52 +1,54 @@
+- name: "Install named bazarr role"
+  debug:
+    msg: "Installing {{ rolename }} using port {{ roleport }}"
+
 - name: "Set DNS Record on CloudFlare"
   include_role:
     name: cloudflare
   vars:
-    subdomain: sonarrv3
+    subdomain: "bazarr{{ rolename }}"
 
 - name: Stop and remove any existing container
   docker_container:
-    name: sonarrv3
+    name: "bazarr{{ rolename }}"
     state: absent
 
-- name: Create sonarrv3 directories
+- name: Create bazarrx directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - /opt/sonarrv3
+    - "/opt/bazarr{{ rolename }}"
 
 - name: Set default_volumes variable
   set_fact:
     default_volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/sonarrv3:/config"
+      - "/opt/bazarr{{ rolename }}:/config"
       - "/opt/scripts:/scripts"
       - "/mnt:/mnt"
       - "/mnt/unionfs/Media/TV:/tv"
-      
+      - "/mnt/unionfs/Media/Movies:/movies"
+     
 - name: Create and start container
   docker_container:
-    name: sonarrv3
-    image: "lsiodev/sonarr-preview"
+    name: "bazarr{{ rolename }}"
+    image: "linuxserver/bazarr"
     pull: yes
     published_ports:
-      - "127.0.0.1:8992:8989"
+      - "127.0.0.1:{{ roleport }}:6767"
     env:
-      VERSION: "unstable"
-      BACKUP: "no"
       PUID: "{{uid}}"
       PGID: "{{gid}}"
-      MONO_TLS_PROVIDER: legacy
-      VIRTUAL_HOST: "sonarrv3.{{domain}}"
-      VIRTUAL_PORT: 8989
-      LETSENCRYPT_HOST: "sonarrv3.{{domain}}"
+      VIRTUAL_HOST: "bazarr{{ rolename }}.{{domain}}"
+      VIRTUAL_PORT: 6767
+      LETSENCRYPT_HOST: "bazarr{{ rolename }}.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
-    volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) + old_nzbget_downloads_path|default([]) + old_rutorrent_downloads_path|default([]) }}"
+    volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
       - name: cloudbox
         aliases:
-          - sonarrv3
+          - "bazarr{{ rolename }}"
     purge_networks: yes
     restart_policy: always
     state: started

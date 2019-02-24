@@ -1,0 +1,9 @@
+- name: "Execute BazarrX roles"
+  include_tasks: template.yml
+  vars:
+    rolename: "{{ role }}"
+    roleport: "{{ 16767 + index }}"
+  with_items: "{{ bazarrx.roles }}"
+  loop_control:
+    loop_var: role
+    index_var: index

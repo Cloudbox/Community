@@ -53,7 +53,6 @@ environment:
 
 init:
   - sh: curl -s https://cloudbox.works/scripts/dep.sh | sudo -H sh &> /dev/null
-  - sh: curl -s https://cloudbox.works/scripts/repo.sh | bash &> /dev/null
 
 install:
   - sh: |
@@ -62,10 +61,10 @@ install:
       cp -n settings.yml.sample settings.yml && \
       sudo ansible-playbook community.yml --syntax-check
   - sh: |
+      git clone https://github.com/Cloudbox/Cloudbox ${CLOUDBOX_PATH} \
       cd ${CLOUDBOX_PATH} && \
       git checkout develop && \
-      git reset --hard origin/develop && \
-      sudo ansible-playbook "${CLOUDBOX_PATH}/cloudbox.yml" --tags core \
+      sudo ansible-playbook cloudbox.yml --tags core \
         --skip-tags settings \
         --extra-vars '{"continuous_integration":true}'
   - sh: |

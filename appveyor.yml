@@ -53,6 +53,7 @@ environment:
 
 init:
   - sh: curl -s https://cloudbox.works/scripts/dep.sh | sudo -H sh &> /dev/null
+  - sh: curl -s https://cloudbox.works/scripts/repo.sh | bash &> /dev/null
 
 install:
   - sh: |

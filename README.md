@@ -55,7 +55,9 @@ See [wiki](https://github.com/Cloudbox/Community/wiki) for setup guides.
 
 
 ## Roles
+Please note some roles are only available in develop.
 
+- ***[**arrX](../../wiki/***arrX-(Sonarr-Radarr-Bazarr))** - Create multiple Sonarr/Radarr/Bazarr roles
 - **airsonic**
 - **beets**
 - **[bitwarden](../../wiki/Bitwarden)** - [Bitwarden](https://bitwarden.com/) self-hosted server.
@@ -75,10 +77,6 @@ See [wiki](https://github.com/Cloudbox/Community/wiki) for setup guides.
 - **myjdownloader**
 - **mylar** - automated comic book downloader
 - **[qbittorrent](../../wiki/qBitorrent)** - qBitorrent torrent client
-- **radarr1080** - Additional Radarr
-- **radarrX** - Similar to [sonarrX](../../wiki/SonarrX) but for radarr, to create multiple roles
-- **sonarr1080** - Additional Sonarr
-- **sonarrv3** - Sonar phantom (v3) branch based role
-- **[sonarrX](../../wiki/SonarrX)** - Experimental Sonarr v3 role to create multiple roles
 - **telly2**
+- **[Wordpress](../../wiki/Wordpress)** - Wordpress deployment
 

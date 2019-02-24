@@ -12,7 +12,7 @@
   include_vars: "{{ item }}"
   with_first_found:
     - "../../telly.yml"
-    - "../../telly.yml.sample"
+    - "../../defaults/telly.yml.sample"
 
 - name: Installing Telly 1.0
   include_tasks: "telly10.yml"

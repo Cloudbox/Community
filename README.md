@@ -10,12 +10,12 @@ Community Repository for Unofficial Cloudbox Add-ons
 ## Clone Repo
 
 ```bash
-git clone https://github.com/Cloudbox/Community.git ~/community && cd ~/community && cp -n ansible.cfg.default ansible.cfg && cp -n settings.yml.sample settings.yml
+git clone https://github.com/Cloudbox/Community.git ~/community && cd ~/community && cp -n defaults/ansible.cfg.default ansible.cfg && cp -n defaults/settings.yml.default settings.yml && cp -n defaults/telly.yml.default telly.yml
 ```
 
 For directly adding the develop branch:
 ```bash
-git clone -b develop https://github.com/Cloudbox/Community.git ~/community && cd ~/community && cp -n ansible.cfg.default ansible.cfg && cp -n settings.yml.sample settings.yml
+git clone -b develop https://github.com/Cloudbox/Community.git ~/community && cd ~/community && cp -n defaults/ansible.cfg.default ansible.cfg && cp -n defaults/settings.yml.default settings.yml && cp -n defaults/telly.yml.default telly.yml
 ```
 
 ## Password File

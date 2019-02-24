@@ -2,7 +2,7 @@
 
 Community Repository for Unofficial Cloudbox Add-ons
 
-## Requirements
+## Requiremements
 
 - [Cloudbox](https://github.com/Cloudbox/Cloudbox/)
 
@@ -10,12 +10,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 ## Clone Repo
 
 ```bash
-git clone https://github.com/Cloudbox/Community.git ~/community && cd ~/community && cp -n defaults/ansible.cfg.default ansible.cfg && cp -n defaults/settings.yml.default settings.yml && cp -n defaults/telly.yml.default telly.yml
-```
-
-For directly adding the develop branch:
-```bash
-git clone -b develop https://github.com/Cloudbox/Community.git ~/community && cd ~/community && cp -n defaults/ansible.cfg.default ansible.cfg && cp -n defaults/settings.yml.default settings.yml && cp -n defaults/telly.yml.default telly.yml
+git clone https://github.com/Cloudbox/Community.git ~/community && cd ~/community && cp -n ansible.cfg.default ansible.cfg && cp -n settings.yml.sample settings.yml
 ```
 
 ## Password File
@@ -60,19 +55,18 @@ See [wiki](https://github.com/Cloudbox/Community/wiki) for setup guides.
 
 
 ## Roles
+Please note some roles are only available in develop.
 
+- ***[**arrX](../../wiki/***arrX-(Sonarr-Radarr-Bazarr))** - Create multiple Sonarr/Radarr/Bazarr roles
 - **airsonic**
 - **beets**
 - **[bitwarden](../../wiki/Bitwarden)** - [Bitwarden](https://bitwarden.com/) self-hosted server.
-- **bookstack**
 - **calibre-rdp** - Media path set to `/Media/Books`
 - **calibre-web** - Loads opt/calibre  (uses calibre-rdp db)
 - **[deluge](../../wiki/Deluge)** - Deluge torrent client
 - **embystats**
-- **funkwhale**
 - **gazee** - comic book reader
 - **[goplaxt](../../wiki/Goplaxt)** - [goplaxt](https://github.com/XanderStrike/goplaxt) Plex/Trakt Scrobbler
-- **invoiceninja**
 - **jellyfin** - [jellyfin](https://github.com/jellyfin/jellyfin) emby fork
 - **kitana** - A responsive Plex plugin web frontend
 - **lazylibrarian** - (uses calibre-rdp db)
@@ -83,11 +77,6 @@ See [wiki](https://github.com/Cloudbox/Community/wiki) for setup guides.
 - **myjdownloader**
 - **mylar** - automated comic book downloader
 - **[qbittorrent](../../wiki/qBitorrent)** - qBitorrent torrent client
-- **radarr1080** - Additional Radarr
-- **radarrX** - Similar to [sonarrX](../../wiki/SonarrX) but for radarr, to create multiple roles
-- **sonarr1080** - Additional Sonarr
-- **sonarrv3** - Sonar phantom (v3) branch based role
-- **[sonarrX](../../wiki/SonarrX)** - Experimental Sonarr v3 role to create multiple roles
-- **subsonic**
-- **telly** - Set version in telly.yml. Choices are `1.0`, `1.1`, and `1.5`. These can be quoted or non-quoted. Includes Telly 1.0 (Needs settings from `telly10` section in `telly.yml`), 1.1 dev branch (Needs settings from the `telly11` section  in  `telly.yml`) and 1.5 unsupported alpha build (does not need any settings from `telly.yml`).
-- **xteve**
+- **telly2**
+- **[Wordpress](../../wiki/Wordpress)** - Wordpress deployment
+

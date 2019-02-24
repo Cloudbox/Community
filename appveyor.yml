@@ -56,16 +56,21 @@ init:
   - sh: curl -s https://cloudbox.works/scripts/repo.sh | bash &> /dev/null
 
 install:
-  - sh: cd ${COMMUNITY_PATH}
-  - sh: cp -n ansible.cfg.default ansible.cfg
-  - sh: cp -n settings.yml.sample settings.yml
-  - sh: sudo ansible-playbook community.yml --syntax-check
   - sh: |
-      sudo ansible-playbook "${CLOUDBOX_PATH}/cloudbox.yml" --tags core \
+      cd ${COMMUNITY_PATH} && \
+      cp -n ansible.cfg.default ansible.cfg && \
+      cp -n settings.yml.sample settings.yml && \
+      sudo ansible-playbook community.yml --syntax-check
+  - sh: |
+      cd ${CLOUDBOX_PATH} && \
+      rm settings.yml accounts.yml adv_settings.yml && \
+      git checkout develop &> /dev/null && \
+      sudo ansible-playbook cloudbox.yml --tags core \
         --skip-tags settings \
         --extra-vars '{"continuous_integration":true}' \
         &> /dev/null
   - sh: |
+      cd ${COMMUNITY_PATH}
       for TAG in $TAGS
       do
           echo ""

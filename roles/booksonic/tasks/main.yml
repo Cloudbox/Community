@@ -31,7 +31,7 @@
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/booksonic:/config"
-      - "/mnt/unionfs/Media/Audiobooks:/audiobooks"
+      - "/mnt/unionfs/Media/Audiobooks:/books"
       - "/mnt/unionfs/Media/Podcasts:/podcasts"
       - "/mnt/unionfs/Media:/media"
     labels:

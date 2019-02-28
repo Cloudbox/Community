@@ -12,6 +12,7 @@
     - { role: bazarrx, tags: ['bazarrx'] }
     - { role: beets, tags: ['beets'] }
     - { role: bitwarden, tags: ['bitwarden'] }
+    - { role: booksonic, tags: ['booksonic']}
     - { role: bookstack, tags: ['bookstack'] }
     - { role: calibre-rdp, tags: ['calibre-rdp'] }
     - { role: calibre-rdp, tags: ['calibre-rdp'] }

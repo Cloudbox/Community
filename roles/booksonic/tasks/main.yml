@@ -31,9 +31,9 @@
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/booksonic:/config"
-      - "/mnt/unionfs/Media/Audiobooks:/books"
+      - "/mnt/unionfs/Media/Audiobbooksooks:/"
       - "/mnt/unionfs/Media/Podcasts:/podcasts"
-      - "/mnt/unionfs/Media:/media"
+      - "/mnt/unionfs:/media"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

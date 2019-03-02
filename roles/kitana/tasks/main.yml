@@ -3,6 +3,7 @@
     name: cloudflare
   vars:
     subdomain: kitana
+  when: cloudflare_enabled
 
 - name: Stop and remove any existing container
   docker_container:
@@ -39,4 +40,3 @@
     purge_networks: yes
     restart_policy: always
     state: started
-

@@ -4,6 +4,7 @@
     name: cloudflare
   vars:
     subdomain: bitwarden
+  when: cloudflare_enabled
 
 - name: Stop and remove any existing container
   docker_container:

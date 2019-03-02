@@ -3,6 +3,7 @@
     name: cloudflare
   vars:
     subdomain: lazylibrarian
+  when: cloudflare_enabled
 
 - name: Stop and remove any existing container
   docker_container:

@@ -34,6 +34,8 @@
       - "/mnt/unionfs/Media/Audiobbooksooks:/"
       - "/mnt/unionfs/Media/Podcasts:/podcasts"
       - "/mnt/unionfs:/media"
+      - "/mnt:/mnt"
+      - "/mnt/unionfs/Media:/data"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

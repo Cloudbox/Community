@@ -13,6 +13,8 @@
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
     - /opt/myjdownloader
+    - /opt/myjdownloader/config
+    - /opt/myjdownloader/config/libs
 
 - name: Import 7zip 1509
   copy:

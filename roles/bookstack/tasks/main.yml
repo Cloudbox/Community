@@ -1,4 +1,9 @@
 ---
+- name: Install required packages
+  apt: "name={{item}} state=latest"
+  with_items:
+    - python-pymysql
+
 - name: MariaDB Role
   include_role:
     name: mariadb
@@ -17,9 +22,12 @@
   with_items:
     - bookstack
 
-- name: "Create bookstack database"
-  command: "docker exec mariadb mysql -u root -ppassword321 -e 'create schema bookstackapp;'"
-  ignore_errors: yes
+- name: Create bookstack database
+  mysql_db:
+    name: bookstackapp
+    login_user: root
+    login_password: password321
+    state: present
 
 - name: Create required directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"

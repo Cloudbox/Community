@@ -7,6 +7,7 @@
     name: cloudflare
   vars:
     subdomain: "sonarr{{ rolename }}"
+  when: cloudflare_enabled
 
 - name: Stop and remove any existing container
   docker_container:

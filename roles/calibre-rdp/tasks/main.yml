@@ -3,6 +3,7 @@
     name: cloudflare
   vars:
     subdomain: calibrerdp
+  when: cloudflare_enabled
 
 - name: Create htpasswd
   htpasswd:

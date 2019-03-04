@@ -76,7 +76,7 @@
 - name: "Wait 5 seconds"
   wait_for:
     timeout: 5
-# recurse permissions
+
 - name: "Ensure config folder has the correct permissions"
   file:
     path: "/opt/jellyfin"

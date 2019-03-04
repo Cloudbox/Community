@@ -33,6 +33,7 @@ environment:
     goplaxt
     invoiceninja
     jellyfin
+    jirafeau
     kitana
     lazylibrarian
     logarr

@@ -16,3 +16,6 @@ invoiceninja:
   subdomain: invoiceninja
 wordpress:
   subdomain: wordpress
+jirafeau:
+  domain:
+

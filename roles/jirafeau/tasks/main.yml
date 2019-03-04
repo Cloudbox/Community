@@ -1,0 +1,45 @@
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: jirafeau
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: jirafeau
+    state: absent
+
+- name: Create jirafeau directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}} recurse=yes"
+  with_items:
+    - /opt/jirafeau/www
+    - /opt/jirafeau/data
+ 
+- name: Create and start container
+  docker_container:
+    name: jirafeau
+    image: "jgeusebroek/jirafeau"
+    pull: yes
+    published_ports:
+      - "127.0.0.1:6234:80"
+    env:
+      BACKUP: "yes"
+      UID: "{{uid}}"
+      GID: "{{gid}}"
+      VIRTUAL_HOST: "jirafeau.{{ jirafeau.domain | default(domain,true) }}"
+      VIRTUAL_PORT: 80
+      LETSENCRYPT_HOST: "jirafeau.{{ jirafeau.domain | default(domain,true) }}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/jirafeau/cfg:/cfg:rw"
+      - "/opt/jirafeau/data:/data:rw"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - jirafeau
+    purge_networks: yes
+    restart_policy: always
+    state: started

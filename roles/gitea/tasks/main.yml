@@ -1,0 +1,67 @@
+---
+- name: Install required packages
+  apt: "name={{item}} state=latest"
+  with_items:
+    - python-pymysql
+
+- name: MariaDB Role
+  include_role:
+    name: mariadb
+    
+- name: "sleep for 120 seconds and continue" 
+  wait_for: timeout=120
+
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: "{{ gitea.subdomain|default('git',true) }}"
+
+- name: Stop and remove any existing containers
+  docker_container: "name={{item}} state=absent"
+  with_items:
+    - gitea
+
+- name: Create gitea database
+  mysql_db:
+    name: gitea
+    login_user: root
+    login_password: password321
+    state: present
+
+- name: Create required directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - /opt/gitea
+
+- name: Create and start gitea container
+  docker_container:
+    name: gitea
+    image: "gitea/gitea:latest"
+    pull: yes
+    published_ports:
+      - "3000:3000"
+    env:
+      PUID: "{{uid}}"
+      PGID: "{{gid}}"
+      DB_TYPE: mysql
+      DB_HOST: "mariadb:3306"
+      DB_USER: root
+      DB_PASS: password321
+      DB_DATABASE: gitea
+      VIRTUAL_HOST: "{{ gitea.subdomain|default('git',true) }}.{{domain}}"
+      VIRTUAL_PORT: 3000
+      LETSENCRYPT_HOST: "{{ gitea.subdomain|default('git',true) }}.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/gitea:/data"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - gitea
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

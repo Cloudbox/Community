@@ -16,3 +16,5 @@ invoiceninja:
   subdomain: invoiceninja
 wordpress:
   subdomain: wordpress
+gitea:
+  subdomain: git

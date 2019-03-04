@@ -21,6 +21,7 @@
     - { role: embystats, tags: ['embystats'] }
     - { role: funkwhale, tags: ['funkwhale'] }
     - { role: gazee, tags: ['gazee'] }
+    - { role: gitea, tags: ['gitea'] }
     - { role: goplaxt, tags: ['goplaxt'] }
     - { role: guacamole, tags: ['guacamole'] }
     - { role: invoiceninja, tags: ['invoiceninja'] }

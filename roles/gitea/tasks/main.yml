@@ -16,6 +16,7 @@
     name: cloudflare
   vars:
     subdomain: "{{ gitea.subdomain|default('git',true) }}"
+    when: cloudflare_enabled
 
 - name: Stop and remove any existing containers
   docker_container: "name={{item}} state=absent"
@@ -40,7 +41,7 @@
     image: "gitea/gitea:latest"
     pull: yes
     published_ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
     env:
       PUID: "{{uid}}"
       PGID: "{{gid}}"
@@ -53,6 +54,9 @@
       VIRTUAL_PORT: 3000
       LETSENCRYPT_HOST: "{{ gitea.subdomain|default('git',true) }}.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
+      DISABLE_SSH: true
+      RUN_MODE: prod
+      ROOT_URL: "https://{{ gitea.subdomain|default('git',true) }}.{{domain}}/"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/gitea:/data"

@@ -3,7 +3,7 @@
     name: cloudflare
   vars:
     subdomain: jirafeau
-when: cloudflare_enabled
+  when: cloudflare_enabled
 
 - name: Stop and remove any existing container
   docker_container:

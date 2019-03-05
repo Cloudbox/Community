@@ -12,6 +12,7 @@
     - { role: bazarrx, tags: ['bazarrx'] }
     - { role: beets, tags: ['beets'] }
     - { role: bitwarden, tags: ['bitwarden'] }
+    - { role: booksonic, tags: ['booksonic']}
     - { role: bookstack, tags: ['bookstack'] }
     - { role: calibre-rdp, tags: ['calibre-rdp'] }
     - { role: calibre-rdp, tags: ['calibre-rdp'] }
@@ -26,6 +27,7 @@
     - { role: guacamole, tags: ['guacamole'] }
     - { role: invoiceninja, tags: ['invoiceninja'] }
     - { role: jellyfin, tags: ['jellyfin'] }
+    - { role: jirafeau, tags: ['jirafeau'] }
     - { role: kitana, tags: ['kitana'] }
     - { role: lazylibrarian, tags: ['lazylibrarian'] }
     - { role: logarr, tags: ['logarr'] }

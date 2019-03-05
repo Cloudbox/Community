@@ -4,7 +4,8 @@
     name: cloudflare
   vars:
     subdomain: funkwhale
-    
+  when: cloudflare_enabled
+
 - name: "Stop and remove funkwhale container"
   docker_container:
     name: funkwhale
@@ -60,12 +61,10 @@
     restart_policy: unless-stopped
     state: started
 
-- name: "sleep for 10 seconds and continue" 
+- name: "sleep for 10 seconds and continue"
   wait_for: timeout=10
 
 - name: "Create Admin User"
   command: docker exec -i funkwhale /usr/bin/python3 /app/api/manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('{{user}}', '{{email}}', '{{passwd}}')"
   ignore_errors: yes
   no_log: True
-
-

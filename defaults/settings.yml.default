@@ -18,3 +18,5 @@ wordpress:
   subdomain: wordpress
 gitea:
   subdomain: git
+jirafeau:
+  domain:

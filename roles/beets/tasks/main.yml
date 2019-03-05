@@ -3,6 +3,7 @@
     name: cloudflare
   vars:
     subdomain: beets
+  when: cloudflare_enabled
 
 - name: Create htpasswd
   htpasswd:
@@ -46,7 +47,7 @@
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/beets:/config"
       - "/mnt/unionfs/Media/Music:/music"
-      - "/mnt/local/downloads/music:/downloads"      
+      - "/mnt/local/downloads/music:/downloads"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

@@ -3,6 +3,7 @@
     name: cloudflare
   vars:
     subdomain: jellyfin
+  when: cloudflare_enabled
 
 - name: Stop and remove any existing container
   docker_container:
@@ -13,6 +14,25 @@
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
     - /opt/jellyfin
+    - /opt/jellyfin/config
+    - /opt/jellyfin/config/users
+    - /opt/jellyfin/cache
+    - "{{plex.transcodes}}/5"
+    - "{{plex.transcodes}}/6"
+
+- name: Import dlna config
+  copy:
+    src: "dlna.xml"
+    dest: "/opt/jellyfin/config/dlna.xml"
+    owner: "{{user}}"
+    group: "{{user}}"
+    mode: 0775
+    force: no
+    
+- name: "Check if 'system.xml' exists"
+  stat:
+    path: "/opt/jellyfin/config/system.xml"
+  register: jellyfin_system_xml
     
 - name: "Check if '/dev/dri' exists"
   stat:
@@ -24,22 +44,26 @@
     name: jellyfin
     image: "jellyfin/jellyfin:latest"
     pull: yes
-    published_ports:
-      - "127.0.0.1:9096:8096"
+
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/mnt:/mnt:rw"
       - "/mnt/strm:/strm:rw"
-      - "{{plex.transcodes}}:/transcode"
-      - "/opt/jellyfin/config:/config:rw"
+      - "{{plex.transcodes}}/5:/transcode"
+      - "{{plex.transcodes}}/6:/transcodes"
+      - "/opt/jellyfin:/config:rw"
       - "/var/run/docker.sock:/var/run/docker.sock"
-    devices: "{{ '/dev/dri:/dev/dri' if dev_dri.stat.exists == True | default(false) else omit }}"
+      - "/mnt/unionfs/Media:/media"
+      - "/opt/jellyfin/cache:/cache:rw"
+    devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"
     user: "{{uid}}:{{gid}}"
     env:
       VIRTUAL_HOST: "jellyfin.{{domain}}"
       VIRTUAL_PORT: 8096
       LETSENCRYPT_HOST: "jellyfin.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
+      NVIDIA_DRIVER_CAPABILITIES: "{{ 'compute,video,utility' if gpu.nvidia | default(false) else omit }}"
+      NVIDIA_VISIBLE_DEVICES: "{{ 'all' if gpu.nvidia | default(false) else omit }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
@@ -49,3 +73,23 @@
     purge_networks: yes
     restart_policy: always
     state: started
+# we need this here because sometimes after a restore, docker will set this transcodes folder to root, dont ask why, but it does...
+- name: "Wait 5 seconds"
+  wait_for:
+    timeout: 5
+
+- name: "Ensure config folder has the correct permissions"
+  file:
+    path: "/opt/jellyfin"
+    owner: "{{user}}"
+    group: "{{user}}"
+    mode: 0775
+    recurse: yes
+    
+- name: Settings Tasks
+  include_tasks: "jellyfin_settings.yml"
+  when: not (
+        (jellyfin_system_xml.exists)
+        or
+        (continuous_integration)
+    )

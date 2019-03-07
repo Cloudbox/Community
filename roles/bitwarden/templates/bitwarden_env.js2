@@ -1,0 +1,89 @@
+## Bitwarden_RS Configuration File
+## Uncomment any of the following lines to change the defaults
+
+## Main data folder
+# DATA_FOLDER=data
+
+## Individual folders, these override %DATA_FOLDER%
+# DATABASE_URL=data/db.sqlite3
+# RSA_KEY_FILENAME=data/rsa_key
+# ICON_CACHE_FOLDER=data/icon_cache
+# ATTACHMENTS_FOLDER=data/attachments
+
+## Cache time-to-live for successfully obtained icons, in seconds (0 is "forever")
+# ICON_CACHE_TTL=2592000
+## Cache time-to-live for icons which weren't available, in seconds (0 is "forever")
+# ICON_CACHE_NEGTTL=259200
+
+## Web vault settings
+# WEB_VAULT_FOLDER=web-vault/
+# WEB_VAULT_ENABLED=true
+
+## Controls the WebSocket server address and port
+# WEBSOCKET_ADDRESS=0.0.0.0
+# WEBSOCKET_PORT=3012
+# WEBSOCKET_ENABLED=true
+
+## Enable extended logging
+## This shows timestamps and allows logging to file and to syslog
+### To enable logging to file, use the LOG_FILE env variable
+### To enable syslog, you need to compile with `cargo build --features=enable_syslog'
+# EXTENDED_LOGGING=true
+
+## Logging to file
+## This requires extended logging
+## It's recommended to also set 'ROCKET_CLI_COLORS=off'
+# LOG_FILE=/path/to/log
+
+## Use a local favicon extractor
+## Set to false to use bitwarden's official icon servers
+## Set to true to use the local version, which is not as smart,
+##   but it doesn't send the cipher domains to bitwarden's servers
+# LOCAL_ICON_EXTRACTOR=false
+
+## Controls if new users can register
+SIGNUPS_ALLOWED=true
+
+## Token for the admin interface, preferably use a long random string
+## One option is to use 'openssl rand -base64 48'
+## If not set, the admin panel is disabled
+ADMIN_TOKEN={{admin_token.stdout}}
+
+## Invitations org admins to invite users, even when signups are disabled
+INVITATIONS_ALLOWED=true
+
+## Controls the PBBKDF password iterations to apply on the server
+## The change only applies when the password is changed
+# PASSWORD_ITERATIONS=100000
+
+## Whether password hint should be sent into the error response when the client request it
+# SHOW_PASSWORD_HINT=true
+
+## Domain settings
+## The domain must match the address from where you access the server
+## Unless you are using U2F, or having problems with attachments not downloading, there is no need to change this
+## For U2F to work, the server must use HTTPS, you can use Let's Encrypt for free certs
+DOMAIN=https://bitwarden.{{domain}}
+
+## Yubico (Yubikey) Settings
+## Set your Client ID and Secret Key for Yubikey OTP
+## You can generate it here: https://upgrade.yubico.com/getapikey/
+## You can optionally specify a custom OTP server
+# YUBICO_CLIENT_ID=11111
+# YUBICO_SECRET_KEY=AAAAAAAAAAAAAAAAAAAAAAAA
+# YUBICO_SERVER=http://yourdomain.com/wsapi/2.0/verify
+
+## Rocket specific settings, check Rocket documentation to learn more
+# ROCKET_ENV=staging
+# ROCKET_ADDRESS=0.0.0.0 # Enable this to test mobile app
+# ROCKET_PORT=8000
+# ROCKET_TLS={certs="/path/to/certs.pem",key="/path/to/key.pem"}
+
+## Mail specific settings, set SMTP_HOST and SMTP_FROM to enable the mail service.
+## Note: if SMTP_USERNAME is specified, SMTP_PASSWORD is mandatory
+# SMTP_HOST=smtp.domain.tld
+# SMTP_FROM=bitwarden-rs@domain.tld
+# SMTP_PORT=587
+# SMTP_SSL=true
+# SMTP_USERNAME=username
+# SMTP_PASSWORD=password

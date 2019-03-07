@@ -3,6 +3,7 @@
     name: cloudflare
   vars:
     subdomain: deluge
+  when: cloudflare_enabled
 
 - name: Stop and remove any existing container
   docker_container:
@@ -22,7 +23,6 @@
     - "{{downloads.torrents}}/deluge/completed"
     - "{{downloads.torrents}}/deluge/incoming"
     - "{{downloads.torrents}}/deluge/watched"
-  when: (torrents_downloads_path is defined)|default(false)
 
 - name: Set default_volumes variable
   set_fact:

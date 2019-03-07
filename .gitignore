@@ -1,9 +1,17 @@
 # MacOS
 .DS_Store
 
+# VSCode
+.vscode/sftp.json
+
 # Ansible
 /cloudbox.retry
 
 # Community
 /ansible.cfg
 /settings.yml
+
+=======
+/telly.yml
+
+#

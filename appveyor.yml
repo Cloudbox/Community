@@ -18,39 +18,65 @@ build: off
 environment:
   CLOUDBOX_PATH: "/home/appveyor/cloudbox"
   COMMUNITY_PATH: "/home/appveyor/projects/community"
-
+  TAGS: >
+    airsonic
+    bazarrx
+    beets
+    bitwarden
+    bookstack
+    calibre-rdp
+    calibre-web
+    deluge
+    embystats
+    funkwhale
+    gazee
+    goplaxt
+    invoiceninja
+    jellyfin
+    jirafeau
+    kitana
+    lazylibrarian
+    logarr
+    mediabutler
+    mellow
+    monitorr
+    myjdownloader
+    mylar
+    qbittorrent
+    radarrx
+    sonarrx
+    subsonic
+    wordpress
+    xteve
+    
 init:
-  - sh: curl -s https://cloudbox.works/scripts/dep.sh | sudo -H sh
-  - sh: curl -s https://cloudbox.works/scripts/repo.sh | bash
+  - sh: curl -s https://cloudbox.works/scripts/dep.sh | sudo -H sh &> /dev/null
+  - sh: curl -s https://cloudbox.works/scripts/repo.sh | bash &> /dev/null
 
 install:
-  - sh: cd ${COMMUNITY_PATH}
-  - sh: cp -n ansible.cfg.default ansible.cfg
-  - sh: cp -n settings.yml.sample settings.yml
-  - sh: sudo ansible-playbook community.yml --syntax-check
-  - sh: sudo ansible-playbook "${CLOUDBOX_PATH}/cloudbox.yml" --tags core --skip-tags settings --extra-vars '{"continuous_integration":true}'
-  - sh: sudo ansible-playbook community.yml --tags airsonic
-  - sh: sudo ansible-playbook community.yml --tags calibre-rdp
-  - sh: sudo ansible-playbook community.yml --tags calibre-web
-  - sh: sudo ansible-playbook community.yml --tags lazylibrarian
-  - sh: sudo ansible-playbook community.yml --tags monitorr
-  - sh: sudo ansible-playbook community.yml --tags logarr
-  - sh: sudo ansible-playbook community.yml --tags radarr1080
-  - sh: sudo ansible-playbook community.yml --tags sonarr1080
-  - sh: sudo ansible-playbook community.yml --tags sonarrv3
-  - sh: sudo ansible-playbook community.yml --tags mylar
-  - sh: sudo ansible-playbook community.yml --tags deluge
-  - sh: sudo ansible-playbook community.yml --tags mellow
-  - sh: sudo ansible-playbook community.yml --tags telly2
-  - sh: sudo ansible-playbook community.yml --tags beets
-  - sh: sudo ansible-playbook community.yml --tags sonarrx
-  - sh: sudo ansible-playbook community.yml --tags bitwarden
-  - sh: sudo ansible-playbook community.yml --tags kitana
-  - sh: sudo ansible-playbook community.yml --tags qbittorrent
-  - sh: sudo ansible-playbook community.yml --tags radarrx
-  - sh: sudo ansible-playbook community.yml --tags embystats
-  - sh: sudo ansible-playbook community.yml --tags myjdownloader
-  - sh: sudo ansible-playbook community.yml --tags mediabutler
-  - sh: sudo ansible-playbook community.yml --tags jellyfin
-  - sh: sudo ansible-playbook community.yml --tags gazee
-  - sh: sudo ansible-playbook community.yml --tags goplaxt
+  - sh: |
+      cd ${COMMUNITY_PATH} && \
+      cp -n defaults/ansible.cfg.default ansible.cfg && \
+      cp -n defaults/settings.yml.default settings.yml && \
+      sudo ansible-playbook community.yml --syntax-check
+  - sh: |
+      cd ${CLOUDBOX_PATH} && \
+      rm settings.yml accounts.yml adv_settings.yml && \
+      git checkout develop &> /dev/null && \
+      sudo ansible-playbook cloudbox.yml --tags core \
+        --skip-tags settings \
+        --extra-vars '{"continuous_integration":true}' \
+        &> /dev/null
+  - sh: |
+      cd ${COMMUNITY_PATH}
+      for TAG in $TAGS
+      do
+          echo ""
+          echo -----------------
+          echo ""
+          echo Running Tag: $TAG
+          sudo ansible-playbook community.yml --skip-tags settings --tags $TAG
+          docker stop $TAG &> /dev/null || true
+          docker rm $TAG &> /dev/null || true
+      done
+  

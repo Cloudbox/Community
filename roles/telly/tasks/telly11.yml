@@ -1,0 +1,74 @@
+#########################################################################
+# Title:         Cloudbox Community: Telly 1.1 Role                     #
+# Author(s):     EnorMOZ, desimaniac, chazlarson                        #
+# URL:           https://github.com/Cloudbox/Community                  #
+# Docker Image:  tellytv/telly:dev-ffmpeg                               #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Version Info
+  debug:
+    msg: "Installing Telly version: {{telly.version}}"
+    
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: telly
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: telly
+    state: absent
+
+- name: Create telly directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - "/opt/telly"
+
+- name: Check config exists
+  stat:
+    path: "/opt/telly/telly.config.json"
+  register: telly_config
+
+- name: Do following tasks when config does not exist
+  block:
+
+  - name: Import default config
+    template:
+      src: "telly11.config.json.js2"
+      dest: "/opt/telly/telly.config.json"
+      owner: "{{user}}"
+      group: "{{user}}"
+      mode: 0775
+      force: yes
+
+  when: not telly_config.stat.exists
+
+- name: Create and start container
+  docker_container:
+    name: telly
+    image: "tellytv/telly:dev-ffmpeg"
+    pull: yes
+    user: "{{uid}}:{{gid}}"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/telly/:/etc/telly/"
+    env:
+      VIRTUAL_HOST: "telly.{{domain}}"
+      VIRTUAL_PORT: 6077
+      LETSENCRYPT_HOST: "telly.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - telly
+    purge_networks: yes
+    restart_policy: always
+    state: started

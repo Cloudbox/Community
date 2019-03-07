@@ -7,6 +7,7 @@
     name: cloudflare
   vars:
     subdomain: "sonarr{{ rolename }}"
+  when: cloudflare_enabled
 
 - name: Stop and remove any existing container
   docker_container:
@@ -21,7 +22,6 @@
 - name: Set default_volumes variable
   set_fact:
     default_volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/sonarr{{ rolename }}:/config"
       - "/opt/scripts:/scripts"
       - "/mnt:/mnt"
@@ -44,7 +44,8 @@
       VIRTUAL_PORT: 8989
       LETSENCRYPT_HOST: "sonarr{{ rolename }}.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
-    volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) + old_nzbget_downloads_path|default([]) + old_rutorrent_downloads_path|default([]) }}"
+      TZ: "{{ tz }}"
+    volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

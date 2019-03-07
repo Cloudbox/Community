@@ -6,19 +6,20 @@ Community Repository for Unofficial Cloudbox Add-ons
 
 - [Cloudbox](https://github.com/Cloudbox/Cloudbox/)
 
-
-## Clone Repo
+## Clone Community Repository
 
 ```bash
-git clone https://github.com/Cloudbox/Community.git ~/community && cd ~/community && cp -n defaults/ansible.cfg.default ansible.cfg && cp -n defaults/settings.yml.default settings.yml && cp -n defaults/telly.yml.default telly.yml
+curl -s https://cloudbox.works/scripts/cmrepo.sh | bash >/dev/null 2>&1; cd ~/community
 ```
 
-For directly adding the develop branch:
+## Switch to develop branch (optional)
+
 ```bash
-git clone -b develop https://github.com/Cloudbox/Community.git ~/community && cd ~/community && cp -n defaults/ansible.cfg.default ansible.cfg && cp -n defaults/settings.yml.default settings.yml && cp -n defaults/telly.yml.default telly.yml
+git checkout develop
 ```
 
-## Password File
+
+## Setup Password File (if required)
 
 If you have setup an Ansible vault password file for Cloudbox, you will need to add its location to the Community Repo folder's `ansible.cfg` file.
 
@@ -60,7 +61,9 @@ See [wiki](https://github.com/Cloudbox/Community/wiki) for setup guides.
 
 
 ## Roles
+Please note some roles are only available in develop.
 
+- ***[**arrX](../../wiki/***arrX-(Sonarr-Radarr-Bazarr))** - Create multiple Sonarr/Radarr/Bazarr roles
 - **airsonic**
 - **beets**
 - **[bitwarden](../../wiki/Bitwarden)** - [Bitwarden](https://bitwarden.com/) self-hosted server.
@@ -90,4 +93,5 @@ See [wiki](https://github.com/Cloudbox/Community/wiki) for setup guides.
 - **[sonarrX](../../wiki/SonarrX)** - Experimental Sonarr v3 role to create multiple roles
 - **subsonic**
 - **telly** - Set version in telly.yml. Choices are `1.0`, `1.1`, and `1.5`. These can be quoted or non-quoted. Includes Telly 1.0 (Needs settings from `telly10` section in `telly.yml`), 1.1 dev branch (Needs settings from the `telly11` section  in  `telly.yml`) and 1.5 unsupported alpha build (does not need any settings from `telly.yml`).
+- **[Wordpress](../../wiki/Wordpress)** - Wordpress deployment
 - **xteve**

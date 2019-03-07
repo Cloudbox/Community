@@ -11,8 +11,8 @@
     name: guacamole
     state: absent
 
-- name: Create opt directory
-  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+- name: Create guacamole directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}} recurse=yes"
   with_items:
     - /opt/guacamole
     - /opt/guacamole/config
@@ -38,3 +38,12 @@
           - guacamole
     restart_policy: always
     state: started
+
+- name: "Wait for 30 seconds"
+  wait_for:
+    timeout: 30
+
+- name: Reset guacamole directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}} recurse=yes"
+  with_items:
+    - /opt/guacamole

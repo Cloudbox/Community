@@ -39,7 +39,6 @@
       BACKUP: "no"
       PUID: "{{uid}}"
       PGID: "{{gid}}"
-      MONO_TLS_PROVIDER: legacy
       VIRTUAL_HOST: "sonarr{{ rolename }}.{{domain}}"
       VIRTUAL_PORT: 8989
       LETSENCRYPT_HOST: "sonarr{{ rolename }}.{{domain}}"

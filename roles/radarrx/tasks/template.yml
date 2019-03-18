@@ -39,7 +39,6 @@
       BACKUP: "no"
       PUID: "{{uid}}"
       PGID: "{{gid}}"
-      MONO_TLS_PROVIDER: legacy
       VIRTUAL_HOST: "radarr{{ rolename }}.{{domain}}"
       VIRTUAL_PORT: 7878
       LETSENCRYPT_HOST: "radarr{{ rolename }}.{{domain}}"

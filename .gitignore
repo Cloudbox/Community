@@ -10,6 +10,7 @@
 # Community
 /ansible.cfg
 /settings.yml
+/*.log
 
 =======
 /telly.yml

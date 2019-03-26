@@ -47,7 +47,7 @@ SIGNUPS_ALLOWED=true
 ## Token for the admin interface, preferably use a long random string
 ## One option is to use 'openssl rand -base64 48'
 ## If not set, the admin panel is disabled
-ADMIN_TOKEN={{admin_token.stdout}}
+ADMIN_TOKEN={{ admin_token.stdout }}
 
 ## Invitations org admins to invite users, even when signups are disabled
 INVITATIONS_ALLOWED=true
@@ -63,7 +63,7 @@ INVITATIONS_ALLOWED=true
 ## The domain must match the address from where you access the server
 ## Unless you are using U2F, or having problems with attachments not downloading, there is no need to change this
 ## For U2F to work, the server must use HTTPS, you can use Let's Encrypt for free certs
-DOMAIN=https://bitwarden.{{domain}}
+DOMAIN=https://bitwarden.{{ domain }}
 
 ## Yubico (Yubikey) Settings
 ## Set your Client ID and Secret Key for Yubikey OTP

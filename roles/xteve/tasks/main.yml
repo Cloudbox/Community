@@ -11,7 +11,7 @@
     state: absent
 
 - name: Create xteve directory
-  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
   with_items:
     - /opt/xteve
     - /opt/xteve/tmp
@@ -24,12 +24,12 @@
     published_ports:
       - "0.0.0.0:34400:34400"
     env:
-      PUID: "{{uid}}"
-      PGID: "{{gid}}"
-      VIRTUAL_HOST: "xteve.{{domain}}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "xteve.{{ domain }}"
       VIRTUAL_PORT: 34400
-      LETSENCRYPT_HOST: "xteve.{{domain}}"
-      LETSENCRYPT_EMAIL: "{{email}}"
+      LETSENCRYPT_HOST: "xteve.{{ domain }}"
+      LETSENCRYPT_EMAIL: "{{ email }}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/xteve:/root/xteve"

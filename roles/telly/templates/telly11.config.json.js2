@@ -11,7 +11,7 @@
     "SSDP": true
   },
   "IPTV": {
-    "Streams": {{telly11.streams}},
+    "Streams": {{ telly11.streams }},
     "Starting-Channel": 10000,
     "XMLTV-Channels": true
   },
@@ -25,11 +25,11 @@
   },
   "Source": [
     {
-      "Name": "{{telly11.provider_name}}",
+      "Name": "{{ telly11.provider_name }}",
       "Provider": "Custom",
-      "M3U": "{{telly11.m3u_url}}",
-      "EPG": "{{telly11.epg_url}}",
-      "Filter": "{{telly11.filter}}",
+      "M3U": "{{ telly11.m3u_url }}",
+      "EPG": "{{ telly11.epg_url }}",
+      "Filter": "{{ telly11.filter }}",
       "FilterKey": "group-title",
       "FilterRaw": false,
       "Sort": "group-title"

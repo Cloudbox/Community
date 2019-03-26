@@ -11,7 +11,7 @@
 ---
 - name: Version Info
   debug:
-    msg: "Installing Telly version: {{telly.version}}"
+    msg: "Installing Telly version: {{ telly.version }}"
 
 - name: Stop and remove any existing container
   docker_container:
@@ -19,7 +19,7 @@
     state: absent
 
 - name: Create telly directories
-  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
   with_items:
     - "/opt/telly"
 
@@ -32,8 +32,8 @@
     - "/etc/localtime:/etc/localtime:ro"
     - "/opt/telly:/opt/telly"
     env:
-      PUID: "{{uid}}"
-      PGID: "{{gid}}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
       TELLY_WEB_BASE_ADDRESS: "telly:6077"
       TELLY_FILTER_REGEX_MODE: "{{ telly10.TELLY_FILTER_REGEX_MODE | default(false) }}"
       TELLY_FILTER_REGEX: "{{ telly10.TELLY_FILTER_REGEX | default('.*') }}"

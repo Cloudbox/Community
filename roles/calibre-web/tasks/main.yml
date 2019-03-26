@@ -1,3 +1,14 @@
+#########################################################################
+# Title:            Community: Calibre-Web Role                         #
+# Author(s):        herp (Superduper09), desimaniac                     #
+# URL:              https://github.com/cloudbox/community               #
+# Docker Image(s):  linuxserver/calibre-web                             #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
 - name: "Setting CloudFlare DNS Record"
   include_role:
     name: cloudflare
@@ -10,26 +21,13 @@
     name: calibre-web
     state: absent
 
-- name: Delete caliblur config
-  file:
-    path: "/opt/nginx-proxy/vhost.d/books.{{domain}}_location"
-    state: absent
-  when: not (calibreweb.caliblur | default(true,true))
-
 - name: Create calibre directories
-  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
   with_items:
    - /opt/calibre-web
 
-- name: Import caliblur config
-  copy:
-    src: "caliblur-nginx-conf"
-    dest: "/opt/nginx-proxy/vhost.d/books.{{domain}}_location"
-    owner: "{{user}}"
-    group: "{{user}}"
-    mode: 0775
-    force: yes
-  when: (calibreweb.caliblur | default(true,true))
+- name: caliblur Tasks
+  import_tasks: "caliblur.yml"
 
 - name: Create and start container
   docker_container:
@@ -39,12 +37,12 @@
     published_ports:
       - "127.0.0.1:8083:8083"
     env:
-      PUID: "{{uid}}"
-      GUID: "{{gid}}"
-      VIRTUAL_HOST: "books.{{domain}}"
+      PUID: "{{ uid }}"
+      GUID: "{{ gid }}"
+      VIRTUAL_HOST: "books.{{ domain }}"
       VIRTUAL_PORT: 8083
-      LETSENCRYPT_HOST: "books.{{domain}}"
-      LETSENCRYPT_EMAIL: "{{email}}"
+      LETSENCRYPT_HOST: "books.{{ domain }}"
+      LETSENCRYPT_EMAIL: "{{ email }}"
       USE_CONFIG_DIR: true
     volumes:
       - "/etc/localtime:/etc/localtime:ro"

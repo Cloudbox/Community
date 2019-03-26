@@ -40,7 +40,7 @@
 
   - name: Import default config
     template:
-      src: "telly11.config.json.js2"
+      src: "telly11.config.json.j2"
       dest: "/opt/telly/telly.config.json"
       owner: "{{ user }}"
       group: "{{ user }}"

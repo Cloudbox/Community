@@ -28,7 +28,7 @@
 
 - name: "Import env file if it doesnt exist"
   template:
-    src: bitwarden_env.js2
+    src: bitwarden_env.j2
     dest: /opt/bitwarden/env
     force: yes
     owner: "{{ user }}"

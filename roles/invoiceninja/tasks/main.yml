@@ -35,7 +35,7 @@
 
 - name: "Import env file if it doesnt exist"
   template:
-    src: invoiceninja_env.js2
+    src: invoiceninja_env.j2
     dest: /opt/invoiceninja/env
     force: yes
     owner: "{{ user }}"

@@ -24,7 +24,7 @@
 
 - name: "Import env file if it doesnt exist"
   template:
-    src: funkwhale_env.js2
+    src: funkwhale_env.j2
     dest: /opt/funkwhale/env
     force: yes
     owner: "{{ user }}"

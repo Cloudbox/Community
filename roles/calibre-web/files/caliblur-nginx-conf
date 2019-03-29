@@ -1,4 +1,0 @@
-proxy_set_header Accept-Encoding "";
-sub_filter '</body>' '<script language="javascript" src="https://rawgit.com/leram84/layer.Cake/master/caliBlur/caliBlur.js"></script></body>';
-sub_filter '</head>' ' <link rel="preload" href="https://rawgit.com/leram84/layer.Cake/master/caliBlur/caliBlur.min.css" as="style"><link rel="stylesheet" type="text/css" href="https://rawgit.com/leram84/layer.Cake/master/caliBlur/caliBlur.min.css"><link rel="preload" href="https://rawgit.com/leram84/layer.Cake/master/caliBlur/caliBlur.js" as="script"></head>';
-sub_filter_once on;

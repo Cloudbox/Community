@@ -20,6 +20,7 @@ environment:
   COMMUNITY_PATH: "/home/appveyor/projects/community"
   TAGS: >
     airsonic
+    alltube
     bazarrx
     beets
     bitwarden

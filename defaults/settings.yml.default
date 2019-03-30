@@ -20,3 +20,5 @@ gitea:
   subdomain: git
 jirafeau:
   domain:
+alltube:
+  domain:

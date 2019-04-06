@@ -11,17 +11,17 @@
     state: absent
 
 - name: Create alltube directories
-  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
   with_items:
     - /opt/alltube
 
 - name: Download alltube config example
   get_url:
     url: "https://raw.githubusercontent.com/Rudloff/alltube/master/config/config.example.yml"
-    dest: "/opt/alltube/config.example.yml"    
-    owner: "{{user}}"    
-    group: "{{user}}"    
-    mode: 0775    
+    dest: "/opt/alltube/config.example.yml"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0775
     force: yes
 
 - name: Create and start container
@@ -37,7 +37,7 @@
       VIRTUAL_HOST: "alltube.{{ alltube.domain | default(domain,true) }}"
       VIRTUAL_PORT: 80
       LETSENCRYPT_HOST: "alltube.{{ alltube.domain | default(domain,true) }}"
-      LETSENCRYPT_EMAIL: "{{email}}"
+      LETSENCRYPT_EMAIL: "{{ email }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

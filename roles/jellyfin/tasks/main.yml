@@ -11,21 +11,21 @@
     state: absent
 
 - name: Create jellyfin directories
-  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
   with_items:
     - /opt/jellyfin
     - /opt/jellyfin/config
     - /opt/jellyfin/config/users
     - /opt/jellyfin/cache
-    - "{{plex.transcodes}}/5"
-    - "{{plex.transcodes}}/6"
+    - "{{ plex.transcodes }}/5"
+    - "{{ plex.transcodes }}/6"
 
 - name: Import dlna config
   copy:
     src: "dlna.xml"
     dest: "/opt/jellyfin/config/dlna.xml"
-    owner: "{{user}}"
-    group: "{{user}}"
+    owner: "{{ user }}"
+    group: "{{ user }}"
     mode: 0775
     force: no
     
@@ -49,19 +49,19 @@
       - "/etc/localtime:/etc/localtime:ro"
       - "/mnt:/mnt:rw"
       - "/mnt/strm:/strm:rw"
-      - "{{plex.transcodes}}/5:/transcode"
-      - "{{plex.transcodes}}/6:/transcodes"
+      - "{{ plex.transcodes }}/5:/transcode"
+      - "{{ plex.transcodes }}/6:/transcodes"
       - "/opt/jellyfin:/config:rw"
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "/mnt/unionfs/Media:/media"
       - "/opt/jellyfin/cache:/cache:rw"
     devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"
-    user: "{{uid}}:{{gid}}"
+    user: "{{ uid }}:{{ gid }}"
     env:
-      VIRTUAL_HOST: "jellyfin.{{domain}}"
+      VIRTUAL_HOST: "jellyfin.{{ domain }}"
       VIRTUAL_PORT: 8096
-      LETSENCRYPT_HOST: "jellyfin.{{domain}}"
-      LETSENCRYPT_EMAIL: "{{email}}"
+      LETSENCRYPT_HOST: "jellyfin.{{ domain }}"
+      LETSENCRYPT_EMAIL: "{{ email }}"
       NVIDIA_DRIVER_CAPABILITIES: "{{ 'compute,video,utility' if gpu.nvidia | default(false) else omit }}"
       NVIDIA_VISIBLE_DEVICES: "{{ 'all' if gpu.nvidia | default(false) else omit }}"
     labels:
@@ -81,8 +81,8 @@
 - name: "Ensure config folder has the correct permissions"
   file:
     path: "/opt/jellyfin"
-    owner: "{{user}}"
-    group: "{{user}}"
+    owner: "{{ user }}"
+    group: "{{ user }}"
     mode: 0775
     recurse: yes
     

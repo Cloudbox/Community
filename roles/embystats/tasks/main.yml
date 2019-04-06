@@ -11,7 +11,7 @@
     state: absent
 
 - name: Create embystats directories
-  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
   with_items:
     - /opt/embystats
 
@@ -28,10 +28,10 @@
       - "/opt/embystats:/config"
       - "/var/run/docker.sock:/var/run/docker.sock"
     env:
-      VIRTUAL_HOST: "embystats.{{domain}}"
+      VIRTUAL_HOST: "embystats.{{ domain }}"
       VIRTUAL_PORT: 80
-      LETSENCRYPT_HOST: "embystats.{{domain}}"
-      LETSENCRYPT_EMAIL: "{{email}}"
+      LETSENCRYPT_HOST: "embystats.{{ domain }}"
+      LETSENCRYPT_EMAIL: "{{ email }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

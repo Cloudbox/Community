@@ -12,7 +12,7 @@
     state: absent
 
 - name: Create guacamole directories
-  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}} recurse=yes"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }} recurse=yes"
   with_items:
     - /opt/guacamole
     - /opt/guacamole/config
@@ -23,10 +23,10 @@
     image: oznu/guacamole:latest
     pull: yes
     env:
-      VIRTUAL_HOST: "guacamole.{{domain}}"
+      VIRTUAL_HOST: "guacamole.{{ domain }}"
       VIRTUAL_PORT: 8080
-      LETSENCRYPT_HOST: "guacamole.{{domain}}"
-      LETSENCRYPT_EMAIL: "{{email}}"
+      LETSENCRYPT_HOST: "guacamole.{{ domain }}"
+      LETSENCRYPT_EMAIL: "{{ email }}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/guacamole/config:/config"
@@ -44,6 +44,6 @@
     timeout: 30
 
 - name: Reset guacamole directories
-  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}} recurse=yes"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }} recurse=yes"
   with_items:
     - /opt/guacamole

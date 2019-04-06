@@ -11,7 +11,7 @@
 ---
 - name: Version Info
   debug:
-    msg: "Installing Telly version: {{telly.version}}"
+    msg: "Installing Telly version: {{ telly.version }}"
     
 - name: "Set DNS Record on CloudFlare"
   include_role:
@@ -26,7 +26,7 @@
     state: absent
 
 - name: Create telly directories
-  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
   with_items:
     - "/opt/telly"
 
@@ -40,10 +40,10 @@
 
   - name: Import default config
     template:
-      src: "telly11.config.json.js2"
+      src: "telly11.config.json.j2"
       dest: "/opt/telly/telly.config.json"
-      owner: "{{user}}"
-      group: "{{user}}"
+      owner: "{{ user }}"
+      group: "{{ user }}"
       mode: 0775
       force: yes
 
@@ -54,15 +54,15 @@
     name: telly
     image: "tellytv/telly:dev-ffmpeg"
     pull: yes
-    user: "{{uid}}:{{gid}}"
+    user: "{{ uid }}:{{ gid }}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/telly/:/etc/telly/"
     env:
-      VIRTUAL_HOST: "telly.{{domain}}"
+      VIRTUAL_HOST: "telly.{{ domain }}"
       VIRTUAL_PORT: 6077
-      LETSENCRYPT_HOST: "telly.{{domain}}"
-      LETSENCRYPT_EMAIL: "{{email}}"
+      LETSENCRYPT_HOST: "telly.{{ domain }}"
+      LETSENCRYPT_EMAIL: "{{ email }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

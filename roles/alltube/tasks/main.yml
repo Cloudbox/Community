@@ -2,41 +2,48 @@
   include_role:
     name: cloudflare
   vars:
-    subdomain: kitana
+    subdomain: alltube
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container
   docker_container:
-    name: kitana
+    name: alltube
     state: absent
 
-- name: Create kitana directories
+- name: Create alltube directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
   with_items:
-    - /opt/kitana
+    - /opt/alltube
+
+- name: Download alltube config example
+  get_url:
+    url: "https://raw.githubusercontent.com/Rudloff/alltube/master/config/config.example.yml"
+    dest: "/opt/alltube/config.example.yml"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0775
+    force: yes
 
 - name: Create and start container
   docker_container:
-    name: kitana
-    image: "pannal/kitana"
+    name: alltube
+    image: "rudloff/alltube:latest"
     pull: yes
-    published_ports:
-      - "127.0.0.1:31337:31337"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/kitana:/data"
+      - "/opt/alltube:/var/www/html/config:rw"
       - "/var/run/docker.sock:/var/run/docker.sock"
     env:
-      VIRTUAL_HOST: "kitana.{{ domain }}"
-      VIRTUAL_PORT: 31337
-      LETSENCRYPT_HOST: "kitana.{{ domain }}"
+      VIRTUAL_HOST: "alltube.{{ alltube.domain | default(domain,true) }}"
+      VIRTUAL_PORT: 80
+      LETSENCRYPT_HOST: "alltube.{{ alltube.domain | default(domain,true) }}"
       LETSENCRYPT_EMAIL: "{{ email }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
       - name: cloudbox
         aliases:
-          - kitana
+          - alltube
     purge_networks: yes
     restart_policy: always
     state: started

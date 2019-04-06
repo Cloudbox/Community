@@ -16,7 +16,7 @@
 
 - name: "Get 'community.yml' info."
   stat:
-    path: "{{playbook_dir}}/community.yml"
+    path: "{{ playbook_dir }}/community.yml"
   register: community_yml
 
 - name: "Settings: Ansible Config"

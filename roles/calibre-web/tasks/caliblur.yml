@@ -1,0 +1,34 @@
+#########################################################################
+# Title:            Community: Calibre-Web - Caliblur Task              #
+# Author(s):        desimaniac                                          #
+# URL:              https://github.com/cloudbox/community               #
+# Docker Image(s):  linuxserver/calibre-web                             #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Darkerr | Darkerr theme location block'
+  blockinfile:
+    path: "/opt/nginx-proxy/vhost.d/books.{{ domain }}_location"
+    marker: "### {mark} COMMUNITY - CALIBLUR THEME ###"
+    block: |
+      # hhttps://github.com/leram84/layer.Cake/tree/master/caliBlur
+      proxy_set_header Accept-Encoding "";
+      sub_filter
+      '</body>'
+      '<script language="javascript" src="//rawgit.com/leram84/layer.Cake/master/caliBlur/caliBlur.js"></script>
+      </body>';
+      sub_filter
+      '</head>'
+      '<link rel="preload" href="//rawgit.com/leram84/layer.Cake/master/caliBlur/caliBlur.min.css" as="style">
+      <link rel="stylesheet" type="text/css" href="//rawgit.com/leram84/layer.Cake/master/caliBlur/caliBlur.min.css">
+      <link rel="preload" href="//rawgit.com/leram84/layer.Cake/master/caliBlur/caliBlur.js" as="script">
+      </head>';
+      sub_filter_once on;
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0664
+    create: yes
+    state: "{{ (calibreweb.caliblur | default(false,true)) | ternary('present','absent') }}"

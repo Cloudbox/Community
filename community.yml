@@ -9,6 +9,7 @@
     - { role: pre_tasks }
     - { role: settings, tags: ['always', 'settings'] }
     - { role: airsonic, tags: ['airsonic'] }
+    - { role: alltube, tags: ['alltube'] }
     - { role: bazarrx, tags: ['bazarrx'] }
     - { role: beets, tags: ['beets'] }
     - { role: bitwarden, tags: ['bitwarden'] }

@@ -20,13 +20,14 @@
 - name: Create and start container
   docker_container:
     name: guacamole
-    image: oznu/guacamole:latest
+    image: jasonbean/guacamole:latest
     pull: yes
     env:
       VIRTUAL_HOST: "guacamole.{{ domain }}"
       VIRTUAL_PORT: 8080
       LETSENCRYPT_HOST: "guacamole.{{ domain }}"
       LETSENCRYPT_EMAIL: "{{ email }}"
+      OPT_MYSQL: "Y"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/guacamole/config:/config"

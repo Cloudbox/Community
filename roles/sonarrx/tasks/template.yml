@@ -15,7 +15,7 @@
     state: absent
 
 - name: Create sonarrx directories
-  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
   with_items:
     - "/opt/sonarr{{ rolename }}"
 
@@ -30,20 +30,19 @@
 - name: Create and start container
   docker_container:
     name: "sonarr{{ rolename }}"
-    image: "lsiodev/sonarr-preview"
+    image: "linuxserver/sonarr:preview"
     pull: yes
     published_ports:
       - "127.0.0.1:{{ roleport }}:8989"
     env:
       VERSION: "unstable"
       BACKUP: "no"
-      PUID: "{{uid}}"
-      PGID: "{{gid}}"
-      MONO_TLS_PROVIDER: legacy
-      VIRTUAL_HOST: "sonarr{{ rolename }}.{{domain}}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "sonarr{{ rolename }}.{{ domain }}"
       VIRTUAL_PORT: 8989
-      LETSENCRYPT_HOST: "sonarr{{ rolename }}.{{domain}}"
-      LETSENCRYPT_EMAIL: "{{email}}"
+      LETSENCRYPT_HOST: "sonarr{{ rolename }}.{{ domain }}"
+      LETSENCRYPT_EMAIL: "{{ email }}"
       TZ: "{{ tz }}"
     volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"
     labels:

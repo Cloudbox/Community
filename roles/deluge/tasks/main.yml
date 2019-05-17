@@ -11,18 +11,18 @@
     state: absent
 
 - name: Create deluge directories
-  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
   with_items:
     - /opt/deluge
 
 - name: Create new downloads directories
-  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}} recurse=yes"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }} recurse=yes"
   with_items:
-    - "{{downloads.torrents}}"
-    - "{{downloads.torrents}}/deluge"
-    - "{{downloads.torrents}}/deluge/completed"
-    - "{{downloads.torrents}}/deluge/incoming"
-    - "{{downloads.torrents}}/deluge/watched"
+    - "{{ downloads.torrents }}"
+    - "{{ downloads.torrents }}/deluge"
+    - "{{ downloads.torrents }}/deluge/completed"
+    - "{{ downloads.torrents }}/deluge/incoming"
+    - "{{ downloads.torrents }}/deluge/watched"
 
 - name: Set default_volumes variable
   set_fact:
@@ -42,12 +42,12 @@
       - "58112:58112"
       - "58846:58846"
     env:
-      PUID: "{{uid}}"
-      PGID: "{{gid}}"
-      VIRTUAL_HOST: "deluge.{{domain}}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "deluge.{{ domain }}"
       VIRTUAL_PORT: 8112
-      LETSENCRYPT_HOST: "deluge.{{domain}}"
-      LETSENCRYPT_EMAIL: "{{email}}"
+      LETSENCRYPT_HOST: "deluge.{{ domain }}"
+      LETSENCRYPT_EMAIL: "{{ email }}"
       UMASK_SET: 022
     volumes: "{{ default_volumes + torrents_downloads_path|default([]) }}"
     labels:

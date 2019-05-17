@@ -1,6 +1,6 @@
 ---
 - name: Install required packages
-  apt: "name={{item}} state=latest"
+  apt: "name={{ item }} state=latest"
   with_items:
     - python-pymysql
 
@@ -19,7 +19,7 @@
   when: cloudflare_enabled
 
 - name: Stop and remove any existing containers
-  docker_container: "name={{item}} state=absent"
+  docker_container: "name={{ item }} state=absent"
   with_items:
     - gitea
 
@@ -31,7 +31,7 @@
     state: present
 
 - name: Create required directories
-  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
   with_items:
     - /opt/gitea
 
@@ -43,20 +43,20 @@
     published_ports:
       - "127.0.0.1:3000:3000"
     env:
-      PUID: "{{uid}}"
-      PGID: "{{gid}}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
       DB_TYPE: mysql
       DB_HOST: "mariadb:3306"
       DB_USER: root
       DB_PASS: password321
       DB_DATABASE: gitea
-      VIRTUAL_HOST: "{{ gitea.subdomain|default('git',true) }}.{{domain}}"
+      VIRTUAL_HOST: "{{ gitea.subdomain|default('git',true) }}.{{ domain }}"
       VIRTUAL_PORT: 3000
-      LETSENCRYPT_HOST: "{{ gitea.subdomain|default('git',true) }}.{{domain}}"
-      LETSENCRYPT_EMAIL: "{{email}}"
+      LETSENCRYPT_HOST: "{{ gitea.subdomain|default('git',true) }}.{{ domain }}"
+      LETSENCRYPT_EMAIL: "{{ email }}"
       DISABLE_SSH: true
       RUN_MODE: prod
-      ROOT_URL: "https://{{ gitea.subdomain|default('git',true) }}.{{domain}}/"
+      ROOT_URL: "https://{{ gitea.subdomain|default('git',true) }}.{{ domain }}/"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/gitea:/data"

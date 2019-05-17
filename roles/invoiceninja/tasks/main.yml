@@ -14,12 +14,12 @@
   when: cloudflare_enabled
 
 - name: Stop and remove any existing containers
-  docker_container: "name={{item}} state=absent"
+  docker_container: "name={{ item }} state=absent"
   with_items:
     - invoiceninja
 
 - name: Create required directories
-  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
   with_items:
     - /opt/invoiceninja
     - /opt/invoiceninja/public/logo
@@ -35,11 +35,11 @@
 
 - name: "Import env file if it doesnt exist"
   template:
-    src: invoiceninja_env.js2
+    src: invoiceninja_env.j2
     dest: /opt/invoiceninja/env
     force: yes
-    owner: "{{user}}"
-    group: "{{user}}"
+    owner: "{{ user }}"
+    group: "{{ user }}"
     mode: 0775
   when: not invoiceninja_env.stat.exists
 
@@ -54,17 +54,17 @@
     image: "rxwatcher/docker-invoiceninja-nginx"
     pull: yes
     env:
-      PUID: "{{uid}}"
-      PGID: "{{gid}}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
       DB_HOST: "mariadb:3306"
       DB_USER: root
       DB_PASS: password321
       DB_DATABASE: invoiceninja
-      VIRTUAL_HOST: "{{ invoiceninja.subdomain|default('invoiceninja',true) }}.{{domain}}"
+      VIRTUAL_HOST: "{{ invoiceninja.subdomain|default('invoiceninja',true) }}.{{ domain }}"
       VIRTUAL_PORT: 80
       VIRTUAL_PROTO: http
-      LETSENCRYPT_HOST: "{{ invoiceninja.subdomain|default('invoiceninja',true) }}.{{domain}}"
-      LETSENCRYPT_EMAIL: "{{email}}"
+      LETSENCRYPT_HOST: "{{ invoiceninja.subdomain|default('invoiceninja',true) }}.{{ domain }}"
+      LETSENCRYPT_EMAIL: "{{ email }}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/invoiceninja/public/logo:/var/www/app/public/logo"

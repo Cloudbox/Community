@@ -1,17 +1,17 @@
 # MacOS
 .DS_Store
 
+# Python
+*.pyc
+
 # VSCode
-.vscode/sftp.json
+.vscode/
 
 # Ansible
-/cloudbox.retry
+/*.retry
 
 # Community
 /ansible.cfg
 /settings.yml
-
-=======
 /telly.yml
-
-#
+/*.log

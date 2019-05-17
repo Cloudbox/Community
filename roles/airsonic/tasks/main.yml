@@ -11,7 +11,7 @@
     state: absent
 
 - name: Create airsonic directories
-  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
   with_items:
     - /opt/airsonic
 
@@ -23,12 +23,12 @@
     published_ports:
       - "127.0.0.1:4040:4040"
     env:
-      PUID: "{{uid}}"
-      PGID: "{{gid}}"
-      VIRTUAL_HOST: "airsonic.{{domain}}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "airsonic.{{ domain }}"
       VIRTUAL_PORT: 4040
-      LETSENCRYPT_HOST: "airsonic.{{domain}}"
-      LETSENCRYPT_EMAIL: "{{email}}"
+      LETSENCRYPT_HOST: "airsonic.{{ domain }}"
+      LETSENCRYPT_EMAIL: "{{ email }}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/airsonic:/config"

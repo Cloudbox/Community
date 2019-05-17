@@ -12,7 +12,7 @@
     state: absent
 
 - name: Create opt directory
-  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
   with_items:
     - /opt/bitwarden
 
@@ -28,11 +28,11 @@
 
 - name: "Import env file if it doesnt exist"
   template:
-    src: bitwarden_env.js2
+    src: bitwarden_env.j2
     dest: /opt/bitwarden/env
     force: yes
-    owner: "{{user}}"
-    group: "{{user}}"
+    owner: "{{ user }}"
+    group: "{{ user }}"
     mode: 0775
   when: not bitwarden_env.stat.exists
   
@@ -46,17 +46,17 @@
       - "127.0.0.1:6423:6423"
     env:
       ROCKET_PORT: 6423
-      VIRTUAL_HOST: "bitwarden.{{domain}}"
+      VIRTUAL_HOST: "bitwarden.{{ domain }}"
       VIRTUAL_PORT: 6423
-      LETSENCRYPT_HOST: "bitwarden.{{domain}}"
-      LETSENCRYPT_EMAIL: "{{email}}"
+      LETSENCRYPT_HOST: "bitwarden.{{ domain }}"
+      LETSENCRYPT_EMAIL: "{{ email }}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/bitwarden:/data"
       - "/opt/bitwarden/env:/.env"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
-    user: "{{uid}}:{{gid}}"
+    user: "{{ uid }}:{{ gid }}"
     networks:
       - name: cloudbox
         aliases:

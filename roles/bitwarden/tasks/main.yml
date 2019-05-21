@@ -40,7 +40,7 @@
 - name: Create and start container
   docker_container:
     name: bitwarden
-    image: mprasil/bitwarden:latest
+    image: bitwardenrs/server:latest
     pull: yes
     published_ports:
       - "127.0.0.1:6423:6423"

@@ -14,11 +14,29 @@
   file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
   with_items:
     - /opt/logarr
+    - /opt/logarr/config
+    - /opt/logarr/config/userdata
+
+- name: "Check if config.json file exists"
+  stat:
+    path: "/opt/logarr/config/userdata/config.json
+"
+  register: config_env
+
+- name: "Import config file if it doesnt exist"
+  template:
+    src: config.json.j2
+    dest: /opt/logarr/config/userdata/config.json
+    force: yes
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0775
+  when: not config_env.stat.exists
 
 - name: Create and start container
   docker_container:
     name: logarr
-    image: monitorr/logarr:develop
+    image: monitorr/logarr-alpha:latest
     pull: yes
     env:
       PUID: "{{ uid }}"
@@ -29,9 +47,9 @@
       LETSENCRYPT_EMAIL: "{{ email }}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/logarr:/config"
+      - "/opt/logarr/config:/app"
       - "/opt:/opt"
-      - "/opt/logarr/logs:/var/log/logarrlogs"
+      - "/mnt:/mnt"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

@@ -26,7 +26,7 @@
     state: absent
 
 - name: Create telly directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - "/opt/telly"
     - "/opt/telly/telly.db"
@@ -43,10 +43,10 @@
       - "/opt/telly/telly.db:/telly/"
     env:
       TELLY_LOG_LEVEL: "debug"
-      VIRTUAL_HOST: "telly.{{ domain }}"
+      VIRTUAL_HOST: "telly.{{ user.domain }}"
       VIRTUAL_PORT: 6077
-      LETSENCRYPT_HOST: "telly.{{ domain }}"
-      LETSENCRYPT_EMAIL: "{{ email }}"
+      LETSENCRYPT_HOST: "telly.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

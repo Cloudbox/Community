@@ -31,7 +31,7 @@
     state: present
 
 - name: Create required directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/gitea
 
@@ -50,13 +50,13 @@
       DB_USER: root
       DB_PASS: password321
       DB_DATABASE: gitea
-      VIRTUAL_HOST: "{{ gitea.subdomain|default('git',true) }}.{{ domain }}"
+      VIRTUAL_HOST: "{{ gitea.subdomain|default('git',true) }}.{{ user.domain }}"
       VIRTUAL_PORT: 3000
-      LETSENCRYPT_HOST: "{{ gitea.subdomain|default('git',true) }}.{{ domain }}"
-      LETSENCRYPT_EMAIL: "{{ email }}"
+      LETSENCRYPT_HOST: "{{ gitea.subdomain|default('git',true) }}.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
       DISABLE_SSH: true
       RUN_MODE: prod
-      ROOT_URL: "https://{{ gitea.subdomain|default('git',true) }}.{{ domain }}/"
+      ROOT_URL: "https://{{ gitea.subdomain|default('git',true) }}.{{ user.domain }}/"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/gitea:/data"

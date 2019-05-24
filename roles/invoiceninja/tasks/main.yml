@@ -19,7 +19,7 @@
     - invoiceninja
 
 - name: Create required directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/invoiceninja
     - /opt/invoiceninja/public/logo
@@ -38,8 +38,8 @@
     src: invoiceninja_env.j2
     dest: /opt/invoiceninja/env
     force: yes
-    owner: "{{ user }}"
-    group: "{{ user }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
     mode: 0775
   when: not invoiceninja_env.stat.exists
 
@@ -60,11 +60,11 @@
       DB_USER: root
       DB_PASS: password321
       DB_DATABASE: invoiceninja
-      VIRTUAL_HOST: "{{ invoiceninja.subdomain|default('invoiceninja',true) }}.{{ domain }}"
+      VIRTUAL_HOST: "{{ invoiceninja.subdomain|default('invoiceninja',true) }}.{{ user.domain }}"
       VIRTUAL_PORT: 80
       VIRTUAL_PROTO: http
-      LETSENCRYPT_HOST: "{{ invoiceninja.subdomain|default('invoiceninja',true) }}.{{ domain }}"
-      LETSENCRYPT_EMAIL: "{{ email }}"
+      LETSENCRYPT_HOST: "{{ invoiceninja.subdomain|default('invoiceninja',true) }}.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/invoiceninja/public/logo:/var/www/app/public/logo"

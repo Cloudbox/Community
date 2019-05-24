@@ -11,7 +11,7 @@
     state: absent
 
 - name: Create gazee directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/gazee
     - /mnt/local/Media/Comics
@@ -26,10 +26,10 @@
     env:
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      VIRTUAL_HOST: "gazee.{{ domain }}"
+      VIRTUAL_HOST: "gazee.{{ user.domain }}"
       VIRTUAL_PORT: 4242
-      LETSENCRYPT_HOST: "gazee.{{ domain }}"
-      LETSENCRYPT_EMAIL: "{{ email }}"
+      LETSENCRYPT_HOST: "gazee.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/gazee:/config"

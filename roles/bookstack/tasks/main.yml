@@ -31,7 +31,7 @@
     state: present
 
 - name: Create required directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/bookstack
 
@@ -49,11 +49,11 @@
       DB_USER: root
       DB_PASS: password321
       DB_DATABASE: bookstackapp
-      VIRTUAL_HOST: "{{ bookstack.subdomain|default('bookstack',true) }}.{{ domain }}"
+      VIRTUAL_HOST: "{{ bookstack.subdomain|default('bookstack',true) }}.{{ user.domain }}"
       VIRTUAL_PORT: 443
       VIRTUAL_PROTO: https
-      LETSENCRYPT_HOST: "{{ bookstack.subdomain|default('bookstack',true) }}.{{ domain }}"
-      LETSENCRYPT_EMAIL: "{{ email }}"
+      LETSENCRYPT_HOST: "{{ bookstack.subdomain|default('bookstack',true) }}.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/bookstack:/config"

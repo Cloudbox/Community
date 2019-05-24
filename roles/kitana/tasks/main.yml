@@ -11,7 +11,7 @@
     state: absent
 
 - name: Create kitana directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/kitana
 
@@ -27,10 +27,10 @@
       - "/opt/kitana:/data"
       - "/var/run/docker.sock:/var/run/docker.sock"
     env:
-      VIRTUAL_HOST: "kitana.{{ domain }}"
+      VIRTUAL_HOST: "kitana.{{ user.domain }}"
       VIRTUAL_PORT: 31337
-      LETSENCRYPT_HOST: "kitana.{{ domain }}"
-      LETSENCRYPT_EMAIL: "{{ email }}"
+      LETSENCRYPT_HOST: "kitana.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

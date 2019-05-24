@@ -26,7 +26,7 @@
     state: absent
 
 - name: Create telly directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - "/opt/telly"
 
@@ -42,8 +42,8 @@
     template:
       src: "telly11.config.json.j2"
       dest: "/opt/telly/telly.config.json"
-      owner: "{{ user }}"
-      group: "{{ user }}"
+      owner: "{{ user.name }}"
+      group: "{{ user.name }}"
       mode: 0775
       force: yes
 
@@ -59,10 +59,10 @@
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/telly/:/etc/telly/"
     env:
-      VIRTUAL_HOST: "telly.{{ domain }}"
+      VIRTUAL_HOST: "telly.{{ user.domain }}"
       VIRTUAL_PORT: 6077
-      LETSENCRYPT_HOST: "telly.{{ domain }}"
-      LETSENCRYPT_EMAIL: "{{ email }}"
+      LETSENCRYPT_HOST: "telly.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

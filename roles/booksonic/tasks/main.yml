@@ -11,7 +11,7 @@
     state: absent
 
 - name: Create booksonic directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/booksonic
 
@@ -25,10 +25,10 @@
     env:
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      VIRTUAL_HOST: "booksonic.{{ domain }}"
+      VIRTUAL_HOST: "booksonic.{{ user.domain }}"
       VIRTUAL_PORT: 4040
-      LETSENCRYPT_HOST: "booksonic.{{ domain }}"
-      LETSENCRYPT_EMAIL: "{{ email }}"
+      LETSENCRYPT_HOST: "booksonic.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/booksonic:/config"

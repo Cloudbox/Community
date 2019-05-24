@@ -49,7 +49,7 @@ environment:
     subsonic
     wordpress
     xteve
-    
+
 init:
   - sh: curl -s https://cloudbox.works/scripts/dep.sh | sudo -H sh &> /dev/null
   - sh: curl -s https://cloudbox.works/scripts/repo.sh | bash &> /dev/null
@@ -59,11 +59,14 @@ install:
       cd ${COMMUNITY_PATH} && \
       cp -n defaults/ansible.cfg.default ansible.cfg && \
       cp -n defaults/settings.yml.default settings.yml && \
-      sudo ansible-playbook community.yml --syntax-check
+      sudo ansible-playbook community.yml --syntax-check && \
+      echo ""
   - sh: |
       cd ${CLOUDBOX_PATH} && \
       rm settings.yml accounts.yml adv_settings.yml && \
-      git checkout develop &> /dev/null && \
+      echo "Cloudbox Branch: $APPVEYOR_REPO_BRANCH" && \
+      echo "" && \
+      git checkout $APPVEYOR_REPO_BRANCH &> /dev/null && \
       sudo ansible-playbook cloudbox.yml --tags core \
         --skip-tags settings \
         --extra-vars '{"continuous_integration":true}' \
@@ -73,11 +76,10 @@ install:
       for TAG in $TAGS
       do
           echo ""
-          echo -----------------
+          echo --------------------------
           echo ""
           echo Running Tag: $TAG
           sudo ansible-playbook community.yml --skip-tags settings --tags $TAG
           docker stop $TAG &> /dev/null || true
           docker rm $TAG &> /dev/null || true
       done
-  

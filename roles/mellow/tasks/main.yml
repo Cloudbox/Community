@@ -11,7 +11,7 @@
     state: absent
 
 - name: Create mellow directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/mellow
 
@@ -25,10 +25,10 @@
     env:
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      VIRTUAL_HOST: "mellow.{{ domain }}"
+      VIRTUAL_HOST: "mellow.{{ user.domain }}"
       VIRTUAL_PORT: 5060
-      LETSENCRYPT_HOST: "mellow.{{ domain }}"
-      LETSENCRYPT_EMAIL: "{{ email }}"
+      LETSENCRYPT_HOST: "mellow.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/mellow:/usr/src/app/data/"

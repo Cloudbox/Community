@@ -11,7 +11,7 @@
     state: absent
 
 - name: Create mylar directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/mylar
     - /mnt/local/Media/Comics
@@ -26,10 +26,10 @@
     env:
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      VIRTUAL_HOST: "mylar.{{ domain }}"
+      VIRTUAL_HOST: "mylar.{{ user.domain }}"
       VIRTUAL_PORT: 8090
-      LETSENCRYPT_HOST: "mylar.{{ domain }}"
-      LETSENCRYPT_EMAIL: "{{ email }}"
+      LETSENCRYPT_HOST: "mylar.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/mylar:/config"

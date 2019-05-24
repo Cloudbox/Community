@@ -11,12 +11,12 @@
     state: absent
 
 - name: Create deluge directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/deluge
 
 - name: Create new downloads directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }} recurse=yes"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
   with_items:
     - "{{ downloads.torrents }}"
     - "{{ downloads.torrents }}/deluge"
@@ -44,10 +44,10 @@
     env:
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      VIRTUAL_HOST: "deluge.{{ domain }}"
+      VIRTUAL_HOST: "deluge.{{ user.domain }}"
       VIRTUAL_PORT: 8112
-      LETSENCRYPT_HOST: "deluge.{{ domain }}"
-      LETSENCRYPT_EMAIL: "{{ email }}"
+      LETSENCRYPT_HOST: "deluge.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
       UMASK_SET: 022
     volumes: "{{ default_volumes + torrents_downloads_path|default([]) }}"
     labels:

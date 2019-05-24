@@ -11,12 +11,12 @@
     state: absent
 
 - name: Create qbittorrent directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/qbittorrent
 
 - name: Create new downloads directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }} recurse=yes"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
   with_items:
     - "{{ downloads.torrents }}"
     - "{{ downloads.torrents }}/qbittorrent"
@@ -45,10 +45,10 @@
     env:
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      VIRTUAL_HOST: "qbittorrent.{{ domain }}"
+      VIRTUAL_HOST: "qbittorrent.{{ user.domain }}"
       VIRTUAL_PORT: 8080
-      LETSENCRYPT_HOST: "qbittorrent.{{ domain }}"
-      LETSENCRYPT_EMAIL: "{{ email }}"
+      LETSENCRYPT_HOST: "qbittorrent.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
       UMASK_SET: 002
     volumes: "{{ default_volumes + torrents_downloads_path|default([]) }}"
     labels:

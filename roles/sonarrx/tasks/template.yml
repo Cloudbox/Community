@@ -15,7 +15,7 @@
     state: absent
 
 - name: Create sonarrx directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - "/opt/sonarr{{ rolename }}"
 
@@ -39,10 +39,10 @@
       BACKUP: "no"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      VIRTUAL_HOST: "sonarr{{ rolename }}.{{ domain }}"
+      VIRTUAL_HOST: "sonarr{{ rolename }}.{{ user.domain }}"
       VIRTUAL_PORT: 8989
-      LETSENCRYPT_HOST: "sonarr{{ rolename }}.{{ domain }}"
-      LETSENCRYPT_EMAIL: "{{ email }}"
+      LETSENCRYPT_HOST: "sonarr{{ rolename }}.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
       TZ: "{{ tz }}"
     volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"
     labels:

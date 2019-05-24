@@ -1,6 +1,6 @@
 APP_ENV=production
 APP_DEBUG=false
-APP_URL=https://{{ invoiceninja.subdomain|default('invoiceninja',true) }}.{{ domain }}
+APP_URL=https://{{ invoiceninja.subdomain|default('invoiceninja',true) }}.{{ user.domain }}
 APP_KEY=SomeRandomStringSomeRandomString
 APP_CIPHER=AES-256-CBC
 APP_LOCALE=en

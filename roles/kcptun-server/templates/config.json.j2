@@ -1,0 +1,31 @@
+{
+    "target": "{{ kcptun_target }}",
+    "listen": "{{ kcptun_server }}",
+    "mode": "{{ kcptun_mode }}",
+    "crypt": "{{ kcptun_crypt }}",
+    "key": "{{ kcptun_key }}",
+    "dscp": {{ kcptun_dscp }},
+    "parityshard": {{ kcptun_parityshard }},
+    "datashard": {{ kcptun_datashard }},
+    "mtu": {{ kcptun_mtu }},
+    "nocomp": {{ kcptun_nocomp | lower }},
+    "rcvwnd": {{ kcptun_rcvwnd }},
+    "sndwnd": {{ kcptun_sndwnd }},
+    "nodelay": {{ kcptun_nodelay }},
+    "acknodelay": {{ kcptun_acknodelay | lower }},
+    "interval": {{ kcptun_interval }},
+    "resend": {{ kcptun_resend }},
+    "nc": {{ kcptun_nc }},
+    "keepalive": {{ kcptun_keepalive }},
+    "sockbuf": {{ kcptun_sockbuf }},
+    "smuxbuf": {{ kcptun_smuxbuf }},
+{% if kcptun_snmplog -%}
+    "snmplog": {{ kcptun_snmplog }},
+{% endif %}
+{% if kcptun_log -%}
+    "log": {{ kcptun_log }},
+{% endif %}
+    "snmpperiod": {{ kcptun_snmpperiod }},
+    "pprof": {{ kcptun_pprof | lower }},
+    "quiet": {{ kcptun_quiet | lower }}
+}

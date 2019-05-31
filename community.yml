@@ -45,3 +45,4 @@
     - { role: telly, tags: ['telly'] }
     - { role: wordpress, tags: ['wordpress'] }
     - { role: xteve, tags: ['xteve'] }
+    - { role: kcptun-server, tags: ['kcptun-server'] }

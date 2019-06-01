@@ -44,6 +44,7 @@ environment:
     myjdownloader
     mylar
     qbittorrent
+    plex2
     radarrx
     sonarrx
     subsonic

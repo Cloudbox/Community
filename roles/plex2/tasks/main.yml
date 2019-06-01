@@ -17,7 +17,7 @@
   when: cloudflare_enabled
 
 - name: "Create plex2 directories"
-  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - "/opt/plex2"
     - "/opt/plex2/Library"

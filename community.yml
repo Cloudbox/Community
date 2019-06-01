@@ -45,4 +45,5 @@
     - { role: subsonic, tags: ['subsonic'] }
     - { role: telly, tags: ['telly'] }
     - { role: wordpress, tags: ['wordpress'] }
+    - { role: webtools2, tags: ['webtools2'] }
     - { role: xteve, tags: ['xteve'] }

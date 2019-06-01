@@ -49,6 +49,7 @@ environment:
     sonarrx
     subsonic
     wordpress
+    webtools2
     xteve
 
 init:

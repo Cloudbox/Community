@@ -37,11 +37,14 @@
     - { role: monitorr, tags: ['monitorr'] }
     - { role: myjdownloader, tags: ['myjdownloader'] }
     - { role: mylar, tags: ['mylar'] }
+    - { role: plex2, tags: ['plex2'] }
     - { role: pre_tasks }
     - { role: qbittorrent, tags: ['qbittorrent'] }
     - { role: radarrx, tags: ['radarrx'] }
     - { role: sonarrx, tags: ['sonarrx'] }
     - { role: subsonic, tags: ['subsonic'] }
+    - { role: subzero2, tags: ['subzero2'] }
     - { role: telly, tags: ['telly'] }
     - { role: wordpress, tags: ['wordpress'] }
+    - { role: webtools2, tags: ['webtools2'] }
     - { role: xteve, tags: ['xteve'] }

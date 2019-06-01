@@ -1,5 +1,5 @@
 ##########################################################################
-# Title:         Cloudbox: plex2 - DB Cache Size Settings                 #
+# Title:         Cloudbox: Plex2 | DB Cache Size Settings                 #
 # Author(s):     desimaniac                                              #
 # URL:           https://github.com/cloudbox/cloudbox                    #
 # --                                                                     #
@@ -8,14 +8,16 @@
 #                   GNU General Public License v3.0                      #
 ##########################################################################
 ---
-- name: Wait for plex2 DB to be created
+- name: Wait for Plex DB to be created
   wait_for:
     path: "/opt/plex2/Library/Application Support/Plex Media Server/Plug-in Support/Databases/com.plexapp.plugins.library.db"
     state: present
     timeout: 600
 
-- name: Get Current plex2 DB Cache Size
-  shell: sqlite3 "/opt/plex2/Library/Application Support/Plex Media Server/Plug-in Support/Databases/com.plexapp.plugins.library.db" "PRAGMA default_cache_size;"
+- name: Get Current Plex DB Cache Size
+  shell: |
+    sqlite3 "/opt/plex2/Library/Application Support/Plex Media Server/Plug-in Support/Databases/com.plexapp.plugins.library.db" \
+      "PRAGMA default_cache_size;"
   args:
     executable: /bin/bash
   register: current_db_cache_size
@@ -41,26 +43,27 @@
       if ( (not db_cache_size_is_specified) or (plex.db_cache_size == 'default') )
       else ( (plex.db_cache_size) | regex_replace(',', '') | int ) }}"
 
-- name: Make plex2 DB Edits
+- name: Make Plex DB Edits
   block:
 
-  - name: Stop plex2 Container
+  - name: Stop Plex Container
     docker_container:
       name: plex2
       state: stopped
+    when: ('plex_db_cache_size' in ansible_run_tags)
 
   - name: Display Desired Plex DB Cache Size
     debug:
       msg: "Desired Plex DB Cache Size is '{{ desired_db_cache_size }}'"
 
-  - name: "Set plex2 DB Cache Size"
+  - name: "Set Plex DB Cache Size"
     shell: |
       sqlite3 "/opt/plex2/Library/Application Support/Plex Media Server/Plug-in Support/Databases/com.plexapp.plugins.library.db" \
         "PRAGMA default_cache_size = '{{ desired_db_cache_size | int }}';"
     args:
       executable: /bin/bash
 
-  - name: Get Current plex2 DB Cache Size
+  - name: Get New Plex DB Cache Size
     shell: |
       sqlite3 "/opt/plex2/Library/Application Support/Plex Media Server/Plug-in Support/Databases/com.plexapp.plugins.library.db" \
         "PRAGMA default_cache_size;"
@@ -68,13 +71,14 @@
       executable: /bin/bash
     register: new_db_cache_size
 
-  - name: Display Current plex2 DB Cache Size
+  - name: Display New Plex DB Cache Size
     debug:
-      msg: "Plex2 DB cache size is now set to '{{ new_db_cache_size.stdout | int }}'."
+      msg: "Plex DB cache size is now set to '{{ new_db_cache_size.stdout | int }}'."
 
-  - name: Start plex2 Container
+  - name: Start Plex Container
     docker_container:
       name: plex2
       state: started
+    when: ('plex_db_cache_size' in ansible_run_tags)
 
   when: ( current_db_cache_size.stdout | int ) != ( desired_db_cache_size | regex_replace(',', '') | int )

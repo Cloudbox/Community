@@ -110,9 +110,9 @@
 - name: "Set Plex2 host variables"
   set_fact:
     plex_default_hosts:
-      "metric.plex.tv": "{{ localhost_ip }}"
-      "metrics.plex.tv": "{{ localhost_ip }}"
-      "analytics.plex.tv": "{{ localhost_ip }}"
+      "metric.plex.tv": "127.0.0.1"
+      "metrics.plex.tv": "127.0.0.1"
+      "analytics.plex.tv": "127.0.0.1"
     plex_custom_hosts:
       "mf.svc.nhl.com": "{{ lazyman_ip | ternary(lazyman_ip, omit) }}"
       "mlb-ws-mf.media.mlb.com": "{{ lazyman_ip | ternary(lazyman_ip, omit) }}"

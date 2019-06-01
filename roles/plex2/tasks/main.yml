@@ -138,7 +138,7 @@
     env:
       PLEX_UID: "{{ uid }}"
       PLEX_GID: "{{ gid }}"
-      PLEX_CLAIM: "{{ plex2_claim_code | default (omit) }}"
+      PLEX_CLAIM: "{{ plex_claim_code | default (omit) }}"
       CHANGE_CONFIG_DIR_OWNERSHIP: false
       ADVERTISE_IP: "http://plex2.{{ domain }}:80/,https://plex2.{{ domain }}:443/"
       VIRTUAL_HOST: "plex2.{{ domain }}"

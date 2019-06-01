@@ -11,7 +11,7 @@
 ---
 - name: Darkerr | Darkerr theme location block'
   blockinfile:
-    path: "/opt/nginx-proxy/vhost.d/books.{{ domain }}_location"
+    path: "/opt/nginx-proxy/vhost.d/books.{{ user.domain }}_location"
     marker: "### {mark} COMMUNITY - CALIBLUR THEME ###"
     block: |
       # hhttps://github.com/leram84/layer.Cake/tree/master/caliBlur
@@ -27,8 +27,8 @@
       <link rel="preload" href="//rawgit.com/leram84/layer.Cake/master/caliBlur/caliBlur.js" as="script">
       </head>';
       sub_filter_once on;
-    owner: "{{ user }}"
-    group: "{{ user }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
     mode: 0664
     create: yes
     state: "{{ (calibreweb.caliblur | default(false,true)) | ternary('present','absent') }}"

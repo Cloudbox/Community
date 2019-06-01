@@ -12,7 +12,7 @@
     - mongodb
 
 - name: Create required directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - "/opt/mediabutler"
     - "/opt/mongodb"
@@ -68,16 +68,16 @@
     published_ports:
       - "0.0.0.0:9876:9876"
     env:
-      URL: "https://mediabutler.{{ domain }}/"
+      URL: "https://mediabutler.{{ user.domain }}/"
       DB_URL: "mongodb://mongo:27017/mediabutler"
       PLEX_MACHINE_ID: "{{ plex_machine_id | default('',true) }}"
-      PLEX_URL: "https://plex.{{ domain }}"
+      PLEX_URL: "https://plex.{{ user.domain }}"
       UID: "{{ uid }}"
       GID: "{{ gid }}"
-      VIRTUAL_HOST: "mediabutler.{{ domain }}"
+      VIRTUAL_HOST: "mediabutler.{{ user.domain }}"
       VIRTUAL_PORT: 9876
-      LETSENCRYPT_HOST: "mediabutler.{{ domain }}"
-      LETSENCRYPT_EMAIL: "{{ email }}"
+      LETSENCRYPT_HOST: "mediabutler.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/mediabutler:/config:rw"

@@ -15,7 +15,7 @@
     state: absent
 
 - name: Create bazarrx directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - "/opt/bazarr{{ rolename }}"
 
@@ -39,10 +39,10 @@
     env:
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      VIRTUAL_HOST: "bazarr{{ rolename }}.{{ domain }}"
+      VIRTUAL_HOST: "bazarr{{ rolename }}.{{ user.domain }}"
       VIRTUAL_PORT: 6767
-      LETSENCRYPT_HOST: "bazarr{{ rolename }}.{{ domain }}"
-      LETSENCRYPT_EMAIL: "{{ email }}"
+      LETSENCRYPT_HOST: "bazarr{{ rolename }}.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

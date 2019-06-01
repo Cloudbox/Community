@@ -11,7 +11,7 @@
     state: absent
 
 - name: Create myjdownloader directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/myjdownloader
     - /opt/myjdownloader/config
@@ -21,8 +21,8 @@
   copy:
     src: "sevenzipjbinding1509.jar"
     dest: "/opt/myjdownloader/config/libs/sevenzipjbinding1509.jar"
-    owner: "{{ user }}"
-    group: "{{ user }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
     mode: 0775
     force: no
 
@@ -30,8 +30,8 @@
   copy:
     src: "sevenzipjbinding1509Linux.jar"
     dest: "/opt/myjdownloader/config/libs/sevenzipjbinding1509Linux.jar"
-    owner: "{{ user }}"
-    group: "{{ user }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
     mode: 0775
     force: no
 
@@ -50,13 +50,13 @@
       - "/opt/myjdownloader/config:/config:rw"
       - "/var/run/docker.sock:/var/run/docker.sock"
     env:
-      VIRTUAL_HOST: "myjdownloader.{{ domain }}"
+      VIRTUAL_HOST: "myjdownloader.{{ user.domain }}"
       VIRTUAL_PORT: 5800
-      LETSENCRYPT_HOST: "myjdownloader.{{ domain }}"
-      LETSENCRYPT_EMAIL: "{{ email }}"
+      LETSENCRYPT_HOST: "myjdownloader.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
       DISPLAY_WIDTH: 1280
       DISPLAY_HEIGHT: 768
-      VNC_PASSWORD: "{{ passwd }}"
+      VNC_PASSWORD: "{{ user.pass }}"
       USER_ID: "{{ uid }}"
       GROUP_ID: "{{ gid }}"
       CLEAN_TMP_DIR: 1

@@ -11,7 +11,7 @@
     state: absent
 
 - name: Create jellyfin directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/jellyfin
     - /opt/jellyfin/config
@@ -24,8 +24,8 @@
   copy:
     src: "dlna.xml"
     dest: "/opt/jellyfin/config/dlna.xml"
-    owner: "{{ user }}"
-    group: "{{ user }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
     mode: 0775
     force: no
     
@@ -58,10 +58,10 @@
     devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"
     user: "{{ uid }}:{{ gid }}"
     env:
-      VIRTUAL_HOST: "jellyfin.{{ domain }}"
+      VIRTUAL_HOST: "jellyfin.{{ user.domain }}"
       VIRTUAL_PORT: 8096
-      LETSENCRYPT_HOST: "jellyfin.{{ domain }}"
-      LETSENCRYPT_EMAIL: "{{ email }}"
+      LETSENCRYPT_HOST: "jellyfin.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
       NVIDIA_DRIVER_CAPABILITIES: "{{ 'compute,video,utility' if gpu.nvidia | default(false) else omit }}"
       NVIDIA_VISIBLE_DEVICES: "{{ 'all' if gpu.nvidia | default(false) else omit }}"
     labels:
@@ -81,8 +81,8 @@
 - name: "Ensure config folder has the correct permissions"
   file:
     path: "/opt/jellyfin"
-    owner: "{{ user }}"
-    group: "{{ user }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
     mode: 0775
     recurse: yes
     

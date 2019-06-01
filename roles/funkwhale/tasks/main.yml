@@ -12,7 +12,7 @@
     state: absent
 
 - name: "Create funkwhale directories"
-  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/funkwhale
     - /opt/funkwhale/data
@@ -27,8 +27,8 @@
     src: funkwhale_env.j2
     dest: /opt/funkwhale/env
     force: yes
-    owner: "{{ user }}"
-    group: "{{ user }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
     mode: 0775
   when: not funkwhale_env.stat.exists
   
@@ -40,10 +40,10 @@
     published_ports:
       - "127.0.0.1:6969:80"
     env:
-      FUNKWHALE_URL: "funkwhale.{{ domain }}"
-      VIRTUAL_HOST: "funkwhale.{{ domain }}"
-      LETSENCRYPT_HOST: "funkwhale.{{ domain }}"
-      LETSENCRYPT_EMAIL: "{{ email }}"
+      FUNKWHALE_URL: "funkwhale.{{ user.domain }}"
+      VIRTUAL_HOST: "funkwhale.{{ user.domain }}"
+      LETSENCRYPT_HOST: "funkwhale.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
       VIRTUAL_PORT: 80
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
@@ -65,6 +65,6 @@
   wait_for: timeout=10
 
 - name: "Create Admin User"
-  command: docker exec -i funkwhale /usr/bin/python3 /app/api/manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('{{ user }}', '{{ email }}', '{{ passwd }}')"
+  command: docker exec -i funkwhale /usr/bin/python3 /app/api/manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('{{ user.name }}', '{{ user.email }}', '{{ user.pass }}')"
   ignore_errors: yes
   no_log: True

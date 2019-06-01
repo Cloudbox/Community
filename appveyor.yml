@@ -48,6 +48,7 @@ environment:
     radarrx
     sonarrx
     subsonic
+    subzero2
     wordpress
     webtools2
     xteve

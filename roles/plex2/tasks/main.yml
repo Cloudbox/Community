@@ -190,7 +190,7 @@
 
 - name: "Install Sub-Zero"
   import_role:
-    name: sub-zero
+    name: subzero2
 
 - name: "Forced Automatic Quality Settings"
   import_tasks: "forced_quality_settings.yml"

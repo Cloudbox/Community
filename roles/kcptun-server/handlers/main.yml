@@ -1,5 +1,0 @@
----
-- name: restart kcptun
-  service:
-    name: kcptun
-    state: restarted

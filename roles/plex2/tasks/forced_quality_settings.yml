@@ -1,5 +1,5 @@
 ##########################################################################
-# Title:         Cloudbox: Plex2 | Forced Automatic Quality Settings      #
+# Title:         Cloudbox: plex2 - Forced Automatic Quality Settings      #
 # Author(s):     desimaniac                                              #
 # URL:           https://github.com/cloudbox/cloudbox                    #
 # --                                                                     #
@@ -13,16 +13,14 @@
 - name: Install lxml pip module
   pip: "name=lxml state=present"
 
-- name: Wait for 'Preferences.xml' to be created by Plex
+- name: Wait for 'Preferences.xml' to be created by plex2
   wait_for:
     path: "/opt/plex2/Library/Application Support/Plex Media Server/Preferences.xml"
     state: present
 
-# 'forceAutoAdjustQuality' in Preferences.xml
-# Forces clients to use automatic quality for media unless the quality is set higher than the quality of the video.
+# 'forceAutoAdjustQuality' in Preferences.xml - Forces clients to use automatic quality for media unless the quality is set higher than the quality of the video.
 
-- name: "Set 'forceAutoAdjustQuality' in 'Preferences.xml' to
-    '{{ (plex.force_auto_adjust_quality|default(false,true)) | ternary('Enabled','Disabled') }}'."
+- name: "Set 'forceAutoAdjustQuality' in 'Preferences.xml' to '{{ (plex.force_auto_adjust_quality|default(false,true)) | ternary('Enabled','Disabled') }}'."
   xml:
     path: "/opt/plex2/Library/Application Support/Plex Media Server/Preferences.xml"
     xpath: /Preferences
@@ -32,11 +30,9 @@
   register: x
   ignore_errors: yes
 
-# 'AllowHighOutputBitrates' in Preferences.xml
-# Forces transcode quality to upscale. But can cause high bandwidth usage for clients.
+# 'AllowHighOutputBitrates' in Preferences.xml - Forces transcode quality to upscale. But can cause high bandwidth usage for clients.
 
-- name: "Set 'AllowHighOutputBitrates' in 'Preferences.xml' to
-    '{{ (plex.force_high_output_bitrates|default(false,true)) | ternary('Enabled','Disabled') }}'."
+- name: "Set 'AllowHighOutputBitrates' in 'Preferences.xml' to '{{ (plex.force_high_output_bitrates|default(false,true)) | ternary('Enabled','Disabled') }}'."
   xml:
     path: "/opt/plex2/Library/Application Support/Plex Media Server/Preferences.xml"
     xpath: /Preferences
@@ -46,9 +42,9 @@
   register: y
   ignore_errors: yes
 
-- name: Restart plex container
+- name: Restart plex2 container
   docker_container:
     name: plex2
     state: started
     restart: yes
-  when: ('plex_forced_quality' in ansible_run_tags) and (x.changed or y.changed)
+  when: x.changed or y.changed

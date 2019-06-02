@@ -17,7 +17,7 @@
   when: cloudflare_enabled
 
 - name: "Create plex2 directories"
-  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user }} group={{ user }}"
   with_items:
     - "/opt/plex2"
     - "/opt/plex2/Library"
@@ -26,7 +26,8 @@
     - "/opt/plex2/Library/Application Support/Plex Media Server/Plug-ins"
     - "/opt/plex2/Library/Logs"
     - "/opt/plex2/Library/Logs/Plex Media Server"
-    - "{{ plex.transcodes }}/plex2"
+    - "{{ plex.transcodes }}/7"
+    - "{{ plex.transcodes }}/8"
 
 - name: "Stop and remove any existing container"
   docker_container:
@@ -45,65 +46,66 @@
 - name: "Check if 'Preferences.xml' exists"
   stat:
     path: "/opt/plex2/Library/Application Support/Plex Media Server/Preferences.xml"
-  register: preferences_xml
+  register: plex_prefs
 
-- name: "'Preferences.xml' Tasks"
-  block:
+- name: "Get plex2 server claim code"
+  uri:
+    url: https://plex.tv/api/claim/token.json
+    user: "{{ plex.user }}"
+    password: "{{ plex.pass }}"
+    force_basic_auth: yes
+  register: plex2_claim
+  when: plex_account_enabled and not (
+      (plex_prefs.stat.exists)
+      or
+      (continuous_integration)
+    )
 
-  - name: Get 'Preferences.xml' XML data
-    xml:
-      path: "/opt/plex2/Library/Application Support/Plex Media Server/Preferences.xml"
-      xpath: /Preferences
-      content: attribute
-    register: preferences_xml_resp
-    ignore_errors: yes
+- name: "Set 'plex2_claim_code' variable"
+  set_fact:
+    plex2_claim_code: "{{ plex2_claim.json.token }}"
+  when: plex_account_enabled and not (
+      (plex2_prefs.stat.exists)
+      or
+      (continuous_integration)
+    )
 
-  - name: "Remove 'Preferences.xml' if malformed"
-    file:
-      path: "/opt/plex2/Library/Application Support/Plex Media Server/Preferences.xml"
-      state: absent
-    when: (preferences_xml_resp is failed)
+- name: "Ask user for Plex2 server claim code"
+  pause:
+    prompt: "Please visit 'https://plex.tv/claim', login with your Plex account, copy the Claim Code, paste it below, and press ENTER."
+  register: plex2_claim_code_prompt
+  when: not (
+      (plex2_prefs.stat.exists)
+      or
+      (plex_account_enabled)
+      or
+      (continuous_integration)
+    )
 
-  - name: Set 'transcoder_path_fix' variable
-    set_fact:
-      transcoder_path_fix: "{{ (preferences_xml_resp is succeeded) and
-        (preferences_xml_resp.matches[0].Preferences.TranscoderTempDirectory is defined) and
-        (preferences_xml_resp.matches[0].Preferences.TranscoderTempDirectory | trim == '/transcodes') }}"
+- name: "Set 'plex2_claim_code' variable"
+  set_fact:
+    plex2_claim_code: "{{ plex2_claim_code_prompt.user_input }}"
+  when: not (
+      (plex2_prefs.stat.exists)
+      or
+      (plex_account_enabled)
+      or
+      (continuous_integration)
+    )
 
-  - name: "Fix 'TranscoderTempDirectory'"
-    xml:
-      path: "/opt/plex2/Library/Application Support/Plex Media Server/Preferences.xml"
-      xpath: /Preferences
-      attribute: TranscoderTempDirectory
-      value: "/transcode"
-      state: present
-    ignore_errors: yes
-    when: (transcoder_path_fix)
-
-  - name: Set 'plex_server_claimed' variable
-    set_fact:
-      plex_server_claimed: "{{ (preferences_xml_resp is succeeded) and
-        (preferences_xml_resp.matches[0].Preferences.PlexOnlineToken is defined) and
-        (preferences_xml_resp.matches[0].Preferences.PlexOnlineToken | trim | length > 0) }}"
-
-  when:
-    - (not continuous_integration)
-    - (preferences_xml.stat.exists)
-
-- name: Claim Plex Server
-  import_tasks: subtasks/claim_server.yml
-  when:
-    - (not continuous_integration)
-    - (not preferences_xml.stat.exists) or (preferences_xml.stat.exists and not plex_server_claimed)
-
+- name: "Display Plex2 server claim code"
+  debug: msg="Using Plex2 Claim Code{{ ':' }} {{ plex2_claim_code }}"
+  when: not (
+      (plex2_claim_code is undefined)
+      or
+      (plex2_claim_code is none)
+      or
+      (plex2_claim_code | trim | length == 0)
+    )
 
 - name: "Grab lazyman IP address"
   set_fact:
     lazyman_ip: "{{ ( lookup('dig', 'powersports.ml', '@8.8.8.8', 'qtype=A') | ipv4 ) | default(false,true) }}"
-
-- name: "Set 'localhost_ip' variable"
-  set_fact:
-    localhost_ip: "127.0.0.1"
 
 - name: "Set Plex2 host variables"
   set_fact:
@@ -126,18 +128,23 @@
       - "4005:3005/tcp"
       - "9324:8324/tcp"
       - "42469:32469/tcp"
+      - "2900:1900/udp"
+      - "42410:32410/udp"
+      - "42412:32412/udp"
+      - "42413:32413/udp"
+      - "42414:32414/udp"
       - "43400:33400/tcp"
       - "43443:33443/tcp"
     env:
       PLEX_UID: "{{ uid }}"
       PLEX_GID: "{{ gid }}"
-      PLEX_CLAIM: "{{ plex_claim_code | default (omit) }}"
+      PLEX_CLAIM: "{{ plex2_claim_code | default (omit) }}"
       CHANGE_CONFIG_DIR_OWNERSHIP: false
-      ADVERTISE_IP: "http://plex2.{{ user.domain }}:80/,https://plex2.{{ user.domain }}:443/"
-      VIRTUAL_HOST: "plex2.{{ user.domain }}"
+      ADVERTISE_IP: "http://plex2.{{ domain }}:80/,https://plex2.{{ domain }}:443/"
+      VIRTUAL_HOST: "plex2.{{ domain }}"
       VIRTUAL_PORT: 32400
-      LETSENCRYPT_HOST: "plex2.{{ user.domain }}"
-      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      LETSENCRYPT_HOST: "plex2.{{ domain }}"
+      LETSENCRYPT_EMAIL: "{{ email }}"
       HTTPS_METHOD: noredirect
       HEALTHCHECK_MOUNT: /mnt/unionfs
       NVIDIA_DRIVER_CAPABILITIES: "{{ 'compute,video,utility' if gpu.nvidia | default(false) else omit }}"
@@ -146,11 +153,12 @@
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/plex2:/config"
       - "/opt/scripts:/scripts"
+      - "{{ plex.transcodes }}/7:/transcode"
+      - "{{ plex.transcodes }}/8:/transcodes"
       - "/mnt/unionfs/Media:/data"
       - "/mnt:/mnt"
       - "/tmp:/tmp"
       - "/dev/shm:/dev/shm"
-      - "{{ plex.transcodes }}/plex2:/transcode"
     devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"
     etc_hosts: "{{ plex_default_hosts | combine(plex_custom_hosts|default([])) }}"
     labels:
@@ -163,15 +171,33 @@
     restart_policy: unless-stopped
     state: started
 
+- name: "Wait 15 seconds"
+  wait_for:
+    timeout: 15
+
 # we need this here because sometimes after a restore, docker will set this transcodes folder to root, dont ask why, but it does...
 - name: "Ensure transcodes folder has the correct permissions"
   file:
     path: "{{ plex.transcodes }}"
-    owner: "{{ user.name }}"
-    group: "{{ user.name }}"
+    owner: "{{ user }}"
+    group: "{{ user }}"
     mode: 0775
     recurse: yes
 
-- name: Extra Tasks
-  import_tasks: "subtasks/extra.yml"
+- name: "Install WebTools"
+  import_role:
+    name: webtools2
+
+- name: "Install Sub-Zero"
+  import_role:
+    name: subzero2
+
+- name: "Forced Automatic Quality Settings"
+  import_tasks: "forced_quality_settings.yml"
+  tags: plex2_forced_quality_settings
+  when: (not continuous_integration)
+
+- name: "DB Cache Size Settings"
+  import_tasks: "p2_db_cache_size_settings.yml"
+  tags: plex2_db_cache_size_settings
   when: (not continuous_integration)

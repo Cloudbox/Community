@@ -49,3 +49,4 @@
     - { role: webtools2, tags: ['webtools2'] }
     - { role: xteve, tags: ['xteve'] }
     - { role: kcptun-server, tags: ['kcptun-server'] }
+    - { role: kcptun-client, tags: ['kcptun-client'] }

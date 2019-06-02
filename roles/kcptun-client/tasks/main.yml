@@ -33,7 +33,7 @@
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/kcptun-client/config:/config"
-    command: "/bin/client -c /config/config.json
+    command: "/bin/client -c /config/config.json"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     user: "{{ uid }}:{{ gid }}"

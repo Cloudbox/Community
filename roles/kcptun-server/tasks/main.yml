@@ -1,6 +1,6 @@
 ---
 - name: Stop and remove any existing container
-  docker_container:
+   docker_container:
     name: kcptun-server
     state: absent
 
@@ -33,7 +33,7 @@
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/kcptun-server/config:/config"
-    command: "/bin/server -c /config/config.json
+    command: "/bin/server -c /config/config.json"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     user: "{{ uid }}:{{ gid }}"

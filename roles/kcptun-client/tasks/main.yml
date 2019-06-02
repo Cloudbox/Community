@@ -1,39 +1,39 @@
 ---
 - name: Stop and remove any existing container
   docker_container:
-    name: kcptun-server
+    name: kcptun-client
     state: absent
 
 - name: Create opt directory
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
-    - /opt/kcptun-server
-    - /opt/kcptun-server/config
+    - /opt/kcptun-client
+    - /opt/kcptun-client/config
 
-- name: "Check if kcptun-server config file exists"
+- name: "Check if kcptun-client config file exists"
   stat:
-    path: "/opt/kcptun-server/config/config.json"
-  register: kcptun-server_config
+    path: "/opt/kcptun-client/config/config.json"
+  register: kcptun-client_config
 
 - name: "Import config file if it doesnt exist"
   template:
     src: config.json.j2
-    dest: /opt/kcptun-server/config/config.json
+    dest: /opt/kcptun-client/config/config.json
     force: yes
     owner: "{{ user.name }}"
     group: "{{ user.name }}"
     mode: 0775
-  when: not kcptun-server_config.stat.exists
+  when: not kcptun-client_config.stat.exists
   
 - name: Create and start container
   docker_container:
-    name: kcptun-server
+    name: kcptun-client
     image: horjulf/kcptun:latest
     pull: yes
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/kcptun-server/config:/config"
-    command: "/bin/server -c /config/config.json
+      - "/opt/kcptun-client/config:/config"
+    command: "/bin/client -c /config/config.json
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     user: "{{ uid }}:{{ gid }}"

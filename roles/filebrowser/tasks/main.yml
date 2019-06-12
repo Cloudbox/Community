@@ -62,6 +62,7 @@
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/filebrowser/filebrowser.db:/database.db"
       - "/opt/filebrowser/filebrowser.json:/.filebrowser.json"
+      - "/mnt/unionfs:/srv"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     user: "{{ uid }}:{{ gid }}"

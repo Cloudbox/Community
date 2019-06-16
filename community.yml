@@ -44,6 +44,7 @@
     - { role: sonarrx, tags: ['sonarrx'] }
     - { role: subsonic, tags: ['subsonic'] }
     - { role: subzero2, tags: ['subzero2'] }
+    - { role: synclounge, tags: ['synclounge'] }
     - { role: telly, tags: ['telly'] }
     - { role: wordpress, tags: ['wordpress'] }
     - { role: webtools2, tags: ['webtools2'] }

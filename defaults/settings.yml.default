@@ -22,3 +22,6 @@ jirafeau:
   domain:
 alltube:
   domain:
+synclounge:
+  domain:
+  subdomain: synclounge

@@ -15,7 +15,11 @@ curl -s https://cloudbox.works/scripts/cmrepo.sh | bash >/dev/null 2>&1; cd ~/co
 ## Switch to develop branch (optional)
 
 ```bash
+cd ~/community
+git fetch
+git reset --hard @{u}
 git checkout develop
+git reset --hard @{u}
 ```
 
 

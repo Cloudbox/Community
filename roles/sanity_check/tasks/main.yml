@@ -1,0 +1,18 @@
+#########################################################################
+# Title:         Cloudbox Community: Sanity Check                       #
+# Author(s):     desimaniac                                             #
+# URL:           https://github.com/cloudbox/cloudbox                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Cloudbox Check"
+  import_tasks: "subtasks/cloudbox_check.yml"
+
+- name: "Backup Check"
+  import_tasks: "subtasks/backup_check.yml"
+
+- name: "Tags Check"
+  import_tasks: "subtasks/tags_check.yml"

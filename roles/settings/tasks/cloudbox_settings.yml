@@ -1,0 +1,28 @@
+#########################################################################
+# Title:         Settings: Cloudbox Settings                            #
+# Author(s):     desimaniac (Community edition)                         #
+# URL:           https://github.com/cloudbox/community                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Check / Update Cloudbox Settings"
+  shell: |
+    cd /home/{{ community_yml.stat.pw_name }}/cloudbox/
+    git fetch &> /dev/null || true
+    git reset --hard @{u} &> /dev/null || true
+    sudo ansible-playbook cloudbox.yml --tags settings \
+        --skip-tags sanity_check \
+        &> /dev/null || true
+  become: yes
+  become_user: "{{ community_yml.stat.pw_name }}"
+  ignore_errors: yes
+
+- name: Import Cloudbox Var files
+  include_vars: "{{ item }}"
+  loop:
+    - "/home/{{ community_yml.stat.pw_name }}/cloudbox/accounts.yml"
+    - "/home/{{ community_yml.stat.pw_name }}/cloudbox/settings.yml"
+    - "/home/{{ community_yml.stat.pw_name }}/cloudbox/adv_settings.yml"

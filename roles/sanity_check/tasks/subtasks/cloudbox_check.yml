@@ -1,0 +1,19 @@
+#########################################################################
+# Title:         Cloudbox Community: Sanity Check | Cloudbox Check      #
+# Author(s):     desimaniac                                             #
+# URL:           https://github.com/cloudbox/cloudbox                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Check if 'cloudbox' folder is present"
+  stat:
+    path: "/home/{{ user.name }}/cloudbox"
+  register: cloudbox_path
+
+- name: "Fail when 'cloudbox' folder does not exist"
+  fail:
+    msg: "Cloudbox installation is required before running the Cloudbox Community roles."
+  when: not cloudbox_path.stat.exists

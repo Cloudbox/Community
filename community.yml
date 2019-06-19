@@ -16,8 +16,6 @@
     - { role: booksonic, tags: ['booksonic']}
     - { role: bookstack, tags: ['bookstack'] }
     - { role: calibre-rdp, tags: ['calibre-rdp'] }
-    - { role: calibre-rdp, tags: ['calibre-rdp'] }
-    - { role: calibre-web, tags: ['calibre-web'] }
     - { role: calibre-web, tags: ['calibre-web'] }
     - { role: deluge, tags: ['deluge'] }
     - { role: embystats, tags: ['embystats'] }

@@ -79,7 +79,7 @@ install:
       git checkout $APPVEYOR_REPO_BRANCH &> /dev/null
       sudo ansible-playbook cloudbox.yml --syntax-check
       sudo ansible-playbook cloudbox.yml --tags core \
-          --skip-tags settings \
+          --skip-tags sanity_check,settings \
           --extra-vars '{"continuous_integration":true}' \
           &> /dev/null
       echo ""
@@ -94,7 +94,8 @@ install:
           echo --------------------------
           echo ""
           echo Running Tag: $TAG
-          sudo ansible-playbook community.yml --skip-tags settings --tags $TAG
+          sudo ansible-playbook community.yml --tags $TAG \
+              --skip-tags sanity_check,settings
           docker stop $TAG &> /dev/null || true
           docker rm $TAG &> /dev/null || true
           echo ""

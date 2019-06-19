@@ -19,6 +19,9 @@
     path: "{{ playbook_dir }}/community.yml"
   register: community_yml
 
+- name: "Settings: Cloudbox Settings"
+  include_tasks: "cloudbox_settings.yml"
+
 - name: "Settings: Ansible Config"
   include_tasks: "ansible_config.yml"
   with_items:

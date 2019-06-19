@@ -44,14 +44,11 @@ environment:
     myjdownloader
     mylar
     qbittorrent
-    plex2
     radarrx
     sonarrx
     subsonic
-    subzero2
     synclounge
     wordpress
-    webtools2
     xteve
 
 init:

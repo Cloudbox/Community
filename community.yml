@@ -37,7 +37,6 @@
     - { role: myjdownloader, tags: ['myjdownloader'] }
     - { role: mylar, tags: ['mylar'] }
     - { role: plex2, tags: ['plex2'] }
-    - { role: pre_tasks }
     - { role: qbittorrent, tags: ['qbittorrent'] }
     - { role: radarrx, tags: ['radarrx'] }
     - { role: sonarrx, tags: ['sonarrx'] }

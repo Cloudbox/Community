@@ -95,5 +95,7 @@ install:
               --skip-tags sanity_check,settings
           docker stop $TAG &> /dev/null || true
           docker rm $TAG &> /dev/null || true
+          docker image prune -af &> /dev/null || true
+          docker volume prune -f &> /dev/null || true
           echo ""
       done

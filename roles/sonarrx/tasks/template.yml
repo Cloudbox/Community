@@ -13,11 +13,28 @@
   docker_container:
     name: "sonarr{{ rolename }}"
     state: absent
+    
+- name: Suitarr Migration Tasks
+  import_tasks: "subtasks/suitarr_migration.yml"
 
 - name: Create sonarrx directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - "/opt/sonarr{{ rolename }}"
+    
+- name: Darkerr Tasks
+  import_tasks: "subtasks/darkerr.yml"
+
+- name: Set 'suitarr_image' variable for v3
+  set_fact:
+    suitarr_image: "{{ (sickbeard_mp4_automator | default(false,true)) | ternary('andrewkhunn/sonarr3','hotio/sonarr3') }}"
+    suitarr_version: "{{ ('tar.gz' in sonarr.version | lower) | ternary(sonarr.version,'unstable') }}"
+  when: ("v3" in sonarr.version | lower)
+
+- name: "Check if '/dev/dri' exists"
+  stat:
+    path: "/dev/dri"
+  register: dev_dri
 
 - name: Set default_volumes variable
   set_fact:
@@ -30,12 +47,12 @@
 - name: Create and start container
   docker_container:
     name: "sonarr{{ rolename }}"
-    image: "linuxserver/sonarr:preview"
+    image: "{{ suitarr_image }}"
     pull: yes
     published_ports:
       - "127.0.0.1:{{ roleport }}:8989"
     env:
-      VERSION: "unstable"
+      VERSION: "{{ suitarr_version }}"
       BACKUP: "no"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
@@ -45,6 +62,7 @@
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       TZ: "{{ tz }}"
     volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"
+    devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and sickbeard_mp4_automator and dev_dri.stat.exists) | default(false) else omit }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
@@ -52,5 +70,5 @@
         aliases:
           - "sonarr{{ rolename }}"
     purge_networks: yes
-    restart_policy: always
+    restart_policy: unless-stopped
     state: started

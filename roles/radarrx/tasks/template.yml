@@ -13,11 +13,26 @@
   docker_container:
     name: "radarr{{ rolename }}"
     state: absent
+    
+- name: Suitarr Migration Tasks
+  import_tasks: "subtasks/suitarr_migration.yml"
 
 - name: Create radarrx directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - "/opt/radarr{{ rolename }}"
+    
+- name: Darkerr Tasks
+  import_tasks: "subtasks/darkerr.yml"
+
+- name: Set 'suitarr_image' variable
+  set_fact:
+    suitarr_image: "{{ (sickbeard_mp4_automator | default(false,true)) | ternary('andrewkhunn/radarr','hotio/radarr') }}"
+
+- name: "Check if '/dev/dri' exists"
+  stat:
+    path: "/dev/dri"
+  register: dev_dri
 
 - name: Set default_volumes variable
   set_fact:
@@ -30,12 +45,12 @@
 - name: Create and start container
   docker_container:
     name: "radarr{{ rolename }}"
-    image: "hotio/radarr"
+    image: "{{ suitarr_image }}"
     pull: yes
     published_ports:
       - "127.0.0.1:{{ roleport }}:7878"
     env:
-      VERSION: "unstable"
+      VERSION: "{{ suitarr.version }}"
       BACKUP: "no"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
@@ -45,6 +60,7 @@
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       TZ: "{{ tz }}"
     volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"
+    devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and sickbeard_mp4_automator and dev_dri.stat.exists) | default(false) else omit }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
@@ -52,5 +68,5 @@
         aliases:
           - "radarr{{ rolename }}"
     purge_networks: yes
-    restart_policy: always
+    restart_policy: unless-stopped
     state: started

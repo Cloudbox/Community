@@ -25,9 +25,13 @@
 - name: Darkerr Tasks
   import_tasks: "subtasks/darkerr.yml"
 
-- name: Set 'suitarr_image' variable for v3
+- name: Set 'suitarr_version' variable for v2
   set_fact:
-    suitarr_image: "{{ (sickbeard_mp4_automator | default(false,true)) | ternary('andrewkhunn/sonarr3','hotio/sonarr3') }}"
+    suitarr_version: "{{ sonarr.version | lower }}"
+  when: ("v3" not in sonarr.version | lower)
+
+- name: Set 'suitarr_version' variable for v3
+  set_fact:
     suitarr_version: "{{ ('tar.gz' in sonarr.version | lower) | ternary(sonarr.version,'unstable') }}"
   when: ("v3" in sonarr.version | lower)
 
@@ -47,7 +51,7 @@
 - name: Create and start container
   docker_container:
     name: "sonarr{{ rolename }}"
-    image: "{{ suitarr_image }}"
+    image: "hotio/sonarr"
     pull: yes
     published_ports:
       - "127.0.0.1:{{ roleport }}:8989"
@@ -62,7 +66,7 @@
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       TZ: "{{ tz }}"
     volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"
-    devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and sickbeard_mp4_automator and dev_dri.stat.exists) | default(false) else omit }}"
+    devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

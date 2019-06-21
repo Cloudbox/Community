@@ -25,10 +25,6 @@
 - name: Darkerr Tasks
   import_tasks: "subtasks/darkerr.yml"
 
-- name: Set 'suitarr_image' variable
-  set_fact:
-    suitarr_image: "{{ (sickbeard_mp4_automator | default(false,true)) | ternary('andrewkhunn/radarr','hotio/radarr') }}"
-
 - name: "Check if '/dev/dri' exists"
   stat:
     path: "/dev/dri"
@@ -45,7 +41,7 @@
 - name: Create and start container
   docker_container:
     name: "radarr{{ rolename }}"
-    image: "{{ suitarr_image }}"
+    image: "hotio/radarr"
     pull: yes
     published_ports:
       - "127.0.0.1:{{ roleport }}:7878"
@@ -60,7 +56,7 @@
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       TZ: "{{ tz }}"
     volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"
-    devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and sickbeard_mp4_automator and dev_dri.stat.exists) | default(false) else omit }}"
+    devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

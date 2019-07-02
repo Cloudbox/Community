@@ -1,0 +1,28 @@
+#########################################################################
+# Title:         Cloudbox Community: Sanity Check | Tags Check          #
+# Author(s):     desimaniac                                             #
+# URL:           https://github.com/cloudbox/cloudbox                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+# Source: http://blog.leifmadsen.com/blog/2017/01/04/finding-available-ansible-tags-in-playbooks-and-roles/
+- name: "Get all available tags"
+  shell: |
+    ansible-playbook community.yml --list-tags 2>&1 | grep "TASK TAGS" \
+      | cut -d":" -f2 | awk '{sub(/\[/, "")sub(/\]/, "")}1' | sed -e 's/,//g' | xargs -n 1 | sort -u
+  register: tags
+  changed_when: no
+
+- name: "List available tags"
+  debug:
+    msg: "{{ tags.stdout_lines | join(', ') }}"
+
+- name: "Ensure valid tags were provided."
+  assert:
+    that:
+      - '"{{ item }}" in tags.stdout_lines'
+    msg: "You must supply valid tags.')"
+  with_items: "{{ ansible_run_tags }}"

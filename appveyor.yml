@@ -21,6 +21,7 @@ environment:
   TAGS: >
     airsonic
     alltube
+    asshama
     bazarrx
     beets
     bitwarden
@@ -28,7 +29,9 @@ environment:
     calibre-rdp
     calibre-web
     deluge
+    delugevpn
     embystats
+    epms
     funkwhale
     gazee
     goplaxt
@@ -48,6 +51,7 @@ environment:
     sonarrx
     subsonic
     synclounge
+    unifi
     wordpress
     xteve
 

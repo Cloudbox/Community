@@ -1,0 +1,58 @@
+#########################################################################
+# Title:         Cloudbox: Unifi Controller       #
+# Author(s):     desimaniac                                             #
+# URL:           https://github.com/cloudbox/cloudbox                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: unifi
+  when: cloudflare_enabled
+
+- name: "Create unifi directories"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - "/opt/unifi"
+
+- name: "Stop and remove any existing container"
+  docker_container:
+    name: unifi
+    state: absent
+
+- name: "Pull unifi Docker image"
+  docker_image:
+    name: "linuxserver/unifi-controller:latest"
+
+- name: Create and start unifi container
+  docker_container:
+    name: unifi
+    image: "linuxserver/unifi-controller:latest"
+    published_ports:
+      - 3478:3478/udp
+      - 8080:8080
+    env:
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "unifi.{{ user.domain }}"
+      VIRTUAL_PORT: 8443
+      VIRTUAL_PROTO: https
+      LETSENCRYPT_HOST: "unifi.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/unifi:/config"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - unifi
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

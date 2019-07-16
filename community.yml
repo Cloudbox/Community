@@ -11,6 +11,7 @@
     - { role: pre_tasks, tags: ['pre_tasks']}
     - { role: airsonic, tags: ['airsonic'] }
     - { role: alltube, tags: ['alltube'] }
+    - { role: asshama, tags: ['asshama'] }
     - { role: bazarrx, tags: ['bazarrx'] }
     - { role: beets, tags: ['beets'] }
     - { role: bitwarden, tags: ['bitwarden'] }
@@ -19,7 +20,9 @@
     - { role: calibre-rdp, tags: ['calibre-rdp'] }
     - { role: calibre-web, tags: ['calibre-web'] }
     - { role: deluge, tags: ['deluge'] }
+    - { role: delugevpn, tags: ['delugevpn'] }
     - { role: embystats, tags: ['embystats'] }
+    - { role: epms, tags: ['epms'] }
     - { role: funkwhale, tags: ['funkwhale'] }
     - { role: gazee, tags: ['gazee'] }
     - { role: gitea, tags: ['gitea'] }
@@ -42,6 +45,7 @@
     - { role: subsonic, tags: ['subsonic'] }
     - { role: synclounge, tags: ['synclounge'] }
     - { role: telly, tags: ['telly'] }
+    - { role: unifi, tags: ['Unifi'] }
     - { role: wordpress, tags: ['wordpress'] }
     - { role: xteve, tags: ['xteve'] }
     - { role: kcptun-server, tags: ['kcptun-server'] }

@@ -1,0 +1,98 @@
+#########################################################################
+# Title:         Cloudbox: delugevpn                                    #
+# Author(s):     desimaniac                                             #
+# URL:           https://github.com/cloudbox/cloudbox                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: delugevpn
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: delugevpn
+    state: absent
+
+- name: Create deluge directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/delugevpn
+    - /opt/delugevpn/openvpn
+    - /opt/delugevpn/piaconfigs
+
+- name: Get the OpenVPN configuration files and certs
+  unarchive:
+    src: https://www.privateinternetaccess.com/openvpn/openvpn.zip
+    dest: /opt/delugevpn/piaconfigs
+    remote_src: yes
+
+- name: Copy Cert and config
+  copy: "src=/opt/delugevpn/piaconfigs/{{ item }} dest=/opt/delugevpn/openvpn"
+  with_items:
+    - "ca.rsa.2048.crt"
+    - "crl.rsa.2048.pem"
+    - "{{ delugevpn.vpn_endpoint|default('Netherlands.ovpn',true) }}"
+
+- name: Create new downloads directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  with_items:
+    - "{{ downloads.torrents }}"
+    - "{{ downloads.torrents }}/deluge"
+    - "{{ downloads.torrents }}/deluge/completed"
+    - "{{ downloads.torrents }}/deluge/incoming"
+    - "{{ downloads.torrents }}/deluge/watched"
+
+- name: Set default_volumes variable
+  set_fact:
+    default_volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/delugevpn:/config"
+      - "/opt/scripts:/scripts"
+      - "/mnt:/mnt"
+
+- name: Create and start container
+  docker_container:
+    name: delugevpn
+    image: "binhex/arch-delugevpn"
+    pull: yes
+    published_ports:
+      - "127.0.0.1:8112:8112"
+      - "58112:58112"
+      - "58846:58846"
+    capabilities: NET_ADMIN
+    env:
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "delugevpn.{{ user.domain }}"
+      VIRTUAL_PORT: 8112
+      LETSENCRYPT_HOST: "delugevpn.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      UMASK_SET: 022
+      VPN_ENABLED: "yes"
+      VPN_USER: "{{ delugevpn.vpn_user|default('username',true) }}"
+      VPN_PASS: "{{ delugevpn.vpn_pass|default('password',true) }}"
+      VPN_PROV: "{{ delugevpn.vpn_prov|default('pia',true) }}"
+      STRICT_PORT_FORWARD: "yes"
+      ENABLE_PRIVOXY: "no"
+      LAN_NETWORK: "172.18.0.1/16"
+      NAME_SERVERS: "209.222.18.222,84.200.69.80,37.235.1.174,1.1.1.1,209.222.18.218,37.235.1.177,84.200.70.40,1.0.0.1"
+      DELUGE_DAEMON_LOG_LEVEL: "info"
+      DELUGE_WEB_LOG_LEVEL: "info"
+      DEBUG: "false"
+    volumes: "{{ default_volumes + torrents_downloads_path|default([]) }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - delugevpn
+    purge_networks: yes
+    restart_policy: always
+    state: started

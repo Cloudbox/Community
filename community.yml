@@ -20,6 +20,7 @@
     - { role: calibre-web, tags: ['calibre-web'] }
     - { role: deluge, tags: ['deluge'] }
     - { role: embystats, tags: ['embystats'] }
+    - { role: filebot, tags: ['filebot'] }
     - { role: funkwhale, tags: ['funkwhale'] }
     - { role: gazee, tags: ['gazee'] }
     - { role: gitea, tags: ['gitea'] }

@@ -29,6 +29,7 @@ environment:
     calibre-web
     deluge
     embystats
+    filebot
     funkwhale
     gazee
     goplaxt

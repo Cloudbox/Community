@@ -23,6 +23,7 @@
     - { role: delugevpn, tags: ['delugevpn'] }
     - { role: embystats, tags: ['embystats'] }
     - { role: epms, tags: ['epms'] }
+    - { role: filebot, tags: ['filebot'] }
     - { role: funkwhale, tags: ['funkwhale'] }
     - { role: gazee, tags: ['gazee'] }
     - { role: gitea, tags: ['gitea'] }

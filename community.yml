@@ -1,4 +1,4 @@
-    ---
+---
 - hosts: localhost
   vars_files:
     - ['settings.yml', 'defaults/settings.yml.default']

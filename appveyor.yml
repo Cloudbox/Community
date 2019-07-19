@@ -31,7 +31,10 @@ environment:
     deluge
     delugevpn
     embystats
+<<<<<<< HEAD
     epms
+=======
+>>>>>>> refs/remotes/origin/filebot
     filebot
     funkwhale
     gazee

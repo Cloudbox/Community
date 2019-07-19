@@ -22,7 +22,10 @@
     - { role: deluge, tags: ['deluge'] }
     - { role: delugevpn, tags: ['delugevpn'] }
     - { role: embystats, tags: ['embystats'] }
+<<<<<<< HEAD
     - { role: epms, tags: ['epms'] }
+=======
+>>>>>>> refs/remotes/origin/filebot
     - { role: filebot, tags: ['filebot'] }
     - { role: funkwhale, tags: ['funkwhale'] }
     - { role: gazee, tags: ['gazee'] }

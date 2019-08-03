@@ -31,4 +31,4 @@ delugevpn:
   vpn_prov: pia
   vpn_endpoint: Netherlands.ovpn
 deluge:
-  version: latest
+  v2: true

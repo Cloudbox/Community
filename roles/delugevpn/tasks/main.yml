@@ -57,14 +57,14 @@
       - "/opt/scripts:/scripts"
       - "/mnt:/mnt"
       
-- name: Set 'delugevpn_version' variable
+- name: Set 'delugevpn_v2' variable
   set_fact:
-    delugevpn_version: "{{ (delugevpn.version | default(false,true)) | ternary('binhex/arch-delugevpn:1.3.15_18_ge050905b2-1-04','binhex/arch-delugevpn:latest') }}"
+    delugevpn_v2: "{{ (delugevpn.v2 | default(false,true)) | ternary('binhex/arch-delugevpn:1.3.15_18_ge050905b2-1-04','binhex/arch-delugevpn:latest') }}"
 
 - name: Create and start container
   docker_container:
     name: delugevpn
-    image: "{{ delugevpn_version}}"
+    image: "{{ delugevpn_v2}}"
     pull: yes
     published_ports:
       - "127.0.0.1:8112:8112"

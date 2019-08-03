@@ -30,3 +30,5 @@ delugevpn:
   vpn_pass: your_vpn_password
   vpn_prov: pia
   vpn_endpoint: Netherlands.ovpn
+deluge:
+  version: latest

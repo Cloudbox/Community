@@ -32,10 +32,14 @@
       - "/opt/scripts:/scripts"
       - "/mnt:/mnt"
 
+- name: Set 'deluge_version' variable
+  set_fact:
+    deluge_version: "{{ (deluge.version | default(v1,v2)) | ternary('linuxserver/deluge:latest','linuxserver/deluge:5b398f77-ls22') }}"
+
 - name: Create and start container
   docker_container:
     name: deluge
-    image: linuxserver/deluge
+    image: "{{ deluge_version}}"
     pull: yes
     published_ports:
       - "127.0.0.1:8112:8112"

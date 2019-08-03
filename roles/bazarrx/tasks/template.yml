@@ -9,21 +9,6 @@
     subdomain: "bazarr{{ rolename }}"
   when: cloudflare_enabled
 
-- name: "Gather list of bazarrx Docker containers"
-  shell: "docker ps -a --format '{{ '{{' }} .Names{{ '}}' }}' --filter label=com.github.cloudbox.community=bazarrx | xargs echo -n"
-  register: cloudbox_community_bazarrx
-  ignore_errors: yes
-
-- name: "Stop all bazarrx Docker containers"
-  shell: "docker stop {{ cloudbox_community_bazarrx.stdout }}"
-  ignore_errors: yes
-  when: (cloudbox_community_bazarrx.stdout | trim | length > 0)
-
-- name: "Remove all bazarrx Docker containers"
-  shell: "docker stop {{ cloudbox_community_bazarrx.stdout }}"
-  ignore_errors: yes
-  when: (cloudbox_community_bazarrx.stdout | trim | length > 0)
-
 - name: Create bazarrx directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:

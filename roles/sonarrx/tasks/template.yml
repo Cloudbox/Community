@@ -9,21 +9,6 @@
     subdomain: "sonarr{{ rolename }}"
   when: cloudflare_enabled
 
-- name: "Gather list of sonarrx Docker containers"
-  shell: "docker ps -a --format '{{ '{{' }} .Names{{ '}}' }}' --filter label=com.github.cloudbox.community=sonarrx | xargs echo -n"
-  register: cloudbox_community_sonarrx
-  ignore_errors: yes
-
-- name: "Stop all sonarrx Docker containers"
-  shell: "docker stop {{ cloudbox_community_sonarrx.stdout }}"
-  ignore_errors: yes
-  when: (cloudbox_community_sonarrx.stdout | trim | length > 0)
-
-- name: "Remove all sonarrx Docker containers"
-  shell: "docker stop {{ cloudbox_community_sonarrx.stdout }}"
-  ignore_errors: yes
-  when: (cloudbox_community_sonarrx.stdout | trim | length > 0)
-    
 - name: Suitarr Migration Tasks
   import_tasks: "subtasks/suitarr_migration.yml"
 

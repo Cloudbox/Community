@@ -34,7 +34,7 @@
 
 - name: Set 'deluge_v2' variable
   set_fact:
-    deluge_version: "{{ (deluge.v2 | default(false,true)) | ternary('linuxserver/deluge:5b398f77-ls22','linuxserver/deluge:latest') }}"
+    deluge_v2: "{{ (deluge.v2 | default(false,true)) | ternary('linuxserver/deluge:latest','linuxserver/deluge:5b398f77-ls22') }}"
 
 - name: Create and start container
   docker_container:

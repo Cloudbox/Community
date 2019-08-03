@@ -59,7 +59,7 @@
       
 - name: Set 'delugevpn_v2' variable
   set_fact:
-    delugevpn_v2: "{{ (delugevpn.v2 | default(false,true)) | ternary('binhex/arch-delugevpn:1.3.15_18_ge050905b2-1-04','binhex/arch-delugevpn:latest') }}"
+    delugevpn_v2: "{{ (delugevpn.v2 | default(false,true)) | ternary('binhex/arch-delugevpn:latest','binhex/arch-delugevpn:1.3.15_18_ge050905b2-1-04') }}"
 
 - name: Create and start container
   docker_container:

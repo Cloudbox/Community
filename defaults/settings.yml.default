@@ -26,10 +26,10 @@ synclounge:
   domain:
   subdomain: synclounge
 delugevpn:
-  v2: true
+  version: v2
   vpn_user: your_vpn_username
   vpn_pass: your_vpn_password
   vpn_prov: pia
   vpn_endpoint: Netherlands.ovpn
 deluge:
-  v2: true
+  version: v2

@@ -48,6 +48,7 @@ environment:
     monitorr
     myjdownloader
     mylar
+    pyload
     qbittorrent
     radarrx
     sonarrx

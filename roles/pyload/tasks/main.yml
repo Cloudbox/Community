@@ -19,7 +19,7 @@
 - name: Create new downloads directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
   with_items:
-    - /mnt/local/downloads/pyload"
+    - /mnt/local/downloads/pyload
   
 - name: Set default_volumes variable
   set_fact:

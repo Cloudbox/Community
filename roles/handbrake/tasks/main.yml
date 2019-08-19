@@ -1,0 +1,60 @@
+#########################################################################
+# Title:         Community: Handbrake Role                              #
+# Author(s):     Satz                                                   #
+# URL:           https://github.com/Cloudbox/Community                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: handbrake
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: handbrake
+    state: absent
+
+- name: Create handbrake directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/handbrake
+
+- name: Create and start container
+  docker_container:
+    name: handbrake
+    image: jlesage/handbrake
+    pull: yes
+    published_ports:
+      - "127.0.0.1:6900:5800"
+    env:
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "handbrake.{{ user.domain }}"
+      VIRTUAL_PORT: 5800
+      LETSENCRYPT_HOST: "handbrake.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      CLEAN_TMP_DIR: "1"
+      ENABLE_CJK_FONT: "1"
+    devices:
+      - "/dev/dri:/dev/dri"    
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/handbrake:/config:rw"
+      - "/mnt:/storage:ro"
+      - "/mnt/local/downloads/handbrake/watch:/watch:rw"
+      - "/mnt/local/downloads/handbrake/output:/output:rw"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - handbrake
+    purge_networks: yes
+    restart_policy: always
+    state: started

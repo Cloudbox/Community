@@ -36,6 +36,7 @@ environment:
     funkwhale
     gazee
     goplaxt
+    handbrake
     invoiceninja
     jellyfin
     jirafeau

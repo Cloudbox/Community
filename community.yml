@@ -29,6 +29,7 @@
     - { role: gitea, tags: ['gitea'] }
     - { role: goplaxt, tags: ['goplaxt'] }
     - { role: guacamole, tags: ['guacamole'] }
+    - { role: handbrake, tags: ['handbrake'] }
     - { role: invoiceninja, tags: ['invoiceninja'] }
     - { role: jellyfin, tags: ['jellyfin'] }
     - { role: jirafeau, tags: ['jirafeau'] }

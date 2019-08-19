@@ -75,6 +75,7 @@ Please note some roles are only available in develop.
 - **funkwhale**
 - **gazee** - comic book reader
 - **[goplaxt](../../wiki/Goplaxt)** - [goplaxt](https://github.com/XanderStrike/goplaxt) Plex/Trakt Scrobbler
+- **Handbrake** - GUI application (no installation or configuration needed on client-side)
 - **invoiceninja**
 - **jellyfin** - [jellyfin](https://github.com/jellyfin/jellyfin) emby fork
 - **kitana** - A responsive Plex plugin web frontend

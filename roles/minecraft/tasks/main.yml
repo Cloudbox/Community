@@ -21,7 +21,7 @@
     image: itzg/minecraft-server
     pull: yes
     published_ports:
-      - "127.0.0.1:25565:25565"
+      - "25565:25565"
     env:
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"

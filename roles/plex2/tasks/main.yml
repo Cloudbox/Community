@@ -1,0 +1,80 @@
+#########################################################################
+# Title:         Cloudbox Community: Plex2                              #
+# Author(s):     desimaniac                                             #
+# URL:           https://github.com/Cloudbox/Community                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: "{{ plex2_subdomain }}"
+  when: cloudflare_enabled
+
+- name: "Create Plex2 directories"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items: "{{ plex2_folders }}"
+
+- name: "Stop and remove any existing container"
+  docker_container:
+    name: plex2
+    state: absent
+
+- name: "Pull Plex Docker image"
+  docker_image:
+    name: "{{ plex2_docker_image }}"
+
+- name: "Check if '/dev/dri' exists"
+  stat:
+    path: "/dev/dri"
+  register: dev_dri
+
+- name: Preferences Tasks
+  import_tasks: "subtasks/preferences.yml"
+  when: (not continuous_integration)
+
+- name: "Create and start container"
+  docker_container:
+    name: plex2
+    image: "{{ plex2_docker_image }}"
+    pull: yes
+    env:
+      PLEX_UID: "{{ uid }}"
+      PLEX_GID: "{{ gid }}"
+      PLEX_CLAIM: "{{ (plex2_claim_code) | default(omit) }}"
+      CHANGE_CONFIG_DIR_OWNERSHIP: false
+      ADVERTISE_IP: "http://{{ plex2_subdomain }}.{{ user.domain }}:80/,https://{{ plex2_subdomain }}.{{ user.domain }}:443/"
+      VIRTUAL_HOST: "{{ plex2_subdomain }}.{{ user.domain }}"
+      VIRTUAL_PORT: 32400
+      LETSENCRYPT_HOST: "{{ plex2_subdomain }}.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      HTTPS_METHOD: noredirect
+      HEALTHCHECK_MOUNT: /mnt/unionfs
+      NVIDIA_DRIVER_CAPABILITIES: "{{ 'compute,video,utility' if (gpu.nvidia.enabled) | default(false) else omit }}"
+      NVIDIA_VISIBLE_DEVICES: "{{ 'all' if (gpu.nvidia.enabled) | default(false) else omit }}"
+      TZ: "{{ tz }}"
+    volumes: "{{ plex2_docker_volumes }}"
+    devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"
+    etc_hosts: "{{ plex2_docker_hosts }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - plex2
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started
+
+# Sometimes docker will set transcodes folder to root after a restore.
+- name: "Ensure transcodes folder has the correct permissions"
+  file:
+    path: "{{ plex.transcodes }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+    recurse: yes

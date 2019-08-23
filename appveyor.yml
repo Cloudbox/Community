@@ -49,6 +49,7 @@ environment:
     monitorr
     myjdownloader
     mylar
+    plex2
     qbittorrent
     radarrx
     sonarrx

@@ -49,11 +49,7 @@ environment:
     monitorr
     myjdownloader
     mylar
-<<<<<<< HEAD
     pyload
-=======
-    plex2
->>>>>>> 4254441bd06af7f02a7e05acf11426aaa2809d34
     qbittorrent
     radarrx
     sonarrx

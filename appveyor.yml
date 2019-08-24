@@ -36,6 +36,7 @@ environment:
     funkwhale
     gazee
     goplaxt
+    handbrake
     invoiceninja
     jellyfin
     jirafeau
@@ -48,7 +49,11 @@ environment:
     monitorr
     myjdownloader
     mylar
+<<<<<<< HEAD
     pyload
+=======
+    plex2
+>>>>>>> 4254441bd06af7f02a7e05acf11426aaa2809d34
     qbittorrent
     radarrx
     sonarrx
@@ -99,7 +104,8 @@ install:
           echo ""
           echo Running Tag: $TAG
           sudo ansible-playbook community.yml --tags $TAG \
-              --skip-tags sanity_check,settings
+              --skip-tags sanity_check,settings \
+              --extra-vars '{"continuous_integration":true}'
           docker stop $TAG &> /dev/null || true
           docker rm $TAG &> /dev/null || true
           docker image prune -af &> /dev/null || true

@@ -30,8 +30,7 @@
     name: speedtest
     image: "satzisa/html5-speedtest"
     pull: yes
-    published_ports:
-      - "0.0.0.0:3033:80"
+    
     env:
       BACKUP: "yes"
       UID: "{{ uid }}"

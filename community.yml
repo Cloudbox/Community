@@ -55,3 +55,4 @@
     - { role: kcptun-server, tags: ['kcptun-server'] }
     - { role: kcptun-client, tags: ['kcptun-client'] }
     - { role: filebrowser, tags: ['filebrowser'] }
+    - { role: coder, tags: ['coder']}

@@ -54,6 +54,7 @@ environment:
     qbittorrent
     radarrx
     sonarrx
+    speedtest
     subsonic
     synclounge
     unifi

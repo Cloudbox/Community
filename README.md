@@ -92,7 +92,7 @@ Please note some roles are only available in develop.
 - **sonarr1080** - Additional Sonarr
 - **sonarrv3** - Sonar phantom (v3) branch based role
 - **[sonarrX](../../wiki/SonarrX)** - Experimental Sonarr v3 role to create multiple roles
-- **[speedtest](/adolfintel/speedtest)** - Self-hosted HTML5 Speedtest
+- **[speedtest](https://github.com/adolfintel/speedtest)** - Self-hosted HTML5 Speedtest
 - **subsonic**
 - **telly** - Set version in telly.yml. Choices are `1.0`, `1.1`, and `1.5`. These can be quoted or non-quoted. Includes Telly 1.0 (Needs settings from `telly10` section in `telly.yml`), 1.1 dev branch (Needs settings from the `telly11` section  in  `telly.yml`) and 1.5 unsupported alpha build (does not need any settings from `telly.yml`).
 - **[Wordpress](../../wiki/Wordpress)** - Wordpress deployment

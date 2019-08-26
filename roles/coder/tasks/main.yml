@@ -1,0 +1,47 @@
+---    
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: coder
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing containers
+  docker_container: "name={{ item }} state=absent"
+  with_items:
+    - coder
+
+- name: Create required directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/coder
+   
+- name: Create and start coder container
+  docker_container:
+    name: coder
+    image: "codercom/code-server"
+    pull: yes
+    published_ports:
+      - "127.0.0.1:8143:8443"
+    env:
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "coder.{{ user.domain }}"
+      VIRTUAL_PORT: 8143
+      LETSENCRYPT_HOST: "coder.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/home/seed/workspaces:/home/coder/project"
+      - "/mnt:/mnt"
+      - "/opt:/host_opt" 
+      - "/home/seed:/home/coder/host"
+    command: "--allow-http"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - coder
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

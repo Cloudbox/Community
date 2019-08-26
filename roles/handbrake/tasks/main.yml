@@ -24,7 +24,12 @@
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/handbrake
-
+    
+- name: "Check if '/dev/dri' exists"
+  stat:
+    path: "/dev/dri"
+  register: dev_dri
+   
 - name: Create and start container
   docker_container:
     name: handbrake
@@ -40,15 +45,14 @@
       LETSENCRYPT_HOST: "handbrake.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       CLEAN_TMP_DIR: "1"
-      ENABLE_CJK_FONT: "1"
-    devices:
-      - "/dev/dri:/dev/dri"    
+      ENABLE_CJK_FONT: "1"    
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/handbrake:/config:rw"
       - "/mnt:/storage:ro"
       - "/mnt/local/downloads/handbrake/watch:/watch:rw"
       - "/mnt/local/downloads/handbrake/output:/output:rw"
+    devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"  
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

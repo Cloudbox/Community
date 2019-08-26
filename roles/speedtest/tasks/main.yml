@@ -30,9 +30,8 @@
     name: speedtest
     image: "satzisa/html5-speedtest"
     pull: yes
-    
     env:
-      BACKUP: "yes"
+      BACKUP: "no"
       UID: "{{ uid }}"
       GID: "{{ gid }}"
       VIRTUAL_HOST: "speedtest.{{ user.domain }}"

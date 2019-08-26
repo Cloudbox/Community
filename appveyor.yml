@@ -27,6 +27,7 @@ environment:
     bookstack
     calibre-rdp
     calibre-web
+    coder
     deluge
     embystats
     funkwhale

@@ -46,6 +46,7 @@
     - { role: qbittorrent, tags: ['qbittorrent'] }
     - { role: radarrx, tags: ['radarrx'] }
     - { role: sonarrx, tags: ['sonarrx'] }
+    - { role: speedtest, tags: ['speedtest'] }
     - { role: subsonic, tags: ['subsonic'] }
     - { role: synclounge, tags: ['synclounge'] }
     - { role: telly, tags: ['telly'] }

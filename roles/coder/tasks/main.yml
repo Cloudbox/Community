@@ -40,10 +40,10 @@
       LETSENCRYPT_HOST: "coder.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/home/seed/workspaces:/home/coder/project"
+      - "/home/{{ user.name }}/workspaces:/home/coder/project"
       - "/mnt:/mnt"
       - "/opt:/host_opt" 
-      - "/home/seed:/home/coder/host"
+      - "/home/{{ user.name }}:/home/coder/host"
     command: "--allow-http"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

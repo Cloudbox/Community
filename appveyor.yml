@@ -53,6 +53,7 @@ environment:
     qbittorrent
     radarrx
     sonarrx
+    speedtest
     sshwifty
     subsonic
     synclounge

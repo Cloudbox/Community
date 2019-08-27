@@ -31,7 +31,6 @@ environment:
     coder
     deluge
     delugevpn
-    embystats
     epms
     filebot
     funkwhale

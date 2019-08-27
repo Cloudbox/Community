@@ -53,6 +53,7 @@ environment:
     qbittorrent
     radarrx
     sonarrx
+    sshwifty
     subsonic
     synclounge
     unifi

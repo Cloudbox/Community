@@ -45,6 +45,7 @@
     - { role: plex2, tags: ['plex2'] }
     - { role: qbittorrent, tags: ['qbittorrent'] }
     - { role: radarrx, tags: ['radarrx'] }
+    - { role: sshwifty, tags: ['sshwifty']}
     - { role: sonarrx, tags: ['sonarrx'] }
     - { role: subsonic, tags: ['subsonic'] }
     - { role: synclounge, tags: ['synclounge'] }

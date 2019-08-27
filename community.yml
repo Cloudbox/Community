@@ -47,6 +47,7 @@
     - { role: radarrx, tags: ['radarrx'] }
     - { role: sshwifty, tags: ['sshwifty']}
     - { role: sonarrx, tags: ['sonarrx'] }
+    - { role: speedtest, tags: ['speedtest'] }
     - { role: subsonic, tags: ['subsonic'] }
     - { role: synclounge, tags: ['synclounge'] }
     - { role: telly, tags: ['telly'] }
@@ -56,3 +57,4 @@
     - { role: kcptun-server, tags: ['kcptun-server'] }
     - { role: kcptun-client, tags: ['kcptun-client'] }
     - { role: filebrowser, tags: ['filebrowser'] }
+    - { role: coder, tags: ['coder']}

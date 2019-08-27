@@ -28,6 +28,7 @@ environment:
     bookstack
     calibre-rdp
     calibre-web
+    coder
     deluge
     delugevpn
     embystats

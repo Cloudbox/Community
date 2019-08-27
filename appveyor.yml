@@ -28,13 +28,16 @@ environment:
     bookstack
     calibre-rdp
     calibre-web
+    coder
     deluge
     delugevpn
     embystats
     epms
+    filebot
     funkwhale
     gazee
     goplaxt
+    handbrake
     invoiceninja
     jellyfin
     jirafeau
@@ -43,12 +46,16 @@ environment:
     logarr
     mediabutler
     mellow
+    minecraft
     monitorr
     myjdownloader
     mylar
+    plex2
     qbittorrent
     radarrx
     sonarrx
+    speedtest
+    sshwifty
     subsonic
     synclounge
     unifi
@@ -96,7 +103,8 @@ install:
           echo ""
           echo Running Tag: $TAG
           sudo ansible-playbook community.yml --tags $TAG \
-              --skip-tags sanity_check,settings
+              --skip-tags sanity_check,settings \
+              --extra-vars '{"continuous_integration":true}'
           docker stop $TAG &> /dev/null || true
           docker rm $TAG &> /dev/null || true
           docker image prune -af &> /dev/null || true

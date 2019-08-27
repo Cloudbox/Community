@@ -9,11 +9,6 @@
     subdomain: "sonarr{{ rolename }}"
   when: cloudflare_enabled
 
-- name: Stop and remove any existing container
-  docker_container:
-    name: "sonarr{{ rolename }}"
-    state: absent
-    
 - name: Suitarr Migration Tasks
   import_tasks: "subtasks/suitarr_migration.yml"
 
@@ -71,6 +66,7 @@
     devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
+      "com.github.cloudbox.community": "sonarrx"
     networks:
       - name: cloudbox
         aliases:

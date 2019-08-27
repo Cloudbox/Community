@@ -57,10 +57,14 @@
       - "/opt/scripts:/scripts"
       - "/mnt:/mnt"
 
+- name: Set 'deluge_docker_image' variable
+  set_fact:
+    deluge_docker_image: "{{ (delugevpn.version | lower == 'v2') | ternary('binhex/arch-delugevpn:latest','binhex/arch-delugevpn:1.3.15_18_ge050905b2-1-04') }}"
+
 - name: Create and start container
   docker_container:
     name: delugevpn
-    image: "binhex/arch-delugevpn"
+    image: "{{ deluge_docker_image }}"
     pull: yes
     published_ports:
       - "127.0.0.1:8112:8112"

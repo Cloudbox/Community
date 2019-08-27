@@ -55,6 +55,7 @@ environment:
     radarrx
     sonarrx
     speedtest
+    sshwifty
     subsonic
     synclounge
     unifi

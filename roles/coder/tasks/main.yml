@@ -35,6 +35,7 @@
     env:
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
+      PASSWORD: "{{ user.pass }}"
       VIRTUAL_HOST: "coder.{{ user.domain }}"
       VIRTUAL_PORT: 8143
       LETSENCRYPT_HOST: "coder.{{ user.domain }}"

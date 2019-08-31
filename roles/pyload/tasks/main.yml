@@ -1,0 +1,64 @@
+#########################################################################
+# Title:         Cloudbox Community: pyLoad                             #
+# Author(s):     Tr4il                                                  #
+# URL:           https://github.com/Cloudbox/Community                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: pyload
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: pyload
+    state: absent
+
+- name: Create pyload directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/pyload
+
+- name: Create new downloads directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  with_items:
+    - /mnt/local/downloads/pyload
+  
+- name: Set default_volumes variable
+  set_fact:
+    default_volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/opt/pyload:/config"
+      - "/opt/scripts:/opt/scripts"
+      - "/mnt/local/downloads/pyload:/downloads"
+      - "/mnt:/mnt"
+
+- name: Create and start container
+  docker_container:
+    name: pyload
+    image: cobraeti/pyload
+    pull: yes
+    env:
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "pyload.{{ user.domain }}"
+      VIRTUAL_PORT: 8000
+      LETSENCRYPT_HOST: "pyload.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes: "{{ default_volumes }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - pyload
+    purge_networks: yes
+    restart_policy: always
+    state: started

@@ -50,6 +50,7 @@ environment:
     myjdownloader
     mylar
     plex2
+    pyload
     qbittorrent
     radarrx
     sonarrx

@@ -41,7 +41,7 @@
       LETSENCRYPT_HOST: "books.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       USE_CONFIG_DIR: true
-      DOCKER_MODS=linuxserver/calibre-web:calibre
+      DOCKER_MODS: linuxserver/calibre-web:calibre
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/mnt/unionfs/Media/Books:/books"

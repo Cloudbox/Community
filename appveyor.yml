@@ -77,8 +77,9 @@ install:
       cp -n defaults/ansible.cfg.default ansible.cfg
       cp -n defaults/settings.yml.default settings.yml
       sudo ansible-playbook community.yml --syntax-check
-      echo ""
+      RC=$?; [ $RC -eq 0 ] || exit $RC;
   - sh: |
+      echo ""
       echo "=========================="
       echo ""
       echo "Cloudbox Branch: $APPVEYOR_REPO_BRANCH"
@@ -91,8 +92,8 @@ install:
           --skip-tags sanity_check,settings \
           --extra-vars '{"continuous_integration":true}' \
           &> /dev/null
-      echo ""
   - sh: |
+      echo ""
       echo "=========================="
       echo ""
       echo "Community Roles:"
@@ -106,6 +107,7 @@ install:
           sudo ansible-playbook community.yml --tags $TAG \
               --skip-tags sanity_check,settings \
               --extra-vars '{"continuous_integration":true}'
+          RC=$?; [ $RC -eq 0 ] || exit $RC;
           docker stop $TAG &> /dev/null || true
           docker rm $TAG &> /dev/null || true
           docker image prune -af &> /dev/null || true

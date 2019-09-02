@@ -74,6 +74,7 @@ Please note some roles are only available in develop.
 - **embystats**
 - **funkwhale**
 - **gazee** - comic book reader
+- **[glances](http://nicolargo.github.io/glances/)** - Please have a look at the [official documentation](https://glances.readthedocs.io/en/latest/).
 - **[goplaxt](../../wiki/Goplaxt)** - [goplaxt](https://github.com/XanderStrike/goplaxt) Plex/Trakt Scrobbler
 - **Handbrake** - GUI application (no installation or configuration needed on client-side)
 - **invoiceninja**

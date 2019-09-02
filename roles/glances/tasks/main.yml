@@ -33,7 +33,7 @@
 
 - name: "Copy conf file if it doesnt exist"
   copy:
-    src: ./../config/glances.conf
+    src: glances.conf
     dest: /opt/glances/config/glances.conf
     force: yes
     owner: "{{ user.name }}"

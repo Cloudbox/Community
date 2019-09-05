@@ -1,0 +1,28 @@
+#########################################################################
+# Title:         Cloudbox Community: Embystats                          #
+# Author(s):     Satz                                                   #
+# URL:           https://github.com/Cloudbox/Community                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Check folder exists
+  stat:
+    path: /opt/embystats
+  register: folder
+
+- name: Check subfolder exists
+  stat:
+    path: /opt/embystats/config
+  register: subfolder
+
+- name: Move 'embystats' folder contents to 'config' subfolder
+  shell: |
+    mv /opt/embystats /tmp/config
+    mkdir /opt/embystats
+    mv /tmp/config /opt/embystats/
+    find /opt/embystats/* -type d -empty -delete
+    chown -R {{ user.name }}:{{ user.name }} /opt/embystats
+  when: (folder.stat.exists) and not (subfolder.stat.exists)

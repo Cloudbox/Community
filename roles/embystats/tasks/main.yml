@@ -1,0 +1,68 @@
+#########################################################################
+# Title:         Cloudbox Community: Embystats                          #
+# Author(s):     Satz                                                   #
+# URL:           https://github.com/Cloudbox/Community                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: embystats
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: embystats
+    state: absent
+
+- name: Skip replace already exiting files
+  import_tasks: "subtasks/replace.yml"
+
+- name: Create embystats directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/embystats
+    - /opt/embystats/config
+
+- name: Create and start container
+  docker_container:
+    name: embystats
+    image: "uping/embystat:nightly-ubuntu-x64"
+    pull: yes
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/embystats/config:/app/config:rw"
+    env:
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "embystats.{{ user.domain }}"
+      VIRTUAL_PORT: 6555
+      LETSENCRYPT_HOST: "embystats.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - embystats
+    purge_networks: yes
+    restart_policy: always
+    state: started
+
+- name: "Wait 10 second for files to create"
+  shell: |
+    sleep 10
+
+- name: "Change ownership of config folder"
+  file:
+    path: /opt/embystats/config
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+    recurse: yes
+

@@ -1,0 +1,73 @@
+#########################################################################
+# Title:           Cloudbox Community: EmbyStat                         #
+# Author(s):       Satz                                                 #
+# URL:             https://github.com/Cloudbox/Community                #
+# Docker Image(s): uping/embystat                                       #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: embystat
+  when: cloudflare_enabled
+
+- name: Stop and remove existing legacy container
+  docker_container:
+    name: embystats
+    state: absent
+
+- name: Stop and remove existing container
+  docker_container:
+    name: embystat
+    state: absent
+
+- name: Move existing files into 'config' subfolder if needed
+  import_tasks: "subtasks/migration.yml"
+
+- name: Create embystat directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/embystat
+    - /opt/embystat/config
+
+- name: Create and start container
+  docker_container:
+    name: embystat
+    image: "uping/embystat:nightly-ubuntu-x64"
+    pull: yes
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/embystat/config:/app/config:rw"
+    env:
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "embystat.{{ user.domain }}"
+      VIRTUAL_PORT: 6555
+      LETSENCRYPT_HOST: "embystat.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - embystat
+    purge_networks: yes
+    restart_policy: always
+    state: started
+
+- name: Sleep for 10 seconds and continue
+  wait_for:
+    timeout: 10
+
+- name: "Change ownership of config folder"
+  file:
+    path: /opt/embystat/config
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+    recurse: yes

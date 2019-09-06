@@ -71,7 +71,7 @@ Please note some roles are only available in develop.
 - **calibre-rdp** - Media path set to `/Media/Books`
 - **calibre-web** - Loads opt/calibre  (uses calibre-rdp db)
 - **[deluge](../../wiki/Deluge)** - Deluge torrent client
-- **embystats**
+- **[embystat](https://github.com/mregni/EmbyStat)**
 - **funkwhale**
 - **gazee** - comic book reader
 - **[glances](http://nicolargo.github.io/glances/)** - Please have a look at the [official documentation](https://glances.readthedocs.io/en/latest/).

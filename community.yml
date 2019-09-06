@@ -21,6 +21,7 @@
     - { role: calibre-web, tags: ['calibre-web'] }
     - { role: deluge, tags: ['deluge'] }
     - { role: delugevpn, tags: ['delugevpn'] }
+    - { role: embystat, tags: ['embystat'] }
     - { role: epms, tags: ['epms'] }
     - { role: filebot, tags: ['filebot'] }
     - { role: funkwhale, tags: ['funkwhale'] }

@@ -1,0 +1,44 @@
+#########################################################################
+# Title:         Cloudbox Community: EmbyStat                           #
+# Author(s):     Satz                                                   #
+# URL:           https://github.com/Cloudbox/Community                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Check if older folder exists
+  stat:
+    path: /opt/embystats
+  register: old_folder
+
+- name: Check folder exists
+  stat:
+    path: /opt/embystat
+  register: folder
+
+- name: Rename '/opt' folder 'embystats' to 'embystat'
+  shell: |
+    mv /opt/embystats /opt/embystat
+    chown -R {{ user.name }}:{{ user.name }} /opt/embystat
+  when: (old_folder.stat.exists) and not (folder.stat.exists)
+
+- name: Check folder exists
+  stat:
+    path: /opt/embystat
+  register: folder
+
+- name: Check subfolder exists
+  stat:
+    path: /opt/embystat/config
+  register: subfolder
+
+- name: Move '/opt/embystat' folder contents to 'config' subfolder
+  shell: |
+    mv /opt/embystat /tmp/config
+    mkdir /opt/embystat
+    mv /tmp/config /opt/embystat/
+    find /opt/embystat/* -type d -empty -delete
+    chown -R {{ user.name }}:{{ user.name }} /opt/embystat
+  when: (folder.stat.exists) and not (subfolder.stat.exists)

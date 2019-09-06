@@ -1,7 +1,8 @@
 #########################################################################
-# Title:         Cloudbox Community: sshwifty                           #
-# Author(s):     astromd                                                #
-# URL:           https://github.com/Cloudbox/Community                  #
+# Title:            Cloudbox Community: Sshwifty                        #
+# Author(s):        astromd                                             #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  niruix/sshwifty                                     #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################

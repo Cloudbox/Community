@@ -1,3 +1,14 @@
+#########################################################################
+# Title:            Cloudbox Community: RadarrX | Template              #
+# Author(s):        Superduper09, Migz93                                #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  hotio/radarr                                        #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
 - name: "Install named radarr role"
   debug:
     msg: "Installing {{ rolename }} using port {{ roleport }}"
@@ -8,7 +19,7 @@
   vars:
     subdomain: "radarr{{ rolename }}"
   when: cloudflare_enabled
-   
+
 - name: Suitarr Migration Tasks
   import_tasks: "subtasks/suitarr_migration.yml"
 
@@ -16,7 +27,7 @@
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - "/opt/radarr{{ rolename }}"
-    
+
 - name: Darkerr Tasks
   import_tasks: "subtasks/darkerr.yml"
 

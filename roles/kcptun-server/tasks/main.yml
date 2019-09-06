@@ -1,3 +1,13 @@
+#########################################################################
+# Title:            Cloudbox Community: kcptun Server                   #
+# Author(s):        RXWatcher                                           #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  horjulf/kcptun                                      #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
 ---
 - name: Stop and remove any existing container
   docker_container:
@@ -24,7 +34,7 @@
     group: "{{ user.name }}"
     mode: 0775
   when: not kcptun_config.stat.exists
-  
+
 - name: Create and start container
   docker_container:
     name: kcptun-server

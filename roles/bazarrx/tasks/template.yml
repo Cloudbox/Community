@@ -1,3 +1,14 @@
+#########################################################################
+# Title:            Cloudbox Community: BazarrX | Template              #
+# Author(s):        Migz93                                              #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  linuxserver/bazarr                                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
 - name: "Install named bazarr role"
   debug:
     msg: "Installing {{ rolename }} using port {{ roleport }}"
@@ -23,7 +34,7 @@
       - "/mnt:/mnt"
       - "/mnt/unionfs/Media/TV:/tv"
       - "/mnt/unionfs/Media/Movies:/movies"
-     
+
 - name: Create and start container
   docker_container:
     name: "bazarr{{ rolename }}"

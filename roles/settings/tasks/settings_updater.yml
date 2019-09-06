@@ -1,6 +1,6 @@
 #########################################################################
-# Title:         Settings: Settings Updater                             #
-# Author(s):     l3uddz, desimaniac & Migz93 (Community edition)        #
+# Title:         Cloudbox Community: Settings | Settings Updater        #
+# Author(s):     l3uddz, desimaniac, Migz93                             #
 # URL:           https://github.com/cloudbox/cloudbox                   #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
@@ -26,7 +26,7 @@
       mode: 0664
       force: yes
     when: not file0.stat.exists
-  
+
   # Decryption Tasks
   - name: Decryption Block
     block:

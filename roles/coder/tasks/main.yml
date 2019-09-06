@@ -1,13 +1,14 @@
 #########################################################################
-# Title:         Cloudbox Community: Coder Role                         #
-# Author(s):     astroMD                                                #
-# URL:           https://github.com/Cloudbox/Community                  #
+# Title:            Cloudbox Community: Coder Role                      #
+# Author(s):        astroMD                                             #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  codercom/code-server                                #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
 #                   GNU General Public License v3.0                     #
 #########################################################################
----    
+---
 - name: "Setting CloudFlare DNS Record"
   include_role:
     name: cloudflare
@@ -24,7 +25,7 @@
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/coder
-   
+
 - name: Create and start coder container
   docker_container:
     name: coder
@@ -43,7 +44,7 @@
     volumes:
       - "/home/{{ user.name }}/workspaces:/home/coder/project"
       - "/mnt:/mnt"
-      - "/opt:/host_opt" 
+      - "/opt:/host_opt"
       - "/home/{{ user.name }}:/home/coder/host"
     command: "--allow-http"
     labels:

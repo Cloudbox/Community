@@ -1,3 +1,14 @@
+#########################################################################
+# Title:            Cloudbox Community: Jellyfin                        #
+# Author(s):        maximuskowalski                                     #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  jellyfin/jellyfin                                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
 - name: "Set DNS Record on CloudFlare"
   include_role:
     name: cloudflare
@@ -28,12 +39,12 @@
     group: "{{ user.name }}"
     mode: 0775
     force: no
-    
+
 - name: "Check if 'system.xml' exists"
   stat:
     path: "/opt/jellyfin/config/system.xml"
   register: jellyfin_system_xml
-    
+
 - name: "Check if '/dev/dri' exists"
   stat:
     path: "/dev/dri"
@@ -44,7 +55,6 @@
     name: jellyfin
     image: "jellyfin/jellyfin:latest"
     pull: yes
-
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/mnt:/mnt:rw"
@@ -85,7 +95,7 @@
     group: "{{ user.name }}"
     mode: 0775
     recurse: yes
-    
+
 - name: Settings Tasks
   include_tasks: "jellyfin_settings.yml"
   when: not (

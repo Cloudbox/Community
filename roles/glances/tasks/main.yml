@@ -1,7 +1,8 @@
 #########################################################################
-# Title:         Cloudbox Community: Glances Role                       #
-# Author(s):     Satz                                                   #
-# URL:           https://github.com/Cloudbox/Community                  #
+# Title:            Cloudbox Community: Glances                         #
+# Author(s):        Satz                                                #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  satzisa/glances                                     #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################

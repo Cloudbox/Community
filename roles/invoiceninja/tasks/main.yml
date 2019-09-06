@@ -1,8 +1,18 @@
+#########################################################################
+# Title:            Cloudbox Community: Invoice Ninja                   #
+# Author(s):        RXWatcher                                           #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  rxwatcher/docker-invoiceninja-nginx                 #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
 ---
 - name: MariaDB Role
   include_role:
     name: mariadb
-    
+
 - name: "sleep for 20 seconds and continue"
   wait_for: timeout=20
 
@@ -43,7 +53,6 @@
     mode: 0775
   when: not invoiceninja_env.stat.exists
 
-    
 - name: "Create invoiceninja database"
   command: "docker exec mariadb mysql -u root -ppassword321 -e 'create schema invoiceninja DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;'"
   ignore_errors: yes

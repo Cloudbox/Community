@@ -1,7 +1,8 @@
 #########################################################################
-# Title:         Cloudbox Community: pyLoad                             #
-# Author(s):     Tr4il                                                  #
-# URL:           https://github.com/Cloudbox/Community                  #
+# Title:            Cloudbox Community: pyLoad                          #
+# Author(s):        Tr4il                                               #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  cobraeti/pyload                                     #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -29,7 +30,7 @@
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
   with_items:
     - /mnt/local/downloads/pyload
-  
+
 - name: Set default_volumes variable
   set_fact:
     default_volumes:

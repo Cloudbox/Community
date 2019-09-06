@@ -1,3 +1,13 @@
+#########################################################################
+# Title:            Cloudbox Community: Bitwarden                       #
+# Author(s):        Kalroth, RXWatcher                                  #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  bitwardenrs/server                                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
 ---
 - name: "Setting CloudFlare DNS Record"
   include_role:
@@ -35,7 +45,6 @@
     group: "{{ user.name }}"
     mode: 0775
   when: not bitwarden_env.stat.exists
-  
 
 - name: Create and start container
   docker_container:

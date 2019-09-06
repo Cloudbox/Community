@@ -1,11 +1,21 @@
+#########################################################################
+# Title:            Cloudbox Community: WordPress                       #
+# Author(s):        Migz93                                              #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  wordpress                                           #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
 ---
 - name: MariaDB Role
   include_role:
     name: mariadb
-    
+
 - name: "sleep for 20 seconds and continue"
   wait_for: timeout=20
-  
+
 - name: "Set DNS Record on CloudFlare"
   include_role:
     name: cloudflare
@@ -22,7 +32,7 @@
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/wordpress
-   
+
 - name: Create and start wordpress container
   docker_container:
     name: wordpress

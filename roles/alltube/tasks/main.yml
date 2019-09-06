@@ -1,3 +1,14 @@
+#########################################################################
+# Title:            Cloudbox Community: AllTube                         #
+# Author(s):        primaxius                                           #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  rudloff/alltube                                     #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
 - name: "Set DNS Record on CloudFlare"
   include_role:
     name: cloudflare

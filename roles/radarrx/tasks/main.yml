@@ -1,3 +1,14 @@
+#########################################################################
+# Title:            Cloudbox Community: Radarrx                         #
+# Author(s):        Superduper09, Migz93                                #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  hotio/radarr                                        #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
 - name: "Gather list of radarrx Docker containers"
   shell: "docker ps -a --format '{{ '{{' }} .Names{{ '}}' }}' --filter label=com.github.cloudbox.community=radarrx | xargs echo -n"
   register: cloudbox_community_radarrx

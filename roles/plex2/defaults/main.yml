@@ -1,7 +1,8 @@
 #########################################################################
-# Title:         Plex2 | Default Variables                              #
-# Author(s):     desimaniac                                             #
-# URL:           https://github.com/Cloudbox/Community                  #
+# Title:            Cloudbox Community: Plex2 | Default Variables       #
+# Author(s):        desimaniac                                          #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  cloudb0x/plex                                       #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################

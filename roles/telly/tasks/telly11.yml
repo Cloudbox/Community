@@ -1,5 +1,5 @@
 #########################################################################
-# Title:         Cloudbox Community: Telly 1.1 Role                     #
+# Title:         Cloudbox Community: Telly | Telly 1.1                  #
 # Author(s):     EnorMOZ, desimaniac, chazlarson                        #
 # URL:           https://github.com/Cloudbox/Community                  #
 # Docker Image:  tellytv/telly:dev-ffmpeg                               #
@@ -12,7 +12,7 @@
 - name: Version Info
   debug:
     msg: "Installing Telly version: {{ telly.version }}"
-    
+
 - name: "Set DNS Record on CloudFlare"
   include_role:
     name: cloudflare

@@ -39,6 +39,7 @@ environment:
     goplaxt
     handbrake
     invoiceninja
+    jdownloader2
     jellyfin
     jirafeau
     kitana
@@ -48,7 +49,6 @@ environment:
     mellow
     minecraft
     monitorr
-    myjdownloader
     mylar
     plex2
     pyload

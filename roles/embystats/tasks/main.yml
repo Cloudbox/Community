@@ -1,7 +1,8 @@
 #########################################################################
-# Title:         Cloudbox Community: Embystats                          #
-# Author(s):     Satz                                                   #
-# URL:           https://github.com/Cloudbox/Community                  #
+# Title:           Cloudbox Community: Embystats                        #
+# Author(s):       Satz                                                 #
+# URL:             https://github.com/Cloudbox/Community                #
+# Docker Image(s): uping/embystat                                       #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -65,4 +66,3 @@
     group: "{{ user.name }}"
     mode: 0775
     recurse: yes
-

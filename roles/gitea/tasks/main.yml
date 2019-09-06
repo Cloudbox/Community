@@ -1,3 +1,13 @@
+#########################################################################
+# Title:            Cloudbox Community: Gitea                           #
+# Author(s):        Thomvh                                              #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  gitea/gitea                                         #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
 ---
 - name: Install required packages
   apt: "name={{ item }} state=latest"
@@ -7,8 +17,8 @@
 - name: MariaDB Role
   include_role:
     name: mariadb
-    
-- name: "sleep for 120 seconds and continue" 
+
+- name: "sleep for 120 seconds and continue"
   wait_for: timeout=120
 
 - name: "Set DNS Record on CloudFlare"

@@ -1,7 +1,8 @@
 #########################################################################
-# Title:         Cloudbox: Unifi Controller       #
-# Author(s):     desimaniac                                             #
-# URL:           https://github.com/cloudbox/cloudbox                   #
+# Title:            Cloudbox Community: Unifi Controller                #
+# Author(s):        maximuskowalski                                     #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  linuxserver/unifi-controller                        #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################

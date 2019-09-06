@@ -40,7 +40,7 @@
     - { role: mellow, tags: ['mellow'] }
     - { role: minecraft, tags: ['minecraft'] }
     - { role: monitorr, tags: ['monitorr'] }
-    - { role: myjdownloader, tags: ['myjdownloader'] }
+    - { role: jdownloader2, tags: ['jdownloader2'] }
     - { role: mylar, tags: ['mylar'] }
     - { role: plex2, tags: ['plex2'] }
     - { role: pyload, tags: ['pyload'] }

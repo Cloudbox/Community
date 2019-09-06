@@ -1,3 +1,14 @@
+#########################################################################
+# Title:            Cloudbox Community: Beets                           #
+# Author(s):        fuller882                                           #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  linuxserver/beets                                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
 - name: "Setting CloudFlare DNS Record"
   include_role:
     name: cloudflare
@@ -42,7 +53,7 @@
       VIRTUAL_PORT: 8337
       LETSENCRYPT_HOST: "beets.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
-      
+
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/beets:/config"

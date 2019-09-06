@@ -21,8 +21,8 @@
     name: embystats
     state: absent
 
-- name: Skip replace already exiting files
-  import_tasks: "subtasks/replace.yml"
+- name: Move existing files into 'config' subfolder if needed
+  import_tasks: "subtasks/migration.yml"
 
 - name: Create embystats directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"

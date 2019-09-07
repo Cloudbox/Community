@@ -8,3 +8,4 @@
   roles:
     - { role: pre_tasks }
     - { role: myrole, tags: ['myrole'] }
+    - { role: calibre-rdp, tags: ['calibre-rdp'] }

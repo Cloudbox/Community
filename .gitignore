@@ -7,4 +7,4 @@
 # Community
 /ansible.cfg
 /settings.yml
-/telly.yml
+.vscode/sftp.json

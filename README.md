@@ -13,6 +13,11 @@ Community Repository for Unofficial Cloudbox Add-ons
 git clone https://github.com/Cloudbox/Community.git ~/community && cd ~/community && cp -n ansible.cfg.default ansible.cfg && cp -n settings.yml.sample settings.yml
 ```
 
+For directly adding the develop branch:
+```bash
+git clone -b develop https://github.com/Cloudbox/Community.git ~/community && cd ~/community && cp -n ansible.cfg.default ansible.cfg && cp -n settings.yml.sample settings.yml
+```
+
 ## Password File
 
 If you have setup an Ansible vault password file for Cloudbox, you will need to add its location to the Community Repo folder's `ansible.cfg` file.
@@ -82,4 +87,3 @@ See [wiki](https://github.com/Cloudbox/Community/wiki) for setup guides.
 - **[sonarrX](../../wiki/SonarrX)** - Experimental Sonarr v3 role to create multiple roles
 - **telly2**
 - **[varken](../../wiki/Varken)** - [Varken](https://github.com/Boerderij/Varken) role with influxdb and grafana dockers
-

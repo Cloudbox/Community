@@ -17,3 +17,4 @@
     - { role: airsonic, tags: ['airsonic'] }
     - { role: monitorr, tags: ['monitorr'] }
     - { role: logarr, tags: ['logarr'] }
+    - { role: radarr1080, tags: ['radarr1080'] }

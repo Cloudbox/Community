@@ -1,0 +1,84 @@
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: radarr1080
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: radarr1080
+    state: absent
+
+# START - Suitarr Migration Tasks
+- name: Check folder exists
+  stat:
+    path: /opt/radarr1080
+  register: folder
+
+- name: Check subfolder1 exists
+  stat:
+    path: /opt/radarr1080/radarr1080
+  register: subfolder1
+
+- name: Check subfolder2 exists
+  stat:
+    path: /opt/radarr1080/app
+  register: subfolder2
+
+- name: Move 'radarr1080' folder contents to 'app' subfolder
+  shell: |
+    mv /opt/radarr1080 /tmp/app
+    mkdir /opt/radarr1080
+    mv /tmp/app /opt/radarr1080/
+    find /opt/radarr1080/* -type d -empty -delete
+    chown -R {{user}}:{{user}} /opt/radarr1080
+  when: (folder.stat.exists) and not (subfolder1.stat.exists or subfolder2.stat.exists)
+
+- name: Move 'radarr1080' subfolder to 'app' subfolder
+  shell: |
+    mv /opt/radarr1080/radarr1080 /opt/radarr1080/app
+    chown -R {{user}}:{{user}} /opt/radarr1080
+  when: (folder.stat.exists) and (subfolder1.stat.exists) and (not subfolder2.stat.exists)
+# END - Suitarr Migration Tasks
+
+- name: Create radarr1080 directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - /opt/radarr1080
+
+- name: Set default_volumes variable
+  set_fact:
+    default_volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/radarr1080:/config"
+      - "/opt/scripts:/scripts"
+      - "/mnt:/mnt"
+      - "/mnt/unionfs/Media/Movies1080Remux:/movies1080"
+
+- name: Create and start container
+  docker_container:
+    name: radarr1080
+    image: hotio/suitarr:radarr
+    pull: yes
+    published_ports:
+      - "127.0.0.1:7880:7878"
+    env:
+      VERSION: "unstable"
+      PUID: "{{uid}}"
+      PGID: "{{gid}}"
+      BACKUP: "no"
+      MONO_TLS_PROVIDER: legacy
+      VIRTUAL_HOST: "radarr1080.{{domain}}"
+      VIRTUAL_PORT: 7878
+      LETSENCRYPT_HOST: "radarr1080.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+    volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) + old_nzbget_downloads_path|default([]) + old_rutorrent_downloads_path|default([]) }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - radarr1080
+    purge_networks: yes
+    restart_policy: always
+    state: started

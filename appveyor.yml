@@ -48,6 +48,7 @@ environment:
     sonarrx
     subsonic
     synclounge
+    unifi
     wordpress
     xteve
 

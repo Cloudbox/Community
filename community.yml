@@ -11,6 +11,7 @@
     - { role: pre_tasks, tags: ['pre_tasks']}
     - { role: airsonic, tags: ['airsonic'] }
     - { role: alltube, tags: ['alltube'] }
+    - { role: asshama, tags: ['asshama'] }
     - { role: bazarrx, tags: ['bazarrx'] }
     - { role: beets, tags: ['beets'] }
     - { role: bitwarden, tags: ['bitwarden'] }

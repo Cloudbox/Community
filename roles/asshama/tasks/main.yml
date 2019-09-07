@@ -1,0 +1,63 @@
+
+#########################################################################
+# Title:         Cloudbox: HAMA + Absolute Series Scanner Plugin        #
+# Author(s):     desimaniac                                             #
+# URL:           https://github.com/cloudbox/cloudbox                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Stop Plex container
+  docker_container:
+    name: plex
+    state: stopped
+
+- name: Create ASS and HAMA directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - '/opt/plex/Library/Application Support/Plex Media Server/Scanners'
+    - '/opt/plex/Library/Application Support/Plex Media Server/Scanners/Series'
+    - '/opt/plex/Library/Application Support/Plex Media Server/Plug-in Support/Data/com.plexapp.agents.hama/DataItems/AniDB'
+    - '/opt/plex/Library/Application Support/Plex Media Server/Plug-in Support/Data/com.plexapp.agents.hama/DataItems/Plex'
+    - '/opt/plex/Library/Application Support/Plex Media Server/Plug-in Support/Data/com.plexapp.agents.hama/DataItems/OMDB'
+    - '/opt/plex/Library/Application Support/Plex Media Server/Plug-in Support/Data/com.plexapp.agents.hama/DataItems/TMDB'
+    - '/opt/plex/Library/Application Support/Plex Media Server/Plug-in Support/Data/com.plexapp.agents.hama/DataItems/TVDB/blank'
+    - '/opt/plex/Library/Application Support/Plex Media Server/Plug-in Support/Data/com.plexapp.agents.hama/DataItems/TVDB/_cache/fanart/original'
+    - '/opt/plex/Library/Application Support/Plex Media Server/Plug-in Support/Data/com.plexapp.agents.hama/DataItems/TVDB/episodes'
+    - '/opt/plex/Library/Application Support/Plex Media Server/Plug-in Support/Data/com.plexapp.agents.hama/DataItems/TVDB/fanart/original'
+    - '/opt/plex/Library/Application Support/Plex Media Server/Plug-in Support/Data/com.plexapp.agents.hama/DataItems/TVDB/fanart/vignette'
+    - '/opt/plex/Library/Application Support/Plex Media Server/Plug-in Support/Data/com.plexapp.agents.hama/DataItems/TVDB/graphical'
+    - '/opt/plex/Library/Application Support/Plex Media Server/Plug-in Support/Data/com.plexapp.agents.hama/DataItems/TVDB/posters'
+    - '/opt/plex/Library/Application Support/Plex Media Server/Plug-in Support/Data/com.plexapp.agents.hama/DataItems/TVDB/seasons'
+    - '/opt/plex/Library/Application Support/Plex Media Server/Plug-in Support/Data/com.plexapp.agents.hama/DataItems/TVDB/seasonswide'
+    - '/opt/plex/Library/Application Support/Plex Media Server/Plug-in Support/Data/com.plexapp.agents.hama/DataItems/TVDB/text'
+    - '/opt/plex/Library/Application Support/Plex Media Server/Plug-in Support/Data/com.plexapp.agents.hama/DataItems/FanartTV'
+
+- name: Get latest Absolute Series Scanner.py
+  get_url:
+    url: https://raw.githubusercontent.com/ZeroQI/Absolute-Series-Scanner/master/Scanners/Series/Absolute%20Series%20Scanner.py
+    dest: '/opt/plex/Library/Application Support/Plex Media Server/Scanners/Series/Absolute Series Scanner.py'
+    mode: '0775'
+
+- name: Set ASS directory permissions
+  file: "path='/opt/plex/Library/Application Support/Plex Media Server/Scanners' state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+
+- name: Clone Hama Bundle
+  git:
+    repo: https://github.com/ZeroQI/Hama.bundle.git
+    dest: '/opt/plex/Library/Application Support/Plex Media Server/Plug-ins/Hama.bundle'
+    clone: yes
+    version: HEAD
+    force: yes
+  become: yes
+  become_user: "{{ user.name }}"
+
+- name: Set HAMA directory permissions
+  file: "path='/opt/plex/Library/Application Support/Plex Media Server/Plug-ins/Hama.bundle' state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+
+- name: Start Plex container
+  docker_container:
+    name: plex
+    state: started

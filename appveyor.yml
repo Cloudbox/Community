@@ -21,6 +21,7 @@ environment:
   TAGS: >
     airsonic
     alltube
+    asshama
     bazarrx
     beets
     bitwarden

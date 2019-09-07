@@ -12,3 +12,10 @@ https://github.com/Cloudbox/Community/wiki
 ```bash
 git clone https://github.com/Cloudbox/Community.git ~/community
 ```
+
+## Run Ansible role:
+
+```bash
+cd ~/community
+sudo ansible-playbook community.yml --tags myrole
+```

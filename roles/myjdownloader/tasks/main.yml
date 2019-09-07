@@ -13,6 +13,26 @@
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
     - /opt/myjdownloader
+    - /opt/myjdownloader/config
+    - /opt/myjdownloader/config/libs
+
+- name: Import 7zip 1509
+  copy:
+    src: "sevenzipjbinding1509.jar"
+    dest: "/opt/myjdownloader/config/libs/sevenzipjbinding1509.jar"
+    owner: "{{user}}"
+    group: "{{user}}"
+    mode: 0775
+    force: no
+
+- name: Import 7zip 1509Linux
+  copy:
+    src: "sevenzipjbinding1509Linux.jar"
+    dest: "/opt/myjdownloader/config/libs/sevenzipjbinding1509Linux.jar"
+    owner: "{{user}}"
+    group: "{{user}}"
+    mode: 0775
+    force: no
 
 - name: Create and start container
   docker_container:

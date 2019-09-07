@@ -15,4 +15,5 @@
     - { role: calibre-rdp, tags: ['calibre-rdp'] }
     - { role: calibre-web, tags: ['calibre-web'] }
     - { role: airsonic, tags: ['airsonic'] }
+    - { role: monitorr, tags: ['monitorr'] }
     - { role: logarr, tags: ['logarr'] }

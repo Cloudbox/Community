@@ -19,6 +19,7 @@
     - { role: calibre-rdp, tags: ['calibre-rdp'] }
     - { role: calibre-web, tags: ['calibre-web'] }
     - { role: deluge, tags: ['deluge'] }
+    - { role: delugevpn, tags: ['delugevpn'] }
     - { role: embystats, tags: ['embystats'] }
     - { role: funkwhale, tags: ['funkwhale'] }
     - { role: gazee, tags: ['gazee'] }

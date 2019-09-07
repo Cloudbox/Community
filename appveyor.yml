@@ -28,6 +28,7 @@ environment:
     calibre-rdp
     calibre-web
     deluge
+    delugevpn
     embystats
     funkwhale
     gazee

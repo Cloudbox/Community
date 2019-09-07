@@ -57,3 +57,5 @@ install:
   - sh: sudo ansible-playbook community.yml --tags funkwhale
   - sh: sudo ansible-playbook community.yml --tags invoiceninja
   - sh: sudo ansible-playbook community.yml --tags subsonic
+  - sh: sudo ansible-playbook community.yml --tags bazarrx
+  

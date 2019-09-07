@@ -3,6 +3,8 @@ sonarrx:
   roles: [1080webdl, 1080remux]
 radarrx:
   roles: [1080webdl, 1080remux]
+bazarrx:
+  roles: [1080webdl, 1080remux]
 calibreweb:
   caliblur: yes
 goplaxt:

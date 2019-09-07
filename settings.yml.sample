@@ -10,5 +10,5 @@ goplaxt:
   trakt_secret:
 bookstack:
   subdomain: bookstack
-rclone:
-  gdrive_remote: gdrive  
+invoiceninja:
+  subdomain: invoiceninja

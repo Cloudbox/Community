@@ -1,0 +1,59 @@
+---
+- name: MariaDB Role
+  include_role:
+    name: mariadb
+    
+- name: "sleep for 120 seconds and continue" 
+  wait_for: timeout=120
+
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: "{{ bookstack.subdomain|default('bookstack',true) }}"
+
+- name: Stop and remove any existing containers
+  docker_container: "name={{item}} state=absent"
+  with_items:
+    - bookstack
+
+- name: "Create bookstack database"
+  command: "docker exec mariadb mysql -u root -ppassword321 -e 'create schema bookstackapp;'"
+  ignore_errors: yes
+
+- name: Create required directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - /opt/bookstack
+
+- name: Create and start bookstack container
+  docker_container:
+    name: bookstack
+    image: "linuxserver/bookstack"
+    pull: yes
+    published_ports:
+      - "127.0.0.1:6875:443"
+    env:
+      PUID: "{{uid}}"
+      PGID: "{{gid}}"
+      DB_HOST: "mariadb:3306"
+      DB_USER: root
+      DB_PASS: password321
+      DB_DATABASE: bookstackapp
+      VIRTUAL_HOST: "{{ bookstack.subdomain|default('bookstack',true) }}.{{domain}}"
+      VIRTUAL_PORT: 443
+      VIRTUAL_PROTO: https
+      LETSENCRYPT_HOST: "{{ bookstack.subdomain|default('bookstack',true) }}.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/bookstack:/config"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - bookstack
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

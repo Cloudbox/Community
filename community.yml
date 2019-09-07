@@ -15,3 +15,4 @@
     - { role: calibre-rdp, tags: ['calibre-rdp'] }
     - { role: calibre-web, tags: ['calibre-web'] }
     - { role: airsonic, tags: ['airsonic'] }
+    - { role: logarr, tags: ['logarr'] }

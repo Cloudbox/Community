@@ -1,0 +1,44 @@
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: xteve
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: xteve
+    state: absent
+
+- name: Create xteve directory
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - /opt/xteve
+    - /opt/xteve/tmp
+
+- name: Create and start container
+  docker_container:
+    name: xteve
+    image: bl0m1/xtevedocker
+    pull: yes
+    published_ports:
+      - "0.0.0.0:34400:34400"
+    env:
+      PUID: "{{uid}}"
+      PGID: "{{gid}}"
+      VIRTUAL_HOST: "xteve.{{domain}}"
+      VIRTUAL_PORT: 34400
+      LETSENCRYPT_HOST: "xteve.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/xteve:/root/xteve"
+      - "/opt/xteve/tmp:/tmp/xteve"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - xteve
+    purge_networks: yes
+    restart_policy: always
+    state: started

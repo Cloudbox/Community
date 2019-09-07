@@ -1,0 +1,47 @@
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: booksonic
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: booksonic
+    state: absent
+
+- name: Create booksonic directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - /opt/booksonic
+
+- name: Create and start container
+  docker_container:
+    name: booksonic
+    image: linuxserver/booksonic
+    pull: yes
+    published_ports:
+      - "127.0.0.1:4042:4040"
+    env:
+      PUID: "{{uid}}"
+      PGID: "{{gid}}"
+      VIRTUAL_HOST: "booksonic.{{domain}}"
+      VIRTUAL_PORT: 4040
+      LETSENCRYPT_HOST: "booksonic.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/booksonic:/config"
+      - "/mnt/unionfs/Media/Audiobbooksooks:/"
+      - "/mnt/unionfs/Media/Podcasts:/podcasts"
+      - "/mnt/unionfs:/media"
+      - "/mnt:/mnt"
+      - "/mnt/unionfs/Media:/data"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - booksonic
+    purge_networks: yes
+    restart_policy: always
+    state: started

@@ -21,6 +21,7 @@
     - { role: deluge, tags: ['deluge'] }
     - { role: delugevpn, tags: ['delugevpn'] }
     - { role: embystats, tags: ['embystats'] }
+    - { role: epms, tags: ['epms'] }
     - { role: funkwhale, tags: ['funkwhale'] }
     - { role: gazee, tags: ['gazee'] }
     - { role: gitea, tags: ['gitea'] }

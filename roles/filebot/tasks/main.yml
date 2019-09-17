@@ -34,8 +34,8 @@
     published_ports:
       - "127.0.0.1:5800:5800"
     env:
-      PUID: "{{ uid }}"
-      PGID: "{{ gid }}"
+      USER_ID: "{{ uid }}"
+      GROUP_ID: "{{ gid }}"
       VIRTUAL_HOST: "filebot.{{ user.domain }}"
       VIRTUAL_PORT: 5800
       LETSENCRYPT_HOST: "filebot.{{ user.domain }}"

@@ -8,11 +8,42 @@
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
+# https://github.com/robbyrussell/oh-my-zsh/blob/master/lib/git.zsh
+
+- name: Get current checked out branch of Community folder
+  shell: |
+    cd "/home/{{ community_yml.stat.pw_name }}/community"
+    ref=$(command git symbolic-ref --quiet HEAD 2> /dev/null)
+    ret=$?
+    if [[ $ret != 0 ]]; then
+      [[ $ret == 128 ]] && return  # no git repo.
+      ref=$(command git rev-parse --short HEAD 2> /dev/null) || return
+    fi
+    echo ${ref#refs/heads/}
+  args:
+    executable: /bin/bash
+  register: community_branch
+  ignore_errors: yes
+
+- name: Set 'community_branch' variable
+  set_fact:
+    community_branch: "{{ 'develop' if ('develop' in community_branch.stdout) else 'master' }}"
+  ignore_errors: yes
+
+- name: Update Cloudbox repo
+  git:
+    repo: https://github.com/cloudbox/cloudbox.git
+    dest: /home/{{ community_yml.stat.pw_name }}/cloudbox/
+    version: "{{ community_branch }}"
+    update: yes
+    force: yes
+  become: yes
+  become_user: "{{ community_yml.stat.pw_name }}"
+  ignore_errors: yes
+
 - name: "Check / Update Cloudbox Settings"
   shell: |
     cd /home/{{ community_yml.stat.pw_name }}/cloudbox/
-    git fetch &> /dev/null || true
-    git reset --hard @{u} &> /dev/null || true
     sudo ansible-playbook cloudbox.yml --tags settings \
         --skip-tags sanity_check \
         &> /dev/null || true

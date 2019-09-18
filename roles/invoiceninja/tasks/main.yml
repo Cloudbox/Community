@@ -18,7 +18,7 @@
 
 - name: "Set DNS Record on CloudFlare"
   include_role:
-    name: cloudflare
+    name: cloudflare-dns
   vars:
     subdomain: "{{ invoiceninja.subdomain|default('invoiceninja',true) }}"
   when: cloudflare_enabled

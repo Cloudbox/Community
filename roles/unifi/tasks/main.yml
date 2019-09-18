@@ -11,7 +11,7 @@
 ---
 - name: "Set DNS Record on CloudFlare"
   include_role:
-    name: cloudflare
+    name: cloudflare-dns
   vars:
     subdomain: unifi
   when: cloudflare_enabled

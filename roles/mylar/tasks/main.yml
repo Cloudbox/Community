@@ -11,7 +11,7 @@
 ---
 - name: "Setting CloudFlare DNS Record"
   include_role:
-    name: cloudflare
+    name: cloudflare-dns
   vars:
     subdomain: mylar
   when: cloudflare_enabled

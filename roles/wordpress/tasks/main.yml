@@ -18,7 +18,7 @@
 
 - name: "Set DNS Record on CloudFlare"
   include_role:
-    name: cloudflare
+    name: cloudflare-dns
   vars:
     subdomain: "{{ wordpress.subdomain|default('wordpress',true) }}"
   when: cloudflare_enabled

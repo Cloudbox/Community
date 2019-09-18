@@ -23,7 +23,7 @@
 
 - name: "Set DNS Record on CloudFlare"
   include_role:
-    name: cloudflare
+    name: cloudflare-dns
   vars:
     subdomain: "{{ bookstack.subdomain|default('bookstack',true) }}"
   when: cloudflare_enabled

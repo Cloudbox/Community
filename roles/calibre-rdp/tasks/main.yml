@@ -44,8 +44,8 @@
     image: cgspeck/docker-rdp-calibre
     pull: yes
     published_ports:
-      - "127.0.0.1:8080:8080"
-      - "127.0.0.1:8081:8081"
+      - "127.0.0.1:8087:8080"
+      - "127.0.0.1:8088:8081"
     env:
       USER_ID: "{{ uid }}"
       GROUP_ID: "{{ gid }}"

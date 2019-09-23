@@ -109,8 +109,9 @@ install:
               --skip-tags sanity_check,settings \
               --extra-vars '{"continuous_integration":true}'
           RC=$?; [ $RC -eq 0 ] || exit $RC;
-          docker stop $TAG &> /dev/null || true
-          docker rm $TAG &> /dev/null || true
+          CONTAINERS=$(comm -23 <(docker ps -a --format '{{ .Names}}' | sort) <(echo "letsencrypt\nnginx-proxy") | xargs echo -n)
+          docker stop $CONTAINERS &> /dev/null || true
+          docker rm $CONTAINERS &> /dev/null || true
           docker image prune -af &> /dev/null || true
           docker volume prune -f &> /dev/null || true
           echo ""

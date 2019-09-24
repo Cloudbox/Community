@@ -32,7 +32,7 @@
     image: jlesage/filebot
     pull: yes
     published_ports:
-      - "127.0.0.1:5800:5800"
+      - "127.0.0.1:5801:5800"
     env:
       USER_ID: "{{ uid }}"
       GROUP_ID: "{{ gid }}"

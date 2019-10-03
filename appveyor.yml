@@ -63,6 +63,7 @@ environment:
     sshwifty
     subsonic
     synclounge
+    thelounge
     unifi
     wordpress
     xteve

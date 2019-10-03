@@ -62,6 +62,7 @@
     - { role: subsonic, tags: ['subsonic'] }
     - { role: synclounge, tags: ['synclounge'] }
     - { role: telly, tags: ['telly'] }
+    - { role: thelounge, tags: ['thelounge'] }
     - { role: unifi, tags: ['unifi'] }
     - { role: wordpress, tags: ['wordpress'] }
     - { role: xteve, tags: ['xteve'] }

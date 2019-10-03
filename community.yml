@@ -52,6 +52,7 @@
     - { role: minecraft, tags: ['minecraft'] }
     - { role: monitorr, tags: ['monitorr'] }
     - { role: nowshowing, tags: ['nowshowing'] }
+    - { role: nzbhydra, tags: ['nzbhydra'] }
     - { role: jdownloader2, tags: ['jdownloader2'] }
     - { role: mylar, tags: ['mylar'] }
     - { role: plex2, tags: ['plex2'] }

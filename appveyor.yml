@@ -69,6 +69,7 @@ environment:
     synclounge
     thelounge
     unifi
+    watchtower
     wordpress
     xteve
     znc

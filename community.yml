@@ -70,6 +70,7 @@
     - { role: telly, tags: ['telly'] }
     - { role: thelounge, tags: ['thelounge'] }
     - { role: unifi, tags: ['unifi'] }
+    - { role: watchtower, tags: ['watchtower'] }
     - { role: wordpress, tags: ['wordpress'] }
     - { role: xteve, tags: ['xteve'] }
     - { role: znc, tags: ['znc'] }

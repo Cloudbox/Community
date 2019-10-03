@@ -70,6 +70,7 @@ environment:
     unifi
     wordpress
     xteve
+    znc
 
 init:
   - sh: curl -s https://cloudbox.works/scripts/dep.sh | sudo -H sh &> /dev/null

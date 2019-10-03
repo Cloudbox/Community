@@ -11,6 +11,7 @@
     - { role: sanity_check, tags: ['always', 'sanity_check'] }
     - { role: pre_tasks, tags: ['pre_tasks']}
     # Apps
+    - { role: airdcpp, tags: ['airdcpp'] }
     - { role: airsonic, tags: ['airsonic'] }
     - { role: alltube, tags: ['alltube'] }
     - { role: asshama, tags: ['asshama'] }

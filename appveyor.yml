@@ -19,6 +19,7 @@ environment:
   CLOUDBOX_PATH: "/home/appveyor/cloudbox"
   COMMUNITY_PATH: "/home/appveyor/projects/community"
   TAGS: >
+    airdcpp
     airsonic
     alltube
     asshama

@@ -40,6 +40,7 @@ environment:
     glances
     goplaxt
     handbrake
+    heimdall
     invoiceninja
     jdownloader2
     jellyfin

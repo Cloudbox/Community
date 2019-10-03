@@ -36,6 +36,7 @@
     - { role: goplaxt, tags: ['goplaxt'] }
     - { role: guacamole, tags: ['guacamole'] }
     - { role: handbrake, tags: ['handbrake'] }
+    - { role: heimdall, tags: ['heimdall'] }
     - { role: invoiceninja, tags: ['invoiceninja'] }
     - { role: jellyfin, tags: ['jellyfin'] }
     - { role: jirafeau, tags: ['jirafeau'] }

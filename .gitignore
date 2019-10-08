@@ -12,6 +12,7 @@
 
 # Community
 /ansible.cfg
-/settings.yml
-/telly.yml
+/*.yml
+!/appveyor.yml
+!/community.yml
 /*.log

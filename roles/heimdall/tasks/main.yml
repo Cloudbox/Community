@@ -13,7 +13,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: heimdall
+    record: heimdall
   when: cloudflare_enabled
 
 - name: Create htpasswd

@@ -17,7 +17,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: "radarr{{ rolename }}"
+    record: "radarr{{ rolename }}"
   when: cloudflare_enabled
 
 - name: Suitarr Migration Tasks

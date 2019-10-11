@@ -17,7 +17,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: telly
+    record: telly
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container

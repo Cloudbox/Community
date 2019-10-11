@@ -12,7 +12,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: strm
+    record: strm
   when: cloudflare_enabled
 
 - name: "Create drive_strm directories"

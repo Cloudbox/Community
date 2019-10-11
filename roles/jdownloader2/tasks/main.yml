@@ -13,7 +13,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: jdownloader2
+    record: jdownloader2
   when: cloudflare_enabled
 
 - name: Legacy Migration Tasks

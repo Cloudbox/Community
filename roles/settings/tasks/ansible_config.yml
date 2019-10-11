@@ -23,10 +23,20 @@
     force: yes
   when: not file.stat.exists
 
-- name: "Add hash_behaviour into '{{ item }}'."
-  lineinfile:
+- name: Add 'roles_path' to '{{ item }}'
+  ini_file:
     path: "{{ playbook_dir }}/{{ item }}"
-    regexp: '^hash_behaviour\s?=.*'
+    section: defaults
+    option: roles_path
+    value: "roles:$HOME/cloudbox/roles:$HOME/cloudbox/resources/roles"
     state: present
-    line: 'hash_behaviour = merge'
+  when: file.stat.exists
+
+- name: Add 'hash_behaviour' to '{{ item }}'
+  ini_file:
+    path: "{{ playbook_dir }}/{{ item }}"
+    section: defaults
+    option: hash_behaviour
+    value: merge
+    state: present
   when: file.stat.exists

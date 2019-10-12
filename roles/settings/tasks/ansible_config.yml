@@ -31,6 +31,7 @@
     value: "roles:$HOME/cloudbox/roles:$HOME/cloudbox/resources/roles"
     state: present
   when: file.stat.exists
+  register: x
 
 - name: Add 'hash_behaviour' to '{{ item }}'
   ini_file:
@@ -40,3 +41,25 @@
     value: merge
     state: present
   when: file.stat.exists
+  register: y
+
+- name: "Exit if '{{ item }}' changes."
+  block:
+
+  - name: "'{{ item }}' was updated."
+    debug:
+      msg:
+        - "Settings Role updated 'ansible.cfg'"
+        - "You will need to re-run your previous tag to continue."
+    when: ('ansible.cfg' in files_updated_successfully)
+
+  - name: "Exit so that user can check updated config files"
+    debug:
+      msg: "Cloudbox Installer will now exit."
+
+  - name: "Exit"
+    meta: end_play
+
+  when:
+    - file.stat.exists
+    - x is changed or y is changed

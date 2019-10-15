@@ -89,15 +89,19 @@ install:
       cp -n defaults/settings.yml.default settings.yml
       sudo ansible-playbook community.yml --syntax-check
       RC=$?; [ $RC -eq 0 ] || exit $RC;
+  - ps: |
+      if( ($env:APPVEYOR_REPO_BRANCH) -and ($env:APPVEYOR_REPO_BRANCH –eq "master") ){
+        $env:CB_BRANCH="master"
+      } else { $env:CB_BRANCH="develop" }
   - sh: |
       echo ""
       echo "=========================="
       echo ""
-      echo "Cloudbox Branch: $APPVEYOR_REPO_BRANCH"
+      echo "Cloudbox Branch: $CB_BRANCH"
       echo ""
       cd ${CLOUDBOX_PATH}
       rm settings.yml accounts.yml adv_settings.yml
-      git checkout $APPVEYOR_REPO_BRANCH &> /dev/null
+      git checkout $CB_BRANCH &> /dev/null
       sudo ansible-playbook cloudbox.yml --syntax-check
       sudo ansible-playbook cloudbox.yml --tags core \
           --skip-tags sanity_check,settings \

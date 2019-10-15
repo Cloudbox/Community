@@ -36,6 +36,7 @@
     mode: 0664
   register: ansible_cfg_update_status
   loop:
+    - { section: 'defaults', option: 'inventory', value: './inventories/local' }
     - { section: 'defaults', option: 'roles_path', value: 'roles:$HOME/cloudbox/roles:$HOME/cloudbox/resources/roles' }
     - { section: 'defaults', option: 'hash_behaviour', value: 'merge' }
     - { section: 'defaults', option: 'fact_path', value: './ansible_facts.d' }

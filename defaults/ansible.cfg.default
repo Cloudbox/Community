@@ -1,5 +1,5 @@
 [defaults]
-inventory = $HOME/cloudbox/inventories/local
+inventory = ./inventories/local
 roles_path = roles:$HOME/cloudbox/roles:$HOME/cloudbox/resources/roles
 fact_path = ./ansible_facts.d
 log_path = ./community.log

@@ -23,25 +23,24 @@
     force: yes
   when: not file.stat.exists
 
-- name: Add 'roles_path' to '{{ item }}'
+- name: Add default entries to '{{ item }}'
   ini_file:
-    path: "{{ playbook_dir }}/{{ item }}"
-    section: defaults
-    option: roles_path
-    value: "roles:$HOME/cloudbox/roles:$HOME/cloudbox/resources/roles"
+    path: "{{ playbook_dir }}/{{ file }}"
+    section: "{{ item.section }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
     state: present
+    no_extra_spaces: no
+    owner: "{{ community_yml.stat.uid }}"
+    group: "{{ community_yml.stat.gid }}"
+    mode: 0664
+  register: ansible_cfg_update_status
+  loop:
+    - { section: 'defaults', option: 'roles_path', value: 'roles:$HOME/cloudbox/roles:$HOME/cloudbox/resources/roles' }
+    - { section: 'defaults', option: 'hash_behaviour', value: 'merge' }
+    - { section: 'defaults', option: 'fact_path', value: '$HOME/cloudbox/ansible_facts.d' }
+    - { section: 'defaults', option: 'log_path', value: './community.log' }
   when: file.stat.exists
-  register: x
-
-- name: Add 'hash_behaviour' to '{{ item }}'
-  ini_file:
-    path: "{{ playbook_dir }}/{{ item }}"
-    section: defaults
-    option: hash_behaviour
-    value: merge
-    state: present
-  when: file.stat.exists
-  register: y
 
 - name: "Exit if '{{ item }}' changes."
   block:
@@ -62,4 +61,5 @@
 
   when:
     - file.stat.exists
-    - x is changed or y is changed
+    - item.changed
+  loop: "{{ ansible_cfg_update_status.results }}"

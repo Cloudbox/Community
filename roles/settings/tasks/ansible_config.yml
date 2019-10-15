@@ -38,7 +38,7 @@
   loop:
     - { section: 'defaults', option: 'roles_path', value: 'roles:$HOME/cloudbox/roles:$HOME/cloudbox/resources/roles' }
     - { section: 'defaults', option: 'hash_behaviour', value: 'merge' }
-    - { section: 'defaults', option: 'fact_path', value: '$HOME/cloudbox/ansible_facts.d' }
+    - { section: 'defaults', option: 'fact_path', value: './ansible_facts.d' }
     - { section: 'defaults', option: 'log_path', value: './community.log' }
   loop_control:
     loop_var: "inner_item"

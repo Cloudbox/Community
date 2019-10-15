@@ -1,0 +1,40 @@
+#########################################################################
+# Title:         Community: Cloudflare DNS Role                         #
+# Author(s):     l3uddz, desimaniac                                     #
+# URL:           https://github.com/Cloudbox/Community                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Install 'dnsutils'
+  apt: "name=dnsutils state=present"
+
+- name: Get Public IP Address
+  shell: "{{ ip_address_lookup_command }}"
+  register: public_ip_lookup
+
+- name: Set 'public_ip' variable
+  set_fact:
+    public_ip: "{{ public_ip_lookup.stdout }}"
+
+- name: Set DNS Record
+  cloudflare_dns:
+    account_api_token: "{{ cloudflare.api }}"
+    account_email: "{{ cloudflare.email }}"
+    zone: "{{ user.domain }}"
+    state: present
+    solo: true
+    proxied: no
+    type: A
+    value: "{{ public_ip }}"
+    record: "{{ record }}"
+
+- name: Set 'record_temp' variable
+  set_fact:
+    record_temp: "{{ (record == user.domain) | ternary(user.domain,record + '.' + user.domain) }}"
+
+- name: Display DNS Record
+  debug:
+    msg: "DNS Record for '{{ record_temp }}' set to '{{ public_ip }}'."

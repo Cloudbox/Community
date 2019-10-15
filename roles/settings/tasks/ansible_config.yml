@@ -25,10 +25,10 @@
 
 - name: Add default entries to '{{ item }}'
   ini_file:
-    path: "{{ playbook_dir }}/{{ file }}"
-    section: "{{ item.section }}"
-    option: "{{ item.option }}"
-    value: "{{ item.value }}"
+    path: "{{ playbook_dir }}/{{ item }}"
+    section: "{{ inner_item.section }}"
+    option: "{{ inner_item.option }}"
+    value: "{{ inner_item.value }}"
     state: present
     no_extra_spaces: no
     owner: "{{ community_yml.stat.uid }}"
@@ -40,26 +40,15 @@
     - { section: 'defaults', option: 'hash_behaviour', value: 'merge' }
     - { section: 'defaults', option: 'fact_path', value: '$HOME/cloudbox/ansible_facts.d' }
     - { section: 'defaults', option: 'log_path', value: './community.log' }
+  loop_control:
+    loop_var: "inner_item"
   when: file.stat.exists
 
 - name: "Exit if '{{ item }}' changes."
-  block:
-
-  - name: "'{{ item }}' was updated."
-    debug:
-      msg:
-        - "Settings Role updated 'ansible.cfg'"
-        - "You will need to re-run your previous tag to continue."
-    when: ('ansible.cfg' in files_updated_successfully)
-
-  - name: "Exit so that user can check updated config files"
-    debug:
-      msg: "Cloudbox Installer will now exit."
-
-  - name: "Exit"
-    meta: end_play
-
+  include_tasks: "ansible_config_2.yml"
   when:
     - file.stat.exists
-    - item.changed
+    - inner_item.changed
   loop: "{{ ansible_cfg_update_status.results }}"
+  loop_control:
+    loop_var: "inner_item"

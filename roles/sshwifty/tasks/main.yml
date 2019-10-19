@@ -13,7 +13,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: sshwifty
+    record: sshwifty
   when: cloudflare_enabled
 
 - name: Create required directories

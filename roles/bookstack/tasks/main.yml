@@ -25,7 +25,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: "{{ bookstack.subdomain|default('bookstack',true) }}"
+    record: "{{ bookstack.subdomain|default('bookstack',true) }}"
   when: cloudflare_enabled
 
 - name: Stop and remove any existing containers

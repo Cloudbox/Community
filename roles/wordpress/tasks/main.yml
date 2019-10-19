@@ -20,7 +20,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: "{{ wordpress.subdomain|default('wordpress',true) }}"
+    record: "{{ wordpress.subdomain|default('wordpress',true) }}"
   when: cloudflare_enabled
 
 - name: Stop and remove any existing containers

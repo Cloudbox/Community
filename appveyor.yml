@@ -60,6 +60,7 @@ environment:
     sshwifty
     subsonic
     synclounge
+    transmissionvpn
     unifi
     wordpress
     xteve

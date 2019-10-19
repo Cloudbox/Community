@@ -17,7 +17,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: "bazarr{{ rolename }}"
+    record: "bazarr{{ rolename }}"
   when: cloudflare_enabled
 
 - name: Create bazarrx directories

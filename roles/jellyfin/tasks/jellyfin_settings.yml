@@ -1,8 +1,8 @@
 #########################################################################
-# Title:         Cloudbox: jellyfin - Settings Tasks                        #
+# Title:         Community: jellyfin - Settings Tasks                   #
 # Author(s):     desimaniac                                             #
-# URL:           https://github.com/cloudbox/cloudbox                   #
-# Docker Image:  jellyfin/jellyfin:latest                                       #
+# URL:           https://github.com/Cloudbox/Community                  #
+# Docker Image:  jellyfin/jellyfin:latest                               #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################

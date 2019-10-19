@@ -105,6 +105,7 @@ install:
       sudo ansible-playbook cloudbox.yml --syntax-check
       sudo ansible-playbook cloudbox.yml --tags core \
           --skip-tags sanity_check,settings \
+          --skip-tags kernel,hetzner,shell,rclone,system,motd,nvidia,mounts,scripts \
           --extra-vars '{"continuous_integration":true}' \
           &> /dev/null
   - sh: |

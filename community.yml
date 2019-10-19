@@ -59,6 +59,7 @@
     - { role: subsonic, tags: ['subsonic'] }
     - { role: synclounge, tags: ['synclounge'] }
     - { role: telly, tags: ['telly'] }
+    - { role: transmissionvpn, tags: ['transmissionvpn'] }
     - { role: unifi, tags: ['unifi'] }
     - { role: wordpress, tags: ['wordpress'] }
     - { role: xteve, tags: ['xteve'] }

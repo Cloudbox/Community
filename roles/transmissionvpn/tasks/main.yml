@@ -43,6 +43,7 @@
     default_volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/transmissionvpn/vpn:/etc/openvpn/custom"
+      - "/data:/data"
 
 - name: Create and start container
   docker_container:
@@ -51,7 +52,6 @@
     pull: yes
     published_ports:
       - "9091:9091"
-      #- "56881:56881/udp"
     env:
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
@@ -67,10 +67,14 @@
       TRANSMISSION_ALT_SPEED_DOWN: 30
       TRANSMISSION_RATIO_LIMIT: 0
       TRANSMISSION_RATIO_LIMIT_ENABLED: true
-      TRANSMISSION_WATCH_DIR_ENABLED: false
+      LOCAL_NETWORK:  "172.19.0.0/16"
+      TRANSMISSION_WATCH_DIR_ENABLED: "false"
+      TRANSMISSION_HOME: /opt/transmissionvpn
     volumes: "{{ default_volumes + torrents_downloads_path|default([]) }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
+    capabilities:
+      - NET_ADMIN
     networks:
       - name: cloudbox
         aliases:

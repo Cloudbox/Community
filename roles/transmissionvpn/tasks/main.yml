@@ -1,0 +1,80 @@
+#########################################################################
+# Title:            Cloudbox Community: transmissionvpn                     #
+# Author(s):        Tarek                                               #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  haugene/transmission-openvpn                        #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    subdomain: transmission
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: transmission
+    state: absent
+
+- name: Create transmissionvpn directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/transmissionvpn
+
+- name: Create new downloads directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  with_items:
+    - "{{ downloads.torrents }}"
+    - "{{ downloads.torrents }}/transmissionvpn"
+    - "{{ downloads.torrents }}/transmissionvpn/completed"
+    - "{{ downloads.torrents }}/transmissionvpn/incoming"
+    - "{{ downloads.torrents }}/transmissionvpn/watched"
+    - "{{ downloads.torrents }}/transmissionvpn/torrents"
+    - "{{ downloads.torrents }}/transmissionvpn/vpn"
+  when: (torrents_downloads_path is defined)|default(false)
+
+- name: Set default_volumes variable
+  set_fact:
+    default_volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/transmissionvpn/vpn:/etc/openvpn/custom"
+
+- name: Create and start container
+  docker_container:
+    name: transmissionvpn
+    image: haugene/transmission-openvpn:latest-alpine
+    pull: yes
+    published_ports:
+      - "9091:9091"
+      #- "56881:56881/udp"
+    env:
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "transmission.{{ user.domain }}"
+      VIRTUAL_PORT: 9091
+      LETSENCRYPT_HOST: "transmission.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      UMASK_SET: 002
+      CREATE_TUN_DEVICE: true
+      OPENVPN_PROVIDER: "{{ transmissionvpn.vpn_prov|default('pia',true) }}"
+      OPENVPN_USERNAME: "{{ transmissionvpn.vpn_user|default('username',true) }}"
+      OPENVPN_PASSWORD: "{{ transmissionvpn.vpn_pass|default('password',true) }}"
+      TRANSMISSION_ALT_SPEED_DOWN: 30
+      TRANSMISSION_RATIO_LIMIT: 0
+      TRANSMISSION_RATIO_LIMIT_ENABLED: true
+      TRANSMISSION_WATCH_DIR_ENABLED: false
+    volumes: "{{ default_volumes + torrents_downloads_path|default([]) }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - transmission
+    purge_networks: yes
+    restart_policy: always
+    state: started

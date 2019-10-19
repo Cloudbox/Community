@@ -68,6 +68,7 @@ environment:
     subsonic
     synclounge
     thelounge
+    transmissionvpn
     unifi
     watchtower
     wordpress

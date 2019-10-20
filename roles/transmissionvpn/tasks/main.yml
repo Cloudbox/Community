@@ -67,7 +67,6 @@
       TRANSMISSION_ALT_SPEED_DOWN: 30
       TRANSMISSION_RATIO_LIMIT: 0
       TRANSMISSION_RATIO_LIMIT_ENABLED: true
-      LOCAL_NETWORK:  "172.19.0.0/16"
       TRANSMISSION_WATCH_DIR_ENABLED: "false"
       TRANSMISSION_HOME: /opt/transmissionvpn
     volumes: "{{ default_volumes + torrents_downloads_path|default([]) }}"

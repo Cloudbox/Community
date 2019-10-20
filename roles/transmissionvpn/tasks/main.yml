@@ -52,8 +52,6 @@
     name: transmissionvpn
     image: haugene/transmission-openvpn:latest-alpine
     pull: yes
-    published_ports:
-      - "9091:9091"
     env:
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"

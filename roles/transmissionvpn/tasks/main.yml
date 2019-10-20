@@ -36,6 +36,7 @@
     - "{{ downloads.torrents }}/transmissionvpn/watched"
     - "{{ downloads.torrents }}/transmissionvpn/torrents"
     - "{{ downloads.torrents }}/transmissionvpn/vpn"
+    - /opt/transmissionvpn/
   when: (torrents_downloads_path is defined)|default(false)
 
 - name: Set default_volumes variable
@@ -43,7 +44,8 @@
     default_volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/transmissionvpn/vpn:/etc/openvpn/custom"
-      - "/data:/data"
+      - "/mnt:/mnt"
+      - "/opt/transmissionvpn:/opt/transmissionvpn"
 
 - name: Create and start container
   docker_container:

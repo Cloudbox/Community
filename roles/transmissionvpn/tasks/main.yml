@@ -52,8 +52,6 @@
     name: transmissionvpn
     image: haugene/transmission-openvpn:latest-alpine
     pull: yes
-    published_ports:
-      - "9091:9091"
     env:
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
@@ -62,13 +60,13 @@
       LETSENCRYPT_HOST: "transmission.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       UMASK_SET: 002
-      CREATE_TUN_DEVICE: true
+      CREATE_TUN_DEVICE: "true"
       OPENVPN_PROVIDER: "{{ transmissionvpn.vpn_prov|default('pia',true) }}"
       OPENVPN_USERNAME: "{{ transmissionvpn.vpn_user|default('username',true) }}"
       OPENVPN_PASSWORD: "{{ transmissionvpn.vpn_pass|default('password',true) }}"
       TRANSMISSION_ALT_SPEED_DOWN: 30
       TRANSMISSION_RATIO_LIMIT: 0
-      TRANSMISSION_RATIO_LIMIT_ENABLED: true
+      TRANSMISSION_RATIO_LIMIT_ENABLED: "true"
       TRANSMISSION_WATCH_DIR_ENABLED: "false"
       TRANSMISSION_HOME: /opt/transmissionvpn
     volumes: "{{ default_volumes + torrents_downloads_path|default([]) }}"

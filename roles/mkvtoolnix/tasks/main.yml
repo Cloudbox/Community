@@ -1,0 +1,63 @@
+#########################################################################
+# Title:         Cloudbox: mkvtoolnix                                    #
+# Author(s):     not_desimaniac                                         #
+# URL:           https://github.com/cloudbox/cloudbox                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: mkvtoolnix
+  when: cloudflare_enabled
+
+- name: Create required directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/mkvtoolnix
+    - /opt/mkvtoolnix/config
+
+- name: Stop and remove any existing containers
+  docker_container:
+    name: mkvtoolnix
+    state: absent
+
+- name: Create and start container
+  docker_container:
+    name: mkvtoolnix
+    image: "jlesage/mkvtoolnix:latest"
+    pull: yes
+    env:
+      VIRTUAL_HOST: "mkvtoolnix.{{ user.domain }}"
+      VIRTUAL_PORT: 5800
+      LETSENCRYPT_HOST: "mkvtoolnix.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      DISPLAY_WIDTH: 1280
+      DISPLAY_HEIGHT: 768
+      VNC_PASSWORD: "{{ user.pass }}"
+      ENABLE_CJK_FONT: "1"
+      USER_ID: "{{ uid }}"
+      GROUP_ID: "{{ gid }}"
+      UMASK: 000
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/mkvtoolnix/config:/config:rw"
+      - "/mnt:/mnt:rw"
+      - "/mnt:/storage:rw"
+      - "/var/run/docker.sock:/var/run/docker.sock"      
+    published_ports:
+      - "127.0.0.1:5801:5800"
+      - "127.0.0.1:5901:5900"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - mkvtoolnix
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

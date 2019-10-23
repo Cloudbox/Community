@@ -53,7 +53,7 @@
     - { role: mediabutler, tags: ['mediabutler'] }
     - { role: mellow, tags: ['mellow'] }
     - { role: minecraft, tags: ['minecraft'] }
-    - { role: mkvtoolnix, tags: ['mkvtoolnix']
+    - { role: mkvtoolnix, tags: ['mkvtoolnix'] }
     - { role: monitorr, tags: ['monitorr'] }
     - { role: mylar, tags: ['mylar'] }
     - { role: nextcloud, tags: ['nextcloud'] }

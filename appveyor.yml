@@ -66,8 +66,8 @@ environment:
     xteve
 
 init:
-  - sh: curl -s https://cloudbox.works/scripts/dep.sh | sudo -H sh &> /dev/null
-  - sh: curl -s https://cloudbox.works/scripts/repo.sh | bash &> /dev/null
+  - sh: curl -s https://cloudbox.works/scripts/dep.sh | sudo -H sh
+  - sh: curl -s https://cloudbox.works/scripts/repo.sh | bash
 
 install:
   - sh: |
@@ -92,8 +92,7 @@ install:
       sudo ansible-playbook cloudbox.yml --syntax-check
       sudo ansible-playbook cloudbox.yml --tags core \
           --skip-tags sanity_check,settings \
-          --extra-vars '{"continuous_integration":true}' \
-          &> /dev/null
+          --extra-vars '{"continuous_integration":true}'
   - sh: |
       echo ""
       echo "=========================="

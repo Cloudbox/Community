@@ -4,12 +4,15 @@
     - ['settings.yml', 'defaults/settings.yml.default']
     - ['~/cloudbox/accounts.yml', '~/cloudbox/defaults/accounts.yml.default']
     - ['~/cloudbox/settings.yml', '~/cloudbox/defaults/settings.yml.default']
-    - ['~/cloudbox/adv_settings.yml', '~/cloudbox/defaults/adv_settings.yml.default']
+    - [
+        '~/cloudbox/adv_settings.yml',
+        '~/cloudbox/defaults/adv_settings.yml.default',
+      ]
   roles:
     # Reqs
     - { role: settings, tags: ['always', 'settings'] }
     - { role: sanity_check, tags: ['always', 'sanity_check'] }
-    - { role: pre_tasks, tags: ['pre_tasks']}
+    - { role: pre_tasks, tags: ['pre_tasks'] }
     # Apps
     - { role: airsonic, tags: ['airsonic'] }
     - { role: alltube, tags: ['alltube'] }
@@ -17,11 +20,12 @@
     - { role: bazarrx, tags: ['bazarrx'] }
     - { role: beets, tags: ['beets'] }
     - { role: bitwarden, tags: ['bitwarden'] }
-    - { role: booksonic, tags: ['booksonic']}
+    - { role: booksonic, tags: ['booksonic'] }
     - { role: bookstack, tags: ['bookstack'] }
     - { role: calibre-rdp, tags: ['calibre-rdp'] }
     - { role: calibre-web, tags: ['calibre-web'] }
-    - { role: coder, tags: ['coder']}
+    - { role: couchpota, tags: ['couchpota'] }
+    - { role: coder, tags: ['coder'] }
     - { role: deluge, tags: ['deluge'] }
     - { role: delugevpn, tags: ['delugevpn'] }
     - { role: embystat, tags: ['embystat'] }
@@ -55,7 +59,7 @@
     - { role: radarrx, tags: ['radarrx'] }
     - { role: sonarrx, tags: ['sonarrx'] }
     - { role: speedtest, tags: ['speedtest'] }
-    - { role: sshwifty, tags: ['sshwifty']}
+    - { role: sshwifty, tags: ['sshwifty'] }
     - { role: subsonic, tags: ['subsonic'] }
     - { role: synclounge, tags: ['synclounge'] }
     - { role: telly, tags: ['telly'] }

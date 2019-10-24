@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: pyLoad                          #
+# Title:            Community: pyLoad                                   #
 # Author(s):        Tr4il                                               #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  cobraeti/pyload                                     #
@@ -13,7 +13,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: pyload
+    record: pyload
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container

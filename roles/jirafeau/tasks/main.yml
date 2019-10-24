@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: Jirafeau                        #
+# Title:            Community: Jirafeau                                 #
 # Author(s):        zhdenny                                             #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  jgeusebroek/jirafea                                 #
@@ -13,7 +13,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: jirafeau
+    record: jirafeau
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container

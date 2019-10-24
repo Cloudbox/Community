@@ -14,6 +14,7 @@
     - { role: sanity_check, tags: ['always', 'sanity_check'] }
     - { role: pre_tasks, tags: ['pre_tasks'] }
     # Apps
+    - { role: airdcpp, tags: ['airdcpp'] }
     - { role: airsonic, tags: ['airsonic'] }
     - { role: alltube, tags: ['alltube'] }
     - { role: asshama, tags: ['asshama'] }
@@ -28,6 +29,7 @@
     - { role: coder, tags: ['coder'] }
     - { role: deluge, tags: ['deluge'] }
     - { role: delugevpn, tags: ['delugevpn'] }
+    - { role: drive_strm, tags: ['drive_strm', 'drive_strm_rebuild'] }
     - { role: embystat, tags: ['embystat'] }
     - { role: epms, tags: ['epms'] }
     - { role: filebot, tags: ['filebot'] }
@@ -39,6 +41,8 @@
     - { role: goplaxt, tags: ['goplaxt'] }
     - { role: guacamole, tags: ['guacamole'] }
     - { role: handbrake, tags: ['handbrake'] }
+    - { role: heimdall, tags: ['heimdall'] }
+    - { role: hetzner_nfs, tags: ['hetzner_nfs_server', 'hetzner_nfs_server_uninstall', 'hetzner_nfs_client_mount', 'hetzner_nfs_client_unmount'] }
     - { role: invoiceninja, tags: ['invoiceninja'] }
     - { role: jellyfin, tags: ['jellyfin'] }
     - { role: jirafeau, tags: ['jirafeau'] }
@@ -51,11 +55,16 @@
     - { role: mellow, tags: ['mellow'] }
     - { role: minecraft, tags: ['minecraft'] }
     - { role: monitorr, tags: ['monitorr'] }
-    - { role: jdownloader2, tags: ['jdownloader2'] }
     - { role: mylar, tags: ['mylar'] }
+    - { role: nextcloud, tags: ['nextcloud'] }
+    - { role: nowshowing, tags: ['nowshowing'] }
+    - { role: nzbhydra, tags: ['nzbhydra'] }
+    - { role: organizrv1, tags: ['organizrv1'] }
+    - { role: jdownloader2, tags: ['jdownloader2'] }
     - { role: plex2, tags: ['plex2'] }
     - { role: pyload, tags: ['pyload'] }
     - { role: qbittorrent, tags: ['qbittorrent'] }
+    - { role: quassel, tags: ['quassel'] }
     - { role: radarrx, tags: ['radarrx'] }
     - { role: sonarrx, tags: ['sonarrx'] }
     - { role: speedtest, tags: ['speedtest'] }
@@ -63,6 +72,9 @@
     - { role: subsonic, tags: ['subsonic'] }
     - { role: synclounge, tags: ['synclounge'] }
     - { role: telly, tags: ['telly'] }
+    - { role: thelounge, tags: ['thelounge'] }
     - { role: unifi, tags: ['unifi'] }
+    - { role: watchtower, tags: ['watchtower'] }
     - { role: wordpress, tags: ['wordpress'] }
     - { role: xteve, tags: ['xteve'] }
+    - { role: znc, tags: ['znc'] }

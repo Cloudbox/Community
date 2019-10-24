@@ -1,5 +1,5 @@
 #########################################################################
-# Title:         Cloudbox Community: Telly Role                         #
+# Title:         Community: Telly                                       #
 # Author(s):     desimaniac                                             #
 # URL:           https://github.com/Cloudbox/Community                  #
 # --                                                                    #
@@ -12,7 +12,7 @@
   include_vars: "{{ item }}"
   with_first_found:
     - "../../telly.yml"
-    - "../../defaults/telly.yml.sample"
+    - "../../defaults/telly.yml.default"
 
 - name: Installing Telly 1.0
   include_tasks: "telly10.yml"

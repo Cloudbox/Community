@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: Kitana                          #
+# Title:            Community: Kitana                                   #
 # Author(s):        4everfun                                            #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  pannal/kitana                                       #
@@ -13,7 +13,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: kitana
+    record: kitana
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container

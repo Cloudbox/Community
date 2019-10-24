@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: Gazee                           #
+# Title:            Community: Gazee                                    #
 # Author(s):        Aki                                                 #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  linuxserver/gazee                                   #
@@ -13,7 +13,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: gazee
+    record: gazee
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container

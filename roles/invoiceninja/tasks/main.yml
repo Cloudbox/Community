@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: Invoice Ninja                   #
+# Title:            Community: Invoice Ninja                            #
 # Author(s):        RXWatcher                                           #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  rxwatcher/docker-invoiceninja-nginx                 #
@@ -20,7 +20,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: "{{ invoiceninja.subdomain|default('invoiceninja',true) }}"
+    record: "{{ invoiceninja.subdomain|default('invoiceninja',true) }}"
   when: cloudflare_enabled
 
 - name: Stop and remove any existing containers

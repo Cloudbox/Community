@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: Jellyfin                        #
+# Title:            Community: Jellyfin                                 #
 # Author(s):        maximuskowalski                                     #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  jellyfin/jellyfin                                   #
@@ -13,7 +13,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: jellyfin
+    record: jellyfin
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container

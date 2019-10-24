@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: Minecraft Server                #
+# Title:            Community: Minecraft Server                         #
 # Author(s):        atilling                                            #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  itzg/minecraft-server                               #
@@ -13,7 +13,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: minecraft
+    record: minecraft
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container

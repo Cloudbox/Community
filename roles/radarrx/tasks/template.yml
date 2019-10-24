@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: RadarrX | Template              #
+# Title:            Community: RadarrX | Template                       #
 # Author(s):        Superduper09, Migz93                                #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  hotio/radarr                                        #
@@ -17,7 +17,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: "radarr{{ rolename }}"
+    record: "radarr{{ rolename }}"
   when: cloudflare_enabled
 
 - name: Suitarr Migration Tasks

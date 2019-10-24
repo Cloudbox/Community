@@ -18,11 +18,12 @@ Community Repository for Unofficial Cloudbox Add-ons
 
 - **[\*\*\*arrX](../../wiki/\*\*\*arrX-(Sonarr-Radarr-Bazarr))** - Create multiple Sonarr/Radarr/Bazarr roles
 - **airsonic**
-- **beets**
-- **[bitwarden](../../wiki/Bitwarden)** - [Bitwarden](https://bitwarden.com/) self-hosted server.
-- **bookstack**
-- **calibre-rdp** - Media path set to `/Media/Books`
-- **calibre-web** - Loads opt/calibre  (uses calibre-rdp db)
+- **[alltube](../../wiki/alltube)** - [alltube](https://github.com/Rudloff/alltube) HTML GUI for youtube-dl.
+- **[beets](../../wiki/beets)** - [Beets](http://beets.io/) Music library manager and MusicBrainz tagger.
+- **[bitwarden](../../wiki/Bitwarden)** - [Bitwarden](https://bitwarden.com/) Installs a self-hosted Bitwarden CE instance.
+- **[bookstack](../../wiki/Bookstack)** - [BookStack](https://www.bookstackapp.com/) Self-hosted platform for organising and storing information.
+- **[calibre-rdp](../../wiki/Calibre-RDP-and-Calibre-WEB)** - [Calibre-RDP](https://github.com/cgspeck/docker-rdp-calibre) Media path set to `/Media/Books` - a web app providing a clean interface for browsing, reading and downloading eBooks using an existing Calibre database.
+- **[calibre-web](../../wiki/Calibre-RDP-and-Calibre-WEB)** - [Calibre-RDP](https://github.com/janeczku/calibre-web) Loads opt/calibre - a web app providing a clean interface for browsing, reading and downloading eBooks using an existing Calibre database.
 - **[deluge](../../wiki/Deluge)** - Deluge torrent client
 - **[embystat](https://github.com/mregni/EmbyStat)**
 - **funkwhale**
@@ -38,7 +39,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **[mediabutler](../../wiki/Mediabutler)** - Discord bot
 - **[mellow](../../wiki/Mellow-Discord-Bot)** - Discord Bot
 - **monitorr**
-- **myjdownloader**
+- **[jdownloader2](../../wiki/JDownloader2)** - [JDownloader2](https://github.com/jlesage/docker-jdownloader-2) Self-hosted free, open-source download management tool with GUI website frontend.
 - **mylar** - automated comic book downloader
 - **[qbittorrent](../../wiki/qBitorrent)** - qBitorrent torrent client
 - **radarr1080** - Additional Radarr

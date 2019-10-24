@@ -1,5 +1,5 @@
 #########################################################################
-# Title:         Cloudbox Community: Telly | Telly 1.1                  #
+# Title:         Community: Telly | Telly 1.1                           #
 # Author(s):     EnorMOZ, desimaniac, chazlarson                        #
 # URL:           https://github.com/Cloudbox/Community                  #
 # Docker Image:  tellytv/telly:dev-ffmpeg                               #
@@ -17,7 +17,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: telly
+    record: telly
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container

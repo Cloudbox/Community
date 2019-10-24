@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: AllTube                         #
+# Title:            Community: AllTube                                  #
 # Author(s):        primaxius                                           #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  rudloff/alltube                                     #
@@ -13,7 +13,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: alltube
+    record: alltube
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container

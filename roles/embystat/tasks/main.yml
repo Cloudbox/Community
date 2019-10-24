@@ -1,5 +1,5 @@
 #########################################################################
-# Title:           Cloudbox Community: EmbyStat                         #
+# Title:           Community: EmbyStat                                  #
 # Author(s):       Satz                                                 #
 # URL:             https://github.com/Cloudbox/Community                #
 # Docker Image(s): uping/embystat                                       #
@@ -13,7 +13,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: embystat
+    record: embystat
   when: cloudflare_enabled
 
 - name: Stop and remove existing legacy container

@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: Calibre GUI and Server          #
+# Title:            Community: Calibre-RDP GUI and Server               #
 # Author(s):        Thomvh                                              #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  cgspeck/docker-rdp-calibre                          #
@@ -13,7 +13,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: calibrerdp
+    record: calibrerdp
   when: cloudflare_enabled
 
 - name: Create htpasswd

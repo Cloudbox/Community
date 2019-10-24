@@ -1,7 +1,7 @@
 #########################################################################
-# Title:         Cloudbox Community: Settings | Ansible Config          #
+# Title:         Community: Settings | Ansible Config                   #
 # Author(s):     l3uddz, desimaniac, Migz93                             #
-# URL:           https://github.com/cloudbox/cloudbox                   #
+# URL:           https://github.com/Cloudbox/Community                  #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -23,10 +23,33 @@
     force: yes
   when: not file.stat.exists
 
-- name: "Add hash_behaviour into '{{ item }}'."
-  lineinfile:
+- name: Add default entries to '{{ item }}'
+  ini_file:
     path: "{{ playbook_dir }}/{{ item }}"
-    regexp: '^hash_behaviour\s?=.*'
+    section: "{{ inner_item.section }}"
+    option: "{{ inner_item.option }}"
+    value: "{{ inner_item.value }}"
     state: present
-    line: 'hash_behaviour = merge'
+    no_extra_spaces: no
+    owner: "{{ community_yml.stat.uid }}"
+    group: "{{ community_yml.stat.gid }}"
+    mode: 0664
+  register: ansible_cfg_update_status
+  loop:
+    - { section: 'defaults', option: 'inventory', value: './inventories/local' }
+    - { section: 'defaults', option: 'roles_path', value: 'roles:$HOME/cloudbox/roles:$HOME/cloudbox/resources/roles' }
+    - { section: 'defaults', option: 'hash_behaviour', value: 'merge' }
+    - { section: 'defaults', option: 'fact_path', value: './ansible_facts.d' }
+    - { section: 'defaults', option: 'log_path', value: './community.log' }
+  loop_control:
+    loop_var: "inner_item"
   when: file.stat.exists
+
+- name: "Exit if '{{ item }}' changes."
+  include_tasks: "ansible_config_2.yml"
+  when:
+    - file.stat.exists
+    - inner_item.changed
+  loop: "{{ ansible_cfg_update_status.results }}"
+  loop_control:
+    loop_var: "inner_item"

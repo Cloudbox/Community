@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: xTeVe                           #
+# Title:            Community: xTeVe                                    #
 # Author(s):        Superduper09                                        #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  bl0m1/xtevedocker                                   #
@@ -13,7 +13,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: xteve
+    record: xteve
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container

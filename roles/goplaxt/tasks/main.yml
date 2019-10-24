@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: GoPlaxt                         #
+# Title:            Community: GoPlaxt                                  #
 # Author(s):        EnorMOZ                                             #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  xanderstrike/goplaxt                                #
@@ -13,7 +13,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: goplaxt
+    record: goplaxt
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container

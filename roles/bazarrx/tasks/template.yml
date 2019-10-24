@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: BazarrX | Template              #
+# Title:            Community: BazarrX | Template                       #
 # Author(s):        Migz93                                              #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  linuxserver/bazarr                                  #
@@ -17,7 +17,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: "bazarr{{ rolename }}"
+    record: "bazarr{{ rolename }}"
   when: cloudflare_enabled
 
 - name: Create bazarrx directories

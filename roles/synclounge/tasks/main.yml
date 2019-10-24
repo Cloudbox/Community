@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: SyncLounge                      #
+# Title:            Community: SyncLounge                               #
 # Author(s):        primaxius                                           #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  starbix/synclounge                                  #
@@ -13,7 +13,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: "{{ synclounge.subdomain|default('synclounge',true) }}"
+    record: "{{ synclounge.subdomain|default('synclounge',true) }}"
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container

@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: Subsonic                        #
+# Title:            Community: Subsonic                                 #
 # Author(s):        Migz93                                              #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  theultimatecoder/subsonic                           #
@@ -13,7 +13,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: subsonic
+    record: subsonic
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container

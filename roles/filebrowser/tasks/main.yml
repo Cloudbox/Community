@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: File Browser                    #
+# Title:            Community: File Browser                             #
 # Author(s):        RXWatcher                                           #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  filebrowser/filebrowser                             #
@@ -13,7 +13,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: filebrowser
+    record: filebrowser
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container

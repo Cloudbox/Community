@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: Monitorr                        #
+# Title:            Community: Monitorr                                 #
 # Author(s):        Superduper09, Kalroth                               #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  monitorr/monitorr                                   #
@@ -13,7 +13,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: monitorr
+    record: monitorr
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container

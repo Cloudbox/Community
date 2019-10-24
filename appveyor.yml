@@ -3,8 +3,8 @@ skip_tags: true
 
 skip_commits:
   files:
-    - '*.md'
-    - '*.yml.default'
+    - "*.md"
+    - "*.yml.default"
   message: /\[minor\]/
 
 image: ubuntu
@@ -55,6 +55,7 @@ environment:
     pyload
     qbittorrent
     radarrx
+    sickchill
     sonarrx
     speedtest
     sshwifty

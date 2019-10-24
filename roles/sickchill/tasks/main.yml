@@ -9,7 +9,7 @@
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
-- name: "Setting CloudFlare DNS Record"
+- name: 'Setting CloudFlare DNS Record'
   include_role:
     name: cloudflare-dns
   vars:
@@ -22,7 +22,7 @@
     state: absent
 
 - name: Create sickchill directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  file: 'path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}'
   with_items:
     - /opt/sickchill
 
@@ -32,24 +32,24 @@
     image: linuxserver/sickchill
     pull: yes
     published_ports:
-      - "127.0.0.1:8081:8081"
+      - '127.0.0.1:8081:8081'
     env:
-      TZ: "Europe/London"
-      PUID: "{{ uid }}"
-      PGID: "{{ gid }}"
+      TZ: 'Europe/London'
+      PUID: '{{ uid }}'
+      PGID: '{{ gid }}'
       UMASK: 002
-      VIRTUAL_HOST: "sickchill.{{ user.domain }}"
+      VIRTUAL_HOST: 'sickchill.{{ user.domain }}'
       VIRTUAL_PORT: 8081
-      LETSENCRYPT_HOST: "sickchill.{{ user.domain }}"
-      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      LETSENCRYPT_HOST: 'sickchill.{{ user.domain }}'
+      LETSENCRYPT_EMAIL: '{{ user.email }}'
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/sickchill:/config"
-      - "/mnt:/mnt"
-      - "/mnt/unionfs/Media/TV:/tv"
-      - "/mnt/local/downloads:/downloads"
+      - '/etc/localtime:/etc/localtime:ro'
+      - '/opt/sickchill:/config'
+      - '/mnt:/mnt'
+      - '/mnt/unionfs/Media/TV:/tv'
+      - '/mnt/local/downloads:/downloads'
     labels:
-      "com.github.cloudbox.cloudbox_managed": "true"
+      'com.github.cloudbox.cloudbox_managed': 'true'
     networks:
       - name: cloudbox
         aliases:

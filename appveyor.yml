@@ -3,8 +3,8 @@ skip_tags: true
 
 skip_commits:
   files:
-    - "*.md"
-    - "*.yml.default"
+    - '*.md'
+    - '*.yml.default'
   message: /\[minor\]/
 
 image: ubuntu
@@ -16,8 +16,8 @@ matrix:
 build: off
 
 environment:
-  CLOUDBOX_PATH: "/home/appveyor/cloudbox"
-  COMMUNITY_PATH: "/home/appveyor/projects/community"
+  CLOUDBOX_PATH: '/home/appveyor/cloudbox'
+  COMMUNITY_PATH: '/home/appveyor/projects/community'
   TAGS: >
     airsonic
     alltube

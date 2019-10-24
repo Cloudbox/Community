@@ -35,8 +35,9 @@
       - "127.0.0.1:8081:8081"
     env:
       TZ: "Europe/London"
-      USER_ID: "{{ uid }}"
-      GROUP_ID: "{{ gid }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      UMASK: 002
       VIRTUAL_HOST: "sickchill.{{ user.domain }}"
       VIRTUAL_PORT: 8081
       LETSENCRYPT_HOST: "sickchill.{{ user.domain }}"

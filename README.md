@@ -50,5 +50,6 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **[speedtest](https://github.com/adolfintel/speedtest)** - Self-hosted HTML5 Speedtest
 - **subsonic**
 - **[telly](../../wiki/Telly)**
+- **[transmissionvpn](https://github.com/haugene/docker-transmission-openvpn)**
 - **[Wordpress](../../wiki/Wordpress)** - Wordpress deployment
 - **xteve**

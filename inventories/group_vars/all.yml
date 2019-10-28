@@ -97,3 +97,20 @@ tz: "{{ system.timezone
 ################################
 
 ip_address_lookup_command: dig -4 TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'\"' '{ print $2}'
+
+################################
+# Hotio Docker Images
+################################
+
+# default suitarr version
+suitarr:
+  version: image
+
+suitarr_version_is_specified: "{{ (suitarr.version != 'default') and
+                                    ((suitarr.version == 'unstable') or
+                                    (suitarr.version == 'stable') or
+                                    (suitarr.version == 'image')) }}"
+
+suitarr_version: "{{ suitarr.version
+                     if suitarr_version_is_specified
+                     else 'image' }}"

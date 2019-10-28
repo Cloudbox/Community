@@ -13,12 +13,12 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: transmission
+    subdomain: transmissionvpn
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container
   docker_container:
-    name: transmission
+    name: transmissionvpn
     state: absent
 
 - name: Create transmissionvpn directories
@@ -77,7 +77,7 @@
     networks:
       - name: cloudbox
         aliases:
-          - transmission
+          - transmissionvpn
     purge_networks: yes
     restart_policy: always
     state: started

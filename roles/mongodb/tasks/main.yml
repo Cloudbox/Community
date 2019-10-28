@@ -1,0 +1,41 @@
+#########################################################################
+# Title:            Community: MongoDB                                  #
+# Author(s):        Superduper09, desimaniac                            #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  mongo:latest                                        #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Stop and remove any existing container
+  docker_container: "name={{ item }} state=absent"
+  with_items:
+    - mongodb
+
+- name: Create required directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - "/opt/mongodb"
+
+- name: Create and start mongodb container
+  docker_container:
+    name: "mongo"
+    image: "mongo:latest"
+    pull: yes
+    env:
+      MONGO_DATA_DIR: "/data/db"
+      MONGO_LOG_DIR: "/dev/null"
+      MONGO_URL: "mongodb://mongo:27017/"
+    volumes:
+      - "/opt/mongodb:/data/db:rw"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - "mongodb"
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

@@ -9,6 +9,10 @@
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
+- name: MongoDB Role
+  include_role:
+    name: mongodb
+
 - name: "Setting CloudFlare DNS Record"
   include_role:
     name: cloudflare-dns
@@ -20,13 +24,11 @@
   docker_container: "name={{ item }} state=absent"
   with_items:
     - mediabutler
-    - mongodb
 
 - name: Create required directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - "/opt/mediabutler"
-    - "/opt/mongodb"
 
 - name: "Check if plex 'Preferences.xml' exists"
   stat:
@@ -49,27 +51,6 @@
       plex_machine_id: "{{ xmlresp.matches[0].Preferences.ProcessedMachineIdentifier }}"
 
   when: plex_preferences_xml.stat.exists
-
-- name: Create and start mongodb container
-  docker_container:
-    name: "mongo"
-    image: "mongo:latest"
-    pull: yes
-    env:
-      MONGO_DATA_DIR: "/data/db"
-      MONGO_LOG_DIR: "/dev/null"
-      MONGO_URL: "mongodb://mongo:27017/"
-    volumes:
-      - "/opt/mongodb:/data/db:rw"
-    labels:
-      "com.github.cloudbox.cloudbox_managed": "true"
-    networks:
-      - name: cloudbox
-        aliases:
-          - "mongodb"
-    purge_networks: yes
-    restart_policy: unless-stopped
-    state: started
 
 - name: Create and start mediabutler container
   docker_container:

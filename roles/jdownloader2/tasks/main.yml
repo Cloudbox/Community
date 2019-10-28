@@ -75,7 +75,6 @@
       - "/mnt/local/downloads/jdownloader2/output:/output:rw"
       - "/mnt:/mnt:rw"
       - "/opt/jdownloader2/config:/config:rw"
-      - "/var/run/docker.sock:/var/run/docker.sock"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

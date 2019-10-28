@@ -70,7 +70,6 @@
       - "{{ plex.transcodes }}/5:/transcode"
       - "{{ plex.transcodes }}/6:/transcodes"
       - "/opt/jellyfin:/config:rw"
-      - "/var/run/docker.sock:/var/run/docker.sock"
       - "/mnt/unionfs/Media:/media"
       - "/opt/jellyfin/cache:/cache:rw"
     devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"

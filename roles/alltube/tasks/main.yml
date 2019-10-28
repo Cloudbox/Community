@@ -42,7 +42,6 @@
     pull: yes
     volumes:
       - "/opt/alltube:/var/www/html/config:rw"
-      - "/var/run/docker.sock:/var/run/docker.sock"
     env:
       TZ: "{{ tz }}"
       VIRTUAL_HOST: "alltube.{{ alltube.domain | default(user.domain,true) }}"

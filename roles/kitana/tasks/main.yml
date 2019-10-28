@@ -41,7 +41,6 @@
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
       - "/opt/kitana:/data"
-      - "/var/run/docker.sock:/var/run/docker.sock"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

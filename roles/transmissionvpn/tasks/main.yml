@@ -55,9 +55,9 @@
     env:
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      VIRTUAL_HOST: "transmission.{{ user.domain }}"
+      VIRTUAL_HOST: "transmissionvpn.{{ user.domain }}"
       VIRTUAL_PORT: 9091
-      LETSENCRYPT_HOST: "transmission.{{ user.domain }}"
+      LETSENCRYPT_HOST: "transmissionvpn.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       UMASK_SET: 002
       CREATE_TUN_DEVICE: "true"

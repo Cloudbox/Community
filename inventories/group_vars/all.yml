@@ -64,9 +64,30 @@ plex_account_enabled: "{{ true if not(
 # Role Conditionals
 ################################
 
-use_nzbs: "{{ true if ( (nzbs_downloads_path is defined) | default(false,true) ) else false }}"
+nzbs_downloads_path_is_defined: "{{ (downloads is defined) and
+                                    (downloads is not none) and
+                                    (downloads | trim | length > 0) and
+                                    (downloads.nzbs is defined) and
+                                    (downloads.nzbs is not none) and
+                                    (downloads.nzbs | trim | length > 0) }}"
 
-use_torrents: "{{ true if ( (torrents_downloads_path is defined) | default(false,true) ) else false }}"
+use_nzbs: "{{ nzbs_downloads_path_is_defined }}"
+
+torrents_downloads_path_is_defined: "{{ (downloads is defined) and
+                                        (downloads is not none) and
+                                        (downloads | trim | length > 0) and
+                                        (downloads.torrents is defined) and
+                                        (downloads.torrents is not none) and
+                                        (downloads.torrents | trim | length > 0) }}"
+
+use_torrents: "{{ torrents_downloads_path_is_defined }}"
+
+rclone_remote_is_defined: "{{ (rclone is defined) and
+                              (rclone is not none) and
+                              (rclone | trim | length > 0) and
+                              (rclone.remote is defined) and
+                              (rclone.remote is not none) and
+                              (rclone.remote | trim | length > 0) }}"
 
 ################################
 # User
@@ -97,6 +118,18 @@ tz: "{{ system.timezone
 ################################
 
 ip_address_lookup_command: dig -4 TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'\"' '{ print $2}'
+
+################################
+# Docker Volumes
+################################
+
+nzbs_downloads_path: "{{ [downloads.nzbs + ':/downloads/nzbs']
+                          if nzbs_downloads_path_is_defined
+                          else [] }}"
+
+torrents_downloads_path: "{{ [downloads.torrents + ':/downloads/torrents']
+                              if torrents_downloads_path_is_defined
+                              else [] }}"
 
 ################################
 # Hotio Docker Images

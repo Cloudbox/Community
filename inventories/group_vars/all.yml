@@ -69,6 +69,16 @@ use_nzbs: "{{ true if ( (nzbs_downloads_path is defined) | default(false,true) )
 use_torrents: "{{ true if ( (torrents_downloads_path is defined) | default(false,true) ) else false }}"
 
 ################################
+# User
+################################
+
+uid: "{{ ansible_local.user[user.name].uid }}"
+
+gid: "{{ ansible_local.user[user.name].gid }}"
+
+vgid: "{{ ansible_local.group.video.gid }}"
+
+################################
 # Timezone
 ################################
 

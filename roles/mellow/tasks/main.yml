@@ -49,5 +49,5 @@
       - name: cloudbox
         aliases:
           - mellow
-    restart_policy: always
+    restart_policy: unless-stopped
     state: started

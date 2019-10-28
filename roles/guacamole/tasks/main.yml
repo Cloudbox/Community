@@ -47,7 +47,7 @@
       - name: cloudbox
         aliases:
           - guacamole
-    restart_policy: always
+    restart_policy: unless-stopped
     state: started
 
 - name: "Wait for 30 seconds"

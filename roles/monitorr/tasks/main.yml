@@ -47,5 +47,5 @@
       - name: cloudbox
         aliases:
           - monitorr
-    restart_policy: always
+    restart_policy: unless-stopped
     state: started

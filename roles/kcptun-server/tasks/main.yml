@@ -49,5 +49,5 @@
       "com.github.cloudbox.cloudbox_managed": "true"
     user: "{{ uid }}:{{ gid }}"
     network_mode: host
-    restart_policy: always
+    restart_policy: unless-stopped
     state: started

@@ -68,7 +68,7 @@
         aliases:
           - "mongodb"
     purge_networks: yes
-    restart_policy: always
+    restart_policy: unless-stopped
     state: started
 
 - name: Create and start mediabutler container
@@ -100,5 +100,5 @@
         aliases:
           - "mediabutler"
     purge_networks: yes
-    restart_policy: always
+    restart_policy: unless-stopped
     state: started

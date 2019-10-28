@@ -64,12 +64,12 @@
     published_ports:
       - "127.0.0.1:6469:1216"
     env:
+      TZ: "{{ tz }}"
       VIRTUAL_HOST: "filebrowser.{{ user.domain }}"
       VIRTUAL_PORT: 1216
       LETSENCRYPT_HOST: "filebrowser.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/filebrowser/filebrowser.db:/database.db"
       - "/opt/filebrowser/filebrowser.json:/.filebrowser.json"
       - "/mnt/unionfs:/srv"

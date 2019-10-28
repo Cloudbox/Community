@@ -34,7 +34,6 @@
 - name: Set default_volumes variable
   set_fact:
     default_volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
       - "/opt/pyload:/config"
       - "/opt/scripts:/opt/scripts"
@@ -47,6 +46,7 @@
     image: cobraeti/pyload
     pull: yes
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "pyload.{{ user.domain }}"

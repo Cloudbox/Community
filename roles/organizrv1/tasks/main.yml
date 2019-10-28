@@ -58,6 +58,7 @@
     published_ports:
       - "127.0.0.1:7422:80"
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "organizrv1.{{ user.domain }}"
@@ -65,7 +66,6 @@
       LETSENCRYPT_HOST: "organizrv1.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/organizrv1:/config"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

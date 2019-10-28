@@ -33,15 +33,15 @@
     pull: yes
     published_ports:
       - "127.0.0.1:31337:31337"
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/kitana:/data"
-      - "/var/run/docker.sock:/var/run/docker.sock"
     env:
+      TZ: "{{ tz }}"
       VIRTUAL_HOST: "kitana.{{ user.domain }}"
       VIRTUAL_PORT: 31337
       LETSENCRYPT_HOST: "kitana.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/kitana:/data"
+      - "/var/run/docker.sock:/var/run/docker.sock"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

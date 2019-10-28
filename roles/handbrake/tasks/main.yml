@@ -39,6 +39,7 @@
     published_ports:
       - "127.0.0.1:6900:5800"
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "handbrake.{{ user.domain }}"
@@ -48,7 +49,6 @@
       CLEAN_TMP_DIR: "1"
       ENABLE_CJK_FONT: "1"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/handbrake:/config:rw"
       - "/mnt:/storage:ro"
       - "/mnt/local/downloads/handbrake/watch:/watch:rw"

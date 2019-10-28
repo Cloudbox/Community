@@ -34,6 +34,7 @@
     published_ports:
       - "127.0.0.1:8083:8083"
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       GUID: "{{ gid }}"
       VIRTUAL_HOST: "books.{{ user.domain }}"
@@ -43,7 +44,6 @@
       USE_CONFIG_DIR: true
       DOCKER_MODS: linuxserver/calibre-web:calibre
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/mnt/unionfs/Media/Books:/books"
       - "/opt/calibre-web/config:/config"
       - "/opt/calibre-web:/calibre-web"

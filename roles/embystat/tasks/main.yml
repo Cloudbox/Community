@@ -41,9 +41,9 @@
     image: "uping/embystat:nightly-ubuntu-x64"
     pull: yes
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/embystat/config:/app/config:rw"
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "embystat.{{ user.domain }}"

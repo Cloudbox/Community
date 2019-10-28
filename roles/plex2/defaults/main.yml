@@ -40,7 +40,6 @@ plex2_docker_image: "cloudb0x/plex:{{ plex.tag }}"
 ################################
 
 plex2_docker_volumes:
-  - "/etc/localtime:/etc/localtime:ro"
   - "/opt/plex2:/config"
   - "/opt/scripts:/scripts"
   - "/mnt/unionfs/Media:/data"

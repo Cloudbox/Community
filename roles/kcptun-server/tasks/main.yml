@@ -40,8 +40,9 @@
     name: kcptun-server
     image: horjulf/kcptun:latest
     pull: yes
+    env:
+      TZ: "{{ tz }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/kcptun-server/config:/config"
     command: "/bin/server -c /config/config.json"
     labels:

@@ -32,6 +32,7 @@
     image: monitorr/monitorr:develop
     pull: yes
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "monitorr.{{ user.domain }}"
@@ -39,7 +40,6 @@
       LETSENCRYPT_HOST: "monitorr.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/monitorr:/app"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

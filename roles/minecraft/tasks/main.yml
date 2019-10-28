@@ -34,15 +34,15 @@
     published_ports:
       - "25565:25565"
     env:
-      PUID: "{{ uid }}"
-      PGID: "{{ gid }}"
+      TZ: "{{ tz }}"
+      UID: "{{ uid }}"
+      GID: "{{ gid }}"
       VIRTUAL_HOST: "minecraft.{{ user.domain }}"
       VIRTUAL_PORT: 25565
       EULA: TRUE
       LETSENCRYPT_HOST: "minecraft.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/minecraft:/config"
       - "/mnt/local/data:/data"
     labels:

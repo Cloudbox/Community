@@ -40,7 +40,6 @@
 - name: Set default_volumes variable
   set_fact:
     default_volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/qbittorrent:/config"
       - "/opt/scripts:/scripts"
       - "/mnt:/mnt"
@@ -54,6 +53,7 @@
       - "56881:56881"
       - "56881:56881/udp"
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "qbittorrent.{{ user.domain }}"

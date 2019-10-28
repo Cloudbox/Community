@@ -32,17 +32,16 @@
     name: xteve
     image: bl0m1/xtevedocker
     pull: yes
+    user: "{{ uid }}:{{ gid }}"
     published_ports:
       - "0.0.0.0:34400:34400"
     env:
-      PUID: "{{ uid }}"
-      PGID: "{{ gid }}"
+      TZ: "{{ tz }}"
       VIRTUAL_HOST: "xteve.{{ user.domain }}"
       VIRTUAL_PORT: 34400
       LETSENCRYPT_HOST: "xteve.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/xteve:/root/xteve"
       - "/opt/xteve/tmp:/tmp/xteve"
     labels:

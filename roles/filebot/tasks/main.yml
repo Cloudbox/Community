@@ -34,6 +34,7 @@
     published_ports:
       - "127.0.0.1:5801:5800"
     env:
+      TZ: "{{ tz }}"
       USER_ID: "{{ uid }}"
       GROUP_ID: "{{ gid }}"
       VIRTUAL_HOST: "filebot.{{ user.domain }}"
@@ -41,7 +42,6 @@
       LETSENCRYPT_HOST: "filebot.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/filebot:/config"
       - "/mnt:/mnt"
       - "/mnt/unionfs/Media/TV:/storage/Media/TV Shows"

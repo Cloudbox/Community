@@ -28,7 +28,6 @@
 - name: Set default_volumes variable
   set_fact:
     default_volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/bazarr{{ rolename }}:/config"
       - "/opt/scripts:/scripts"
       - "/mnt:/mnt"
@@ -43,6 +42,7 @@
     published_ports:
       - "127.0.0.1:{{ roleport }}:6767"
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "bazarr{{ rolename }}.{{ user.domain }}"

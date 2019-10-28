@@ -55,8 +55,16 @@
     name: jellyfin
     image: "jellyfin/jellyfin:latest"
     pull: yes
+    user: "{{ uid }}:{{ gid }}"
+    env:
+      TZ: "{{ tz }}"
+      VIRTUAL_HOST: "jellyfin.{{ user.domain }}"
+      VIRTUAL_PORT: 8096
+      LETSENCRYPT_HOST: "jellyfin.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      NVIDIA_DRIVER_CAPABILITIES: "{{ 'compute,video,utility' if gpu.nvidia | default(false) else omit }}"
+      NVIDIA_VISIBLE_DEVICES: "{{ 'all' if gpu.nvidia | default(false) else omit }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/mnt:/mnt:rw"
       - "/mnt/strm:/strm:rw"
       - "{{ plex.transcodes }}/5:/transcode"
@@ -66,14 +74,6 @@
       - "/mnt/unionfs/Media:/media"
       - "/opt/jellyfin/cache:/cache:rw"
     devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"
-    user: "{{ uid }}:{{ gid }}"
-    env:
-      VIRTUAL_HOST: "jellyfin.{{ user.domain }}"
-      VIRTUAL_PORT: 8096
-      LETSENCRYPT_HOST: "jellyfin.{{ user.domain }}"
-      LETSENCRYPT_EMAIL: "{{ user.email }}"
-      NVIDIA_DRIVER_CAPABILITIES: "{{ 'compute,video,utility' if gpu.nvidia | default(false) else omit }}"
-      NVIDIA_VISIBLE_DEVICES: "{{ 'all' if gpu.nvidia | default(false) else omit }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

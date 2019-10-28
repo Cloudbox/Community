@@ -38,15 +38,15 @@
     pull: yes
     user: "{{ uid }}:{{ gid }}"
     command: --database.file="/telly/telly.db"
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/telly/telly.db:/telly/"
     env:
+      TZ: "{{ tz }}"
       TELLY_LOG_LEVEL: "debug"
       VIRTUAL_HOST: "telly.{{ user.domain }}"
       VIRTUAL_PORT: 6077
       LETSENCRYPT_HOST: "telly.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/telly/telly.db:/telly/"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

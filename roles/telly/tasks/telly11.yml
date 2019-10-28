@@ -55,14 +55,14 @@
     image: "tellytv/telly:dev-ffmpeg"
     pull: yes
     user: "{{ uid }}:{{ gid }}"
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/telly/:/etc/telly/"
     env:
+      TZ: "{{ tz }}"
       VIRTUAL_HOST: "telly.{{ user.domain }}"
       VIRTUAL_PORT: 6077
       LETSENCRYPT_HOST: "telly.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/telly/:/etc/telly/"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

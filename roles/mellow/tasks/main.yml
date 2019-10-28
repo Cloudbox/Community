@@ -34,6 +34,7 @@
     published_ports:
       - "127.0.0.1:5060:5060"
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "mellow.{{ user.domain }}"
@@ -41,7 +42,6 @@
       LETSENCRYPT_HOST: "mellow.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/mellow:/usr/src/app/data/"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

@@ -1,0 +1,22 @@
+#########################################################################
+# Title:         Community: Sanity Check | Touch Logs                   #
+# Author(s):     desimaniac                                             #
+# URL:           https://github.com/Cloudbox/Community                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Touch Logs | Get 'community.yml' info."
+  stat:
+    path: "{{ playbook_dir }}/community.yml"
+  register: community_yml
+
+- name: "Touch Logs | Touch 'community.log'"
+  file:
+    path: "{{ playbook_dir }}/community.log"
+    state: touch
+    owner: "{{ community_yml.stat.uid }}"
+    group: "{{ community_yml.stat.gid }}"
+    mode: 0664

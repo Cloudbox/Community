@@ -88,6 +88,7 @@
       - "/mnt:/mnt:rw"
       - "/mnt/strm:/strm:rw"
       - "/mnt/unionfs/Media:/media"
+      - "/mnt/unionfs/Media:/data"
       - "{{ plex.transcodes }}/jellyfin:/transcode"
     devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"
     labels:

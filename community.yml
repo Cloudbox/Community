@@ -25,7 +25,7 @@
     - { role: bookstack, tags: ['bookstack'] }
     - { role: calibre-rdp, tags: ['calibre-rdp'] }
     - { role: calibre-web, tags: ['calibre-web'] }
-    - { role: couchpota, tags: ['couchpota'] }
+    - { role: couchpotato, tags: ['couchpotato'] }
     - { role: coder, tags: ['coder'] }
     - { role: deluge, tags: ['deluge'] }
     - { role: delugevpn, tags: ['delugevpn'] }
@@ -42,7 +42,16 @@
     - { role: guacamole, tags: ['guacamole'] }
     - { role: handbrake, tags: ['handbrake'] }
     - { role: heimdall, tags: ['heimdall'] }
-    - { role: hetzner_nfs, tags: ['hetzner_nfs_server', 'hetzner_nfs_server_uninstall', 'hetzner_nfs_client_mount', 'hetzner_nfs_client_unmount'] }
+    - {
+        role: hetzner_nfs,
+        tags:
+          [
+            'hetzner_nfs_server',
+            'hetzner_nfs_server_uninstall',
+            'hetzner_nfs_client_mount',
+            'hetzner_nfs_client_unmount',
+          ],
+      }
     - { role: invoiceninja, tags: ['invoiceninja'] }
     - { role: jellyfin, tags: ['jellyfin'] }
     - { role: jirafeau, tags: ['jirafeau'] }

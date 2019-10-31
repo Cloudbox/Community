@@ -21,14 +21,14 @@
     name: couchpota
     state: absent
 
-- name: Create couchpota directories
+- name: Create couchpotato directories
   file: 'path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}'
   with_items:
-    - /opt/couchpota
+    - /opt/couchpotato
 
 - name: Create and start container
   docker_container:
-    name: couchpota
+    name: couchpotato
     image: linuxserver/couchpotato
     pull: yes
     published_ports:
@@ -39,13 +39,13 @@
       TZ: 'Europe/London'
       PUID: '{{ uid }}'
       PGID: '{{ gid }}'
-      VIRTUAL_HOST: 'couchpota.{{ user.domain }}'
+      VIRTUAL_HOST: 'couchpotato.{{ user.domain }}'
       VIRTUAL_PORT: 5050
-      LETSENCRYPT_HOST: 'couchpota.{{ user.domain }}'
+      LETSENCRYPT_HOST: 'couchpotato.{{ user.domain }}'
       LETSENCRYPT_EMAIL: '{{ user.email }}'
     volumes:
       - '/etc/localtime:/etc/localtime:ro'
-      - '/opt/couchpota:/config'
+      - '/opt/couchpotato:/config'
       - '/mnt:/mnt'
       - '/mnt/unionfs/Media/Movies:/movies'
       - '/mnt/local/downloads:/downloads'
@@ -54,7 +54,7 @@
     networks:
       - name: cloudbox
         aliases:
-          - couchpota
+          - couchpotato
     purge_networks: yes
     restart_policy: always
     state: started

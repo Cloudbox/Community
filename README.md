@@ -37,6 +37,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **lazylibrarian** - (uses calibre-rdp db)
 - **logarr**
 - **[mediabutler](../../wiki/Mediabutler)** - Discord bot
+- **[medusa](https://pymedusa.com) - TV Shows manager
 - **[mellow](../../wiki/Mellow-Discord-Bot)** - Discord Bot
 - **monitorr**
 - **[jdownloader2](../../wiki/JDownloader2)** - [JDownloader2](https://github.com/jlesage/docker-jdownloader-2) Self-hosted free, open-source download management tool with GUI website frontend.

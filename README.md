@@ -16,7 +16,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 
 ## Roles
 
-- **[\*\*\*arrX](<../../wiki/***arrX-(Sonarr-Radarr-Bazarr)>)** - Create multiple Sonarr/Radarr/Bazarr roles
+- **[arrX](../../wiki/arrX)** - Create multiple Sonarr/Radarr/Bazarr Docker containers.
 - **airsonic**
 - **[alltube](../../wiki/alltube)** - [alltube](https://github.com/Rudloff/alltube) HTML GUI for youtube-dl.
 - **[beets](../../wiki/beets)** - [Beets](http://beets.io/) Music library manager and MusicBrainz tagger.

@@ -16,8 +16,8 @@ matrix:
 build: off
 
 environment:
-  CLOUDBOX_PATH: '/home/appveyor/cloudbox'
-  COMMUNITY_PATH: '/home/appveyor/projects/community'
+  CLOUDBOX_PATH: "/home/appveyor/cloudbox"
+  COMMUNITY_PATH: "/home/appveyor/projects/community"
   TAGS: >
     airdcpp
     airsonic
@@ -77,8 +77,8 @@ environment:
     znc
 
 init:
-  - sh: curl -s https://cloudbox.works/scripts/dep.sh | sudo -H sh
-  - sh: curl -s https://cloudbox.works/scripts/repo.sh | bash
+  - sh: curl -s https://cloudbox.works/scripts/dep.sh | sudo -H sh &> /dev/null	
+  - sh: curl -s https://cloudbox.works/scripts/repo.sh | bash &> /dev/null
 
 install:
   - sh: |
@@ -108,7 +108,8 @@ install:
       sudo ansible-playbook cloudbox.yml --tags core \
           --skip-tags sanity_check,settings \
           --skip-tags kernel,hetzner,shell,rclone,system,motd,nvidia,mounts,scripts \
-          --extra-vars '{"continuous_integration":true}'
+          --extra-vars '{"continuous_integration":true}' \
+          &> /dev/null
   - sh: |
       echo ""
       echo "=========================="

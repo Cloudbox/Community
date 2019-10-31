@@ -34,6 +34,7 @@
     published_ports:
       - "127.0.0.1:4042:4040"
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "booksonic.{{ user.domain }}"
@@ -41,7 +42,6 @@
       LETSENCRYPT_HOST: "booksonic.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/booksonic:/config"
       - "/mnt/unionfs/Media/Audiobooks:/audiobooks"
       - "/mnt/unionfs/Media/Podcasts:/podcasts"
@@ -55,5 +55,5 @@
         aliases:
           - booksonic
     purge_networks: yes
-    restart_policy: always
+    restart_policy: unless-stopped
     state: started

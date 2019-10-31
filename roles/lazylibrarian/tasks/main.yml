@@ -34,6 +34,7 @@
     published_ports:
       - "127.0.0.1:5299:5299"
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "lazylibrarian.{{ user.domain }}"
@@ -41,7 +42,6 @@
       LETSENCRYPT_HOST: "lazylibrarian.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/lazylibrarian:/config"
       - "/mnt:/mnt"
     labels:
@@ -51,5 +51,5 @@
         aliases:
           - lazylibrarian
     purge_networks: yes
-    restart_policy: always
+    restart_policy: unless-stopped
     state: started

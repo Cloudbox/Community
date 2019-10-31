@@ -58,13 +58,8 @@
     published_ports:
       - "127.0.0.1:5800:5800"
       - "127.0.0.1:5900:5900"
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/mnt/local/downloads/jdownloader2/output:/output:rw"
-      - "/mnt:/mnt:rw"
-      - "/opt/jdownloader2/config:/config:rw"
-      - "/var/run/docker.sock:/var/run/docker.sock"
     env:
+      TZ: "{{ tz }}"
       VIRTUAL_HOST: "jdownloader2.{{ user.domain }}"
       VIRTUAL_PORT: 5800
       LETSENCRYPT_HOST: "jdownloader2.{{ user.domain }}"
@@ -76,6 +71,10 @@
       GROUP_ID: "{{ gid }}"
       CLEAN_TMP_DIR: 1
       UMASK: 000
+    volumes:
+      - "/mnt/local/downloads/jdownloader2/output:/output:rw"
+      - "/mnt:/mnt:rw"
+      - "/opt/jdownloader2/config:/config:rw"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
@@ -83,5 +82,5 @@
         aliases:
           - jdownloader2
     purge_networks: yes
-    restart_policy: always
+    restart_policy: unless-stopped
     state: started

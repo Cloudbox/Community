@@ -20,8 +20,9 @@
     image: "v2tec/watchtower"
     pull: yes
     command: "--cleanup"
+    env:
+      TZ: "{{ tz }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/var/run/docker.sock:/var/run/docker.sock"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

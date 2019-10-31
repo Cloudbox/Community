@@ -34,6 +34,7 @@
     published_ports:
       - "127.0.0.1:4041:4040"
     env:
+      TZ: "{{ tz }}"
       SUBSONIC_UID: "{{ uid }}"
       SUBSONIC_GID: "{{ gid }}"
       VIRTUAL_HOST: "subsonic.{{ user.domain }}"
@@ -42,7 +43,6 @@
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       SUBSONIC_MAX_MEMORY: 1024
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/subsonic:/opt/app/state"
       - "/mnt:/mnt"
       - "/mnt/unionfs/Media/Music:/mnt/music"
@@ -53,5 +53,5 @@
         aliases:
           - subsonic
     purge_networks: yes
-    restart_policy: always
+    restart_policy: unless-stopped
     state: started

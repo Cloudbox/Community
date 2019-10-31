@@ -63,6 +63,7 @@
     image: "rxwatcher/docker-invoiceninja-nginx"
     pull: yes
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       DB_HOST: "mariadb:3306"
@@ -75,7 +76,6 @@
       LETSENCRYPT_HOST: "{{ invoiceninja.subdomain|default('invoiceninja',true) }}.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/invoiceninja/public/logo:/var/www/app/public/logo"
       - "/opt/invoiceninja/storage:/var/www/app/storage"
       - "/opt/invoiceninja/logs/cron:/var/log/ninja_cron"

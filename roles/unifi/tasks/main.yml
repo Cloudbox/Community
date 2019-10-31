@@ -38,6 +38,7 @@
       - 3478:3478/udp
       - 8089:8080
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "unifi.{{ user.domain }}"
@@ -46,7 +47,6 @@
       LETSENCRYPT_HOST: "unifi.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/unifi:/config"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

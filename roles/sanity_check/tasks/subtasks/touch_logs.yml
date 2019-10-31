@@ -1,5 +1,5 @@
 #########################################################################
-# Title:         Community: Pre-Tasks Role                              #
+# Title:         Community: Sanity Check | Touch Logs                   #
 # Author(s):     desimaniac                                             #
 # URL:           https://github.com/Cloudbox/Community                  #
 # --                                                                    #
@@ -8,6 +8,15 @@
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
-- name: APT Tasks
-  import_tasks: "subtasks/apt.yml"
-  tags: always
+- name: "Touch Logs | Get 'community.yml' info."
+  stat:
+    path: "{{ playbook_dir }}/community.yml"
+  register: community_yml
+
+- name: "Touch Logs | Touch 'community.log'"
+  file:
+    path: "{{ playbook_dir }}/community.log"
+    state: touch
+    owner: "{{ community_yml.stat.uid }}"
+    group: "{{ community_yml.stat.gid }}"
+    mode: 0664

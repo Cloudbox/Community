@@ -35,6 +35,7 @@
       - "127.0.0.1:6501:6501"
       - "6502:6502"
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "znc.{{ user.domain }}"
@@ -42,7 +43,6 @@
       LETSENCRYPT_HOST: "znc.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/znc:/config"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

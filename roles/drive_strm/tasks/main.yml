@@ -98,7 +98,7 @@
         cleanup: yes
         user: "{{ uid }}:{{ gid }}"
         volumes:
-          - "/etc/localtime:/etc/localtime:ro"
+
           - "/opt/drive_strm:/config"
           - "/mnt/strm:/strm"
         networks:
@@ -136,8 +136,9 @@
         keep_volumes: no
         cleanup: yes
         user: "{{ uid }}:{{ gid }}"
+        env:
+          TZ: "{{ tz }}"
         volumes:
-          - "/etc/localtime:/etc/localtime:ro"
           - "/opt/drive_strm:/config"
           - "/mnt/strm:/strm"
         networks:
@@ -177,13 +178,13 @@
       - "7294:7294/tcp"
     user: "{{ uid }}:{{ gid }}"
     env:
+      TZ: "{{ tz }}"
       VIRTUAL_HOST: "strm.{{ user.domain }}"
       VIRTUAL_PORT: 7294
       LETSENCRYPT_HOST: "strm.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       HTTPS_METHOD: noredirect
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/drive_strm:/config"
       - "/mnt/strm:/strm"
     labels:

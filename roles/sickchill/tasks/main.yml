@@ -1,8 +1,8 @@
 #########################################################################
-# Title:            Community: GoPlaxt                                  #
-# Author(s):        EnorMOZ                                             #
+# Title:            Community: SickChill                                #
+# Author(s):        javi11                                              #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  xanderstrike/goplaxt                                #
+# Docker Image(s):  linuxserver/sickchill                               #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -13,45 +13,50 @@
   include_role:
     name: cloudflare-dns
   vars:
-    record: goplaxt
+    subdomain: sickchill
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container
   docker_container:
-    name: goplaxt
+    name: sickchill
     state: absent
 
-- name: Create goplaxt directories
+- name: Create sickchill directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
-    - /opt/goplaxt
+    - /opt/sickchill
+
+- name: Set default_volumes variable
+  set_fact:
+    default_volumes:
+      - "/opt/sickchill:/config"
+      - "/opt/scripts:/scripts"
+      - "/mnt:/mnt"
+      - "/mnt/unionfs/Media/TV:/tv"
 
 - name: Create and start container
   docker_container:
-    name: goplaxt
-    image: xanderstrike/goplaxt
+    name: sickchill
+    image: linuxserver/sickchill
     pull: yes
     published_ports:
-      - "127.0.0.1:8000:8000"
+      - "127.0.0.1:8082:8081"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      VIRTUAL_HOST: "goplaxt.{{ user.domain }}"
-      VIRTUAL_PORT: 8000
-      LETSENCRYPT_HOST: "goplaxt.{{ user.domain }}"
+      UMASK: 002
+      VIRTUAL_HOST: "sickchill.{{ user.domain }}"
+      VIRTUAL_PORT: 8081
+      LETSENCRYPT_HOST: "sickchill.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
-      TRAKT_ID: "{{ goplaxt.trakt_id }}"
-      TRAKT_secret: "{{ goplaxt.trakt_secret }}"
-      REDIRECT_URI: "https://goplaxt.{{ user.domain }}"
-    volumes:
-      - "/opt/goplaxt:/app/keystore"
+    volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
       - name: cloudbox
         aliases:
-          - goplaxt
+          - sickchill
     purge_networks: yes
     restart_policy: unless-stopped
     state: started

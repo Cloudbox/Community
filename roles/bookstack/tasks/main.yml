@@ -53,6 +53,7 @@
     published_ports:
       - "127.0.0.1:6875:443"
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       DB_HOST: "mariadb:3306"
@@ -65,7 +66,6 @@
       LETSENCRYPT_HOST: "{{ bookstack.subdomain|default('bookstack',true) }}.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/bookstack:/config"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

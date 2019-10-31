@@ -34,6 +34,7 @@
     published_ports:
       - "127.0.0.1:8143:8443"
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       PASSWORD: "{{ user.pass }}"

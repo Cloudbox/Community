@@ -40,6 +40,7 @@
     published_ports:
       - "127.0.0.1:4645:443"
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "nextcloud.{{ user.domain }}"
@@ -48,7 +49,6 @@
       LETSENCRYPT_HOST: "nextcloud.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/nextcloud/conf:/config"
       - "/opt/nextcloud/data:/data"
       - "/mnt:/mnt"

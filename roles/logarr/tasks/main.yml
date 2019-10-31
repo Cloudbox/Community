@@ -50,6 +50,7 @@
     image: monitorr/logarr-alpha:latest
     pull: yes
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "logarr.{{ user.domain }}"
@@ -57,7 +58,6 @@
       LETSENCRYPT_HOST: "logarr.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/logarr/config:/app"
       - "/opt:/opt"
       - "/mnt:/mnt"
@@ -67,5 +67,5 @@
       - name: cloudbox
         aliases:
           - logarr
-    restart_policy: always
+    restart_policy: unless-stopped
     state: started

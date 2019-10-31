@@ -1,51 +1,41 @@
 #########################################################################
-# Title:            Community: Monitorr                                 #
-# Author(s):        Superduper09, Kalroth                               #
+# Title:            Community: MongoDB                                  #
+# Author(s):        Superduper09, desimaniac                            #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  monitorr/monitorr                                   #
+# Docker Image(s):  mongo:latest                                        #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
-- name: "Setting CloudFlare DNS Record"
-  include_role:
-    name: cloudflare-dns
-  vars:
-    record: monitorr
-  when: cloudflare_enabled
-
 - name: Stop and remove any existing container
-  docker_container:
-    name: monitorr
-    state: absent
+  docker_container: "name={{ item }} state=absent"
+  with_items:
+    - mongodb
 
-- name: Create monitorr directories
+- name: Create required directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
-    - /opt/monitorr
+    - "/opt/mongodb"
 
-- name: Create and start container
+- name: Create and start mongodb container
   docker_container:
-    name: monitorr
-    image: monitorr/monitorr:develop
+    name: "mongo"
+    image: "mongo:latest"
     pull: yes
     env:
-      TZ: "{{ tz }}"
-      PUID: "{{ uid }}"
-      PGID: "{{ gid }}"
-      VIRTUAL_HOST: "monitorr.{{ user.domain }}"
-      VIRTUAL_PORT: 80
-      LETSENCRYPT_HOST: "monitorr.{{ user.domain }}"
-      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      MONGO_DATA_DIR: "/data/db"
+      MONGO_LOG_DIR: "/dev/null"
+      MONGO_URL: "mongodb://mongo:27017/"
     volumes:
-      - "/opt/monitorr:/app"
+      - "/opt/mongodb:/data/db:rw"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
       - name: cloudbox
         aliases:
-          - monitorr
+          - "mongodb"
+    purge_networks: yes
     restart_policy: unless-stopped
     state: started

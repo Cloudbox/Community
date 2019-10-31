@@ -63,6 +63,7 @@ environment:
     qbittorrent
     quassel
     radarrx
+    sickchill
     sonarrx
     speedtest
     sshwifty

@@ -54,10 +54,10 @@
     published_ports:
       - "4242:4242"
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/quassel:/config"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

@@ -33,7 +33,7 @@
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/minecraft:/config"
-      - "/mnt/local/data:/data"
+      - "/opt/minecraft/data:/data"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

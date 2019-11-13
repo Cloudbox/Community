@@ -15,7 +15,7 @@
 
 - name: Check subfolder exists
   stat:
-    path: /opt/ombi/app
+    path: /opt/xteve/app
   register: subfolder
 
 - name: Move '/opt/xteve' folder contents to 'tmp'

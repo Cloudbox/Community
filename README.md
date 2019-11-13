@@ -52,4 +52,4 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **subsonic**
 - **[telly](../../wiki/Telly)**
 - **[Wordpress](../../wiki/Wordpress)** - Wordpress deployment
-- **xteve**
+- **[xteve](https://xteve.de/)** -  To access WebUI: xteve.domain.com/web/

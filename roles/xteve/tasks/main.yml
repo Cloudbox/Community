@@ -1,6 +1,6 @@
 #########################################################################
 # Title:            Community: xTeVe                                    #
-# Author(s):        Satz                                                #
+# Author(s):        Satz, Migz                                          #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  dnsforge/xteve                                      #
 # --                                                                    #
@@ -28,6 +28,19 @@
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/xteve
+
+- name: Xteve | Web redirect
+  blockinfile:
+    path: "/opt/nginx-proxy/vhost.d/xteve.{{ user.domain }}"
+    marker: "### {mark} Xteve - Web Redirect ###"
+    block: |
+      location = / {
+      return 301 /web;
+      }
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0664
+    create: yes
 
 - name: Create and start container
   docker_container:
@@ -68,4 +81,3 @@
     group: "{{ user.name }}"
     mode: 0775
     recurse: yes
-

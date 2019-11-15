@@ -1,8 +1,8 @@
 #########################################################################
 # Title:            Community: xTeVe                                    #
-# Author(s):        Superduper09                                        #
+# Author(s):        Satz, Migz                                          #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  bl0m1/xtevedocker                                   #
+# Docker Image(s):  dnsforge/xteve                                      #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -21,29 +21,45 @@
     name: xteve
     state: absent
 
+- name: xTeve | Migration Tasks
+  import_tasks: "subtasks/migration.yml"
+
 - name: Create xteve directory
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/xteve
-    - /opt/xteve/tmp
+
+- name: Xteve | Web redirect
+  blockinfile:
+    path: "/opt/nginx-proxy/vhost.d/xteve.{{ user.domain }}"
+    marker: "### {mark} Xteve - Web Redirect ###"
+    block: |
+      location = / {
+      return 301 /web;
+      }
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0664
+    create: yes
 
 - name: Create and start container
   docker_container:
     name: xteve
-    image: bl0m1/xtevedocker
+    image: dnsforge/xteve
     pull: yes
-    user: "{{ uid }}:{{ gid }}"
-    published_ports:
-      - "0.0.0.0:34400:34400"
     env:
       TZ: "{{ tz }}"
       VIRTUAL_HOST: "xteve.{{ user.domain }}"
       VIRTUAL_PORT: 34400
       LETSENCRYPT_HOST: "xteve.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
+      XTEVE_BRANCH: beta
+      XTEVE_UID: 1000
+      XTEVE_GID: 1000
     volumes:
-      - "/opt/xteve:/root/xteve"
-      - "/opt/xteve/tmp:/tmp/xteve"
+      - "/opt/xteve/app/config:/home/xteve/conf:rw"
+      - "/opt/xteve/app/tmp:/tmp/xteve:rw"
+      - "/opt/xteve/app/guide2go:/home/xteve/guide2go/conf:rw"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
@@ -53,3 +69,15 @@
     purge_networks: yes
     restart_policy: unless-stopped
     state: started
+
+- name: Wait for xteve files to create...
+  wait_for:
+    timeout: 30
+
+- name: "Change ownership of xteve folder"
+  file:
+    path: /opt/xteve/
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+    recurse: yes

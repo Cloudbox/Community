@@ -20,7 +20,7 @@
 
 - name: Move '/opt/xteve' folder contents to 'tmp'
   shell: |
-    mv /opt/xteve /tmp/app
+    mv /opt/xteve/app /tmp/app
     mkdir /opt/xteve
     mv /tmp/app /opt/xteve/
     find /opt/xteve/* -type d -empty -delete

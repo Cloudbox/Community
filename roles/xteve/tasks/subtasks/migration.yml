@@ -18,7 +18,7 @@
     path: /opt/xteve/app
   register: subfolder
 
-- name: Move '/opt/xteve' folder contents to 'tmp'
+- name: Move '/opt/xteve/app' folder contents to 'tmp'
   shell: |
     mv /opt/xteve/app /tmp/app
     mkdir /opt/xteve

@@ -47,7 +47,7 @@
 - name: Create and start container
   docker_container:
     name: "radarr{{ rolename }}"
-    image: "hotio/radarr"
+    image: "hotio/radarr:unstable"
     pull: yes
     published_ports:
       - "127.0.0.1:{{ roleport }}:7878"
@@ -55,8 +55,6 @@
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      VERSION: "{{ suitarr_version }}"
-      BACKUP: "no"
       VIRTUAL_HOST: "radarr{{ rolename }}.{{ user.domain }}"
       VIRTUAL_PORT: 7878
       LETSENCRYPT_HOST: "radarr{{ rolename }}.{{ user.domain }}"

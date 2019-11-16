@@ -130,20 +130,3 @@ nzbs_downloads_path: "{{ [downloads.nzbs + ':/downloads/nzbs']
 torrents_downloads_path: "{{ [downloads.torrents + ':/downloads/torrents']
                               if torrents_downloads_path_is_defined
                               else [] }}"
-
-################################
-# Hotio Docker Images
-################################
-
-# default suitarr version
-suitarr:
-  version: image
-
-suitarr_version_is_specified: "{{ (suitarr.version != 'default') and
-                                    ((suitarr.version == 'unstable') or
-                                    (suitarr.version == 'stable') or
-                                    (suitarr.version == 'image')) }}"
-
-suitarr_version: "{{ suitarr.version
-                     if suitarr_version_is_specified
-                     else 'image' }}"

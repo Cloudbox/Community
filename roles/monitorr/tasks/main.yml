@@ -29,7 +29,7 @@
 - name: Create and start container
   docker_container:
     name: monitorr
-    image: monitorr/monitorr:develop
+    image: monitorr/monitorr:latest
     pull: yes
     env:
       TZ: "{{ tz }}"

@@ -1,8 +1,8 @@
 #########################################################################
-# Title:            Cloudbox Community: Couchpota                       #
+# Title:            Cloudbox Community: Couchpotato                     #
 # Author(s):        javi11                                              #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  jlesage/filebot                                     #
+# Docker Image(s):  linuxserver/couchpotato                             #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################

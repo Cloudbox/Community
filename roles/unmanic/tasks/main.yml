@@ -1,0 +1,58 @@
+#########################################################################
+# Title:            Community: unmanic                                  #
+# Author(s):        chazlarson                                          #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  josh5/unmanic                                       #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: unmanic
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: unmanic
+    state: absent
+
+- name: Create unmanic directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/unmanic
+    - /mnt/local/unmanic
+
+- name: Create and start container
+  docker_container:
+    name: unmanic
+    image: josh5/unmanic:latest
+    pull: yes
+    published_ports:
+      - "127.0.0.1:8888:8888"
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "unmanic.{{ user.domain }}"
+      VIRTUAL_PORT: 8888
+      LETSENCRYPT_HOST: "unmanic.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/unmanic:/config"
+      - "/mnt/local/unmanic:/tmp/unmanic"
+      - "/mnt/unionfs/Media:/library"
+      - "/mnt:/mnt"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - unmanic
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

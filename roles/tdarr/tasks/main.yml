@@ -45,9 +45,9 @@
       - "/mnt/unionfs/Media:/home/tdarr/media"
       - "/opt/tdarr/documents:/home/documents/tdarr"
       - "/opt/tdarr/db:/var/lib/mongodb"
-	    - "/dev/shm:/dev/shm"
-	    - "/etc/localtime:/etc/localtime:ro"
-	    - "/mnt:/mnt"
+      - "/dev/shm:/dev/shm"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/mnt:/mnt"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

@@ -69,6 +69,7 @@ environment:
     sshwifty
     subsonic
     synclounge
+    tdarr
     thelounge
     unifi
     watchtower

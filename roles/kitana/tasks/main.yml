@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: Kitana                          #
+# Title:            Community: Kitana                                   #
 # Author(s):        4everfun                                            #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  pannal/kitana                                       #
@@ -33,15 +33,14 @@
     pull: yes
     published_ports:
       - "127.0.0.1:31337:31337"
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/kitana:/data"
-      - "/var/run/docker.sock:/var/run/docker.sock"
     env:
+      TZ: "{{ tz }}"
       VIRTUAL_HOST: "kitana.{{ user.domain }}"
       VIRTUAL_PORT: 31337
       LETSENCRYPT_HOST: "kitana.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/kitana:/data"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
@@ -49,5 +48,5 @@
         aliases:
           - kitana
     purge_networks: yes
-    restart_policy: always
+    restart_policy: unless-stopped
     state: started

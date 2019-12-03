@@ -1,8 +1,8 @@
 #########################################################################
-# Title:            Cloudbox Community: Jellyfin                        #
-# Author(s):        maximuskowalski                                     #
+# Title:            Community: Jellyfin                                 #
+# Author(s):        maximuskowalski, desimaniac                         #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  jellyfin/jellyfin                                   #
+# Docker Image(s):  linuxserver/jellyfin                                #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -25,24 +25,41 @@
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/jellyfin
-    - /opt/jellyfin/config
-    - /opt/jellyfin/config/users
-    - /opt/jellyfin/cache
-    - "{{ plex.transcodes }}/5"
-    - "{{ plex.transcodes }}/6"
+    - "{{ plex.transcodes }}/jellyfin"
 
-- name: Import dlna config
+- name: Import 'dlna.xml 'config
   copy:
     src: "dlna.xml"
-    dest: "/opt/jellyfin/config/dlna.xml"
+    dest: "/opt/jellyfin/dlna.xml"
     owner: "{{ user.name }}"
     group: "{{ user.name }}"
     mode: 0775
     force: no
 
-- name: "Check if 'system.xml' exists"
+- name: "Check if old 'system.xml' exists"
   stat:
     path: "/opt/jellyfin/config/system.xml"
+  register: jellyfin_system_xml_old
+
+- name: Import old 'system.xml' config if it exists
+  copy:
+    src: "/opt/jellyfin/config/system.xml"
+    dest: "/opt/jellyfin/system.xml"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+    force: no
+  when: jellyfin_system_xml_old.stat.exists
+
+- name: "Remove old 'system.xml' if it exists"
+  file:
+    path: "/opt/jellyfin/config/system.xml"
+    state: absent
+  when: jellyfin_system_xml_old.stat.exists
+
+- name: "Check if 'system.xml' exists"
+  stat:
+    path: "/opt/jellyfin/system.xml"
   register: jellyfin_system_xml
 
 - name: "Check if '/dev/dri' exists"
@@ -53,27 +70,27 @@
 - name: Create and start container
   docker_container:
     name: jellyfin
-    image: "jellyfin/jellyfin:latest"
+    image: "linuxserver/jellyfin:latest"
     pull: yes
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/mnt:/mnt:rw"
-      - "/mnt/strm:/strm:rw"
-      - "{{ plex.transcodes }}/5:/transcode"
-      - "{{ plex.transcodes }}/6:/transcodes"
-      - "/opt/jellyfin:/config:rw"
-      - "/var/run/docker.sock:/var/run/docker.sock"
-      - "/mnt/unionfs/Media:/media"
-      - "/opt/jellyfin/cache:/cache:rw"
-    devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"
-    user: "{{ uid }}:{{ gid }}"
     env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
       VIRTUAL_HOST: "jellyfin.{{ user.domain }}"
       VIRTUAL_PORT: 8096
       LETSENCRYPT_HOST: "jellyfin.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       NVIDIA_DRIVER_CAPABILITIES: "{{ 'compute,video,utility' if gpu.nvidia | default(false) else omit }}"
       NVIDIA_VISIBLE_DEVICES: "{{ 'all' if gpu.nvidia | default(false) else omit }}"
+    volumes:
+      - "/opt/jellyfin:/config:rw"
+      - "/opt/scripts:/scripts"
+      - "/mnt:/mnt:rw"
+      - "/mnt/strm:/strm:rw"
+      - "/mnt/unionfs/Media:/media"
+      - "/mnt/unionfs/Media:/data"
+      - "{{ plex.transcodes }}/jellyfin:/transcode"
+    devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
@@ -81,7 +98,7 @@
         aliases:
           - jellyfin
     purge_networks: yes
-    restart_policy: always
+    restart_policy: unless-stopped
     state: started
 # we need this here because sometimes after a restore, docker will set this transcodes folder to root, dont ask why, but it does...
 - name: "Wait 5 seconds"

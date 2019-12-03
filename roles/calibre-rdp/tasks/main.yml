@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: Calibre GUI and Server          #
+# Title:            Community: Calibre-RDP GUI and Server               #
 # Author(s):        Thomvh                                              #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  cgspeck/docker-rdp-calibre                          #
@@ -47,9 +47,9 @@
       - "127.0.0.1:8087:8080"
       - "127.0.0.1:8088:8081"
     env:
+      TZ: "{{ tz }}"
       USER_ID: "{{ uid }}"
       GROUP_ID: "{{ gid }}"
-      TZ: "America/New_York"
       LIBRARYINTERNALPATH: "/library"
       EDGE: "0"
       WIDTH: "1280"
@@ -68,5 +68,5 @@
         aliases:
           - calibrerdp
     purge_networks: yes
-    restart_policy: always
+    restart_policy: unless-stopped
     state: started

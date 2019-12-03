@@ -75,12 +75,12 @@
       - "21249:21249"
     user: "{{ uid }}:{{ gid }}"
     env:
+      TZ: "{{ tz }}"
       VIRTUAL_HOST: "airdcpp.{{ user.domain }}"
       VIRTUAL_PORT: 5600
       LETSENCRYPT_HOST: "airdcpp.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/airdcpp:/.airdcpp"
       - "/mnt/local/downloads/airdcpp:/Downloads"
       - "/mnt:/mnt"

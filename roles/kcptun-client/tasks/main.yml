@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: kcptun Client                   #
+# Title:            Community: kcptun Client                            #
 # Author(s):        RXWatcher                                           #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  horjulf/kcptun                                      #
@@ -40,13 +40,14 @@
     name: kcptun-client
     image: horjulf/kcptun:latest
     pull: yes
+    env:
+      TZ: "{{ tz }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/kcptun-client/config:/config"
     command: "/bin/client -c /config/config.json"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     user: "{{ uid }}:{{ gid }}"
     network_mode: host
-    restart_policy: always
+    restart_policy: unless-stopped
     state: started

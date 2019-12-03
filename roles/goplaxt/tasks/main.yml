@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: GoPlaxt                         #
+# Title:            Community: GoPlaxt                                  #
 # Author(s):        EnorMOZ                                             #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  xanderstrike/goplaxt                                #
@@ -34,6 +34,7 @@
     published_ports:
       - "127.0.0.1:8000:8000"
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "goplaxt.{{ user.domain }}"
@@ -44,7 +45,6 @@
       TRAKT_secret: "{{ goplaxt.trakt_secret }}"
       REDIRECT_URI: "https://goplaxt.{{ user.domain }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/goplaxt:/app/keystore"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
@@ -53,5 +53,5 @@
         aliases:
           - goplaxt
     purge_networks: yes
-    restart_policy: always
+    restart_policy: unless-stopped
     state: started

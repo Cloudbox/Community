@@ -16,7 +16,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 
 ## Roles
 
-- **[\*\*\*arrX](../../wiki/\*\*\*arrX-(Sonarr-Radarr-Bazarr))** - Create multiple Sonarr/Radarr/Bazarr roles
+- **[arrX](../../wiki/arrX)** - Create multiple Sonarr/Radarr/Bazarr Docker containers.
 - **airsonic**
 - **[alltube](../../wiki/alltube)** - [alltube](https://github.com/Rudloff/alltube) HTML GUI for youtube-dl.
 - **[beets](../../wiki/beets)** - [Beets](http://beets.io/) Music library manager and MusicBrainz tagger.
@@ -37,6 +37,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **lazylibrarian** - (uses calibre-rdp db)
 - **logarr**
 - **[mediabutler](../../wiki/Mediabutler)** - Discord bot
+- **[medusa](https://pymedusa.com)** - TV Shows manager
 - **[mellow](../../wiki/Mellow-Discord-Bot)** - Discord Bot
 - **monitorr**
 - **[jdownloader2](../../wiki/JDownloader2)** - [JDownloader2](https://github.com/jlesage/docker-jdownloader-2) Self-hosted free, open-source download management tool with GUI website frontend.
@@ -52,4 +53,4 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **[telly](../../wiki/Telly)**
 - **[transmissionvpn](https://github.com/haugene/docker-transmission-openvpn)**
 - **[Wordpress](../../wiki/Wordpress)** - Wordpress deployment
-- **xteve**
+- **[xteve](https://xteve.de/)**

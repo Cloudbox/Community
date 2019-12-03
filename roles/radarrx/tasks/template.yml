@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: RadarrX | Template              #
+# Title:            Community: RadarrX | Template                       #
 # Author(s):        Superduper09, Migz93                                #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  hotio/radarr                                        #
@@ -47,20 +47,18 @@
 - name: Create and start container
   docker_container:
     name: "radarr{{ rolename }}"
-    image: "hotio/radarr"
+    image: "hotio/radarr:unstable"
     pull: yes
     published_ports:
       - "127.0.0.1:{{ roleport }}:7878"
     env:
-      VERSION: "{{ suitarr.version }}"
-      BACKUP: "no"
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "radarr{{ rolename }}.{{ user.domain }}"
       VIRTUAL_PORT: 7878
       LETSENCRYPT_HOST: "radarr{{ rolename }}.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
-      TZ: "{{ tz }}"
     volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"
     devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"
     labels:

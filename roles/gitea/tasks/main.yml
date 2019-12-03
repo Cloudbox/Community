@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: Gitea                           #
+# Title:            Community: Gitea                                    #
 # Author(s):        Thomvh                                              #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  gitea/gitea                                         #
@@ -53,6 +53,7 @@
     published_ports:
       - "127.0.0.1:3000:3000"
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       DB_TYPE: mysql
@@ -68,7 +69,6 @@
       RUN_MODE: prod
       ROOT_URL: "https://{{ gitea.subdomain|default('git',true) }}.{{ user.domain }}/"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/gitea:/data"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: WordPress                       #
+# Title:            Community: WordPress                                #
 # Author(s):        Migz93                                              #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  wordpress                                           #
@@ -38,9 +38,9 @@
     name: wordpress
     image: "wordpress"
     pull: yes
+    user: "{{ uid }}:{{ gid }}"
     env:
-      PUID: "{{ uid }}"
-      PGID: "{{ gid }}"
+      TZ: "{{ tz }}"
       WORDPRESS_DB_HOST: mariadb:3306
       WORDPRESS_DB_USER: root
       WORDPRESS_DB_PASSWORD: password321
@@ -51,7 +51,6 @@
       LETSENCRYPT_HOST: "{{ wordpress.subdomain|default('wordpress',true) }}.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/wordpress:/var/www/html"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

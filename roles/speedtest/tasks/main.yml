@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: Speedtest Server                #
+# Title:            Community: Speedtest Server                         #
 # Author(s):        Satz                                                #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  satzisa/html5-speedtest                             #
@@ -32,7 +32,7 @@
     image: "satzisa/html5-speedtest"
     pull: yes
     env:
-      BACKUP: "no"
+      TZ: "{{ tz }}"
       UID: "{{ uid }}"
       GID: "{{ gid }}"
       VIRTUAL_HOST: "speedtest.{{ user.domain }}"
@@ -40,12 +40,11 @@
       LETSENCRYPT_HOST: "speedtest.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/speedtest:/var/www/html:rw"
     networks:
       - name: cloudbox
         aliases:
           - speedtest
     purge_networks: yes
-    restart_policy: always
+    restart_policy: unless-stopped
     state: started

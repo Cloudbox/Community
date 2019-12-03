@@ -69,6 +69,7 @@
     published_ports:
       - "127.0.0.1:5075:5075"
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "nzbhydra.{{ user.domain }}"
@@ -76,7 +77,6 @@
       LETSENCRYPT_HOST: "nzbhydra.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/nzbhydra:/config"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

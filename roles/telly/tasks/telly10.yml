@@ -1,5 +1,5 @@
 #########################################################################
-# Title:         Cloudbox Community: Telly | Telly 1.0                  #
+# Title:         Community: Telly | Telly 1.0                           #
 # Author(s):     EnorMOZ, desimaniac                                    #
 # URL:           https://github.com/Cloudbox/Community                  #
 # Docker Image:  tombowditch/telly                                      #
@@ -28,10 +28,8 @@
     name: telly
     image: "tellytv/telly"
     pull: yes
-    volumes:
-    - "/etc/localtime:/etc/localtime:ro"
-    - "/opt/telly:/opt/telly"
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       TELLY_WEB_BASE_ADDRESS: "telly:6077"
@@ -52,6 +50,8 @@
       TELLY_DISCOVERY_DEVICE_FIRMWARE_NAME: "{{ telly10.TELLY_DISCOVERY_DEVICE_FIRMWARE_NAME | default('hdhomeruntc_atsc') }}"
       TELLY_DISCOVERY_DEVICE_FIRMWARE_VERSION: "{{ telly10.TELLY_DISCOVERY_DEVICE_FIRMWARE_VERSION | default('20150826') }}"
       TELLY_DISCOVERY_SSDP: "{{ telly10.TELLY_DISCOVERY_SSDP | default(true,true) }}"
+    volumes:
+    - "/opt/telly:/opt/telly"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

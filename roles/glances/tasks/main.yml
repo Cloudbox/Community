@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: Glances                         #
+# Title:            Community: Glances                                  #
 # Author(s):        Satz                                                #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  satzisa/glances                                     #
@@ -59,6 +59,7 @@
     image: "satzisa/glances"
     pull: yes
     env:
+      TZ: "{{ tz }}"
       UID: "{{ uid }}"
       GID: "{{ gid }}"
       VIRTUAL_HOST: "glances.{{ user.domain }}"
@@ -67,7 +68,6 @@
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       GLANCES_OPT: "-w"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/glances/config:/glances/conf:rw"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     networks:
@@ -75,5 +75,5 @@
         aliases:
           - glances
     purge_networks: yes
-    restart_policy: always
+    restart_policy: unless-stopped
     state: started

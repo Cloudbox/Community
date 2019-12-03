@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: Guacamole                       #
+# Title:            Community: Guacamole                                #
 # Author(s):        RXWatcher                                           #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  jasonbean/guacamole                                 #
@@ -33,13 +33,13 @@
     image: jasonbean/guacamole:latest
     pull: yes
     env:
+      TZ: "{{ tz }}"
       VIRTUAL_HOST: "guacamole.{{ user.domain }}"
       VIRTUAL_PORT: 8080
       LETSENCRYPT_HOST: "guacamole.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       OPT_MYSQL: "Y"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/guacamole/config:/config"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
@@ -47,7 +47,7 @@
       - name: cloudbox
         aliases:
           - guacamole
-    restart_policy: always
+    restart_policy: unless-stopped
     state: started
 
 - name: "Wait for 30 seconds"

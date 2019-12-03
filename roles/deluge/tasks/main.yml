@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: Deluge                          #
+# Title:            Community: Deluge                                   #
 # Author(s):        fuller882, Kalroth, Migz93                          #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  linuxserver/deluge                                  #
@@ -38,7 +38,6 @@
 - name: Set default_volumes variable
   set_fact:
     default_volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/deluge:/config"
       - "/opt/scripts:/scripts"
       - "/mnt:/mnt"
@@ -57,6 +56,7 @@
       - "58112:58112"
       - "58846:58846"
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "deluge.{{ user.domain }}"
@@ -72,5 +72,5 @@
         aliases:
           - deluge
     purge_networks: yes
-    restart_policy: always
+    restart_policy: unless-stopped
     state: started

@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: DelugeVPN                       #
+# Title:            Community: DelugeVPN                                #
 # Author(s):        maximuskowalski, Migz93                             #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  binhex/arch-delugevpn                               #
@@ -53,7 +53,6 @@
 - name: Set default_volumes variable
   set_fact:
     default_volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/delugevpn:/config"
       - "/opt/scripts:/scripts"
       - "/mnt:/mnt"
@@ -73,6 +72,7 @@
       - "58846:58846"
     capabilities: NET_ADMIN
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "delugevpn.{{ user.domain }}"
@@ -99,5 +99,5 @@
         aliases:
           - delugevpn
     purge_networks: yes
-    restart_policy: always
+    restart_policy: unless-stopped
     state: started

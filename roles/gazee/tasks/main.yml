@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: Gazee                           #
+# Title:            Community: Gazee                                    #
 # Author(s):        Aki                                                 #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  linuxserver/gazee                                   #
@@ -35,6 +35,7 @@
     published_ports:
       - "127.0.0.1:4242:4242"
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "gazee.{{ user.domain }}"
@@ -42,7 +43,6 @@
       LETSENCRYPT_HOST: "gazee.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/gazee:/config"
       - "/mnt/local/downloads/nzbs:/downloads/nzbs"
       - "/mnt/unionfs/Media/Comics:/comics"
@@ -53,5 +53,5 @@
         aliases:
           - gazee
     purge_networks: yes
-    restart_policy: always
+    restart_policy: unless-stopped
     state: started

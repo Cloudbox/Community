@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: SyncLounge                      #
+# Title:            Community: SyncLounge                               #
 # Author(s):        primaxius                                           #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  starbix/synclounge                                  #
@@ -31,10 +31,8 @@
     name: synclounge
     image: "starbix/synclounge:nginx"
     pull: yes
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/var/run/docker.sock:/var/run/docker.sock"
     env:
+      TZ: "{{ tz }}"
       DOMAIN: "{{ synclounge.subdomain|default('synclounge',true) }}.{{ synclounge.domain | default(user.domain,true) }}"
       autoJoin: "true"
       autoJoinServer: "https://{{ synclounge.subdomain|default('synclounge',true) }}.{{ synclounge.domain | default(user.domain,true) }}/slserver"
@@ -50,5 +48,5 @@
         aliases:
           - synclounge
     purge_networks: yes
-    restart_policy: always
+    restart_policy: unless-stopped
     state: started

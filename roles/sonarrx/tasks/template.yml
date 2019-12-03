@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: SonarrX | Template              #
+# Title:            Community: SonarrX | Template                       #
 # Author(s):        Kalroth, Migz93                                     #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  hotio/sonarr, hotio/sonarr3                         #
@@ -31,18 +31,6 @@
 - name: Darkerr Tasks
   import_tasks: "subtasks/darkerr.yml"
 
-- name: Set 'suitarr_version' variable for v2
-  set_fact:
-    suitarr_image: "hotio/sonarr"
-    suitarr_version: "{{ sonarr.version | lower }}"
-  when: ("v3" not in sonarr.version | lower)
-
-- name: Set 'suitarr_version' variable for v3
-  set_fact:
-    suitarr_image: "hotio/sonarr3"
-    suitarr_version: "{{ ('tar.gz' in sonarr.version | lower) | ternary(sonarr.version,'unstable') }}"
-  when: ("v3" in sonarr.version | lower)
-
 - name: "Check if '/dev/dri' exists"
   stat:
     path: "/dev/dri"
@@ -59,20 +47,18 @@
 - name: Create and start container
   docker_container:
     name: "sonarr{{ rolename }}"
-    image: "{{ suitarr_image }}"
+    image: "hotio/sonarr:phantom"
     pull: yes
     published_ports:
       - "127.0.0.1:{{ roleport }}:8989"
     env:
-      VERSION: "{{ suitarr_version }}"
-      BACKUP: "no"
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "sonarr{{ rolename }}.{{ user.domain }}"
       VIRTUAL_PORT: 8989
       LETSENCRYPT_HOST: "sonarr{{ rolename }}.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
-      TZ: "{{ tz }}"
     volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"
     devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"
     labels:

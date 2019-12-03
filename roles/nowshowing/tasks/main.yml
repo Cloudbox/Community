@@ -34,6 +34,7 @@
     published_ports:
       - "127.0.0.1:6878:6878"
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "nowshowing.{{ user.domain }}"
@@ -41,7 +42,6 @@
       LETSENCRYPT_HOST: "nowshowing.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/nowshowing:/config"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

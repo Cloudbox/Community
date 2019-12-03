@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: Coder Role                      #
+# Title:            Community: Coder                                    #
 # Author(s):        astroMD                                             #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  codercom/code-server                                #
@@ -34,6 +34,7 @@
     published_ports:
       - "127.0.0.1:8143:8443"
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       PASSWORD: "{{ user.pass }}"

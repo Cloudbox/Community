@@ -35,7 +35,6 @@
     - "{{ downloads.torrents }}/transmissionvpn/incoming"
     - "{{ downloads.torrents }}/transmissionvpn/watched"
     - "{{ downloads.torrents }}/transmissionvpn/torrents"
-    - "{{ downloads.torrents }}/transmissionvpn/vpn"
     - /opt/transmissionvpn/
   when: (torrents_downloads_path is defined)|default(false)
 

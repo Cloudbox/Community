@@ -41,7 +41,6 @@
 - name: Set default_volumes variable
   set_fact:
     default_volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/transmissionvpn/vpn:/etc/openvpn/custom"
       - "/mnt:/mnt"
       - "/opt/transmissionvpn:/opt/transmissionvpn"
@@ -68,6 +67,7 @@
       TRANSMISSION_RATIO_LIMIT_ENABLED: "true"
       TRANSMISSION_WATCH_DIR_ENABLED: "false"
       TRANSMISSION_HOME: /opt/transmissionvpn
+      TZ: "{{ tz }}"
     volumes: "{{ default_volumes + torrents_downloads_path|default([]) }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

@@ -34,14 +34,18 @@
     pull: yes
     env:
       TZ: "{{ tz }}"
+      USER_ID: "{{ uid }}"
+      GROUP_ID: "{{ gid }}"
+      UMASK: 664
+      KEEP_APP_RUNNING: 1
       VIRTUAL_HOST: "filezilla.{{ user.domain }}"
       VIRTUAL_PORT: 5800
       LETSENCRYPT_HOST: "filezilla.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
-      OPT_MYSQL: "Y"
     volumes:
       - "/opt/filezilla/config:/config"
       - "/mnt:/mnt"
+      - "/home/{{ user.name }}:/storage"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

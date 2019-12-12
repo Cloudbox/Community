@@ -23,6 +23,7 @@
     - { role: calibre-rdp, tags: ['calibre-rdp'] }
     - { role: calibre-web, tags: ['calibre-web'] }
     - { role: coder, tags: ['coder'] }
+    - { role: couchpotato, tags: ['couchpotato'] }
     - { role: deluge, tags: ['deluge'] }
     - { role: delugevpn, tags: ['delugevpn'] }
     - { role: drive_strm, tags: ['drive_strm', 'drive_strm_rebuild'] }

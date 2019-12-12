@@ -29,6 +29,7 @@ environment:
     bookstack
     calibre-rdp
     calibre-web
+    couchpotato
     coder
     deluge
     delugevpn

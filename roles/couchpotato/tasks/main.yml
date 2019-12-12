@@ -1,5 +1,5 @@
 #########################################################################
-# Title:            Cloudbox Community: Couchpotato                     #
+# Title:            Cloudbox: Couchpotato                               #
 # Author(s):        javi11                                              #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  linuxserver/couchpotato                             #
@@ -34,9 +34,8 @@
     published_ports:
       - '127.0.0.1:5050:5050'
     env:
-      UMASK_SET: 022
-      UMASK: 002
-      TZ: 'Europe/London'
+      UMASK_SET: 002
+      TZ: '{{ tz }}'
       PUID: '{{ uid }}'
       PGID: '{{ gid }}'
       VIRTUAL_HOST: 'couchpotato.{{ user.domain }}'
@@ -44,7 +43,6 @@
       LETSENCRYPT_HOST: 'couchpotato.{{ user.domain }}'
       LETSENCRYPT_EMAIL: '{{ user.email }}'
     volumes:
-      - '/etc/localtime:/etc/localtime:ro'
       - '/opt/couchpotato:/config'
       - '/mnt:/mnt'
       - '/mnt/unionfs/Media/Movies:/movies'

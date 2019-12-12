@@ -14,7 +14,6 @@
     name: cloudflare-dns
   vars:
     record: medusa
-    subdomain: medusa
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container

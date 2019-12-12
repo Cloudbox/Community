@@ -25,7 +25,7 @@
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/unmanic
-    - /mnt/local/unmanic
+    - "{{ plex.transcodes }}/unmanic"
 
 - name: Create and start container
   docker_container:
@@ -44,7 +44,7 @@
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
       - "/opt/unmanic:/config"
-      - "/mnt/local/unmanic:/tmp/unmanic"
+      - "{{ plex.transcodes }}/unmanic:/tmp/unmanic"
       - "/mnt/unionfs/Media:/library"
       - "/mnt:/mnt"
     labels:

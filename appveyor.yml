@@ -35,6 +35,7 @@ environment:
     embystat
     epms
     filebot
+    filezilla
     funkwhale
     gazee
     glances

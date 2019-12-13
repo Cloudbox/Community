@@ -1,0 +1,65 @@
+#########################################################################
+# Title:            Community: Filezilla                                #
+# Author(s):        chazlarson                                          #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  jlesage/filezilla                                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: filezilla
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: filezilla
+    state: absent
+
+- name: Create filezilla directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  with_items:
+    - /opt/filezilla
+    - /opt/filezilla/config
+
+- name: Create and start container
+  docker_container:
+    name: filezilla
+    image: jlesage/filezilla:latest
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      USER_ID: "{{ uid }}"
+      GROUP_ID: "{{ gid }}"
+      UMASK: 664
+      KEEP_APP_RUNNING: 1
+      VIRTUAL_HOST: "filezilla.{{ user.domain }}"
+      VIRTUAL_PORT: 5800
+      LETSENCRYPT_HOST: "filezilla.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/filezilla/config:/config"
+      - "/mnt:/mnt"
+      - "/home/{{ user.name }}:/storage"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - filezilla
+    restart_policy: unless-stopped
+    state: started
+
+- name: "Wait for 30 seconds"
+  wait_for:
+    timeout: 30
+
+- name: Reset filezilla directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  with_items:
+    - /opt/filezilla

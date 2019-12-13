@@ -23,6 +23,7 @@
     - { role: calibre-rdp, tags: ['calibre-rdp'] }
     - { role: calibre-web, tags: ['calibre-web'] }
     - { role: coder, tags: ['coder'] }
+    - { role: couchpotato, tags: ['couchpotato'] }
     - { role: deluge, tags: ['deluge'] }
     - { role: delugevpn, tags: ['delugevpn'] }
     - { role: drive_strm, tags: ['drive_strm', 'drive_strm_rebuild'] }
@@ -30,6 +31,7 @@
     - { role: epms, tags: ['epms'] }
     - { role: filebot, tags: ['filebot'] }
     - { role: filebrowser, tags: ['filebrowser'] }
+    - { role: filezilla, tags: ['filezilla'] }
     - { role: funkwhale, tags: ['funkwhale'] }
     - { role: gazee, tags: ['gazee'] }
     - { role: gitea, tags: ['gitea'] }
@@ -72,7 +74,9 @@
     - { role: tdarr, tags: ['tdarr'] }
     - { role: telly, tags: ['telly'] }
     - { role: thelounge, tags: ['thelounge'] }
+    - { role: transmissionvpn, tags: ['transmissionvpn'] }
     - { role: unifi, tags: ['unifi'] }
+    - { role: unmanic, tags: ['unmanic'] }
     - { role: watchtower, tags: ['watchtower'] }
     - { role: wordpress, tags: ['wordpress'] }
     - { role: xteve, tags: ['xteve'] }

@@ -71,6 +71,7 @@ environment:
     sshwifty
     subsonic
     synclounge
+    tdarr
     thelounge
     transmissionvpn
     unifi

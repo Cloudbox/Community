@@ -1,6 +1,6 @@
 #########################################################################
 # Title:            Community: Tdarr                                    #
-# Author(s):        Visorak,Migz                                        #
+# Author(s):        Visorak, Migz                                       #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  haveagitgat/tdarr_aio                               #
 # --                                                                    #
@@ -25,6 +25,8 @@
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/tdarr
+    - /opt/tdarr/documents
+    - /opt/tdarr/db
 
 - name: Create and start container
   docker_container:

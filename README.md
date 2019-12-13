@@ -24,6 +24,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **[bookstack](../../wiki/Bookstack)** - [BookStack](https://www.bookstackapp.com/) Self-hosted platform for organising and storing information.
 - **[calibre-rdp](../../wiki/Calibre-RDP-and-Calibre-WEB)** - [Calibre-RDP](https://github.com/cgspeck/docker-rdp-calibre) Media path set to `/Media/Books` - a web app providing a clean interface for browsing, reading and downloading eBooks using an existing Calibre database.
 - **[calibre-web](../../wiki/Calibre-RDP-and-Calibre-WEB)** - [Calibre-RDP](https://github.com/janeczku/calibre-web) Loads opt/calibre - a web app providing a clean interface for browsing, reading and downloading eBooks using an existing Calibre database.
+- **[CouchPotato](https://couchpota.to)** - Movie manager
 - **[deluge](../../wiki/Deluge)** - Deluge torrent client
 - **[embystat](https://github.com/mregni/EmbyStat)**
 - **funkwhale**
@@ -51,5 +52,6 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **[speedtest](https://github.com/adolfintel/speedtest)** - Self-hosted HTML5 Speedtest
 - **subsonic**
 - **[telly](../../wiki/Telly)**
+- **[transmissionvpn](https://github.com/haugene/docker-transmission-openvpn)**
 - **[Wordpress](../../wiki/Wordpress)** - Wordpress deployment
 - **[xteve](https://xteve.de/)**

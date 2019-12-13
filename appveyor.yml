@@ -29,14 +29,12 @@ environment:
     bookstack
     calibre-rdp
     calibre-web
-    couchpotato
     coder
     deluge
     delugevpn
     embystat
     epms
     filebot
-    filezilla
     funkwhale
     gazee
     glances
@@ -73,9 +71,7 @@ environment:
     synclounge
     tdarr
     thelounge
-    transmissionvpn
     unifi
-    unmanic
     watchtower
     wordpress
     xteve

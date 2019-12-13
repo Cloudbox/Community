@@ -33,8 +33,3 @@ delugevpn:
   vpn_endpoint: Netherlands.ovpn
 deluge:
   version: v2
-transmissionvpn:
-  vpn_user: your_vpn_username
-  vpn_pass: your_vpn_password
-  vpn_prov: NORDVPN
-  vpn_endpoint: Netherlands.ovpn

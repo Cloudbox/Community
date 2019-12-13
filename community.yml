@@ -71,6 +71,7 @@
     - { role: sshwifty, tags: ['sshwifty'] }
     - { role: subsonic, tags: ['subsonic'] }
     - { role: synclounge, tags: ['synclounge'] }
+    - { role: tdarr, tags: ['tdarr'] }
     - { role: telly, tags: ['telly'] }
     - { role: thelounge, tags: ['thelounge'] }
     - { role: transmissionvpn, tags: ['transmissionvpn'] }

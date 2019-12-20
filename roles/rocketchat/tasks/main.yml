@@ -68,7 +68,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: rocketchat
+    record: rocketchat
   when: cloudflare_enabled
     
 - name: Create and start RocketChat container

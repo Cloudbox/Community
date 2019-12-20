@@ -66,7 +66,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: chat
+    subdomain: rocketchat
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container
@@ -92,13 +92,13 @@
       UID: "{{ uid }}"
       GID: "{{ gid }}"
       PORT: "3000"
-      ROOT_URL: "https://chat.{{ user.domain }}"
+      ROOT_URL: "https://rocketchat.{{ user.domain }}"
       MONGO_URL: "mongodb://rocketchat-mongo:27017/rocketchat"
       MONGO_OPLOG_URL: "mongodb://rocketchat-mongo:27017/local"
       Accounts_UseDNSDomainCheck: "false"
-      VIRTUAL_HOST: "chat.{{ user.domain }}"
+      VIRTUAL_HOST: "rocketchat.{{ user.domain }}"
       VIRTUAL_PORT: 3000
-      LETSENCRYPT_HOST: "chat.{{ user.domain }}"
+      LETSENCRYPT_HOST: "rocketchat.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
       - "/opt/rocketchat/uploads:/app/uploads:rw"

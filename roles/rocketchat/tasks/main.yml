@@ -20,6 +20,7 @@
   with_items:
     - "/opt/rocketchat/data/db"
     - "/opt/rocketchat/data/dump"
+    - "/opt/rocketchat/uploads"
 
 - name: Create and start database container
   docker_container:
@@ -74,19 +75,12 @@
   with_items:
     - rocketchat
     
-- name: Create required directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
-  with_items:
-    - "/opt/rocketchat"
-    
 - name: Create and start RocketChat container
   docker_container:
     name: "rocketchat"
     image: "rocketchat/rocket.chat:latest"
     command: bash -c 'for i in `seq 1 30`; do node main.js && s=$$? && break || s=$$?; echo "Tried $$i times. Waiting 5 secs..."; sleep 5; done; (exit $$s)'
     pull: yes
-    published_ports:
-      - "3000:3000"
     env:
       TZ: "{{ tz }}"
       UID: "{{ uid }}"

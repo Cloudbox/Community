@@ -65,6 +65,7 @@ environment:
     qbittorrent
     quassel
     radarrx
+    resilio-sync
     rocketchat
     sickchill
     sonarrx

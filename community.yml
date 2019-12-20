@@ -65,6 +65,7 @@
     - { role: qbittorrent, tags: ['qbittorrent'] }
     - { role: quassel, tags: ['quassel'] }
     - { role: radarrx, tags: ['radarrx'] }
+    - { role: resilio-sync, tags: ['resilio-sync'] }
     - { role: rocketchat, tags: ['rocketchat'] }
     - { role: sickchill, tags: ['sickchill'] }
     - { role: sonarrx, tags: ['sonarrx'] }

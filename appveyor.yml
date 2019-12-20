@@ -65,6 +65,7 @@ environment:
     qbittorrent
     quassel
     radarrx
+    rocketchat
     sickchill
     sonarrx
     speedtest

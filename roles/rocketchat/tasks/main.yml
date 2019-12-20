@@ -10,10 +10,11 @@
 #########################################################################
 ---
 
-- name: Stop and remove any existing container
+- name: Stop and remove any existing containers
   docker_container: "name={{ item }} state=absent"
   with_items:
     - rocketchat-mongo
+    - rocketchat
 
 - name: Create required directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
@@ -69,11 +70,6 @@
   vars:
     subdomain: rocketchat
   when: cloudflare_enabled
-
-- name: Stop and remove any existing container
-  docker_container: "name={{ item }} state=absent"
-  with_items:
-    - rocketchat
     
 - name: Create and start RocketChat container
   docker_container:

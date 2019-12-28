@@ -1,8 +1,8 @@
 #########################################################################
-# Title:            Community: SickChill                                #
-# Author(s):        javi11                                              #
+# Title:            Community: Tdarr                                    #
+# Author(s):        Visorak, Migz                                       #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  linuxserver/sickchill                               #
+# Docker Image(s):  haveagitgat/tdarr_aio                               #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -13,50 +13,48 @@
   include_role:
     name: cloudflare-dns
   vars:
-    record: sickchill
+    record: tdarr
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container
   docker_container:
-    name: sickchill
+    name: tdarr
     state: absent
 
-- name: Create sickchill directories
+- name: Create tdarr directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
-    - /opt/sickchill
-
-- name: Set default_volumes variable
-  set_fact:
-    default_volumes:
-      - "/opt/sickchill:/config"
-      - "/opt/scripts:/scripts"
-      - "/mnt:/mnt"
-      - "/mnt/unionfs/Media/TV:/tv"
+    - /opt/tdarr
+    - /opt/tdarr/documents
+    - /opt/tdarr/db
 
 - name: Create and start container
   docker_container:
-    name: sickchill
-    image: linuxserver/sickchill
+    name: tdarr
+    image: haveagitgat/tdarr_aio
     pull: yes
     published_ports:
-      - "127.0.0.1:8082:8081"
+      - "127.0.0.1:8265:8265"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      UMASK: 002
-      VIRTUAL_HOST: "sickchill.{{ user.domain }}"
-      VIRTUAL_PORT: 8081
-      LETSENCRYPT_HOST: "sickchill.{{ user.domain }}"
+      VIRTUAL_HOST: "tdarr.{{ user.domain }}"
+      VIRTUAL_PORT: 8265
+      LETSENCRYPT_HOST: "tdarr.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
-    volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"
+    volumes:
+      - "/mnt/unionfs/Media:/home/tdarr/media"
+      - "/opt/tdarr/documents:/home/documents/tdarr"
+      - "/opt/tdarr/db:/var/lib/mongodb"
+      - "/dev/shm:/dev/shm"
+      - "/mnt:/mnt"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
       - name: cloudbox
         aliases:
-          - sickchill
+          - tdarr
     purge_networks: yes
     restart_policy: unless-stopped
     state: started

@@ -29,6 +29,7 @@ environment:
     bookstack
     calibre-rdp
     calibre-web
+    couchpotato
     coder
     deezloader-remix
     deluge
@@ -36,6 +37,7 @@ environment:
     embystat
     epms
     filebot
+    filezilla
     funkwhale
     gazee
     glances
@@ -64,14 +66,19 @@ environment:
     qbittorrent
     quassel
     radarrx
+    resilio-sync
+    rocketchat
     sickchill
     sonarrx
     speedtest
     sshwifty
     subsonic
     synclounge
+    tdarr
     thelounge
+    transmissionvpn
     unifi
+    unmanic
     watchtower
     wordpress
     xteve

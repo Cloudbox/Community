@@ -30,6 +30,7 @@ environment:
     calibre-rdp
     calibre-web
     coder
+    deezloader-remix
     deluge
     delugevpn
     embystat

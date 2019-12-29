@@ -17,6 +17,7 @@
     name: dns
   vars:
     record: resilio-sync
+  when: cloudflare_enabled
 
 - name: Stop and remove any existing container
   docker_container:

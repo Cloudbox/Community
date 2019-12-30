@@ -40,7 +40,7 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "tdarr.{{ user.domain }}"
-      VIRTUAL_PORT: 8265
+      VIRTUAL_PORT: "8265"
       LETSENCRYPT_HOST: "tdarr.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:

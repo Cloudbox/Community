@@ -39,7 +39,7 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "znc.{{ user.domain }}"
-      VIRTUAL_PORT: 6501
+      VIRTUAL_PORT: "6501"
       LETSENCRYPT_HOST: "znc.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:

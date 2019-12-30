@@ -77,7 +77,7 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "jellyfin.{{ user.domain }}"
-      VIRTUAL_PORT: 8096
+      VIRTUAL_PORT: "8096"
       LETSENCRYPT_HOST: "jellyfin.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       NVIDIA_DRIVER_CAPABILITIES: "{{ 'compute,video,utility' if gpu.nvidia | default(false) else omit }}"

@@ -47,7 +47,7 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "embystat.{{ user.domain }}"
-      VIRTUAL_PORT: 6555
+      VIRTUAL_PORT: "6555"
       LETSENCRYPT_HOST: "embystat.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     labels:

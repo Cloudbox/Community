@@ -87,7 +87,7 @@
       MONGO_OPLOG_URL: "mongodb://rocketchat-mongo:27017/local"
       Accounts_UseDNSDomainCheck: "false"
       VIRTUAL_HOST: "rocketchat.{{ user.domain }}"
-      VIRTUAL_PORT: 3000
+      VIRTUAL_PORT: "3000"
       LETSENCRYPT_HOST: "rocketchat.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:

@@ -38,7 +38,7 @@
       PUID: "{{ uid }}"
       GUID: "{{ gid }}"
       VIRTUAL_HOST: "books.{{ user.domain }}"
-      VIRTUAL_PORT: 8083
+      VIRTUAL_PORT: "8083"
       LETSENCRYPT_HOST: "books.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       USE_CONFIG_DIR: true

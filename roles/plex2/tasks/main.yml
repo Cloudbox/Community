@@ -48,14 +48,14 @@
       PLEX_UID: "{{ uid }}"
       PLEX_GID: "{{ gid }}"
       PLEX_CLAIM: "{{ (plex2_claim_code) | default(omit) }}"
-      CHANGE_CONFIG_DIR_OWNERSHIP: false
+      CHANGE_CONFIG_DIR_OWNERSHIP: "false"
       ADVERTISE_IP: "http://{{ plex2_subdomain }}.{{ user.domain }}:80/,https://{{ plex2_subdomain }}.{{ user.domain }}:443/"
       VIRTUAL_HOST: "{{ plex2_subdomain }}.{{ user.domain }}"
-      VIRTUAL_PORT: 32400
+      VIRTUAL_PORT: "32400"
       LETSENCRYPT_HOST: "{{ plex2_subdomain }}.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
-      HTTPS_METHOD: noredirect
-      HEALTHCHECK_MOUNT: /mnt/unionfs
+      HTTPS_METHOD: "noredirect"
+      HEALTHCHECK_MOUNT: "/mnt/unionfs"
       NVIDIA_DRIVER_CAPABILITIES: "{{ 'compute,video,utility' if (gpu.nvidia.enabled) | default(false) else omit }}"
       NVIDIA_VISIBLE_DEVICES: "{{ 'all' if (gpu.nvidia.enabled) | default(false) else omit }}"
     volumes: "{{ plex2_docker_volumes }}"

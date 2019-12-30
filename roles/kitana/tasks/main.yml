@@ -36,7 +36,7 @@
     env:
       TZ: "{{ tz }}"
       VIRTUAL_HOST: "kitana.{{ user.domain }}"
-      VIRTUAL_PORT: 31337
+      VIRTUAL_PORT: "31337"
       LETSENCRYPT_HOST: "kitana.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:

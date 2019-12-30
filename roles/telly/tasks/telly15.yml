@@ -42,7 +42,7 @@
       TZ: "{{ tz }}"
       TELLY_LOG_LEVEL: "debug"
       VIRTUAL_HOST: "telly.{{ user.domain }}"
-      VIRTUAL_PORT: 6077
+      VIRTUAL_PORT: "6077"
       LETSENCRYPT_HOST: "telly.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:

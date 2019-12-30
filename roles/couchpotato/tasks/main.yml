@@ -34,12 +34,12 @@
     published_ports:
       - '127.0.0.1:5050:5050'
     env:
-      UMASK_SET: 002
+      UMASK_SET: "002"
       TZ: '{{ tz }}'
       PUID: '{{ uid }}'
       PGID: '{{ gid }}'
       VIRTUAL_HOST: 'couchpotato.{{ user.domain }}'
-      VIRTUAL_PORT: 5050
+      VIRTUAL_PORT: "5050"
       LETSENCRYPT_HOST: 'couchpotato.{{ user.domain }}'
       LETSENCRYPT_EMAIL: '{{ user.email }}'
     volumes:

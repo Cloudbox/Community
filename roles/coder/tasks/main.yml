@@ -39,7 +39,7 @@
       PGID: "{{ gid }}"
       PASSWORD: "{{ user.pass }}"
       VIRTUAL_HOST: "coder.{{ user.domain }}"
-      VIRTUAL_PORT: 8080
+      VIRTUAL_PORT: "8080"
       LETSENCRYPT_HOST: "coder.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:

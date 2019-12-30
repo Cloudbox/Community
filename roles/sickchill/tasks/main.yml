@@ -45,9 +45,9 @@
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      UMASK: 002
+      UMASK: "002"
       VIRTUAL_HOST: "sickchill.{{ user.domain }}"
-      VIRTUAL_PORT: 8081
+      VIRTUAL_PORT: "8081"
       LETSENCRYPT_HOST: "sickchill.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"

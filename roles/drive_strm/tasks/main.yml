@@ -180,10 +180,10 @@
     env:
       TZ: "{{ tz }}"
       VIRTUAL_HOST: "strm.{{ user.domain }}"
-      VIRTUAL_PORT: 7294
+      VIRTUAL_PORT: "7294"
       LETSENCRYPT_HOST: "strm.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
-      HTTPS_METHOD: noredirect
+      HTTPS_METHOD: "noredirect"
     volumes:
       - "/opt/drive_strm:/config"
       - "/mnt/strm:/strm"

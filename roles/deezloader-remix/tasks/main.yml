@@ -1,0 +1,66 @@
+#########################################################################
+# Title:            Community: Deezloader Remix                         #
+# Author(s):        chazlarson                                          #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  bocki/deezloaderrmx                                 #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: deezloader
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: deezloader
+    state: absent
+
+- name: Create htpasswd
+  htpasswd:
+    path: "/opt/nginx-proxy/htpasswd/{{ item }}.{{ user.domain }}"
+    name: "{{ user.name }}"
+    password: "{{ user.pass }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0664
+  with_items:
+    - deezloader
+
+- name: Create deezloader directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  with_items:
+    - /opt/deezloader/config
+    - /opt/deezloader/storage
+
+- name: Create and start container
+  docker_container:
+    name: deezloader
+    image: "bocki/deezloaderrmx"
+    pull: yes
+    published_ports:
+      - "127.0.0.1:1730:1730"
+    env:
+      BACKUP: "yes"
+      VIRTUAL_HOST: "deezloader.{{ user.domain }}"
+      VIRTUAL_PORT: "1730"
+      LETSENCRYPT_HOST: "deezloader.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      TZ: "{{ tz }}"
+    volumes:
+      - "/mnt/unionfs/Media/deezer:/downloads:rw"
+      - "/opt/deezloader/config:/config:rw"      
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - deezloader
+    purge_networks: yes
+    restart_policy: always
+    state: started

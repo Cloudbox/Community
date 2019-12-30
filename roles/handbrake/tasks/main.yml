@@ -43,7 +43,7 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "handbrake.{{ user.domain }}"
-      VIRTUAL_PORT: 5800
+      VIRTUAL_PORT: "5800"
       LETSENCRYPT_HOST: "handbrake.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       CLEAN_TMP_DIR: "1"

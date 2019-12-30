@@ -46,7 +46,7 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "bazarr{{ rolename }}.{{ user.domain }}"
-      VIRTUAL_PORT: 6767
+      VIRTUAL_PORT: "6767"
       LETSENCRYPT_HOST: "bazarr{{ rolename }}.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"

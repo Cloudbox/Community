@@ -76,10 +76,10 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "delugevpn.{{ user.domain }}"
-      VIRTUAL_PORT: 8112
+      VIRTUAL_PORT: "8112"
       LETSENCRYPT_HOST: "delugevpn.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
-      UMASK_SET: 022
+      UMASK_SET: "022"
       VPN_ENABLED: "yes"
       VPN_USER: "{{ delugevpn.vpn_user|default('username',true) }}"
       VPN_PASS: "{{ delugevpn.vpn_pass|default('password',true) }}"

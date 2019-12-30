@@ -45,7 +45,7 @@
       TZ: "{{ tz }}"
       SSHWIFTY_CONFIG: "/config/sshwifty.conf.json"
       VIRTUAL_HOST: "sshwifty.{{ user.domain }}"
-      VIRTUAL_PORT: 8182
+      VIRTUAL_PORT: "8182"
       LETSENCRYPT_HOST: "sshwifty.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:

@@ -38,8 +38,8 @@
       UID: "{{ uid }}"
       GID: "{{ gid }}"
       VIRTUAL_HOST: "minecraft.{{ user.domain }}"
-      VIRTUAL_PORT: 25565
-      EULA: TRUE
+      VIRTUAL_PORT: "25565"
+      EULA: "TRUE"
       LETSENCRYPT_HOST: "minecraft.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:

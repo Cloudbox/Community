@@ -38,7 +38,7 @@
       autoJoinServer: "https://{{ synclounge.subdomain|default('synclounge',true) }}.{{ synclounge.domain | default(user.domain,true) }}/slserver"
       webroot: ""
       VIRTUAL_HOST: "{{ synclounge.subdomain|default('synclounge',true) }}.{{ synclounge.domain | default(user.domain,true) }}"
-      VIRTUAL_PORT: 80
+      VIRTUAL_PORT: "80"
       LETSENCRYPT_HOST: "{{ synclounge.subdomain|default('synclounge',true) }}.{{ synclounge.domain | default(user.domain,true) }}"
       LETSENCRYPT_EMAIL: "{{user.email}}"
     labels:

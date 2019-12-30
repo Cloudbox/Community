@@ -54,7 +54,7 @@
       VIRTUAL_HOST: "funkwhale.{{ user.domain }}"
       LETSENCRYPT_HOST: "funkwhale.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
-      VIRTUAL_PORT: 80
+      VIRTUAL_PORT: "80"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
     env_file: /opt/funkwhale/env

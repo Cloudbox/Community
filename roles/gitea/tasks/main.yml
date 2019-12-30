@@ -56,17 +56,17 @@
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      DB_TYPE: mysql
+      DB_TYPE: "mysql"
       DB_HOST: "mariadb:3306"
-      DB_USER: root
-      DB_PASS: password321
-      DB_DATABASE: gitea
+      DB_USER: "root"
+      DB_PASS: "password321"
+      DB_DATABASE: "gitea"
       VIRTUAL_HOST: "{{ gitea.subdomain|default('git',true) }}.{{ user.domain }}"
-      VIRTUAL_PORT: 3000
+      VIRTUAL_PORT: "3000"
       LETSENCRYPT_HOST: "{{ gitea.subdomain|default('git',true) }}.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
-      DISABLE_SSH: true
-      RUN_MODE: prod
+      DISABLE_SSH: "true"
+      RUN_MODE: "prod"
       ROOT_URL: "https://{{ gitea.subdomain|default('git',true) }}.{{ user.domain }}/"
     volumes:
       - "/opt/gitea:/data"

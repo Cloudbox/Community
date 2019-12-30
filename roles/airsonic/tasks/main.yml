@@ -38,7 +38,7 @@
       PGID: "{{ gid }}"
       TZ: "{{ tz }}"
       VIRTUAL_HOST: "airsonic.{{ user.domain }}"
-      VIRTUAL_PORT: 4040
+      VIRTUAL_PORT: "4040"
       LETSENCRYPT_HOST: "airsonic.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:

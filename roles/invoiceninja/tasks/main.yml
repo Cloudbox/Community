@@ -67,12 +67,12 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       DB_HOST: "mariadb:3306"
-      DB_USER: root
-      DB_PASS: password321
-      DB_DATABASE: invoiceninja
+      DB_USER: "root"
+      DB_PASS: "password321"
+      DB_DATABASE: "invoiceninja"
       VIRTUAL_HOST: "{{ invoiceninja.subdomain|default('invoiceninja',true) }}.{{ user.domain }}"
-      VIRTUAL_PORT: 80
-      VIRTUAL_PROTO: http
+      VIRTUAL_PORT: "80"
+      VIRTUAL_PROTO: "http"
       LETSENCRYPT_HOST: "{{ invoiceninja.subdomain|default('invoiceninja',true) }}.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:

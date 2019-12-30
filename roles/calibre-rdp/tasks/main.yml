@@ -55,7 +55,7 @@
       WIDTH: "1280"
       HEIGHT: "720"
       VIRTUAL_HOST: "calibrerdp.{{ user.domain }}"
-      VIRTUAL_PORT: 8080
+      VIRTUAL_PORT: "8080"
       LETSENCRYPT_HOST: "calibrerdp.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:

@@ -68,7 +68,7 @@
       PLEX_MACHINE_ID: "{{ plex_machine_id | default('',true) }}"
       PLEX_URL: "https://plex.{{ user.domain }}"
       VIRTUAL_HOST: "mediabutler.{{ user.domain }}"
-      VIRTUAL_PORT: 9876
+      VIRTUAL_PORT: "9876"
       LETSENCRYPT_HOST: "mediabutler.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:

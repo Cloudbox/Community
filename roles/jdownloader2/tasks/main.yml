@@ -61,16 +61,16 @@
     env:
       TZ: "{{ tz }}"
       VIRTUAL_HOST: "jdownloader2.{{ user.domain }}"
-      VIRTUAL_PORT: 5800
+      VIRTUAL_PORT: "5800"
       LETSENCRYPT_HOST: "jdownloader2.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
-      DISPLAY_WIDTH: 1280
-      DISPLAY_HEIGHT: 768
+      DISPLAY_WIDTH: "1280"
+      DISPLAY_HEIGHT: "768"
       VNC_PASSWORD: "{{ user.pass }}"
       USER_ID: "{{ uid }}"
       GROUP_ID: "{{ gid }}"
-      CLEAN_TMP_DIR: 1
-      UMASK: 000
+      CLEAN_TMP_DIR: "1"
+      UMASK: "000"
     volumes:
       - "/mnt/local/downloads/jdownloader2/output:/output:rw"
       - "/mnt:/mnt:rw"

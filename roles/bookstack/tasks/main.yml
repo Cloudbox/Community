@@ -61,7 +61,7 @@
       DB_PASS: password321
       DB_DATABASE: bookstackapp
       VIRTUAL_HOST: "{{ bookstack.subdomain|default('bookstack',true) }}.{{ user.domain }}"
-      VIRTUAL_PORT: 443
+      VIRTUAL_PORT: "443"
       VIRTUAL_PROTO: https
       LETSENCRYPT_HOST: "{{ bookstack.subdomain|default('bookstack',true) }}.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"

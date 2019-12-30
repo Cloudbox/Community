@@ -38,7 +38,7 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "goplaxt.{{ user.domain }}"
-      VIRTUAL_PORT: 8000
+      VIRTUAL_PORT: "8000"
       LETSENCRYPT_HOST: "goplaxt.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       TRAKT_ID: "{{ goplaxt.trakt_id }}"

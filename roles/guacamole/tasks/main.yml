@@ -35,7 +35,7 @@
     env:
       TZ: "{{ tz }}"
       VIRTUAL_HOST: "guacamole.{{ user.domain }}"
-      VIRTUAL_PORT: 8080
+      VIRTUAL_PORT: "8080"
       LETSENCRYPT_HOST: "guacamole.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       OPT_MYSQL: "Y"

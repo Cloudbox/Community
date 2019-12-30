@@ -73,7 +73,7 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "nzbhydra.{{ user.domain }}"
-      VIRTUAL_PORT: 5075
+      VIRTUAL_PORT: "5075"
       LETSENCRYPT_HOST: "nzbhydra.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:

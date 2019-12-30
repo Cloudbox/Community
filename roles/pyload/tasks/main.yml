@@ -50,7 +50,7 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "pyload.{{ user.domain }}"
-      VIRTUAL_PORT: 8000
+      VIRTUAL_PORT: "8000"
       LETSENCRYPT_HOST: "pyload.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes: "{{ default_volumes }}"

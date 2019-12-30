@@ -48,7 +48,7 @@
     env:
       BACKUP: "yes"
       VIRTUAL_HOST: "deezloader.{{ user.domain }}"
-      VIRTUAL_PORT: 1730
+      VIRTUAL_PORT: "1730"
       LETSENCRYPT_HOST: "deezloader.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:

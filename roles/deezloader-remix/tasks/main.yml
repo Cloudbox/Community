@@ -51,8 +51,8 @@
       VIRTUAL_PORT: "1730"
       LETSENCRYPT_HOST: "deezloader.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
+      TZ: "{{ tz }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/mnt/unionfs/Media/deezer:/downloads:rw"
       - "/opt/deezloader/config:/config:rw"      
     labels:

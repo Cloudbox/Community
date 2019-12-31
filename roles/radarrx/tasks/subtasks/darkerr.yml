@@ -11,7 +11,7 @@
 - name: Darkerr | Darkerr theme location block
   blockinfile:
     path: "/opt/nginx-proxy/vhost.d/radarr{{ rolename }}.{{ user.domain }}_location"
-    marker: "### {mark} CLOUDBOX - THEME-PARK THEME ###"
+    marker: "### {mark} CLOUDBOX - DARKERR THEME ###"
     block: |
       # https://github.com/gilbN/theme.park
       proxy_set_header Accept-Encoding "";

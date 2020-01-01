@@ -13,13 +13,11 @@
     path: "/opt/nginx-proxy/vhost.d/sonarr{{ rolename }}.{{ user.domain }}_location"
     marker: "### {mark} CLOUDBOX - DARKERR THEME ###"
     block: |
-      # https://github.com/iFelix18/Darkerr
+      # https://github.com/gilbN/theme.park
       proxy_set_header Accept-Encoding "";
       sub_filter
        '</head>'
-       '<link rel="stylesheet" type="text/css" href="//rawgit.com/iFelix18/Darkerr/master/darkerr.css">
-        <link rel="stylesheet" type="text/css" href="//rawgit.com/iFelix18/Darkerr/master/logo_animation.css">
-        <link rel="stylesheet" type="text/css" href="//rawgit.com/iFelix18/Darkerr/master/hidden_searchbar.css">
+       '<link rel="stylesheet" type="text/css" href="https://gilbn.github.io/theme.park/CSS/themes/sonarr/dark.css">
        </head>';
       sub_filter_once on;
     owner: "{{ user.name }}"

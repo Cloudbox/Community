@@ -56,7 +56,7 @@
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
       - "/mnt/unionfs/Media:/home/Tdarr/media"
-      - "/opt/tdarr/config:	/home/Tdarr/Documents/Tdarr"
+      - "/opt/tdarr/config:/home/Tdarr/Documents/Tdarr"
       - "/opt/tdarr/db:/var/lib/mongodb"
       - "/dev/shm:/dev/shm"
       - "/mnt:/mnt"

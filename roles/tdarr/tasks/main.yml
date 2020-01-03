@@ -16,6 +16,17 @@
     record: tdarr
   when: cloudflare_enabled
 
+- name: Create htpasswd
+  htpasswd:
+    path: "/opt/nginx-proxy/htpasswd/{{ item }}.{{ user.domain }}"
+    name: "{{ user.name }}"
+    password: "{{ user.pass }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0664
+  with_items:
+    - tdarr
+
 - name: Stop and remove any existing container
   docker_container:
     name: tdarr
@@ -25,7 +36,7 @@
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/tdarr
-    - /opt/tdarr/documents
+    - /opt/tdarr/config
     - /opt/tdarr/db
 
 - name: Create and start container
@@ -44,8 +55,8 @@
       LETSENCRYPT_HOST: "tdarr.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/mnt/unionfs/Media:/home/tdarr/media"
-      - "/opt/tdarr/documents:/home/documents/tdarr"
+      - "/mnt/unionfs/Media:/home/Tdarr/media"
+      - "/opt/tdarr/config:/home/Tdarr/Documents/Tdarr"
       - "/opt/tdarr/db:/var/lib/mongodb"
       - "/dev/shm:/dev/shm"
       - "/mnt:/mnt"

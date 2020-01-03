@@ -81,6 +81,7 @@ environment:
     unifi
     unmanic
     watchtower
+    wireguard
     wordpress
     xteve
     znc

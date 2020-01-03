@@ -81,6 +81,7 @@
     - { role: unifi, tags: ['unifi'] }
     - { role: unmanic, tags: ['unmanic'] }
     - { role: watchtower, tags: ['watchtower'] }
+    - { role: wireguard, tags: ['wireguard'] }
     - { role: wordpress, tags: ['wordpress'] }
     - { role: xteve, tags: ['xteve'] }
     - { role: znc, tags: ['znc'] }

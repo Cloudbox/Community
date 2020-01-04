@@ -11,9 +11,9 @@
 ---
 - name: "Set DNS Record on CloudFlare"
   include_role:
-    name: cloudflare
+    name: cloudflare-dns
   vars:
-    subdomain: deezloader
+    record: deezloader
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container
@@ -54,7 +54,7 @@
       TZ: "{{ tz }}"
     volumes:
       - "/mnt/unionfs/Media/deezer:/downloads:rw"
-      - "/opt/deezloader/config:/config:rw"      
+      - "/opt/deezloader/config:/config:rw"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

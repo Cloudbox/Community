@@ -60,6 +60,7 @@
     - { role: nowshowing, tags: ['nowshowing'] }
     - { role: nzbhydra, tags: ['nzbhydra'] }
     - { role: organizrv1, tags: ['organizrv1'] }
+    - { role: ouroboros, tags: ['ouroboros'] }
     - { role: jdownloader2, tags: ['jdownloader2'] }
     - { role: plex2, tags: ['plex2'] }
     - { role: pyload, tags: ['pyload'] }

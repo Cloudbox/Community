@@ -2,7 +2,7 @@
 # Title:         Community: Ouroboros Role                              #
 # Author(s):     owine                                                  #
 # URL:           https://github.com/Cloudbox/Community                  #
-# Docker Image:  v2tec/watchtower                                       #
+# Docker Image:  pyouroboros/ouroboros                                  #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################

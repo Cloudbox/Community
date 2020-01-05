@@ -38,3 +38,5 @@ transmissionvpn:
   vpn_pass: your_vpn_password
   vpn_prov: NORDVPN
   vpn_endpoint: Netherlands.ovpn
+unifi:
+  inform_port: 8080

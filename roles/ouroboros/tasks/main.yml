@@ -1,0 +1,34 @@
+#########################################################################
+# Title:         Community: Ouroboros Role                              #
+# Author(s):     owine                                                  #
+# URL:           https://github.com/Cloudbox/Community                  #
+# Docker Image:  pyouroboros/ouroboros                                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Stop and remove any existing container
+  docker_container:
+    name: ouroboros
+    state: absent
+
+- name: Create container
+  docker_container:
+    name: ouroboros
+    image: "pyouroboros/ouroboros"
+    pull: yes
+    command: "--cleanup"
+    env:
+      TZ: "{{ tz }}"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - ouroboros
+    purge_networks: yes
+    state: started

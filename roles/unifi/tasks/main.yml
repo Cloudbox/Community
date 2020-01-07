@@ -36,7 +36,7 @@
     image: "linuxserver/unifi-controller:latest"
     published_ports:
       - 3478:3478/udp
-      - 8089:8080
+      - "{{ unifi.port|default('8089',true) }}:8080"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

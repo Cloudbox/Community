@@ -49,6 +49,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **sonarr1080** - Additional Sonarr
 - **sonarrv3** - Sonar phantom (v3) branch based role
 - **[sonarrX](../../wiki/SonarrX)** - Experimental Sonarr v3 role to create multiple roles
+- **traktarrX** - Traktarr role to create multiple instances
 - **[speedtest](https://github.com/adolfintel/speedtest)** - Self-hosted HTML5 Speedtest
 - **subsonic**
 - **[telly](../../wiki/Telly)**

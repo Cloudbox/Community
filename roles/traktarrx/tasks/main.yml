@@ -1,0 +1,34 @@
+#########################################################################
+# Title:            Community: TraktarrX                                #
+# Author(s):        danqbudz                                            #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  cloudb0x/traktarr                                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Gather list of traktarrx containers"
+  shell: "docker ps -a --format '{{ '{{' }} .Names{{ '}}' }}' --filter label=com.github.cloudbox.community=traktarrx | xargs echo -n"
+  register: cloudbox_community_traktarrx
+  ignore_errors: yes
+
+- name: "Stop all traktarrx containers"
+  shell: "docker stop {{ cloudbox_community_traktarrx.stdout }}"
+  ignore_errors: yes
+  when: (cloudbox_community_traktarrx.stdout | trim | length > 0)
+
+- name: "Remove all traktarrx containers"
+  shell: "docker rm {{ cloudbox_community_traktarrx.stdout }}"
+  ignore_errors: yes
+  when: (cloudbox_community_traktarrx.stdout | trim | length > 0)
+
+- name: "Execute traktarrx roles"
+  include_tasks: template.yml
+  vars:
+    rolename: "{{ role }}"
+  with_items: "{{ traktarrx.roles }}"
+  loop_control:
+    loop_var: role
+    index_var: index

@@ -1,0 +1,99 @@
+#########################################################################
+# Title:            Community: TraktarrX | Template                     #
+# Author(s):        danqbudz                                            #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  cloudb0x/traktarr                                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Install named traktarr role"
+  debug:
+    msg: "Installing {{ rolename }}"
+
+- name: "Create traktarr{{ rolename }} directory"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  with_items:
+    - "/opt/traktarr{{ rolename }}"
+
+- name: "Check if traktarr{{ rolename }} config exists"
+  stat:
+    path: "/opt/traktarr{{ rolename }}/config.json"
+  register: traktarr_config
+
+- name: "Check if sonarr{{ rolename }} exists"
+  stat:
+    path: "/opt/sonarr{{ rolename }}/app/config.xml"
+  register: sonarr_config
+  when: not traktarr_config.stat.exists
+
+- name: "When sonarr{{ rolename }} exists, add api key to traktarr{{ rolename }} config"
+  block:
+
+  - name: "Pull sonarr{{ rolename }} api key"
+    xml:
+      path: "/opt/sonarr{{ rolename }}/app/config.xml"
+      xpath: /Config/ApiKey
+      content: text
+    register: xmlresp
+
+  - name: "Set sonarr{{ rolename }} api key"
+    set_fact:
+      sonarr_api_key: "{{ xmlresp.matches[0].ApiKey }}"
+
+  when: (not traktarr_config.stat.exists) and (sonarr_config.stat.exists)
+
+- name: "Check if radarr{{ rolename }} exists"
+  stat:
+    path: "/opt/radarr{{ rolename }}/app/config.xml"
+  register: radarr_config
+  when: not traktarr_config.stat.exists
+
+- name: "When radarr{{ rolename }} exists, add api key to traktarr{{ rolename }} config"
+  block:
+
+  - name: "Pull radarr{{ rolename }} api key"
+    xml:
+      path: "/opt/radarr{{ rolename }}/app/config.xml"
+      xpath: /Config/ApiKey
+      content: text
+    register: xmlresp
+
+  - name: "Set radarr{{ rolename }} api key"
+    set_fact:
+      radarr_api_key: "{{ xmlresp.matches[0].ApiKey }}"
+
+  when: (not traktarr_config.stat.exists) and (radarr_config.stat.exists)
+
+- name: Import default config
+  template:
+    src: config.json.j2
+    dest: "/opt/traktarr{{ rolename }}/config.json"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+    force: yes
+  when: not traktarr_config.stat.exists
+
+- name: Create and start container
+  docker_container:
+    name: "traktarr{{ rolename }}"
+    image: "cloudb0x/traktarr"
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+    command: run
+    volumes:
+      - "/opt/traktarr{{ rolename }}:/config"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+      "com.github.cloudbox.community": "traktarrx"
+    networks:
+      - name: cloudbox
+        aliases:
+          - "traktarr{{ rolename }}"
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

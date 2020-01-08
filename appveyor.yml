@@ -82,6 +82,7 @@ environment:
     unifi
     unmanic
     watchtower
+    wallabag
     wordpress
     xteve
     znc

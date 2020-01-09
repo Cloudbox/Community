@@ -77,7 +77,7 @@
     "minimum_availability": "released",
     "quality": "HD-1080p",
     "root_folder": "/movies/",
-    "url": "https://radarr.{{ user.domain }}"
+    "url": "http://radarr{{ rolename }}:7878"
   },
   "sonarr": {
     "api_key": "{{ sonarr_api_key | default('',true) }}",
@@ -85,7 +85,7 @@
     "quality": "HD-1080p",
     "root_folder": "/tv/",
     "tags": {},
-    "url": "https://sonarr.{{ user.domain }}"
+    "url": "http://sonarr{{ rolename }}:8989"
   },
   "trakt": {
     "client_id": "",

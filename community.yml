@@ -81,6 +81,7 @@
     - { role: transmissionvpn, tags: ['transmissionvpn'] }
     - { role: unifi, tags: ['unifi'] }
     - { role: unmanic, tags: ['unmanic'] }
+    - { role: vnstat, tags: ['vnstat'] }
     - { role: watchtower, tags: ['watchtower'] }
     - { role: wordpress, tags: ['wordpress'] }
     - { role: xteve, tags: ['xteve'] }

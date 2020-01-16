@@ -81,6 +81,7 @@ environment:
     transmissionvpn
     unifi
     unmanic
+    vnstat
     watchtower
     wordpress
     xteve

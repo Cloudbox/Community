@@ -39,6 +39,7 @@ environment:
     epms
     filebot
     filezilla
+    flexget
     funkwhale
     gazee
     glances

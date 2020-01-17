@@ -1,0 +1,70 @@
+#########################################################################
+# Title:            Community: Flexget                                  #
+# Author(s):        MatYRiCs                                            #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  wiserain/flexget                                    #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+    - name: "Set DNS Record on CloudFlare"
+      include_role:
+        name: cloudflare-dns
+      vars:
+        record: flexget
+      when: cloudflare_enabled
+    
+    - name: Stop and remove any existing container
+      docker_container:
+        name: flexget
+        state: absent
+    
+    - name: Create flexget directories
+      file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+      with_items:
+        - /opt/flexget
+        
+    - name: "Check if config.yml file exists"
+      stat:
+        path: "/opt/flexget/config.yml"
+      register: config_env
+      
+    - name: "Import config file if it doesnt exist"
+      template:
+        src: config.yml.j2
+        dest: /opt/flexget/config.yml
+        force: yes
+        owner: "{{ user.name }}"
+        group: "{{ user.name }}"
+        mode: 0775
+      when: not config_env.stat.exists
+    
+    - name: Create and start container
+      docker_container:
+        name: flexget
+        image: "wiserain/flexget"
+        pull: yes
+        
+        env:
+          BACKUP: "yes"
+          VIRTUAL_HOST: "flexget.{{ user.domain }}"
+          VIRTUAL_PORT: "3539"
+          LETSENCRYPT_HOST: "flexget.{{ user.domain }}"
+          LETSENCRYPT_EMAIL: "{{ user.email }}"
+          TZ: "{{ tz }}"
+          FG_WEBUI_PASSWD: "{{ user.pass }}"
+        volumes:
+          - "/mnt:/mnt:rw"
+          - "/opt/flexget:/config:rw"
+        labels:
+          "com.github.cloudbox.cloudbox_managed": "true"
+        networks:
+          - name: cloudbox
+            aliases:
+              - flexget
+        purge_networks: yes
+        restart_policy: always
+        state: started
+    

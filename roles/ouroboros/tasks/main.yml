@@ -14,12 +14,32 @@
     name: ouroboros
     state: absent
 
+- name: Create ouroboros directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  with_items:
+    - /opt/ouroboros
+
+- name: "Check if ouroboros.env file exists"
+  stat:
+    path: "/opt/ouroboros/ouroboros.env"
+  register: ouroboros_env
+
+- name: "Import ouroboros.env if it doesnt exist"
+  template:
+    src: ouroboros.env.j2
+    dest: /opt/ouroboros/ouroboros.env
+    force: yes
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+  when: not ouroboros_env.stat.exists
+
 - name: Create container
   docker_container:
     name: ouroboros
     image: "pyouroboros/ouroboros"
     pull: yes
-    command: "--cleanup"
+    env_file: /opt/ouroboros/ouroboros.env
     env:
       TZ: "{{ tz }}"
     volumes:

@@ -36,9 +36,8 @@
 - name: Create and start wordpress container
   docker_container:
     name: wordpress
-    image: "wordpress:5.3.2-php7.2-apache"
+    image: "wordpress:latest"
     pull: yes
-    user: "{{ uid }}:{{ gid }}"
     env:
       TZ: "{{ tz }}"
       WORDPRESS_DB_HOST: "mariadb:3306"

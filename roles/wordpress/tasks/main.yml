@@ -36,9 +36,8 @@
 - name: Create and start wordpress container
   docker_container:
     name: wordpress
-    image: "wordpress"
+    image: "wordpress:latest"
     pull: yes
-    user: "{{ uid }}:{{ gid }}"
     env:
       TZ: "{{ tz }}"
       WORDPRESS_DB_HOST: "mariadb:3306"

@@ -44,7 +44,7 @@
       - "/opt/transmissionvpn/vpn:/etc/openvpn/custom"
       - "/mnt:/mnt"
       - "/opt/transmissionvpn:/opt/transmissionvpn"
-      - "/mnt/local/downloads/torrents/TransmissionVPN:/data"
+      - "/mnt/local/downloads/torrents/transmissionvpn:/data"
       - "/opt/transmissionvpn:/config"
 
 - name: Create and start container

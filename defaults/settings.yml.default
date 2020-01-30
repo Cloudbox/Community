@@ -15,6 +15,7 @@ bookstack:
 invoiceninja:
   subdomain: invoiceninja
 wordpress:
+  direct_domain: no
   subdomain: wordpress
 gitea:
   subdomain: git

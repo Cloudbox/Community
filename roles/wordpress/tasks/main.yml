@@ -20,14 +20,14 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: "{{ wordpress.subdomain|default('web',true) }}"
+    record: "{{ wordpress.subdomain|default('wordpress',true) }}"
   when: (cloudflare_enabled) and not (wordpress.direct_domain|default(false,true))
 
 - name: "Set DNS Record on CloudFlare"
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: "{{ item }}"
+    record: "{{ item }}"
   with_items:
     - "{{ user.domain }}"
     - "www"

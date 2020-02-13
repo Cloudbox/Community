@@ -54,9 +54,6 @@
       VIRTUAL_PORT: "8265"
       LETSENCRYPT_HOST: "tdarr.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
-      NVIDIA_DRIVER_CAPABILITIES: "{{ 'compute,video,utility' if gpu.nvidia | default(false) else omit }}"
-      NVIDIA_VISIBLE_DEVICES: "{{ 'all' if gpu.nvidia | default(false) else omit }}"
-
     volumes:
       - "/mnt/unionfs/Media:/home/Tdarr/media"
       - "/opt/tdarr/config:/home/Tdarr/Documents/Tdarr"

@@ -41,7 +41,7 @@
       GOTIFY_DEFAULTUSER_NAME: "{{ user.name }}"
       GOTIFY_DEFAULTUSER_PASS: "{{ user.pass }}"
     volumes:
-      - "/opt/gotify/config:/config"
+      - "/opt/gotify/config:/app/data"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

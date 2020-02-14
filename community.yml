@@ -38,7 +38,7 @@
     - { role: gitea, tags: ['gitea'] }
     - { role: glances, tags: ['glances'] }
     - { role: goplaxt, tags: ['goplaxt'] }
-    - { role: gotify-server, tags: ['gotify-server'] }
+    - { role: gotify, tags: ['gotify'] }
     - { role: guacamole, tags: ['guacamole'] }
     - { role: handbrake, tags: ['handbrake'] }
     - { role: heimdall, tags: ['heimdall'] }

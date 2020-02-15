@@ -1,0 +1,61 @@
+#########################################################################
+# Title:            Community: Gotify-server                            #
+# Author(s):        Bas                                                 #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  gotify/server                                       #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: gotify
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: gotify
+    state: absent
+
+- name: Create gotify-server directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  with_items:
+    - /opt/gotify
+    - /opt/gotify/config
+
+- name: Create and start container
+  docker_container:
+    name: gotify
+    image: gotify/server
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      VIRTUAL_HOST: "gotify.{{ user.domain }}"
+      VIRTUAL_PORT: "80"
+      LETSENCRYPT_HOST: "gotify.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      GOTIFY_DEFAULTUSER_NAME: "{{ user.name }}"
+      GOTIFY_DEFAULTUSER_PASS: "{{ user.pass }}"
+    volumes:
+      - "/opt/gotify/config:/app/data"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - gotify
+    restart_policy: unless-stopped
+    state: started
+
+- name: "Wait for 30 seconds"
+  wait_for:
+    timeout: 30
+
+- name: Reset gotify-server directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  with_items:
+    - /opt/gotify

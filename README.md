@@ -43,7 +43,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **monitorr**
 - **[jdownloader2](../../wiki/JDownloader2)** - [JDownloader2](https://github.com/jlesage/docker-jdownloader-2) Self-hosted free, open-source download management tool with GUI website frontend.
 - **mylar** - automated comic book downloader
-- **[qbittorrent](../../wiki/qBittorrent)** - qBitorrent torrent client
+- **[qBittorrent](../../wiki/qBittorrent)** - qBittorrent torrent client
 - **radarr1080** - Additional Radarr
 - **radarrX** - Similar to [sonarrX](../../wiki/SonarrX) but for radarr, to create multiple roles
 - **sonarr1080** - Additional Sonarr

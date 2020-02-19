@@ -41,7 +41,7 @@
       VIRTUAL_PORT: "8083"
       LETSENCRYPT_HOST: "books.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
-      USE_CONFIG_DIR: true
+      USE_CONFIG_DIR: "true"
       DOCKER_MODS: linuxserver/calibre-web:calibre
     volumes:
       - "/mnt/unionfs/Media/Books:/books"

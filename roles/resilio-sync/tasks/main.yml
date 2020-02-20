@@ -12,9 +12,9 @@
 - name: Legacy Migration Tasks
   import_tasks: "subtasks/legacy_migration.yml"
 
-- name: Create DNS Record
+- name: "Setting CloudFlare DNS Record"
   include_role:
-    name: dns
+    name: cloudflare-dns
   vars:
     record: resilio-sync
   when: cloudflare_enabled

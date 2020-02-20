@@ -1,0 +1,42 @@
+#########################################################################
+# Title:         Community: Resilio Sync | Legacy Migration             #
+# Author(s):     desimaniac                                             #
+# URL:           https://github.com/Cloudbox/Community                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Remove legacy subdomains
+  cloudflare_dns:
+    account_api_token: "{{ cloudflare.api }}"
+    account_email: "{{ cloudflare.email }}"
+    zone: "{{ user.domain }}"
+    state: absent
+    type: A
+    record: "{{ item }}"
+  loop:
+    - resilio
+    - resiliosync
+  when: cloudflare_enabled
+
+- name: Stop and remove legacy containers
+  docker_container:
+    name: resilio
+    state: absent
+
+- name: Check if legacy folder exists
+  stat:
+    path: "/opt/resilio"
+  register: old_folder
+
+- name: Check if new folder exists
+  stat:
+    path: "/opt/resilio-sync"
+  register: new_folder
+
+- name: Rename old folder to new one
+  shell: |
+    mv /opt/resilio /opt/resilio-sync
+  when: (old_folder.stat.exists) and (not new_folder.stat.exists)

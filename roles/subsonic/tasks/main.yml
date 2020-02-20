@@ -38,10 +38,10 @@
       SUBSONIC_UID: "{{ uid }}"
       SUBSONIC_GID: "{{ gid }}"
       VIRTUAL_HOST: "subsonic.{{ user.domain }}"
-      VIRTUAL_PORT: 4040
+      VIRTUAL_PORT: "4040"
       LETSENCRYPT_HOST: "subsonic.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
-      SUBSONIC_MAX_MEMORY: 1024
+      SUBSONIC_MAX_MEMORY: "1024"
     volumes:
       - "/opt/subsonic:/opt/app/state"
       - "/mnt:/mnt"

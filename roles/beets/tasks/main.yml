@@ -51,7 +51,7 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "beets.{{ user.domain }}"
-      VIRTUAL_PORT: 8337
+      VIRTUAL_PORT: "8337"
       LETSENCRYPT_HOST: "beets.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:

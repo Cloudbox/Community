@@ -77,7 +77,7 @@
     env:
       TZ: "{{ tz }}"
       VIRTUAL_HOST: "airdcpp.{{ user.domain }}"
-      VIRTUAL_PORT: 5600
+      VIRTUAL_PORT: "5600"
       LETSENCRYPT_HOST: "airdcpp.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:

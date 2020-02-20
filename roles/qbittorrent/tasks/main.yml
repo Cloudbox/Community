@@ -57,10 +57,10 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "qbittorrent.{{ user.domain }}"
-      VIRTUAL_PORT: 8080
+      VIRTUAL_PORT: "8080"
       LETSENCRYPT_HOST: "qbittorrent.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
-      UMASK_SET: 002
+      UMASK_SET: "002"
     volumes: "{{ default_volumes + torrents_downloads_path|default([]) }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

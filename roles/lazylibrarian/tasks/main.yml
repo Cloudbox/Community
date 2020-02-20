@@ -38,7 +38,7 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "lazylibrarian.{{ user.domain }}"
-      VIRTUAL_PORT: 5299
+      VIRTUAL_PORT: "5299"
       LETSENCRYPT_HOST: "lazylibrarian.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:

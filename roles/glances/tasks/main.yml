@@ -63,7 +63,7 @@
       UID: "{{ uid }}"
       GID: "{{ gid }}"
       VIRTUAL_HOST: "glances.{{ user.domain }}"
-      VIRTUAL_PORT: 61208
+      VIRTUAL_PORT: "61208"
       LETSENCRYPT_HOST: "glances.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       GLANCES_OPT: "-w"

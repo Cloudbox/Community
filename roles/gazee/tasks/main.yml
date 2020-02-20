@@ -39,7 +39,7 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "gazee.{{ user.domain }}"
-      VIRTUAL_PORT: 4242
+      VIRTUAL_PORT: "4242"
       LETSENCRYPT_HOST: "gazee.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:

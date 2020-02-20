@@ -1,0 +1,61 @@
+#########################################################################
+# Title:            Community: Vnstat Dashboard                         #
+# Author(s):        desimaniac                                          #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  amarston/vnstat-dashboard                           #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Set CloudFlare DNS Record
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: vnstat
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: vnstat
+    state: absent
+
+- name: Lookup htpasswd
+  stat:
+    path: "/opt/nginx-proxy/htpasswd/vnstat.{{ user.domain }}"
+  register: htpasswd_lookup
+
+- name: Create htpasswd
+  htpasswd:
+    path: "/opt/nginx-proxy/htpasswd/vnstat.{{ user.domain }}"
+    name: "{{ user.name }}"
+    password: "{{ user.pass }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0664
+  when: not htpasswd_lookup.stat.exists
+
+- name: Create and start container
+  docker_container:
+    name: vnstat
+    image: amarston/vnstat-dashboard
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      VIRTUAL_HOST: "vnstat.{{ user.domain }}"
+      VIRTUAL_PORT: "80"
+      LETSENCRYPT_HOST: "vnstat.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/usr/bin/vnstat:/usr/bin/vnstat:ro"
+      - "/var/lib/vnstat:/var/lib/vnstat:ro"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - vnstat
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

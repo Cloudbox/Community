@@ -1,0 +1,108 @@
+#########################################################################
+# Title:            Community: RocketChat                               #
+# Author(s):        Minds3t                                             #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  rocketchat/rocket.chat:latest, mongo:4.0            #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+
+- name: Stop and remove any existing containers
+  docker_container: "name={{ item }} state=absent"
+  with_items:
+    - rocketchat-mongo
+    - rocketchat
+
+- name: Create required directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - "/opt/rocketchat/data/db"
+    - "/opt/rocketchat/data/dump"
+    - "/opt/rocketchat/uploads"
+
+- name: Create and start database container
+  docker_container:
+    name: "rocketchat-mongo"
+    image: "mongo:4.0"
+    pull: yes
+    env:
+      UID: "{{ uid }}"
+      GID: "{{ gid }}"
+      MONGO_DATA_DIR: "/data/db"
+      MONGO_LOG_DIR: "/dev/null"
+      MONGO_URL: "mongodb://rocketchat-mongo:27017/"
+    volumes:
+      - "/opt/rocketchat/data/db:/data/db:rw"
+      - "/opt/rocketchat/data/dump:/dump:rw"
+    command: mongod --smallfiles --oplogSize 128 --replSet rs0 --storageEngine=mmapv1
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - "rocketchat-mongo"
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started
+
+- name: "Wait 30 seconds before commencing"
+  wait_for: timeout=30
+
+# this container's job is just run the command to initialize the replica set.
+# it will run the command and will later be removed automatically
+- name: Initialize MongoDB Replica Set
+  docker_container:
+    name: "rocketchat-mongo-init-replica"
+    image: "mongo:4.0"
+    command: 'bash -c "for i in `seq 1 30`; do mongo rocketchat-mongo/rocketchat --eval \"rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''localhost:27017'' } ]})\" && s=$$? && break || s=$$?; echo \"Tried $$i times. Waiting 5 secs...\"; sleep 5; done; (exit $$s)"'
+    networks:
+      - name: cloudbox
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started
+
+- name: "Setting Cloudflare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: rocketchat
+  when: cloudflare_enabled
+
+- name: Create and start RocketChat container
+  docker_container:
+    name: "rocketchat"
+    image: "rocketchat/rocket.chat:latest"
+    command: bash -c 'for i in `seq 1 30`; do node main.js && s=$$? && break || s=$$?; echo "Tried $$i times. Waiting 5 secs..."; sleep 5; done; (exit $$s)'
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      UID: "{{ uid }}"
+      GID: "{{ gid }}"
+      PORT: "3000"
+      ROOT_URL: "https://rocketchat.{{ user.domain }}"
+      MONGO_URL: "mongodb://rocketchat-mongo:27017/rocketchat"
+      MONGO_OPLOG_URL: "mongodb://rocketchat-mongo:27017/local"
+      Accounts_UseDNSDomainCheck: "false"
+      VIRTUAL_HOST: "rocketchat.{{ user.domain }}"
+      VIRTUAL_PORT: "3000"
+      LETSENCRYPT_HOST: "rocketchat.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/rocketchat/uploads:/app/uploads:rw"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - "rocketchat"
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started
+
+- name: Remove unneeded container
+  docker_container: "name={{ item }} state=absent"
+  with_items:
+    - rocketchat-mongo-init-replica

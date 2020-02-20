@@ -47,12 +47,12 @@
     env:
       TZ: "{{ tz }}"
       VIRTUAL_HOST: "xteve.{{ user.domain }}"
-      VIRTUAL_PORT: 34400
+      VIRTUAL_PORT: "34400"
       LETSENCRYPT_HOST: "xteve.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
-      XTEVE_BRANCH: beta
-      XTEVE_UID: 1000
-      XTEVE_GID: 1000
+      XTEVE_BRANCH: "beta"
+      XTEVE_UID: "1000"
+      XTEVE_GID: "1000"
     volumes:
       - "/opt/xteve/app/config:/home/xteve/conf:rw"
       - "/opt/xteve/app/tmp:/tmp/xteve:rw"

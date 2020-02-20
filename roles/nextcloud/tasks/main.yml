@@ -44,8 +44,8 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "nextcloud.{{ user.domain }}"
-      VIRTUAL_PORT: 443
-      VIRTUAL_PROTO: https
+      VIRTUAL_PORT: "443"
+      VIRTUAL_PROTO: "https"
       LETSENCRYPT_HOST: "nextcloud.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:

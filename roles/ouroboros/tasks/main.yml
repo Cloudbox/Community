@@ -1,0 +1,55 @@
+#########################################################################
+# Title:         Community: Ouroboros Role                              #
+# Author(s):     owine                                                  #
+# URL:           https://github.com/Cloudbox/Community                  #
+# Docker Image:  pyouroboros/ouroboros                                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Stop and remove any existing container
+  docker_container:
+    name: ouroboros
+    state: absent
+
+- name: Create ouroboros directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  with_items:
+    - /opt/ouroboros
+
+- name: "Check if ouroboros.env file exists"
+  stat:
+    path: "/opt/ouroboros/ouroboros.env"
+  register: ouroboros_env
+
+- name: "Import ouroboros.env if it doesnt exist"
+  template:
+    src: ouroboros.env.j2
+    dest: /opt/ouroboros/ouroboros.env
+    force: yes
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+  when: not ouroboros_env.stat.exists
+
+- name: Create container
+  docker_container:
+    name: ouroboros
+    image: "pyouroboros/ouroboros"
+    pull: yes
+    env_file: /opt/ouroboros/ouroboros.env
+    env:
+      TZ: "{{ tz }}"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - ouroboros
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

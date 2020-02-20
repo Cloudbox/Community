@@ -39,7 +39,7 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "unmanic.{{ user.domain }}"
-      VIRTUAL_PORT: 8888
+      VIRTUAL_PORT: "8888"
       LETSENCRYPT_HOST: "unmanic.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:

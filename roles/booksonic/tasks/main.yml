@@ -38,7 +38,7 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "booksonic.{{ user.domain }}"
-      VIRTUAL_PORT: 4040
+      VIRTUAL_PORT: "4040"
       LETSENCRYPT_HOST: "booksonic.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:

@@ -38,7 +38,7 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "nowshowing.{{ user.domain }}"
-      VIRTUAL_PORT: 6878
+      VIRTUAL_PORT: "6878"
       LETSENCRYPT_HOST: "nowshowing.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:

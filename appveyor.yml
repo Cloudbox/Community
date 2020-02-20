@@ -16,6 +16,7 @@ matrix:
 build: off
 
 environment:
+  CLOUDBOX_BRANCH: "master"
   CLOUDBOX_PATH: "/home/appveyor/cloudbox"
   COMMUNITY_PATH: "/home/appveyor/projects/community"
   TAGS: >
@@ -31,6 +32,7 @@ environment:
     calibre-web
     couchpotato
     coder
+    deezloader-remix
     deluge
     delugevpn
     embystat
@@ -60,11 +62,14 @@ environment:
     nowshowing
     nzbhydra
     organizrv1
+    ouroboros
     plex2
     pyload
     qbittorrent
     quassel
     radarrx
+    resilio-sync
+    rocketchat
     sickchill
     sonarrx
     speedtest
@@ -76,6 +81,7 @@ environment:
     transmissionvpn
     unifi
     unmanic
+    vnstat
     watchtower
     wordpress
     xteve
@@ -96,19 +102,15 @@ install:
       cp -n defaults/settings.yml.default settings.yml
       sudo ansible-playbook community.yml --syntax-check
       RC=$?; [ $RC -eq 0 ] || exit $RC;
-  - ps: |
-      if( ($env:APPVEYOR_REPO_BRANCH) -and ($env:APPVEYOR_REPO_BRANCH –eq "master") ){
-        $env:CB_BRANCH="master"
-      } else { $env:CB_BRANCH="develop" }
   - sh: |
       echo ""
       echo "=========================="
       echo ""
-      echo "Cloudbox Branch: $CB_BRANCH"
+      echo "Cloudbox Branch: $CLOUDBOX_BRANCH"
       echo ""
       cd ${CLOUDBOX_PATH}
       rm settings.yml accounts.yml adv_settings.yml
-      git checkout $CB_BRANCH &> /dev/null
+      git checkout $CLOUDBOX_BRANCH &> /dev/null
       sudo ansible-playbook cloudbox.yml --syntax-check
       sudo ansible-playbook cloudbox.yml --tags core \
           --skip-tags sanity_check,settings \

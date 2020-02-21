@@ -1,0 +1,57 @@
+#########################################################################
+# Title:            Community: OmbiX                                    #
+# Author(s):        FML128                                              #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  hotio/ombi                                          #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Install named Ombi role"
+  debug:
+    msg: "Installing {{ rolename }} using port {{ roleport }}"
+
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: "ombi{{ rolename }}"
+  when: cloudflare_enabled
+
+- name: Create ombi directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - "/opt/ombi{{ rolename }}"
+
+- name: Create and start container
+  docker_container:
+    name: ombi{{ rolename }}
+    image: "hotio/ombi"
+    pull: yes
+    published_ports:
+      - "127.0.0.1:{{ roleport }}:5000"
+    env:
+      BACKUP: "no"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      UMASK: "002"
+      VIRTUAL_HOST: "ombi{{ rolename }}.{{ user.domain }}"
+      VIRTUAL_PORT: "5000"
+      LETSENCRYPT_HOST: "{{ ombi.subdomain|default('ombi',true) }}.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      LC_ALL: "en_US.UTF-8"
+      TZ: "{{ tz }}"
+    volumes:
+      - "/opt/ombi{{ rolename }}:/config"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+      "com.github.cloudbox.community": "ombix"
+    networks:
+      - name: cloudbox
+        aliases:
+          - "ombi{{ rolename }}"
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

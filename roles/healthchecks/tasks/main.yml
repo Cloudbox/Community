@@ -1,0 +1,69 @@
+#########################################################################
+# Title:         Community: Healthchecks Role                           #
+# Author(s):     danqbudz                                               #
+# URL:           https://github.com/Cloudbox/Community                  #
+# Docker Image:  linuxserver/healthchecks                               #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: healthchecks
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: healthchecks
+    state: absent
+
+- name: Create healthchecks directory
+  file: "path={{ item }} state=directory mode=0755 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/healthchecks
+
+- name: "Check if local_settings.py file exists"
+  stat:
+    path: "/opt/healthchecks/local_settings.py"
+  register: config_env
+
+- name: "Import config file if it doesnt exist"
+  template:
+    src: local_settings.py.j2
+    dest: /opt/healthchecks/local_settings.py
+    force: yes
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0644
+  when: not config_env.stat.exists
+
+- name: Create and start container
+  docker_container:
+    name: healthchecks
+    image: linuxserver/healthchecks
+    pull: yes
+    published_ports:
+      - "127.0.0.1:8002:8000"
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "healthchecks.{{ user.domain }}"
+      VIRTUAL_PORT: "8000"
+      LETSENCRYPT_HOST: "healthchecks.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/healthchecks:/config"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - healthchecks
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

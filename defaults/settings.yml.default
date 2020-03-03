@@ -28,6 +28,9 @@ alltube:
 synclounge:
   domain:
   subdomain: synclounge
+healthchecks:
+  mail_user:
+  mail_pass:
 delugevpn:
   version: v2
   vpn_user: your_vpn_username

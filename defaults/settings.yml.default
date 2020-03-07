@@ -29,7 +29,6 @@ synclounge:
   domain:
   subdomain: synclounge
 healthchecks:
-  mail_user:
   mail_pass:
 delugevpn:
   version: v2

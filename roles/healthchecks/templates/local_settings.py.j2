@@ -7,6 +7,6 @@ DEBUG = False
 EMAIL_PORT = "587"
 SITE_NAME = "healthchecks"
 EMAIL_HOST_PASSWORD = "{{ healthchecks.mail_pass }}"
-EMAIL_HOST_USER = "{{ healthchecks.mail_user }}"
+EMAIL_HOST_USER = "{{ user.email }}"
 ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = ["*"]

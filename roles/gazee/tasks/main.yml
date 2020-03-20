@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 - name: "Setting CloudFlare DNS Record"
   include_role:
     name: cloudflare
@@ -43,4 +44,62 @@
           - gazee
     purge_networks: yes
     restart_policy: always
+=======
+#########################################################################
+# Title:            Community: Gazee                                    #
+# Author(s):        Aki                                                 #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  linuxserver/gazee                                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: gazee
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: gazee
+    state: absent
+
+- name: Create gazee directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/gazee
+    - /mnt/local/Media/Comics
+
+- name: Create and start container
+  docker_container:
+    name: gazee
+    image: linuxserver/gazee
+    pull: yes
+    published_ports:
+      - "127.0.0.1:4242:4242"
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "gazee.{{ user.domain }}"
+      VIRTUAL_PORT: "4242"
+      LETSENCRYPT_HOST: "gazee.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/gazee:/config"
+      - "/mnt/local/downloads/nzbs:/downloads/nzbs"
+      - "/mnt/unionfs/Media/Comics:/comics"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - gazee
+    purge_networks: yes
+    restart_policy: unless-stopped
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
     state: started

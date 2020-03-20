@@ -1,4 +1,5 @@
 #########################################################################
+<<<<<<< HEAD
 # Title:         Cloudbox Community: Telly Role                         #
 # Author(s):     Desimaniac                                             #
 # URL:           https://github.com/Cloudbox/Community                  #
@@ -13,6 +14,22 @@
   with_first_found:
     - "../../telly.yml"
     - "../../defaults/telly.yml.sample"
+=======
+# Title:         Community: Telly                                       #
+# Author(s):     desimaniac                                             #
+# URL:           https://github.com/Cloudbox/Community                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Import vars
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "../../telly.yml"
+    - "../../defaults/telly.yml.default"
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
 
 - name: Installing Telly 1.0
   include_tasks: "telly10.yml"

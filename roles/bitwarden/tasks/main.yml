@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 - name: "Setting CloudFlare DNS Record"
   include_role:
@@ -62,4 +63,79 @@
         aliases:
           - bitwarden
     restart_policy: always
+=======
+#########################################################################
+# Title:            Community: Bitwarden                                #
+# Author(s):        Kalroth, RXWatcher                                  #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  bitwardenrs/server                                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: bitwarden
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: bitwarden
+    state: absent
+
+- name: Create opt directory
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/bitwarden
+
+- name: "Check if bitwarden env file exists"
+  stat:
+    path: "/opt/bitwarden/env"
+  register: bitwarden_env
+
+- name: "Generate Admin token"
+  shell: /usr/bin/openssl rand -base64 48
+  register: admin_token
+  when: not bitwarden_env.stat.exists
+
+- name: "Import env file if it doesnt exist"
+  template:
+    src: bitwarden_env.j2
+    dest: /opt/bitwarden/env
+    force: yes
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+  when: not bitwarden_env.stat.exists
+
+- name: Create and start container
+  docker_container:
+    name: bitwarden
+    image: bitwardenrs/server:latest
+    pull: yes
+    published_ports:
+      - "127.0.0.1:6423:6423"
+    env:
+      TZ: "{{ tz }}"
+      ROCKET_PORT: "6423"
+      VIRTUAL_HOST: "bitwarden.{{ user.domain }}"
+      VIRTUAL_PORT: "6423"
+      LETSENCRYPT_HOST: "bitwarden.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/bitwarden:/data"
+      - "/opt/bitwarden/env:/.env"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    user: "{{ uid }}:{{ gid }}"
+    networks:
+      - name: cloudbox
+        aliases:
+          - bitwarden
+    restart_policy: unless-stopped
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
     state: started

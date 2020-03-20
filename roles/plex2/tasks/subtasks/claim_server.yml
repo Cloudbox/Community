@@ -1,0 +1,53 @@
+#########################################################################
+# Title:            Community: Plex2 | Claim Server Task                #
+# Author(s):        desimaniac                                          #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  cloudb0x/plex                                       #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Claim Server | Get Plex Media Server claim code via API
+  block:
+
+  - name: "Claim Server | Get Plex Media Server claim code"
+    uri:
+      url: https://plex.tv/api/claim/token.json
+      user: "{{ plex.user }}"
+      password: "{{ plex.pass }}"
+      force_basic_auth: yes
+    register: plex2_claim
+
+  - name: "Claim Server | Set 'plex2_claim_code' variable"
+    set_fact:
+      plex2_claim_code: "{{ plex2_claim.json.token }}"
+
+  when: (plex_account_enabled)
+
+- name: Claim Server | Get Plex Media Server claim code via prompts
+  block:
+
+  - name: "Claim Server | Ask user for Plex Media Server claim code"
+    pause:
+      prompt: "Please visit 'https://plex.tv/claim', login with your Plex account,
+        copy the 'Claim Code', paste it below, and press ENTER."
+    register: plex2_claim_code_prompt
+
+  - name: "Claim Server | Set 'plex_claim_code' variable"
+    set_fact:
+      plex2_claim_code: "{{ plex2_claim_code_prompt.user_input }}"
+
+  when: (not plex_account_enabled)
+
+- name: Claim Server | Assert Plex Media Server claim code exists
+  assert:
+    that:
+      - "plex2_claim_code is defined"
+      - "plex2_claim_code is not none"
+      - "plex2_claim_code | trim | length > 0"
+
+- name: "Claim Server | Display Plex Media Server claim code"
+  debug:
+    msg: "Using Plex Claim Code{{ ':' }} {{ plex2_claim_code }}"

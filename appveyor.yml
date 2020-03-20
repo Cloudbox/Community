@@ -7,6 +7,7 @@ skip_commits:
     - '*.yml.default'
   message: /\[minor\]/
 
+<<<<<<< HEAD
 image: ubuntu
 
 matrix:
@@ -101,6 +102,138 @@ install:
               --skip-tags sanity_check,settings
           docker stop $TAG &> /dev/null || true
           docker rm $TAG &> /dev/null || true
+=======
+image: Ubuntu1604
+
+matrix:
+  fast_finish: true
+
+# to disable automatic builds
+build: off
+
+environment:
+  CLOUDBOX_BRANCH: "master"
+  CLOUDBOX_PATH: "/home/appveyor/cloudbox"
+  COMMUNITY_PATH: "/home/appveyor/projects/community"
+  TAGS: >
+    airdcpp
+    airsonic
+    alltube
+    asshama
+    bazarrx
+    beets
+    bitwarden
+    bookstack
+    calibre-rdp
+    calibre-web
+    couchpotato
+    coder
+    deezloader-remix
+    deluge
+    delugevpn
+    embystat
+    epms
+    filebot
+    filezilla
+    funkwhale
+    gazee
+    glances
+    goplaxt
+    handbrake
+    heimdall
+    invoiceninja
+    jdownloader2
+    jellyfin
+    jirafeau
+    kitana
+    lazylibrarian
+    logarr
+    mediabutler
+    medusa
+    mellow
+    minecraft
+    monitorr
+    mylar
+    nextcloud
+    nowshowing
+    nzbhydra
+    ombix
+    organizrv1
+    ouroboros
+    plex2
+    pyload
+    qbittorrent
+    quassel
+    radarrx
+    resilio-sync
+    rocketchat
+    sickchill
+    sonarrx
+    speedtest
+    sshwifty
+    subsonic
+    synclounge
+    tdarr
+    thelounge
+    transmissionvpn
+    unifi
+    unmanic
+    vnstat
+    watchtower
+    wordpress
+    xteve
+    znc
+
+init:
+  - sh: curl -s https://cloudbox.works/scripts/dep.sh | sudo -H sh &> /dev/null
+  - sh: curl -s https://cloudbox.works/scripts/repo.sh | bash &> /dev/null
+
+install:
+  - sh: |
+      echo "=========================="
+      echo ""
+      echo "Community Branch: $APPVEYOR_REPO_BRANCH"
+      echo ""
+      cd ${COMMUNITY_PATH}
+      cp -n defaults/ansible.cfg.default ansible.cfg
+      cp -n defaults/settings.yml.default settings.yml
+      sudo ansible-playbook community.yml --syntax-check
+      RC=$?; [ $RC -eq 0 ] || exit $RC;
+  - sh: |
+      echo ""
+      echo "=========================="
+      echo ""
+      echo "Cloudbox Branch: $CLOUDBOX_BRANCH"
+      echo ""
+      cd ${CLOUDBOX_PATH}
+      rm settings.yml accounts.yml adv_settings.yml
+      git checkout $CLOUDBOX_BRANCH &> /dev/null
+      sudo ansible-playbook cloudbox.yml --syntax-check
+      sudo ansible-playbook cloudbox.yml --tags core \
+          --skip-tags sanity_check,settings \
+          --skip-tags kernel,hetzner,shell,rclone,system,motd,nvidia,mounts,scripts \
+          --extra-vars '{"continuous_integration":true}' \
+          &> /dev/null
+  - sh: |
+      echo ""
+      echo "=========================="
+      echo ""
+      echo "Community Roles:"
+      echo ""
+      cd ${COMMUNITY_PATH}
+      for TAG in $TAGS
+      do
+          echo --------------------------
+          echo ""
+          echo Running Tag: $TAG
+          sudo ansible-playbook community.yml --tags $TAG \
+              --skip-tags sanity_check,settings \
+              --extra-vars '{"continuous_integration":true}'
+          RC=$?; [ $RC -eq 0 ] || exit $RC;
+          CONTAINERS=$(comm -23 <(docker ps -a --format '{{ .Names}}' | sort) <(echo "letsencrypt\nnginx-proxy") | xargs echo -n)
+          docker stop $CONTAINERS &> /dev/null || true
+          docker rm $CONTAINERS &> /dev/null || true
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
           docker image prune -af &> /dev/null || true
           docker volume prune -f &> /dev/null || true
           echo ""

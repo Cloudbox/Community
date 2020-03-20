@@ -1,0 +1,79 @@
+#########################################################################
+# Title:            Community: Glances                                  #
+# Author(s):        Satz                                                #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  satzisa/glances                                     #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: glances
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: glances
+    state: absent
+
+- name: Create htpasswd
+  htpasswd:
+    path: "/opt/nginx-proxy/htpasswd/{{ item }}.{{ user.domain }}"
+    name: "{{ user.name }}"
+    password: "{{ user.pass }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0664
+  with_items:
+    - glances
+
+- name: Create glances directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  with_items:
+      - /opt/glances/
+      - /opt/glances/config
+
+- name: "Check if glances.conf file exists"
+  stat:
+    path: "/opt/glances/config/glances.conf"
+  register: conf_env
+
+- name: "Copy conf file if it doesnt exist"
+  copy:
+    src: glances.conf
+    dest: /opt/glances/config/glances.conf
+    force: yes
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+  when: not conf_env.stat.exists
+
+- name: Create and start container
+  docker_container:
+    name: glances
+    image: "satzisa/glances"
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      UID: "{{ uid }}"
+      GID: "{{ gid }}"
+      VIRTUAL_HOST: "glances.{{ user.domain }}"
+      VIRTUAL_PORT: "61208"
+      LETSENCRYPT_HOST: "glances.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      GLANCES_OPT: "-w"
+    volumes:
+      - "/opt/glances/config:/glances/conf:rw"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - name: cloudbox
+        aliases:
+          - glances
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

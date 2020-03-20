@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 - name: "Setting CloudFlare DNS Record"
   include_role:
     name: cloudflare
@@ -39,4 +40,58 @@
         aliases:
           - mellow
     restart_policy: always
+=======
+#########################################################################
+# Title:            Community: Mellow                                   #
+# Author(s):        Superduper09                                        #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  voidp/mellow                                        #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: mellow
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: mellow
+    state: absent
+
+- name: Create mellow directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/mellow
+
+- name: Create and start container
+  docker_container:
+    name: mellow
+    image: voidp/mellow
+    pull: yes
+    published_ports:
+      - "127.0.0.1:5060:5060"
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "mellow.{{ user.domain }}"
+      VIRTUAL_PORT: "5060"
+      LETSENCRYPT_HOST: "mellow.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/mellow:/usr/src/app/data/"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - mellow
+    restart_policy: unless-stopped
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
     state: started

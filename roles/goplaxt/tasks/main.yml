@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 - name: "Setting CloudFlare DNS Record"
   include_role:
     name: cloudflare
@@ -43,4 +44,62 @@
           - goplaxt
     purge_networks: yes
     restart_policy: always
+=======
+#########################################################################
+# Title:            Community: GoPlaxt                                  #
+# Author(s):        EnorMOZ                                             #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  xanderstrike/goplaxt                                #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: goplaxt
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: goplaxt
+    state: absent
+
+- name: Create goplaxt directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/goplaxt
+
+- name: Create and start container
+  docker_container:
+    name: goplaxt
+    image: xanderstrike/goplaxt
+    pull: yes
+    published_ports:
+      - "127.0.0.1:8000:8000"
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "goplaxt.{{ user.domain }}"
+      VIRTUAL_PORT: "8000"
+      LETSENCRYPT_HOST: "goplaxt.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      TRAKT_ID: "{{ goplaxt.trakt_id }}"
+      TRAKT_secret: "{{ goplaxt.trakt_secret }}"
+      REDIRECT_URI: "https://goplaxt.{{ user.domain }}"
+    volumes:
+      - "/opt/goplaxt:/app/keystore"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - goplaxt
+    purge_networks: yes
+    restart_policy: unless-stopped
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
     state: started

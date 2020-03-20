@@ -5,6 +5,7 @@ radarrx:
   roles: [1080webdl, 1080remux]
 bazarrx:
   roles: [1080webdl, 1080remux]
+<<<<<<< HEAD
 calibreweb:
   caliblur: yes
 goplaxt:
@@ -33,3 +34,43 @@ delugevpn:
   vpn_endpoint: Netherlands.ovpn
 deluge:
   version: v2
+=======
+ombix:
+  roles: [4k]
+calibreweb:
+  caliblur: yes
+goplaxt:
+  trakt_id:
+  trakt_secret:
+bookstack:
+  subdomain: bookstack
+invoiceninja:
+  subdomain: invoiceninja
+wordpress:
+  direct_domain: no
+  subdomain: wordpress
+gitea:
+  subdomain: git
+jirafeau:
+  domain:
+alltube:
+  domain:
+synclounge:
+  domain:
+  subdomain: synclounge
+delugevpn:
+  version: v2
+  vpn_user: your_vpn_username
+  vpn_pass: your_vpn_password
+  vpn_prov: pia
+  vpn_endpoint: Netherlands.ovpn
+deluge:
+  version: v2
+transmissionvpn:
+  vpn_user: your_vpn_username
+  vpn_pass: your_vpn_password
+  vpn_prov: NORDVPN
+  vpn_endpoint: Netherlands.ovpn
+unifi:
+  port: 8080
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git

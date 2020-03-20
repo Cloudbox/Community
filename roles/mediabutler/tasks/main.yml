@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 - name: "Setting CloudFlare DNS Record"
   include_role:
     name: cloudflare
@@ -90,4 +91,90 @@
           - "mediabutler"
     purge_networks: yes
     restart_policy: always
+=======
+#########################################################################
+# Title:            Community: MediaButler                              #
+# Author(s):        Superduper09, desimaniac                            #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  mediabutler/server                                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: MongoDB Role
+  include_role:
+    name: mongodb
+
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: mediabutler
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container: "name={{ item }} state=absent"
+  with_items:
+    - mediabutler
+
+- name: Create required directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - "/opt/mediabutler"
+
+- name: "Check if plex 'Preferences.xml' exists"
+  stat:
+    path: "/opt/plex/Library/Application Support/Plex Media Server/Preferences.xml"
+  register: plex_preferences_xml
+
+- name: "When plex 'Preferences.xml' exists, pull machine id"
+  block:
+
+  - name: Pull plex machine id
+    xml:
+      path: "/opt/plex/Library/Application Support/Plex Media Server/Preferences.xml"
+      xpath: /Preferences
+      content: attribute
+      attribute: ProcessedMachineIdentifier
+    register: xmlresp
+
+  - name: Set 'plex_machine_id' var
+    set_fact:
+      plex_machine_id: "{{ xmlresp.matches[0].Preferences.ProcessedMachineIdentifier }}"
+
+  when: plex_preferences_xml.stat.exists
+
+- name: Create and start mediabutler container
+  docker_container:
+    name: "mediabutler"
+    image: "mediabutler/server"
+    pull: yes
+    published_ports:
+      - "0.0.0.0:9876:9876"
+    env:
+      TZ: "{{ tz }}"
+      UID: "{{ uid }}"
+      GID: "{{ gid }}"
+      URL: "https://mediabutler.{{ user.domain }}/"
+      DB_URL: "mongodb://mongo:27017/mediabutler"
+      PLEX_MACHINE_ID: "{{ plex_machine_id | default('',true) }}"
+      PLEX_URL: "https://plex.{{ user.domain }}"
+      VIRTUAL_HOST: "mediabutler.{{ user.domain }}"
+      VIRTUAL_PORT: "9876"
+      LETSENCRYPT_HOST: "mediabutler.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/mediabutler:/config:rw"
+      - "/mnt:/mnt"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - "mediabutler"
+    purge_networks: yes
+    restart_policy: unless-stopped
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
     state: started

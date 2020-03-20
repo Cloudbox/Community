@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 - name: "Setting CloudFlare DNS Record"
   include_role:
     name: cloudflare
@@ -57,4 +58,76 @@
         aliases:
           - logarr
     restart_policy: always
+=======
+#########################################################################
+# Title:            Community: Logarr                                   #
+# Author(s):        Superduper09, Kalroth, RXWatcher                    #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  monitorr/logarr-alpha                               #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: logarr
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: logarr
+    state: absent
+
+- name: Create logarr directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/logarr
+    - /opt/logarr/config
+    - /opt/logarr/config/userdata
+
+- name: "Check if config.json file exists"
+  stat:
+    path: "/opt/logarr/config/userdata/config.json
+"
+  register: config_env
+
+- name: "Import config file if it doesnt exist"
+  template:
+    src: config.json.j2
+    dest: /opt/logarr/config/userdata/config.json
+    force: yes
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+  when: not config_env.stat.exists
+
+- name: Create and start container
+  docker_container:
+    name: logarr
+    image: monitorr/logarr-alpha:latest
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "logarr.{{ user.domain }}"
+      VIRTUAL_PORT: "80"
+      LETSENCRYPT_HOST: "logarr.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/logarr/config:/app"
+      - "/opt:/opt"
+      - "/mnt:/mnt"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - logarr
+    restart_policy: unless-stopped
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
     state: started

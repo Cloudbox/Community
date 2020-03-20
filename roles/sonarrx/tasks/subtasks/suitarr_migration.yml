@@ -1,7 +1,13 @@
 #########################################################################
+<<<<<<< HEAD
 # Title:         Cloudbox: Sonarr - Suitarr Migration Tasks             #
 # Author(s):     desimaniac                                             #
 # URL:           https://github.com/cloudbox/cloudbox                   #
+=======
+# Title:         Community: SonarrX | Suitarr Migration Tasks           #
+# Author(s):     desimaniac                                             #
+# URL:           https://github.com/Cloudbox/Community                  #
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################

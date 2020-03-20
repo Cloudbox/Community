@@ -1,0 +1,62 @@
+#########################################################################
+# Title:            Community: SickChill                                #
+# Author(s):        javi11                                              #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  linuxserver/sickchill                               #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: sickchill
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: sickchill
+    state: absent
+
+- name: Create sickchill directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/sickchill
+
+- name: Set default_volumes variable
+  set_fact:
+    default_volumes:
+      - "/opt/sickchill:/config"
+      - "/opt/scripts:/scripts"
+      - "/mnt:/mnt"
+      - "/mnt/unionfs/Media/TV:/tv"
+
+- name: Create and start container
+  docker_container:
+    name: sickchill
+    image: linuxserver/sickchill
+    pull: yes
+    published_ports:
+      - "127.0.0.1:8082:8081"
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      UMASK: "002"
+      VIRTUAL_HOST: "sickchill.{{ user.domain }}"
+      VIRTUAL_PORT: "8081"
+      LETSENCRYPT_HOST: "sickchill.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - sickchill
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

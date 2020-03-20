@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 - name: "Setting CloudFlare DNS Record"
   include_role:
     name: cloudflare
@@ -56,6 +57,76 @@
           - beets
     purge_networks: yes
     restart_policy: always
+=======
+#########################################################################
+# Title:            Community: Beets                                    #
+# Author(s):        fuller882                                           #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  linuxserver/beets                                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: beets
+  when: cloudflare_enabled
+
+- name: Create htpasswd
+  htpasswd:
+    path: "/opt/nginx-proxy/htpasswd/{{ item }}.{{ user.domain }}"
+    name: "{{ user.name }}"
+    password: "{{ user.pass }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0664
+  with_items:
+    - beets
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: beets
+    state: absent
+
+- name: Create beets directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/beets
+    - /mnt/local/Media/Music
+    - /mnt/local/downloads/music
+
+- name: Create and start container
+  docker_container:
+    name: beets
+    image: linuxserver/beets
+    pull: yes
+    published_ports:
+      - "127.0.0.1:8337:8337"
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "beets.{{ user.domain }}"
+      VIRTUAL_PORT: "8337"
+      LETSENCRYPT_HOST: "beets.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/beets:/config"
+      - "/mnt/unionfs/Media/Music:/music"
+      - "/mnt/local/downloads/music:/downloads"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - beets
+    purge_networks: yes
+    restart_policy: unless-stopped
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
     state: started
 
 - name: Add cron schedule for aurtomatic importing

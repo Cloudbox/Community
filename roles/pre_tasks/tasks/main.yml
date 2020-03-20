@@ -1,0 +1,13 @@
+#########################################################################
+# Title:         Community: Pre-Tasks Role                              #
+# Author(s):     desimaniac                                             #
+# URL:           https://github.com/Cloudbox/Community                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: APT Tasks
+  import_tasks: "subtasks/apt.yml"
+  tags: always

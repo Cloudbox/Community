@@ -1,4 +1,5 @@
 #########################################################################
+<<<<<<< HEAD
 # Title:         Cloudbox: Unifi Controller       #
 # Author(s):     desimaniac                                             #
 # URL:           https://github.com/cloudbox/cloudbox                   #
@@ -46,6 +47,56 @@
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
+=======
+# Title:            Community: Unifi Controller                         #
+# Author(s):        maximuskowalski                                     #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  linuxserver/unifi-controller                        #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: unifi
+  when: cloudflare_enabled
+
+- name: "Create unifi directories"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - "/opt/unifi"
+
+- name: "Stop and remove any existing container"
+  docker_container:
+    name: unifi
+    state: absent
+
+- name: "Pull unifi Docker image"
+  docker_image:
+    name: "linuxserver/unifi-controller:latest"
+
+- name: Create and start unifi container
+  docker_container:
+    name: unifi
+    image: "linuxserver/unifi-controller:latest"
+    published_ports:
+      - 3478:3478/udp
+      - "{{ unifi.port|default('8089',true) }}:8080"
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "unifi.{{ user.domain }}"
+      VIRTUAL_PORT: "8443"
+      VIRTUAL_PROTO: "https"
+      LETSENCRYPT_HOST: "unifi.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
       - "/opt/unifi:/config"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

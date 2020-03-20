@@ -1,0 +1,59 @@
+#########################################################################
+# Title:         Community: Resilio Sync                                #
+# Author(s):     l3uddz, desimaniac                                     #
+# URL:           https://github.com/Cloudbox/Community                  #
+# Docker Image:  resilio/sync                                           #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Legacy Migration Tasks
+  import_tasks: "subtasks/legacy_migration.yml"
+
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: resilio-sync
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: resilio-sync
+    state: absent
+
+- name: Create directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/resilio-sync
+
+- name: Create and start container
+  docker_container:
+    name: resilio-sync
+    image: "resilio/sync"
+    pull: yes
+    published_ports:
+      - "127.0.0.1:8888:8888"
+      - "55555:55555"
+    user: "{{ uid }}:{{ gid }}"
+    env:
+      VIRTUAL_HOST: "resilio-sync.{{ user.domain }}"
+      VIRTUAL_PORT: "8888"
+      LETSENCRYPT_HOST: "resilio-sync.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      TZ: "{{ tz }}"
+    volumes:
+      - "/opt/resilio-sync:/mnt/sync"
+      - "/mnt:/mnt/mounted_folders/mnt"
+      - "/home:/mnt/mounted_folders/home"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - resilio-sync
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

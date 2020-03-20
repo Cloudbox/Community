@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 - name: "Set DNS Record on CloudFlare"
   include_role:
     name: cloudflare
@@ -90,6 +91,135 @@
   include_tasks: "jellyfin_settings.yml"
   when: not (
         (jellyfin_system_xml.exists)
+=======
+#########################################################################
+# Title:            Community: Jellyfin                                 #
+# Author(s):        maximuskowalski, desimaniac                         #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  linuxserver/jellyfin                                #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: jellyfin
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: jellyfin
+    state: absent
+
+- name: Create jellyfin directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/jellyfin
+    - "{{ plex.transcodes }}/jellyfin"
+
+- name: Import 'dlna.xml 'config
+  copy:
+    src: "dlna.xml"
+    dest: "/opt/jellyfin/dlna.xml"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+    force: no
+
+- name: "Check if old 'system.xml' exists"
+  stat:
+    path: "/opt/jellyfin/config/system.xml"
+  register: jellyfin_system_xml_old
+
+- name: Import old 'system.xml' config if it exists
+  copy:
+    src: "/opt/jellyfin/config/system.xml"
+    dest: "/opt/jellyfin/system.xml"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+    force: no
+  when: jellyfin_system_xml_old.stat.exists
+
+- name: "Remove old 'system.xml' if it exists"
+  file:
+    path: "/opt/jellyfin/config/system.xml"
+    state: absent
+  when: jellyfin_system_xml_old.stat.exists
+
+- name: "Check if 'system.xml' exists"
+  stat:
+    path: "/opt/jellyfin/system.xml"
+  register: jellyfin_system_xml
+
+- name: "Check if '/dev/dri' exists"
+  stat:
+    path: "/dev/dri"
+  register: dev_dri
+
+- name: "Get IP for LazyMan"
+  set_fact: lazyman_ip="{{ lookup('dig', 'nhl.freegamez.ga.', '@8.8.8.8', 'qtype=A') }}"
+
+- name: "Set custom hosts"
+  set_fact:
+    jellyfin_custom_hosts: { "playback.svcs.mlb.com": "{{ (lazyman_ip|ipv4) | ternary(lazyman_ip,'127.0.0.1') }}", "mf.svc.nhl.com": "{{ (lazyman_ip|ipv4) | ternary(lazyman_ip,'127.0.0.1') }}", "mlb-ws-mf.media.mlb.com": "{{ (lazyman_ip|ipv4) | ternary(lazyman_ip, '127.0.0.1') }}" }
+
+- name: Create and start container
+  docker_container:
+    name: jellyfin
+    image: "linuxserver/jellyfin:latest"
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "jellyfin.{{ user.domain }}"
+      VIRTUAL_PORT: "8096"
+      LETSENCRYPT_HOST: "jellyfin.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      NVIDIA_DRIVER_CAPABILITIES: "{{ 'compute,video,utility' if gpu.nvidia | default(false) else omit }}"
+      NVIDIA_VISIBLE_DEVICES: "{{ 'all' if gpu.nvidia | default(false) else omit }}"
+    volumes:
+      - "/opt/jellyfin:/config:rw"
+      - "/opt/scripts:/scripts"
+      - "/mnt:/mnt:rw"
+      - "/mnt/strm:/strm:rw"
+      - "/mnt/unionfs/Media:/media"
+      - "/mnt/unionfs/Media:/data"
+      - "{{ plex.transcodes }}/jellyfin:/transcode"
+    devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    etc_hosts: "{{ jellyfin_custom_hosts }}"
+    networks:
+      - name: cloudbox
+        aliases:
+          - jellyfin
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started
+# we need this here because sometimes after a restore, docker will set this transcodes folder to root, dont ask why, but it does...
+- name: "Wait 5 seconds"
+  wait_for:
+    timeout: 5
+
+- name: "Ensure config folder has the correct permissions"
+  file:
+    path: "/opt/jellyfin"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+    recurse: yes
+
+- name: Settings Tasks
+  include_tasks: "jellyfin_settings.yml"
+  when: not (
+        (jellyfin_system_xml.stat.exists)
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
         or
         (continuous_integration)
     )

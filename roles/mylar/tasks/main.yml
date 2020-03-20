@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 - name: "Setting CloudFlare DNS Record"
   include_role:
     name: cloudflare
@@ -43,4 +44,62 @@
           - mylar
     purge_networks: yes
     restart_policy: always
+=======
+#########################################################################
+# Title:            Community: Mylar                                    #
+# Author(s):        fuller882                                           #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  linuxserver/mylar                                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: mylar
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: mylar
+    state: absent
+
+- name: Create mylar directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/mylar
+    - /mnt/local/Media/Comics
+
+- name: Create and start container
+  docker_container:
+    name: mylar
+    image: linuxserver/mylar
+    pull: yes
+    published_ports:
+      - "127.0.0.1:8090:8090"
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "mylar.{{ user.domain }}"
+      VIRTUAL_PORT: "8090"
+      LETSENCRYPT_HOST: "mylar.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/mylar:/config"
+      - "/mnt/local/downloads/nzbs:/downloads/nzbs"
+      - "/mnt/unionfs/Media/Comics:/comics"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - mylar
+    purge_networks: yes
+    restart_policy: unless-stopped
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
     state: started

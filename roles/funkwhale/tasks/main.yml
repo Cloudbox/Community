@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 - name: "Set DNS Record on CloudFlare"
   include_role:
@@ -45,6 +46,65 @@
       LETSENCRYPT_HOST: "funkwhale.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       VIRTUAL_PORT: 80
+=======
+#########################################################################
+# Title:            Community: Funkwhale                                #
+# Author(s):        RXWatcher, Superduper09                             #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  thetarkus/funkwhale                                 #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: funkwhale
+  when: cloudflare_enabled
+
+- name: "Stop and remove funkwhale container"
+  docker_container:
+    name: funkwhale
+    state: absent
+
+- name: "Create funkwhale directories"
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/funkwhale
+    - /opt/funkwhale/data
+
+- name: "Check if funkwhale env file exists"
+  stat:
+    path: "/opt/funkwhale/env"
+  register: funkwhale_env
+
+- name: "Import env file if it doesnt exist"
+  template:
+    src: funkwhale_env.j2
+    dest: /opt/funkwhale/env
+    force: yes
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+  when: not funkwhale_env.stat.exists
+
+- name: "Create and start funkwhale container"
+  docker_container:
+    name: funkwhale
+    image: thetarkus/funkwhale:latest
+    pull: yes
+    published_ports:
+      - "127.0.0.1:6969:80"
+    env:
+      FUNKWHALE_URL: "funkwhale.{{ user.domain }}"
+      VIRTUAL_HOST: "funkwhale.{{ user.domain }}"
+      LETSENCRYPT_HOST: "funkwhale.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      VIRTUAL_PORT: "80"
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
     env_file: /opt/funkwhale/env

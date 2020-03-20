@@ -1,0 +1,30 @@
+#########################################################################
+# Title:            Community: JDownloader2 | Legacy                    #
+# Author(s):        desimaniac                                          #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  jlesage/jdownloader-2                               #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Legacy | Check if '/opt/myjdownloader' exists
+  stat:
+    path: "/opt/myjdownloader"
+  register: opt_myjdownloader
+
+- name: Legacy | Migration Block
+  block:
+
+  - name: Legacy | Stop and remove myjdownloader container
+    docker_container:
+      name: myjdownloader
+      state: absent
+
+  - name: Legacy | Move opt folder 'myjdownloader' to 'jdownloader2'
+    shell: |
+      mv /opt/myjdownloader /opt/jdownloader2
+      chown -R {{ user.name }}:{{ user.name }} /opt/jdownloader2
+
+  when: (opt_myjdownloader.stat.exists)

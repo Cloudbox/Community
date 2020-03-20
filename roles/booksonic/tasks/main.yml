@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 - name: "Setting CloudFlare DNS Record"
   include_role:
     name: cloudflare
@@ -45,4 +46,64 @@
           - booksonic
     purge_networks: yes
     restart_policy: always
+=======
+#########################################################################
+# Title:            Community: Booksonic                                #
+# Author(s):        moarbytes, muplah                                   #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  linuxserver/booksonic                               #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: booksonic
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: booksonic
+    state: absent
+
+- name: Create booksonic directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/booksonic
+
+- name: Create and start container
+  docker_container:
+    name: booksonic
+    image: linuxserver/booksonic
+    pull: yes
+    published_ports:
+      - "127.0.0.1:4042:4040"
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "booksonic.{{ user.domain }}"
+      VIRTUAL_PORT: "4040"
+      LETSENCRYPT_HOST: "booksonic.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/booksonic:/config"
+      - "/mnt/unionfs/Media/Audiobooks:/audiobooks"
+      - "/mnt/unionfs/Media/Podcasts:/podcasts"
+      - "/mnt/unionfs:/media"
+      - "/mnt:/mnt"
+      - "/mnt/unionfs/Media:/data"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - booksonic
+    purge_networks: yes
+    restart_policy: unless-stopped
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
     state: started

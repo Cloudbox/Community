@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 - name: Install required packages
   apt: "name={{ item }} state=latest"
@@ -56,6 +57,76 @@
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
+=======
+#########################################################################
+# Title:            Community: BookStack                                #
+# Author(s):        Thomvh                                              #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  linuxserver/bookstack                               #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Install required packages
+  apt: "name={{ item }} state=latest"
+  with_items:
+    - python-pymysql
+
+- name: MariaDB Role
+  include_role:
+    name: mariadb
+
+- name: "sleep for 120 seconds and continue"
+  wait_for: timeout=120
+
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: "{{ bookstack.subdomain|default('bookstack',true) }}"
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing containers
+  docker_container: "name={{ item }} state=absent"
+  with_items:
+    - bookstack
+
+- name: Create bookstack database
+  mysql_db:
+    name: bookstackapp
+    login_user: root
+    login_password: password321
+    state: present
+
+- name: Create required directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/bookstack
+
+- name: Create and start bookstack container
+  docker_container:
+    name: bookstack
+    image: "linuxserver/bookstack"
+    pull: yes
+    published_ports:
+      - "127.0.0.1:6875:443"
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      DB_HOST: "mariadb:3306"
+      DB_USER: root
+      DB_PASS: password321
+      DB_DATABASE: bookstackapp
+      VIRTUAL_HOST: "{{ bookstack.subdomain|default('bookstack',true) }}.{{ user.domain }}"
+      VIRTUAL_PORT: "443"
+      VIRTUAL_PROTO: https
+      LETSENCRYPT_HOST: "{{ bookstack.subdomain|default('bookstack',true) }}.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
       - "/opt/bookstack:/config"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 - name: "Gather list of radarrx Docker containers"
   shell: "docker ps -a --format '{{ '{{' }} .Names{{ '}}' }}' --filter label=com.github.cloudbox.community=radarrx | xargs echo -n"
   register: cloudbox_community_radarrx
@@ -12,6 +13,38 @@
   shell: "docker rm {{ cloudbox_community_radarrx.stdout }}"
   ignore_errors: yes
   when: (cloudbox_community_radarrx.stdout | trim | length > 0)
+=======
+#########################################################################
+# Title:            Community: Radarrx                                  #
+# Author(s):        Superduper09, Migz93                                #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  hotio/radarr                                        #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Gather list of radarrx Docker containers"
+  shell: "docker ps -a --format '{{ '{{' }} .Names{{ '}}' }}' --filter label=com.github.cloudbox.community=radarrx | xargs echo -n"
+  register: cloudbox_community_radarrx
+  ignore_errors: yes
+
+- name: "Stop all radarrx Docker containers"
+  shell: "docker stop {{ cloudbox_community_radarrx.stdout }}"
+  ignore_errors: yes
+  when: (cloudbox_community_radarrx.stdout | trim | length > 0)
+
+- name: "Remove all radarrx Docker containers"
+  shell: "docker rm {{ cloudbox_community_radarrx.stdout }}"
+  ignore_errors: yes
+  when: (cloudbox_community_radarrx.stdout | trim | length > 0)
+
+- name: Stop and remove radarr4k Docker container if it exists
+  docker_container:
+    name: radarr4k
+    state: absent
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
 
 - name: "Execute RadarrX roles"
   include_tasks: template.yml

@@ -1,4 +1,5 @@
 #########################################################################
+<<<<<<< HEAD
 # Title:            Community: Calibre-Web Role                         #
 # Author(s):        herp (Superduper09), desimaniac                     #
 # URL:              https://github.com/cloudbox/community               #
@@ -58,4 +59,63 @@
           - calibre-web
     purge_networks: yes
     restart_policy: always
+=======
+# Title:            Community: Calibre-Web                              #
+# Author(s):        Superduper09, -SK                                   #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  linuxserver/calibre-web                             #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: books
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: calibre-web
+    state: absent
+
+- name: Create calibre directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+   - /opt/calibre-web
+
+- name: Create and start container
+  docker_container:
+    name: calibre-web
+    image: linuxserver/calibre-web
+    pull: yes
+    published_ports:
+      - "127.0.0.1:8083:8083"
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      GUID: "{{ gid }}"
+      VIRTUAL_HOST: "books.{{ user.domain }}"
+      VIRTUAL_PORT: "8083"
+      LETSENCRYPT_HOST: "books.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      USE_CONFIG_DIR: "true"
+      DOCKER_MODS: linuxserver/calibre-web:calibre
+    volumes:
+      - "/mnt/unionfs/Media/Books:/books"
+      - "/opt/calibre-web/config:/config"
+      - "/opt/calibre-web:/calibre-web"
+      - "/mnt:/mnt"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - calibre-web
+    purge_networks: yes
+    restart_policy: unless-stopped
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
     state: started

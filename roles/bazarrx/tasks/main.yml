@@ -1,3 +1,17 @@
+<<<<<<< HEAD
+=======
+#########################################################################
+# Title:            Community: BazarrX                                  #
+# Author(s):        Migz93                                              #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  linuxserver/bazarr                                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
 - name: "Gather list of bazarrx Docker containers"
   shell: "docker ps -a --format '{{ '{{' }} .Names{{ '}}' }}' --filter label=com.github.cloudbox.community=bazarrx | xargs echo -n"
   register: cloudbox_community_bazarrx

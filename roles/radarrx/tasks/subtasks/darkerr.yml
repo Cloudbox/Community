@@ -1,4 +1,5 @@
 #########################################################################
+<<<<<<< HEAD
 # Title:         Cloudbox: Radarr - Darkerr Tasks                       #
 # Author(s):     desimaniac                                             #
 # URL:           https://github.com/cloudbox/cloudbox                   #
@@ -20,6 +21,27 @@
        '<link rel="stylesheet" type="text/css" href="//rawgit.com/iFelix18/Darkerr/master/darkerr.css">
         <link rel="stylesheet" type="text/css" href="//rawgit.com/iFelix18/Darkerr/master/logo_animation.css">
         <link rel="stylesheet" type="text/css" href="//rawgit.com/iFelix18/Darkerr/master/hidden_searchbar.css">
+=======
+# Title:         Community: RadarrX | Darkerr Tasks                     #
+# Author(s):     desimaniac                                             #
+# URL:           https://github.com/Cloudbox/Community                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Darkerr | Darkerr theme location block
+  blockinfile:
+    path: "/opt/nginx-proxy/vhost.d/radarr{{ rolename }}.{{ user.domain }}_location"
+    marker: "### {mark} CLOUDBOX - DARKERR THEME ###"
+    block: |
+      # https://github.com/gilbN/theme.park
+      proxy_set_header Accept-Encoding "";
+      sub_filter
+       '</head>'
+       '<link rel="stylesheet" type="text/css" href="https://gilbn.github.io/theme.park/CSS/themes/radarr/dark.css">
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
        </head>';
       sub_filter_once on;
     owner: "{{ user.name }}"

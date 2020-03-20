@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 - name: "Set DNS Record on CloudFlare"
   include_role:
     name: cloudflare
@@ -40,4 +41,57 @@
           - synclounge
     purge_networks: yes
     restart_policy: always
+=======
+#########################################################################
+# Title:            Community: SyncLounge                               #
+# Author(s):        primaxius                                           #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  starbix/synclounge                                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: "{{ synclounge.subdomain|default('synclounge',true) }}"
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: synclounge
+    state: absent
+
+- name: Create opt directory
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/synclounge
+
+- name: Create and start container
+  docker_container:
+    name: synclounge
+    image: "starbix/synclounge:nginx"
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      DOMAIN: "{{ synclounge.subdomain|default('synclounge',true) }}.{{ synclounge.domain | default(user.domain,true) }}"
+      autoJoin: "true"
+      autoJoinServer: "https://{{ synclounge.subdomain|default('synclounge',true) }}.{{ synclounge.domain | default(user.domain,true) }}/slserver"
+      webroot: ""
+      VIRTUAL_HOST: "{{ synclounge.subdomain|default('synclounge',true) }}.{{ synclounge.domain | default(user.domain,true) }}"
+      VIRTUAL_PORT: "80"
+      LETSENCRYPT_HOST: "{{ synclounge.subdomain|default('synclounge',true) }}.{{ synclounge.domain | default(user.domain,true) }}"
+      LETSENCRYPT_EMAIL: "{{user.email}}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - synclounge
+    purge_networks: yes
+    restart_policy: unless-stopped
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
     state: started

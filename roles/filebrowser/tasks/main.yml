@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 - name: "Setting CloudFlare DNS Record"
   include_role:
@@ -71,4 +72,89 @@
         aliases:
           - filebrowser
     restart_policy: always
+=======
+#########################################################################
+# Title:            Community: File Browser                             #
+# Author(s):        RXWatcher                                           #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  filebrowser/filebrowser                             #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: filebrowser
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: filebrowser
+    state: absent
+
+- name: Create opt directory
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/filebrowser
+
+- name: "Check if filebrowser env file exists"
+  stat:
+    path: "/opt/filebrowser/filebrowser.json"
+  register: filebrowser_env
+
+- name: "Check if filebrowser database file exists"
+  stat:
+    path: "/opt/filebrowser/filebrowser.db"
+  register: filebrowser_db
+
+- name: "Import env file if it doesnt exist"
+  template:
+    src: filebrowser.json.j2
+    dest: /opt/filebrowser/filebrowser.json
+    force: yes
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+  when: not filebrowser_env.stat.exists
+
+- name: "Import database if it doesnt exist"
+  template:
+    src: filebrowser.db
+    dest: /opt/filebrowser/filebrowser.db
+    force: yes
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+  when: not filebrowser_db.stat.exists
+
+- name: Create and start container
+  docker_container:
+    name: filebrowser
+    image: filebrowser/filebrowser:latest
+    pull: yes
+    published_ports:
+      - "127.0.0.1:6469:1216"
+    env:
+      TZ: "{{ tz }}"
+      VIRTUAL_HOST: "filebrowser.{{ user.domain }}"
+      VIRTUAL_PORT: "1216"
+      LETSENCRYPT_HOST: "filebrowser.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/filebrowser/filebrowser.db:/database.db"
+      - "/opt/filebrowser/filebrowser.json:/.filebrowser.json"
+      - "/mnt/unionfs:/srv"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    user: "{{ uid }}:{{ gid }}"
+    networks:
+      - name: cloudbox
+        aliases:
+          - filebrowser
+    restart_policy: unless-stopped
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
     state: started

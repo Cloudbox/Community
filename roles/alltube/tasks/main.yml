@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 - name: "Set DNS Record on CloudFlare"
   include_role:
     name: cloudflare
@@ -46,4 +47,64 @@
           - alltube
     purge_networks: yes
     restart_policy: always
+=======
+#########################################################################
+# Title:            Community: AllTube                                  #
+# Author(s):        primaxius                                           #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  rudloff/alltube                                     #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: alltube
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: alltube
+    state: absent
+
+- name: Create alltube directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/alltube
+
+- name: Download alltube config example
+  get_url:
+    url: "https://raw.githubusercontent.com/Rudloff/alltube/master/config/config.example.yml"
+    dest: "/opt/alltube/config.example.yml"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+    force: yes
+
+- name: Create and start container
+  docker_container:
+    name: alltube
+    image: "rudloff/alltube:latest"
+    pull: yes
+    volumes:
+      - "/opt/alltube:/var/www/html/config:rw"
+    env:
+      TZ: "{{ tz }}"
+      VIRTUAL_HOST: "alltube.{{ alltube.domain | default(user.domain,true) }}"
+      VIRTUAL_PORT: "80"
+      LETSENCRYPT_HOST: "alltube.{{ alltube.domain | default(user.domain,true) }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - alltube
+    purge_networks: yes
+    restart_policy: unless-stopped
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
     state: started

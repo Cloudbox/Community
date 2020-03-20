@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 - name: "Setting CloudFlare DNS Record"
   include_role:
     name: cloudflare
@@ -59,4 +60,78 @@
           - qbittorrent
     purge_networks: yes
     restart_policy: always
+=======
+#########################################################################
+# Title:            Community: qBittorrent                              #
+# Author(s):        Kalroth                                             #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  linuxserver/qbittorrent                             #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: qbittorrent
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: qbittorrent
+    state: absent
+
+- name: Create qbittorrent directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/qbittorrent
+
+- name: Create new downloads directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  with_items:
+    - "{{ downloads.torrents }}"
+    - "{{ downloads.torrents }}/qbittorrent"
+    - "{{ downloads.torrents }}/qbittorrent/completed"
+    - "{{ downloads.torrents }}/qbittorrent/incoming"
+    - "{{ downloads.torrents }}/qbittorrent/watched"
+    - "{{ downloads.torrents }}/qbittorrent/torrents"
+  when: (torrents_downloads_path is defined)|default(false)
+
+- name: Set default_volumes variable
+  set_fact:
+    default_volumes:
+      - "/opt/qbittorrent:/config"
+      - "/opt/scripts:/scripts"
+      - "/mnt:/mnt"
+
+- name: Create and start container
+  docker_container:
+    name: qbittorrent
+    image: linuxserver/qbittorrent
+    pull: yes
+    published_ports:
+      - "56881:56881"
+      - "56881:56881/udp"
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "qbittorrent.{{ user.domain }}"
+      VIRTUAL_PORT: "8080"
+      LETSENCRYPT_HOST: "qbittorrent.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      UMASK_SET: "002"
+    volumes: "{{ default_volumes + torrents_downloads_path|default([]) }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - qbittorrent
+    purge_networks: yes
+    restart_policy: unless-stopped
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
     state: started

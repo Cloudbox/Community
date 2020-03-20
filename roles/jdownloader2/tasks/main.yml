@@ -1,0 +1,86 @@
+#########################################################################
+# Title:            Community: JDownloader2                             #
+# Author(s):        maximuskowalski, desimaniac                         #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  jlesage/jdownloader-2                               #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: jdownloader2
+  when: cloudflare_enabled
+
+- name: Legacy Migration Tasks
+  import_tasks: "subtasks/legacy.yml"
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: jdownloader2
+    state: absent
+
+- name: Create jdownloader2 directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/jdownloader2
+    - /opt/jdownloader2/config
+    - /opt/jdownloader2/config/libs
+    - "/mnt/local/downloads/jdownloader2/output"
+
+- name: Import 7zip 1509
+  copy:
+    src: "sevenzipjbinding1509.jar"
+    dest: "/opt/jdownloader2/config/libs/sevenzipjbinding1509.jar"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+    force: no
+
+- name: Import 7zip 1509Linux
+  copy:
+    src: "sevenzipjbinding1509Linux.jar"
+    dest: "/opt/jdownloader2/config/libs/sevenzipjbinding1509Linux.jar"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+    force: no
+
+- name: Create and start container
+  docker_container:
+    name: jdownloader2
+    image: "jlesage/jdownloader-2:latest"
+    pull: yes
+    published_ports:
+      - "127.0.0.1:5800:5800"
+      - "127.0.0.1:5900:5900"
+    env:
+      TZ: "{{ tz }}"
+      VIRTUAL_HOST: "jdownloader2.{{ user.domain }}"
+      VIRTUAL_PORT: "5800"
+      LETSENCRYPT_HOST: "jdownloader2.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      DISPLAY_WIDTH: "1280"
+      DISPLAY_HEIGHT: "768"
+      VNC_PASSWORD: "{{ user.pass }}"
+      USER_ID: "{{ uid }}"
+      GROUP_ID: "{{ gid }}"
+      CLEAN_TMP_DIR: "1"
+      UMASK: "000"
+    volumes:
+      - "/mnt/local/downloads/jdownloader2/output:/output:rw"
+      - "/mnt:/mnt:rw"
+      - "/opt/jdownloader2/config:/config:rw"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - jdownloader2
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

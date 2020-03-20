@@ -12,6 +12,12 @@
 
 # Community
 /ansible.cfg
+<<<<<<< HEAD
 /settings.yml
 /telly.yml
+=======
+/*.yml
+!/appveyor.yml
+!/community.yml
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
 /*.log

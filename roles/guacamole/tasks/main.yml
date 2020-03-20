@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 - name: "Setting CloudFlare DNS Record"
   include_role:
@@ -38,6 +39,58 @@
         aliases:
           - guacamole
     restart_policy: always
+=======
+#########################################################################
+# Title:            Community: Guacamole                                #
+# Author(s):        RXWatcher                                           #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  jasonbean/guacamole                                 #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: guacamole
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: guacamole
+    state: absent
+
+- name: Create guacamole directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  with_items:
+    - /opt/guacamole
+    - /opt/guacamole/config
+
+- name: Create and start container
+  docker_container:
+    name: guacamole
+    image: jasonbean/guacamole:latest
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      VIRTUAL_HOST: "guacamole.{{ user.domain }}"
+      VIRTUAL_PORT: "8080"
+      LETSENCRYPT_HOST: "guacamole.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      OPT_MYSQL: "Y"
+    volumes:
+      - "/opt/guacamole/config:/config"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - guacamole
+    restart_policy: unless-stopped
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
     state: started
 
 - name: "Wait for 30 seconds"

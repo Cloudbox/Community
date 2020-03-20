@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 - name: "Setting CloudFlare DNS Record"
   include_role:
     name: cloudflare
@@ -44,4 +45,63 @@
           - filebot
     purge_networks: yes
     restart_policy: always
+=======
+#########################################################################
+# Title:            Community: FileBot                                  #
+# Author(s):        atilling                                            #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  jlesage/filebot                                     #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: filebot
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: filebot
+    state: absent
+
+- name: Create filebot directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/filebot
+
+- name: Create and start container
+  docker_container:
+    name: filebot
+    image: jlesage/filebot
+    pull: yes
+    published_ports:
+      - "127.0.0.1:5801:5800"
+    env:
+      TZ: "{{ tz }}"
+      USER_ID: "{{ uid }}"
+      GROUP_ID: "{{ gid }}"
+      VIRTUAL_HOST: "filebot.{{ user.domain }}"
+      VIRTUAL_PORT: "5800"
+      LETSENCRYPT_HOST: "filebot.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/filebot:/config"
+      - "/mnt:/mnt"
+      - "/mnt/unionfs/Media/TV:/storage/Media/TV Shows"
+      - "/mnt/unionfs/Media/Movies/Movies:/storage/Media/Movies"
+      - "/mnt/local/downloads:/storage/downloads"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - filebot
+    purge_networks: yes
+    restart_policy: unless-stopped
+>>>>>>> branch 'develop' of https://github.com/Cloudbox/Community.git
     state: started

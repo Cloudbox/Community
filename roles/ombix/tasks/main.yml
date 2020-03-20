@@ -1,0 +1,35 @@
+#########################################################################
+# Title:            Community: OmbiX                                    #
+# Author(s):        FML128                                              #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  hotio/ombi                                          #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Gather list of OmbiX Docker containers"
+  shell: "docker ps -a --format '{{ '{{' }} .Names{{ '}}' }}' --filter label=com.github.cloudbox.community=ombix | xargs echo -n"
+  register: cloudbox_community_ombix
+  ignore_errors: yes
+
+- name: "Stop all OmbiX Docker containers"
+  shell: "docker stop {{ cloudbox_community_ombix.stdout }}"
+  ignore_errors: yes
+  when: (cloudbox_community_ombix.stdout | trim | length > 0)
+
+- name: "Remove all OmbiX Docker containers"
+  shell: "docker rm {{ cloudbox_community_ombix.stdout }}"
+  ignore_errors: yes
+  when: (cloudbox_community_ombix.stdout | trim | length > 0)
+
+- name: "Execute OmbiX roles"
+  include_tasks: template.yml
+  vars:
+    rolename: "{{ role }}"
+    roleport: "{{ 13579 + index }}"
+  with_items: "{{ ombix.roles }}"
+  loop_control:
+    loop_var: role
+    index_var: index

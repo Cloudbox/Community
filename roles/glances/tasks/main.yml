@@ -2,7 +2,7 @@
 # Title:            Community: Glances                                  #
 # Author(s):        Satz                                                #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  satzisa/glances                                     #
+# Docker Image(s):  vimagick/glances                                   #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -56,7 +56,7 @@
 - name: Create and start container
   docker_container:
     name: glances
-    image: "satzisa/glances"
+    image: "vimagick/glances"
     pull: yes
     env:
       TZ: "{{ tz }}"

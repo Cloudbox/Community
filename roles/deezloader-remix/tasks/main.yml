@@ -55,6 +55,7 @@
     volumes:
       - "/mnt/unionfs/Media/deezer:/downloads:rw"
       - "/opt/deezloader/config:/config:rw"
+      - "/mnt:/mnt:rw"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

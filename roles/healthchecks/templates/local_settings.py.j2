@@ -1,0 +1,12 @@
+EMAIL_HOST = "smtp.gmail.com"
+DEFAULT_FROM_EMAIL = "noreply@{{ user.domain }}"
+BASE_URL = "healthchecks.{{ user.domain }}"
+EMAIL_USE_TLS = True
+SITE_ROOT = "https://healthchecks.{{ user.domain }}"
+DEBUG = False
+EMAIL_PORT = "587"
+SITE_NAME = "healthchecks"
+EMAIL_HOST_PASSWORD = "{{ user.pass }}"
+EMAIL_HOST_USER = "{{ user.email }}"
+ALLOWED_HOSTS = ["*"]
+CSRF_TRUSTED_ORIGINS = ["*"]

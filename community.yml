@@ -14,6 +14,7 @@
     - { role: airdcpp, tags: ['airdcpp'] }
     - { role: airsonic, tags: ['airsonic'] }
     - { role: alltube, tags: ['alltube'] }
+    - { role: amp, tags: ['amp'] }
     - { role: asshama, tags: ['asshama'] }
     - { role: bazarrx, tags: ['bazarrx'] }
     - { role: beets, tags: ['beets'] }
@@ -41,7 +42,6 @@
     - { role: gotify, tags: ['gotify'] }
     - { role: guacamole, tags: ['guacamole'] }
     - { role: handbrake, tags: ['handbrake'] }
-    - { role: healthchecks, tags: ['healthchecks'] }
     - { role: heimdall, tags: ['heimdall'] }
     - { role: hetzner_nfs, tags: ['hetzner_nfs_server', 'hetzner_nfs_server_uninstall', 'hetzner_nfs_client_mount', 'hetzner_nfs_client_unmount'] }
     - { role: invoiceninja, tags: ['invoiceninja'] }

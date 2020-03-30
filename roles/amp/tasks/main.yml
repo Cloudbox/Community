@@ -1,0 +1,62 @@
+#########################################################################
+# Title:            Community: Cubecoders AMP                           #
+# Author(s):        Quick                                               #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  mitchtalmadge/amp-dockerized                        #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: amp
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: amp
+    state: absent
+
+- name: Create minecraft directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/cubecoders
+
+- name: Create and start container
+  docker_container:
+    name: amp-dockerized
+    image: mitchtalmadge/amp-dockerized
+    pull: yes
+    published_ports:
+      - "8080:8080"
+      - "25565:25565"
+    env:
+      MODULE: "ADS"
+      mac_address: "{{ amp.amp_mac }}"
+      TZ: "{{ tz }}"
+      UID: "{{ uid }}"
+      GID: "{{ gid }}"
+      USERNAME: "{{ user.name }}"
+      PASSWORD: "{{ user.pass }}"
+      LICENCE: "{{ amp.amp_license }}"
+      VIRTUAL_HOST: "amp.{{ user.domain }}"
+      VIRTUAL_PORT: "8080"
+      PORT: "8080"
+      EULA: "TRUE"
+      LETSENCRYPT_HOST: "amp.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/cubecoders:/home/amp"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - amp
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

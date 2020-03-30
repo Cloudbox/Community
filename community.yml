@@ -87,4 +87,5 @@
     - { role: watchtower, tags: ['watchtower'] }
     - { role: wordpress, tags: ['wordpress'] }
     - { role: xteve, tags: ['xteve'] }
+    - { role: xbackbone, tags: ['xbackbone'] }
     - { role: znc, tags: ['znc'] }

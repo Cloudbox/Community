@@ -1,0 +1,58 @@
+#########################################################################
+# Title:            Community: XBackBone                                #
+# Author(s):        Quick                                               #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  pe46dro/xbackbone-docker                            #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: "{{ xbackbone.subdomain }}"
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: xbackbone
+    state: absent
+
+- name: Create xbackbone directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  with_items:
+    - /opt/xbackbone/
+    - "{{ xbackbone.storage }}"
+
+- name: Create and start container
+  docker_container:
+    name: xbackbone
+    image: "pe46dro/xbackbone-docker"
+    pull: yes
+    published_ports:
+      - "127.0.0.1:90:80"
+    env:
+      TZ: "{{ tz }}"
+      URL: "https:\/\/{{ xbackbone.subdomain | default(xbackbone,true)}}.{{user.domain}}"
+      PHP_UPLOAD_MAX_FILESIZE: "{{ xbackbone.maxupload }}"   
+      PHP_MEMORY_LIMIT: "2048M"
+      VIRTUAL_HOST: "{{xbackbone.subdomnain | default(xbackbone,true)}}.{{ user.domain }}"
+      VIRTUAL_PORT: "80"
+      LETSENCRYPT_HOST: "{{xbackbone.subdomnain | default(xbackbone)}}.{{ user.domain | default(user.domain,true) }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/xbackbone/cfg:/app/resources/database"
+      - "/opt/xbackbone/logs:/app/logs"
+      - "{{ xbackbone.storage }}:/app/storage"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - xbackbone
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

@@ -22,7 +22,7 @@
     state: absent
 
 - name: Create xbackbone directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  file: "path={{ item }} state=directory mode=0777 owner=1000 group=1000 recurse=yes"
   with_items:
     - /opt/xbackbone/
     - "{{ xbackbone.storage }}"
@@ -36,12 +36,12 @@
       - "127.0.0.1:90:80"
     env:
       TZ: "{{ tz }}"
-      URL: "https:\/\/{{ xbackbone.subdomain | default(xbackbone,true)}}.{{user.domain}}"
+      URL: "https:\/\/xbackbone.{{ user.domain }}"
       PHP_UPLOAD_MAX_FILESIZE: "{{ xbackbone.maxupload }}"   
       PHP_MEMORY_LIMIT: "2048M"
-      VIRTUAL_HOST: "{{xbackbone.subdomnain | default(xbackbone,true)}}.{{ user.domain }}"
+      VIRTUAL_HOST: "xbackbone.{{ user.domain }}"
       VIRTUAL_PORT: "80"
-      LETSENCRYPT_HOST: "{{xbackbone.subdomnain | default(xbackbone)}}.{{ user.domain | default(user.domain,true) }}"
+      LETSENCRYPT_HOST: "xbackbone.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
       - "/opt/xbackbone/cfg:/app/resources/database"

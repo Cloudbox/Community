@@ -43,3 +43,6 @@ transmissionvpn:
   vpn_endpoint: Netherlands.ovpn
 unifi:
   port: 8080
+amp:
+ amp_license:
+ amp_mac:

@@ -36,7 +36,7 @@
       - "127.0.0.1:90:80"
     env:
       TZ: "{{ tz }}"
-      URL: "https:\/\/{{ xbackbone.subdomain|default('xbackbone',true) }}.{{ user.domain }}"
+      URL: 'https:\/\/{{ xbackbone.subdomain|default('xbackbone',true) }}.{{ user.domain }}'
       PHP_UPLOAD_MAX_FILESIZE: "{{ xbackbone.maxupload }}"   
       PHP_MEMORY_LIMIT: "2048M"
       VIRTUAL_HOST: "{{ xbackbone.subdomain|default('xbackbone',true) }}.{{ user.domain }}"

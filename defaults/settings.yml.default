@@ -44,5 +44,7 @@ transmissionvpn:
 unifi:
   port: 8080
 xbackbone:
+ domain:
+ subdomain:
  maxupload: 2G
  storage: /mnt/local/xbackbone

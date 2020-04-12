@@ -38,7 +38,7 @@
 - name: Create and start container
   docker_container:
     name: embystat
-    image: "uping/embystat:nightly-ubuntu-x64"
+    image: "uping/embystat:beta"
     pull: yes
     volumes:
       - "/opt/embystat/config:/app/config:rw"

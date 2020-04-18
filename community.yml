@@ -88,3 +88,4 @@
     - { role: wordpress, tags: ['wordpress'] }
     - { role: xteve, tags: ['xteve'] }
     - { role: znc, tags: ['znc'] }
+    - { role: huginn, tags: ['huginn'] }

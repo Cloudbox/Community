@@ -1,0 +1,54 @@
+#########################################################################
+# Title:            Community: Huginn                                    #
+# Author(s):        astroMD                                             #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  huginn/huginn                                       #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: huginn
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing containers
+  docker_container: "name={{ item }} state=absent"
+  with_items:
+    - huginn
+
+- name: Create required directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/huginn
+
+- name: Create and start huginn container
+  docker_container:
+    name: huginn
+    image: "huginn/huginn"
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      PASSWORD: "{{ user.pass }}"
+      VIRTUAL_HOST: "huginn.{{ user.domain }}"
+      VIRTUAL_PORT: "3000"
+      LETSENCRYPT_HOST: "huginn.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/mnt:/mnt"
+      - "/opt/huginn:/var/lib/mysql"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - huginn
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

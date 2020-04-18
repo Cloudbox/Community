@@ -7,6 +7,8 @@ bazarrx:
   roles: [1080webdl, 1080remux]
 ombix:
   roles: [4k]
+requestrrx:
+  roles: [1080, 4k]
 calibreweb:
   caliblur: yes
 goplaxt:

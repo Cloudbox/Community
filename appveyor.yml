@@ -73,6 +73,7 @@ environment:
     quassel
     radarrx
     resilio-sync
+    requestrrx
     rocketchat
     sickchill
     sonarrx

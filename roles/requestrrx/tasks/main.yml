@@ -11,7 +11,7 @@
 ---
 - name: "Gather list of requestrrx Docker containers"
   shell: "docker ps -a --format '{{ '{{' }} .Names{{ '}}' }}' --filter label=com.github.cloudbox.community=requestrrx | xargs echo -n"
-  register: cloudbox_community_sonarrx
+  register: cloudbox_community_requestrrx
   ignore_errors: yes
 
 - name: "Stop all requestrrx Docker containers"

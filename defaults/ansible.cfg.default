@@ -1,9 +1,0 @@
-[defaults]
-inventory = ./inventories/local
-roles_path = roles:$HOME/cloudbox/roles:$HOME/cloudbox/resources/roles
-fact_path = ./ansible_facts.d
-log_path = ./community.log
-hash_behaviour = merge
-callback_whitelist = profile_tasks
-command_warnings = False
-retry_files_enabled = False

@@ -1,6 +1,6 @@
 #########################################################################
-# Title:            Community: Huginn                                    #
-# Author(s):        astroMD                                             #
+# Title:            Community: Huginn                                   #
+# Author(s):        tarek                                               #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  huginn/huginn                                       #
 # --                                                                    #
@@ -9,6 +9,13 @@
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
+- name: MariaDB Role
+  include_role:
+    name: mariadb
+
+- name: "sleep for 20 seconds and continue"
+  wait_for: timeout=20
+
 - name: "Setting CloudFlare DNS Record"
   include_role:
     name: cloudflare-dns
@@ -21,11 +28,6 @@
   with_items:
     - huginn
 
-- name: Create required directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
-  with_items:
-    - /opt/huginn
-
 - name: Create and start huginn container
   docker_container:
     name: huginn
@@ -35,14 +37,16 @@
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      PASSWORD: "{{ user.pass }}"
+      DATABASE_HOST: "mariadb"
+      DATABASE_NAME: "huginn"
+      DATABASE_USERNAME: "root"
+      DATABASE_PASSWORD: "password321"
       VIRTUAL_HOST: "huginn.{{ user.domain }}"
       VIRTUAL_PORT: "3000"
       LETSENCRYPT_HOST: "huginn.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
       - "/mnt:/mnt"
-      - "/opt/huginn:/var/lib/mysql"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

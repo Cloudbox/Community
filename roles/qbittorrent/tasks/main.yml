@@ -25,6 +25,31 @@
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/qbittorrent
+    - /opt/qbittorrent/.config
+    - /opt/qbittorrent/.local
+    - /opt/qbittorrent/.local/share
+
+- name: Legacy Migration | Check if old folder exists
+  stat:
+    path: "/opt/qbittorrent/qBittorrent"
+  register: old_folder
+
+- name: Legacy Migration | Move qBittorrent to new folder
+  shell: |
+    mv '/opt/qbittorrent/qBittorrent' '/opt/qbittorrent/.config/qBittorrent'
+    chown -R {{ user.name }}:{{ user.name }} '/opt/qbittorrent/.config/qBittorrent'
+  when: old_folder.stat.exists
+
+- name: Legacy Migration | Check if old folder exists
+  stat:
+    path: "/opt/qbittorrent/data"
+  register: old_folder2
+
+- name: Legacy Migration | Move data to new folder
+  shell: |
+    mv '/opt/qbittorrent/data' '/opt/qbittorrent/.local/share/data'
+    chown -R {{ user.name }}:{{ user.name }} '/opt/qbittorrent/.local/share/data'
+  when: old_folder2.stat.exists
 
 - name: Create new downloads directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
@@ -47,9 +72,10 @@
 - name: Create and start container
   docker_container:
     name: qbittorrent
-    image: linuxserver/qbittorrent
+    image: sc4h/qbittorrent:latest
     pull: yes
     published_ports:
+      - "127.0.0.1:8080:8080"
       - "56881:56881"
       - "56881:56881/udp"
     env:

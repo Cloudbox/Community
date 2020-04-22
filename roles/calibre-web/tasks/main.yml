@@ -44,7 +44,7 @@
       USE_CONFIG_DIR: "true"
       DOCKER_MODS: linuxserver/calibre-web:calibre
     volumes:
-      - "/opt/calibre/library:/books"
+      - "/mnt/unionfs/Media/Books:/books"
       - "/opt/calibre-web/config:/config"
       - "/opt/calibre-web:/calibre-web"
       - "/mnt:/mnt"

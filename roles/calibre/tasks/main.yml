@@ -1,8 +1,8 @@
 #########################################################################
-# Title:            Community: Calibre-Web                              #
-# Author(s):        Superduper09, -SK                                   #
+# Title:            Community: Calibre              #
+# Author(s):        Andrew Johnson                                              #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  linuxserver/calibre-web                             #
+# Docker Image(s):  linuxserver/calibre                         #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -13,47 +13,67 @@
   include_role:
     name: cloudflare-dns
   vars:
-    record: books
+    record: calibre
   when: cloudflare_enabled
+
+#- name: Create htpasswd
+#  htpasswd:
+#    path: "/opt/nginx-proxy/htpasswd/{{ item }}.{{ user.domain }}"
+#    name: "{{ user.name }}"
+#    password: "{{ user.pass }}"
+#    owner: "{{ user.name }}"
+#    group: "{{ user.name }}"
+#    mode: 0664
+#  with_items:
+#    - calibrerdp
 
 - name: Stop and remove any existing container
   docker_container:
-    name: calibre-web
+    name: calibre
     state: absent
 
 - name: Create calibre directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
-   - /opt/calibre-web
+   - /opt/calibre/library
+   - /mnt/local/Media/Books
 
 - name: Create and start container
   docker_container:
-    name: calibre-web
-    image: linuxserver/calibre-web
+    name: calibrerdp
+    image: linuxserver/calibre
     pull: yes
     published_ports:
-      - "127.0.0.1:8083:8083"
+      - "127.0.0.1:8087:8080"
+      - "127.0.0.1:8088:8081"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
-      GUID: "{{ gid }}"
-      VIRTUAL_HOST: "books.{{ user.domain }}"
-      VIRTUAL_PORT: "8083"
-      LETSENCRYPT_HOST: "books.{{ user.domain }}"
+      PGID: "{{ gid }}"
+      GUAC_USER: "{{ user.name }}"
+      GUAC_PASS: "{{ user.pass | hash('md5') }}"
+      LIBRARYINTERNALPATH: "/library"
+      VIRTUAL_HOST: "calibre.{{ user.domain }}"
+      VIRTUAL_PORT: "8080"
+      LETSENCRYPT_HOST: "calibre.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
-      USE_CONFIG_DIR: "true"
-      DOCKER_MODS: linuxserver/calibre-web:calibre
     volumes:
-      - "/opt/calibre/library:/books"
-      - "/opt/calibre-web/config:/config"
-      - "/opt/calibre-web:/calibre-web"
+      - "/opt/calibre:/config"
+      - "/opt/calibre/library:/library"
       - "/mnt:/mnt"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
       - name: cloudbox
         aliases:
-          - calibre-web
+          - calibre
     purge_networks: yes
     restart_policy: unless-stopped
     state: started
+
+- name: Create cron task to copy library files to cloud.
+  cron:
+    name: "Library Backup"
+    user: "{{user.name}}"
+    minute: "0,30"
+    job: "rclone copyto /opt/calibre/library /mnt/unionfs/Media/Books"

@@ -1,0 +1,66 @@
+#########################################################################
+# Title:            Community: Deemix                                   #
+# Author(s):        RyanRadly                                           #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  bocki/deemix                                        #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: deemix
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: deemix
+    state: absent
+
+- name: Create htpasswd
+  htpasswd:
+    path: "/opt/nginx-proxy/htpasswd/{{ item }}.{{ user.domain }}"
+    name: "{{ user.name }}"
+    password: "{{ user.pass }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0664
+  with_items:
+    - deemix
+
+- name: Create deemix directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  with_items:
+    - /opt/deemix/
+
+- name: Create and start container
+  docker_container:
+    name: deemix
+    image: "bocki/deemix"
+    pull: yes
+    published_ports:
+      - "127.0.0.1:33333:33333"
+    env:
+      BACKUP: "yes"
+      VIRTUAL_HOST: "deemix.{{ user.domain }}"
+      VIRTUAL_PORT: "33333"
+      LETSENCRYPT_HOST: "deemix.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      TZ: "{{ tz }}"
+    volumes:
+      - "/mnt/unionfs/Media/deezer:/downloads:rw"
+      - "/opt/deemix:/config:rw"
+      - "/mnt:/mnt:rw"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - deemix
+    purge_networks: yes
+    restart_policy: always
+    state: started

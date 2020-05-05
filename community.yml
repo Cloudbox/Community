@@ -23,7 +23,6 @@
     - { role: calibre-rdp, tags: ['calibre-rdp'] }
     - { role: calibre-web, tags: ['calibre-web'] }
     - { role: coder, tags: ['coder'] }
-    - { role: deezloader-remix, tags: ['deezloader-remix'] }
     - { role: deemix, tags: ['deemix'] }
     - { role: couchpotato, tags: ['couchpotato'] }
     - { role: deluge, tags: ['deluge'] }

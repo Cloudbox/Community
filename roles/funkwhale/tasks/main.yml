@@ -45,12 +45,13 @@
 - name: "Create and start funkwhale container"
   docker_container:
     name: funkwhale
-    image: thetarkus/funkwhale:latest
+    image: funkwhale/all-in-one:latest
     pull: yes
     published_ports:
-      - "127.0.0.1:6969:80"
+      - "127.0.0.1:8000:80"
     env:
-      FUNKWHALE_URL: "funkwhale.{{ user.domain }}"
+      FUNKWHALE_PROTOCOL: "https"
+      FUNKWHALE_HOSTNAME: "funkwhale.{{ user.domain }}"
       VIRTUAL_HOST: "funkwhale.{{ user.domain }}"
       LETSENCRYPT_HOST: "funkwhale.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"

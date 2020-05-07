@@ -57,6 +57,7 @@
       NVIDIA_DRIVER_CAPABILITIES: "{{ 'all' if gpu.nvidia | default(false) else omit }}"
       NVIDIA_VISIBLE_DEVICES: "{{ 'all' if gpu.nvidia | default(false) else omit }}"
     volumes:
+      - "/mnt/unionfs/Media:/home/Tdarr/media"
       - "/opt/tdarr/config:/home/Tdarr/Documents/Tdarr"
       - "/opt/tdarr/db:/var/lib/mongodb"
       - "/dev/shm:/dev/shm"

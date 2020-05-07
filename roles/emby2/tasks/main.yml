@@ -40,13 +40,13 @@
     image: "emby/embyserver:{{ emby.version }}"
     pull: yes
     published_ports:
-      - "127.0.0.1:8097:8096"
+      - "127.0.0.1:8096:8096"
     env:
       UID: "{{ uid }}"
       GID: "{{ gid }}"
       GIDLIST: "{{ vgid }}"
       VIRTUAL_HOST: "emby2.{{ user.domain }}"
-      VIRTUAL_PORT: 8097
+      VIRTUAL_PORT: 8096
       LETSENCRYPT_HOST: "emby2.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       HTTPS_METHOD: noredirect

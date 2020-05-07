@@ -1,0 +1,85 @@
+#########################################################################
+# Title:         Community: Emby2 | Settings Task                         #
+# Author(s):     desimaniac                                             #
+# URL:           https://github.com/cloudbox/cloudbox                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Settings | Wait for 'system.xml' to be created"
+  wait_for:
+    path: "/opt/emby2/config/system.xml"
+    state: present
+
+- name: "Settings | Wait 10 seconds before stopping container"
+  wait_for:
+    timeout: 10
+
+- name: "Settings | Stop emby2 container"
+  docker_container:
+    name: emby2
+    state: stopped
+
+- name: "Settings | Import 'dlna.xml'"
+  copy:
+    src: "dlna.xml"
+    dest: "/opt/emby2/config/dlna.xml"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+    force: no
+
+- name: "Settings | Set 'EnableUPnP' to 'false'"
+  xml:
+    path: "/opt/emby2/config/system.xml"
+    xpath: /ServerConfiguration/EnableUPnP
+    value: "false"
+
+- name: "Settings | Set 'PublicPort' to '80'"
+  xml:
+    path: "/opt/emby2/config/system.xml"
+    xpath: /ServerConfiguration/PublicPort
+    value: "80"
+
+- name: "Settings | Set 'PublicHttpsPort' to '443'"
+  xml:
+    path: "/opt/emby2/config/system.xml"
+    xpath: /ServerConfiguration/PublicHttpsPort
+    value: "443"
+
+- name: "Settings | Set 'EnableHttps' to 'true'"
+  xml:
+    path: "/opt/emby2/config/system.xml"
+    xpath: /ServerConfiguration/EnableHttps
+    value: "true"
+
+- name: "Settings | Set 'WanDdns' to 'emby2.{{ user.domain }}'"
+  xml:
+    path: "/opt/emby2/config/system.xml"
+    xpath: /ServerConfiguration/WanDdns
+    value: "emby2.{{ user.domain }}"
+
+- name: "Settings | Set 'EnableAnonymousUsageReporting' to 'false'"
+  xml:
+    path: "/opt/emby2/config/system.xml"
+    xpath: /ServerConfiguration/EnableAnonymousUsageReporting
+    value: "false"
+
+- name: "Settings | Set 'RequireHttps' to 'false'"
+  xml:
+    path: "/opt/emby2/config/system.xml"
+    xpath: /ServerConfiguration/RequireHttps
+    value: "false"
+
+- name: "Settings | Set 'IsBehindProxy' to 'true'"
+  xml:
+    path: "/opt/emby2/config/system.xml"
+    xpath: /ServerConfiguration/IsBehindProxy
+    value: "true"
+
+- name: "Settings | Start emby2 container"
+  docker_container:
+    name: emby2
+    state: started

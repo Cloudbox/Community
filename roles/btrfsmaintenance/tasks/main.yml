@@ -17,7 +17,7 @@
 
 - name: "Determine '/opt' filesystem type"
   set_fact:
-    root_fstype: "{{ item.fstype }}"
+    opt_fstype: "{{ item.fstype }}"
   when: (item.mount == '/opt')
   with_items:
     - "{{ ansible_mounts }}"

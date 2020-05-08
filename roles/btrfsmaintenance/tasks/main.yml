@@ -49,6 +49,7 @@
     become: yes
     become_user: root
     shell: dist-install.sh
+    args:
       chdir: /opt/btrfsmaintenance/
 
   - name: Copy .timer files to systemd
@@ -67,6 +68,7 @@
     become: yes
     become_user: root
     shell: btrfsmaintenance-refresh-cron.sh timer
+    args:
       chdir: /opt/btrfsmaintenance/
 
   when:

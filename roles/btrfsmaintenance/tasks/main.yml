@@ -22,10 +22,10 @@
   with_items:
     - "{{ ansible_mounts }}"
 
-- name: Setup btrfsmaintenance scripts
+- name: "Setup btrfsmaintenance scripts"
   block:
 
-  - name: Clone btrfsmaintenance repo
+  - name: "Clone btrfsmaintenance repo"
     git:
       repo: https://github.com/kdave/btrfsmaintenance.git
       dest: '/opt/btrfsmaintenance'
@@ -35,36 +35,36 @@
     become: yes
     become_user: "{{ user.name }}"
 
-  - name: Set btrfsmaintenance directory permissions
+  - name: "Set btrfsmaintenance directory permissions"
     file: "path='/opt/btrfsmaintenance' state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
 
-  - name: Change mountpoints to 'auto'
+  - name: "Change mountpoints to 'auto'"
     lineinfile:
       path: "/opt/btrfsmaintenance/sysconfig.btrfsmaintenance"
       regexp: '^BTRFS_TRIM_MOUNTPOINTS\s?='
       line: 'BTRFS_TRIM_MOUNTPOINTS="auto"'
       state: present
 
-  - name: Execute dist-install.sh
+  - name: "Execute dist-install.sh"
     become: yes
     become_user: root
     shell: dist-install.sh
     args:
       chdir: /opt/btrfsmaintenance/
 
-  - name: Copy .timer files to systemd
+  - name: "Copy .timer files to systemd"
     copy:
      src: /opt/btrfsmaintenance/*.timer
      dest: /etc/systemd/system
     delegate_to: localhost
     
-  - name: Copy .service files to systemd
+  - name: "Copy .service files to systemd"
     copy:
      src: /opt/btrfsmaintenance/*.service
      dest: /etc/systemd/system
     delegate_to: localhost
 
-  - name: Execute btrfsmaintenance-refresh-cron.sh
+  - name: "Execute btrfsmaintenance-refresh-cron.sh"
     become: yes
     become_user: root
     shell: btrfsmaintenance-refresh-cron.sh timer
@@ -74,6 +74,6 @@
   when:
     - ((root_fstype is defined) and (root_fstype == 'btrfs')) or ((opt_fstype is defined) and (opt_fstype == 'btrfs'))
 
-- name: Exit if no btrfs partitions found
-  msg: No btrfs partition found on / or /opt - exiting
+- name: "Exit if no btrfs partitions found"
+  msg: "No btrfs partition found on / or /opt - exiting"
   when: ((root_fstype is defined) and (root_fstype != 'btrfs')) or ((opt_fstype is defined) and (opt_fstype != 'btrfs'))

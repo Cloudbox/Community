@@ -20,6 +20,7 @@
     - { role: bitwarden, tags: ['bitwarden'] }
     - { role: booksonic, tags: ['booksonic'] }
     - { role: bookstack, tags: ['bookstack'] }
+    - { role: btrfsmaintenance, tags: ['btrfsmaintenance'] }
     - { role: calibre-rdp, tags: ['calibre-rdp'] }
     - { role: calibre, tags: ['calibre'] }
     - { role: calibre-web, tags: ['calibre-web'] }

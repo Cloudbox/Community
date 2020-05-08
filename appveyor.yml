@@ -28,6 +28,7 @@ environment:
     beets
     bitwarden
     bookstack
+    btrfsmaintenance
     calibre
     calibre-rdp
     calibre-web

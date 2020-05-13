@@ -26,7 +26,6 @@
   with_items:
     - /opt/jellyfin
     - "{{ plex.transcodes }}/jellyfin"
-    - "/mnt/strm"
 
 - name: Import 'dlna.xml 'config
   copy:

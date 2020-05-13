@@ -26,6 +26,7 @@
   with_items:
     - /opt/jellyfin
     - "{{ plex.transcodes }}/jellyfin"
+    - "/mnt/strm"
 
 - name: Import 'dlna.xml 'config
   copy:
@@ -116,6 +117,14 @@
 - name: "Ensure config folder has the correct permissions"
   file:
     path: "/opt/jellyfin"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+    recurse: yes
+    
+- name: "Ensure /mnt/strm has the correct permissions"
+  file:
+    path: "/mnt/strm"
     owner: "{{ user.name }}"
     group: "{{ user.name }}"
     mode: 0775

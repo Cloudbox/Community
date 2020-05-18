@@ -32,7 +32,6 @@
     image: mitchtalmadge/amp-dockerized
     pull: yes
     published_ports:
-      - "8080:8080"
       - "25565:25565"
     env:
       MODULE: "ADS"

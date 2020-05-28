@@ -36,6 +36,7 @@ environment:
     deluge
     delugevpn
     embystat
+    emby2
     epms
     filebot
     filezilla

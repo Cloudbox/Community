@@ -24,6 +24,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **[bookstack](../../wiki/Bookstack)** - [BookStack](https://www.bookstackapp.com/) Self-hosted platform for organising and storing information.
 - **[calibre-rdp](../../wiki/Calibre-RDP-and-Calibre-WEB)** - [Calibre-RDP](https://github.com/cgspeck/docker-rdp-calibre) Media path set to `/Media/Books` - a web app providing a clean interface for browsing, reading and downloading eBooks using an existing Calibre database.
 - **[calibre-web](../../wiki/Calibre-RDP-and-Calibre-WEB)** - [Calibre-RDP](https://github.com/janeczku/calibre-web) Loads opt/calibre - a web app providing a clean interface for browsing, reading and downloading eBooks using an existing Calibre database.
+- **comicstreamer** - comics server and online reader
 - **[CouchPotato](https://couchpota.to)** - Movie manager
 - **[deluge](../../wiki/Deluge)** - Deluge torrent client
 - **[embystat](https://github.com/mregni/EmbyStat)**
@@ -35,6 +36,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **invoiceninja**
 - **jellyfin** - [jellyfin](https://github.com/jellyfin/jellyfin) emby fork
 - **kitana** - A responsive Plex plugin web frontend
+- **komga** - comics server and online reader (similar to ubooquity, but actively developed as of today)
 - **lazylibrarian** - (uses calibre-rdp db)
 - **logarr**
 - **[mediabutler](../../wiki/Mediabutler)** - Discord bot
@@ -42,7 +44,8 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **[mellow](../../wiki/Mellow-Discord-Bot)** - Discord Bot
 - **monitorr**
 - **[jdownloader2](../../wiki/JDownloader2)** - [JDownloader2](https://github.com/jlesage/docker-jdownloader-2) Self-hosted free, open-source download management tool with GUI website frontend.
-- **mylar** - automated comic book downloader
+- **mylar** - automated comic book downloader. Only critical errors maintained. Developemente migrated to mylar3.
+- **mylar3** - newest version of the automated comic book downloader, migrated to python 3. Actively developed.
 - **[qBittorrent](../../wiki/qBittorrent)** - qBittorrent torrent client
 - **radarr1080** - Additional Radarr
 - **radarrX** - Similar to [sonarrX](../../wiki/SonarrX) but for radarr, to create multiple roles
@@ -53,5 +56,6 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **subsonic**
 - **[telly](../../wiki/Telly)**
 - **[transmissionvpn](https://github.com/haugene/docker-transmission-openvpn)**
+- **ubooquity** - comics server and online reader (ubooquity.your.server/ubooquity for main page / yourip:2203 for admin)
 - **[Wordpress](../../wiki/Wordpress)** - Wordpress deployment
 - **[xteve](https://xteve.de/)**

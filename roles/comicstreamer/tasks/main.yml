@@ -1,0 +1,58 @@
+#########################################################################
+# Title:            Community: comicstreamer                                #
+# Author(s):        theotocopulitos                                     #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  kalinon/comicstreamer                               #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: comicstreamer
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: comicstreamer
+    state: absent
+
+- name: Create comicstreamer directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/comicstreamer
+    - /mnt/local/Media/Comics
+
+- name: Create and start container
+  docker_container:
+    name: comicstreamer
+    image: kalinon/comicstreamer
+    pull: yes
+    published_ports:
+      - "32500:32500"
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "comicstreamer.{{ user.domain }}"
+      VIRTUAL_PORT: "32500"
+      LETSENCRYPT_HOST: "comicstreamer.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/comicstreamer:/config"
+      - "/mnt/unionfs/Media/Comics:/comics"
+      - "mnt:/mnt"
+
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - comicstreamer
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

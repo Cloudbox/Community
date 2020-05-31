@@ -36,7 +36,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **invoiceninja**
 - **jellyfin** - [jellyfin](https://github.com/jellyfin/jellyfin) emby fork
 - **kitana** - A responsive Plex plugin web frontend
-- **komga** - comics server and online reader (similar to ubooquity, but actively developed as of today)
+- **komga** - comics server and online reader (similar to ubooquity, but actively developed as of today); to get the original admin username and passowrd, type docker logs komga and follow the [help](https://komga.org/installation/user-accounts.html#automatic-mode-default)
 - **lazylibrarian** - (uses calibre-rdp db)
 - **logarr**
 - **[mediabutler](../../wiki/Mediabutler)** - Discord bot
@@ -56,6 +56,6 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **subsonic**
 - **[telly](../../wiki/Telly)**
 - **[transmissionvpn](https://github.com/haugene/docker-transmission-openvpn)**
-- **ubooquity** - comics server and online reader (ubooquity.your.server/ubooquity for main page / yourip:2203 for admin)
+- **ubooquity** - comics server and online reader (ubooquity.your.server/ubooquity for main page / your.ip:2203/ubooquity/admin for admin)
 - **[Wordpress](../../wiki/Wordpress)** - Wordpress deployment
 - **[xteve](https://xteve.de/)**

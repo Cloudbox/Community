@@ -48,26 +48,30 @@
   - name: "Execute dist-install.sh"
     become: yes
     become_user: root
-    shell: dist-install.sh
+    shell: /opt/btrfsmaintenance/dist-install.sh
     args:
       chdir: /opt/btrfsmaintenance/
 
   - name: "Copy .timer files to systemd"
     copy:
-     src: /opt/btrfsmaintenance/*.timer
+     src: "{{ item }}"
      dest: /etc/systemd/system
     delegate_to: localhost
+    with_fileglob:
+      - /opt/btrfsmaintenance/*.timer
     
   - name: "Copy .service files to systemd"
     copy:
-     src: /opt/btrfsmaintenance/*.service
+     src: "{{ item }}"
      dest: /etc/systemd/system
     delegate_to: localhost
+    with_fileglob:
+      - /opt/btrfsmaintenance/*.service
 
   - name: "Execute btrfsmaintenance-refresh-cron.sh"
     become: yes
     become_user: root
-    shell: btrfsmaintenance-refresh-cron.sh timer
+    shell: /opt/btrfsmaintenance/btrfsmaintenance-refresh-cron.sh timer
     args:
       chdir: /opt/btrfsmaintenance/
 

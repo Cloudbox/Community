@@ -28,6 +28,7 @@ environment:
     beets
     bitwarden
     bookstack
+    calibre
     calibre-rdp
     calibre-web
     couchpotato

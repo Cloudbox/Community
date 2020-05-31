@@ -78,6 +78,7 @@
   when: ((root_fstype is defined) and (root_fstype == 'btrfs')) or ((opt_fstype is defined) and (opt_fstype == 'btrfs'))
 
 # Check for no btrfs and exit - not working
-#- name: "Exit if no btrfs partitions found"
-#  msg: "No btrfs partition found on / or /opt - exiting"
-#  when: ((root_fstype is defined) and (root_fstype != 'btrfs')) or ((opt_fstype is defined) and (opt_fstype != 'btrfs'))
+- name: "Exit if no btrfs partitions found"
+  debug:
+    msg: "No btrfs partition found on / or /opt - exiting"
+  when: ((root_fstype is defined) and (root_fstype != 'btrfs')) or ((opt_fstype is defined) and (opt_fstype != 'btrfs'))

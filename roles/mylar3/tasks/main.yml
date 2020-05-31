@@ -1,6 +1,6 @@
 #########################################################################
-# Title:            Community: Mylar3                                    #
-# Author(s):        fuller882                                           #
+# Title:            Community: Mylar3                                   #
+# Author(s):        theotocopulitos                                     #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  ajslater/mylar3                                     #
 # --                                                                    #
@@ -33,7 +33,7 @@
     image: ajslater/mylar3
     pull: yes
     published_ports:
-      - "127.0.0.1:8091:8091"
+      - "8090:8090"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

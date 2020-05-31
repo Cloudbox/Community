@@ -23,6 +23,7 @@
     - { role: calibre-rdp, tags: ['calibre-rdp'] }
     - { role: calibre-web, tags: ['calibre-web'] }
     - { role: coder, tags: ['coder'] }
+    - { role: comicstreamer, tags: ['comicstreamer'] }
     - { role: deezloader-remix, tags: ['deezloader-remix'] }
     - { role: couchpotato, tags: ['couchpotato'] }
     - { role: deluge, tags: ['deluge'] }
@@ -50,6 +51,7 @@
     - { role: kcptun-client, tags: ['kcptun-client'] }
     - { role: kcptun-server, tags: ['kcptun-server'] }
     - { role: kitana, tags: ['kitana'] }
+    - { role: komga, tags: ['komga'] }
     - { role: lazylibrarian, tags: ['lazylibrarian'] }
     - { role: logarr, tags: ['logarr'] }
     - { role: mediabutler, tags: ['mediabutler'] }
@@ -58,6 +60,7 @@
     - { role: minecraft, tags: ['minecraft'] }
     - { role: monitorr, tags: ['monitorr'] }
     - { role: mylar, tags: ['mylar'] }
+    - { role: mylar3, tags: ['mylar3'] }
     - { role: nextcloud, tags: ['nextcloud'] }
     - { role: nowshowing, tags: ['nowshowing'] }
     - { role: nzbhydra, tags: ['nzbhydra'] }
@@ -82,6 +85,7 @@
     - { role: telly, tags: ['telly'] }
     - { role: thelounge, tags: ['thelounge'] }
     - { role: transmissionvpn, tags: ['transmissionvpn'] }
+    - { role: ubooquity, tags: ['ubooquity'] }
     - { role: unifi, tags: ['unifi'] }
     - { role: unmanic, tags: ['unmanic'] }
     - { role: vnstat, tags: ['vnstat'] }

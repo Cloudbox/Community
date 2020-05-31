@@ -85,6 +85,7 @@ environment:
     unmanic
     vnstat
     watchtower
+    wallabag
     wordpress
     xteve
     znc

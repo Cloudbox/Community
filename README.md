@@ -53,5 +53,6 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **subsonic**
 - **[telly](../../wiki/Telly)**
 - **[transmissionvpn](https://github.com/haugene/docker-transmission-openvpn)**
+- **[wallabag](https://wallabag.org/en)** 0 Wallabag role (default u/p wallabag/wallabag) - Save and classify websites and articles.
 - **[Wordpress](../../wiki/Wordpress)** - Wordpress deployment
 - **[xteve](https://xteve.de/)**

@@ -13,7 +13,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: emby2
+    record: emby2
   when: cloudflare_enabled
 
 - name: Create emby2 directories

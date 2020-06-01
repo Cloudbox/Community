@@ -26,11 +26,6 @@
   with_items:
     - /opt/xbackbone/
     - "{{ xbackbone.storage }}"
-    
-- name: Set '/opt/xbackbone' permissions recursively
-  shell: "sudo chown -R 1000:1000 /opt/xbackbone"
-  args:
-    warn: no
 
 - name: Create and start container
   docker_container:
@@ -62,3 +57,21 @@
     purge_networks: yes
     restart_policy: unless-stopped
     state: started
+
+- pause:
+    seconds: 5
+    
+- name: Stop docker to set permissions
+  shell: "docker stop xbackbone"
+  args:
+    warn: no
+
+- name: Set '/opt/xbackbone' permissions recursively
+  shell: "sudo chown -R 1000:1000 /opt/xbackbone"
+  args:
+    warn: no    
+
+- name: Start docker
+  shell: "docker start xbackbone"
+  args:
+    warn: no

@@ -27,6 +27,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **[CouchPotato](https://couchpota.to)** - Movie manager
 - **[deluge](../../wiki/Deluge)** - Deluge torrent client
 - **[embystat](https://github.com/mregni/EmbyStat)**
+- **[Emby2]** - Second instance of Emby
 - **funkwhale**
 - **gazee** - comic book reader
 - **[glances](http://nicolargo.github.io/glances/)** - Please have a look at the [official documentation](https://glances.readthedocs.io/en/latest/).

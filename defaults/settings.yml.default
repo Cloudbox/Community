@@ -4,6 +4,7 @@ sonarrx:
 radarrx:
   roles: [1080webdl, 1080remux]
 bazarrx:
+  version: latest
   roles: [1080webdl, 1080remux]
 ombix:
   roles: [4k]

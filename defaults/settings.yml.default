@@ -4,8 +4,8 @@ sonarrx:
 radarrx:
   roles: [1080webdl, 1080remux]
 bazarrx:
-  version: latest
   roles: [1080webdl, 1080remux]
+  version: latest
 ombix:
   roles: [4k]
 calibreweb:

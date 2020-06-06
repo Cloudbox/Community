@@ -1,8 +1,8 @@
 #########################################################################
-# Title:            Community: Coder                                    #
-# Author(s):        astroMD                                             #
+# Title:            Community: Wallabag                                 #
+# Author(s):        addbee                                              #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  codercom/code-server                                #
+# Docker Image(s):  wallabag/wallabag                                   #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -13,46 +13,49 @@
   include_role:
     name: cloudflare-dns
   vars:
-    record: coder
+    record: bag
   when: cloudflare_enabled
 
 - name: Stop and remove any existing containers
   docker_container: "name={{ item }} state=absent"
   with_items:
-    - coder
+    - wallabag
 
 - name: Create required directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
-    - /opt/coder
+    - /opt/wallabag
+    - /opt/wallabag/data
+    - /opt/wallabag/images
 
-- name: Create and start coder container
+- name: Create and start Wallabag container
   docker_container:
-    name: coder
-    image: "codercom/code-server"
+    name: wallabag
+    image: "wallabag/wallabag:latest"
     pull: yes
-    published_ports:
-      - "127.0.0.1:8143:8080"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       PASSWORD: "{{ user.pass }}"
-      VIRTUAL_HOST: "coder.{{ user.domain }}"
-      VIRTUAL_PORT: "8080"
-      LETSENCRYPT_HOST: "coder.{{ user.domain }}"
+      VIRTUAL_HOST: "bag.{{ user.domain }}"
+      VIRTUAL_PORT: "80"
+      LETSENCRYPT_HOST: "bag.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
+      SYMFONY__ENV__DOMAIN_NAME: "https://bag.{{ user.domain }}"
+    ports:
+      - "127.0.0.1:7780:80"
     volumes:
-      - "/home/{{ user.name }}/workspaces:/home/coder/project"
-      - "/mnt:/mnt"
-      - "/opt:/host_opt"
-      - "/home/{{ user.name }}:/home/coder/host"
+      - "/opt/wallabag/data:/var/www/wallabag/data:rw"
+      - "/opt/wallabag/images:/var/www/wallabag/web/assets/images:rw"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
       - name: cloudbox
         aliases:
-          - coder
+          - wallabag
     purge_networks: yes
     restart_policy: unless-stopped
     state: started
+
+

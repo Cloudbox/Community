@@ -33,6 +33,7 @@ environment:
     calibre-rdp
     calibre-web
     comicstreamer
+    comixed
     couchpotato
     coder
     deezloader-remix

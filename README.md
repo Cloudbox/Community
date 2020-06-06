@@ -25,6 +25,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **[calibre-rdp](../../wiki/Calibre-RDP-and-Calibre-WEB)** - [Calibre-RDP](https://github.com/cgspeck/docker-rdp-calibre) Media path set to `/Media/Books` - a web app providing a clean interface for browsing, reading and downloading eBooks using an existing Calibre database.
 - **[calibre-web](../../wiki/Calibre-RDP-and-Calibre-WEB)** - [Calibre-RDP](https://github.com/janeczku/calibre-web) Loads opt/calibre - a web app providing a clean interface for browsing, reading and downloading eBooks using an existing Calibre database.
 - **comicstreamer** - comics server and online reader
+- **[comixed] (https://github.com/mcpierce/comixed/tree/develop/docker)** - comics server and online reader
 - **[CouchPotato](https://couchpota.to)** - Movie manager
 - **[deluge](../../wiki/Deluge)** - Deluge torrent client
 - **[embystat](https://github.com/mregni/EmbyStat)**

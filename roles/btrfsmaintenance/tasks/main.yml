@@ -81,4 +81,4 @@
 - name: "Exit if no btrfs partitions found"
   debug:
     msg: "No btrfs partition found on / or /opt - exiting"
-  when: ((root_fstype is defined) and (root_fstype != 'btrfs')) or ((opt_fstype is defined) and (opt_fstype != 'btrfs'))
+  when: ((root_fstype is defined) and (root_fstype != 'btrfs')) and ((opt_fstype is defined) and (opt_fstype != 'btrfs'))

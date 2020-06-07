@@ -16,6 +16,17 @@
     record: filezilla
   when: cloudflare_enabled
 
+- name: Create htpasswd
+  htpasswd:
+    path: "/opt/nginx-proxy/htpasswd/{{ item }}.{{ user.domain }}"
+    name: "{{ user.name }}"
+    password: "{{ user.pass }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0664
+  with_items:
+    - filezilla
+
 - name: Stop and remove any existing container
   docker_container:
     name: filezilla

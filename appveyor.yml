@@ -51,6 +51,7 @@ environment:
     jellyfin
     jirafeau
     kitana
+    komga
     lazylibrarian
     logarr
     mediabutler

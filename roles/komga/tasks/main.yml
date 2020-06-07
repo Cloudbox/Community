@@ -45,7 +45,7 @@
     volumes:
       - "/opt/komga:/config"
       - "/mnt/unionfs/Media/Comics:/comics"
-      - "mnt:/mnt"
+      - "/mnt:/mnt"
 
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

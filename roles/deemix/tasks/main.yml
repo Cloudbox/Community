@@ -40,17 +40,20 @@
 - name: Create and start container
   docker_container:
     name: deemix
-    image: "bocki/deemix"
+    image: "registry.gitlab.com/bockiii/deemix-docker"
     pull: yes
     published_ports:
-      - "127.0.0.1:33333:33333"
+      - "127.0.0.1:9666:9666"
     env:
       BACKUP: "yes"
       VIRTUAL_HOST: "deemix.{{ user.domain }}"
-      VIRTUAL_PORT: "33333"
+      VIRTUAL_PORT: "9666"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
       LETSENCRYPT_HOST: "deemix.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       TZ: "{{ tz }}"
+      ARL: "{{ demix.arl }}"
     volumes:
       - "/mnt/unionfs/Media/deezer:/downloads:rw"
       - "/opt/deemix:/config:rw"

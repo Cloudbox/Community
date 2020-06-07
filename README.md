@@ -53,5 +53,6 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **subsonic**
 - **[telly](../../wiki/Telly)**
 - **[transmissionvpn](https://github.com/haugene/docker-transmission-openvpn)**
+- **ubooquity** - comics server and online reader (ubooquity.your.server/ubooquity for main page / your.ip:2203/ubooquity/admin for admin)
 - **[Wordpress](../../wiki/Wordpress)** - Wordpress deployment
 - **[xteve](https://xteve.de/)**

@@ -30,6 +30,7 @@ environment:
     bookstack
     calibre-rdp
     calibre-web
+    comicstreamer
     couchpotato
     coder
     deezloader-remix

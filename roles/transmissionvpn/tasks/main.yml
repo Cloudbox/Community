@@ -71,6 +71,7 @@
       TRANSMISSION_HOME: "/opt/transmissionvpn"
       TZ: "{{ tz }}"
     volumes: "{{ default_volumes + torrents_downloads_path|default([]) }}"
+    dns_servers: 8.8.8.8
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     capabilities:

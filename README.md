@@ -24,8 +24,8 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **[bookstack](../../wiki/Bookstack)** - [BookStack](https://www.bookstackapp.com/) Self-hosted platform for organising and storing information.
 - **[calibre-rdp](../../wiki/Calibre-RDP-and-Calibre-WEB)** - [Calibre-RDP](https://github.com/cgspeck/docker-rdp-calibre) Media path set to `/Media/Books` - a web app providing a clean interface for browsing, reading and downloading eBooks using an existing Calibre database.
 - **[calibre-web](../../wiki/Calibre-RDP-and-Calibre-WEB)** - [Calibre-RDP](https://github.com/janeczku/calibre-web) Loads opt/calibre - a web app providing a clean interface for browsing, reading and downloading eBooks using an existing Calibre database.
-- **[comixed] (https://github.com/mcpierce/comixed/tree/develop/docker)** - comics server and online reader
-- **[comicstreamer] (https://github.com/beville/ComicStreamer)** - comics server and online reader (old, unmaintained, but fast and efficient)
+- **[comixed](https://github.com/mcpierce/comixed/tree/develop/docker)** - comics server and online reader
+- **[comicstreamer](https://github.com/beville/ComicStreamer)** - comics server and online reader (old, unmaintained, but fast and efficient)
 - **[CouchPotato](https://couchpota.to)** - Movie manager
 - **[deluge](../../wiki/Deluge)** - Deluge torrent client
 - **[embystat](https://github.com/mregni/EmbyStat)**
@@ -38,7 +38,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **invoiceninja**
 - **jellyfin** - [jellyfin](https://github.com/jellyfin/jellyfin) emby fork
 - **kitana** - A responsive Plex plugin web frontend
-- **[komga] (https://komga.org/) ** - comics server and online reader (similar to ubooquity, but actively developed as of today); to get the original admin username and passowrd, type docker logs komga and follow the [help](https://komga.org/installation/user-accounts.html#automatic-mode-default)
+- **[komga](https://komga.org/)** - comics server and online reader (similar to ubooquity, but actively developed as of today); to get the original admin username and passowrd, type docker logs komga and follow the [help](https://komga.org/installation/user-accounts.html#automatic-mode-default)
 - **lazylibrarian** - (uses calibre-rdp db)
 - **logarr**
 - **[mediabutler](../../wiki/Mediabutler)** - Discord bot
@@ -58,6 +58,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **subsonic**
 - **[telly](../../wiki/Telly)**
 - **[transmissionvpn](https://github.com/haugene/docker-transmission-openvpn)**
+- **ubooquity** - comics server and online reader (ubooquity.your.server/ubooquity for main page / your.ip:2203/ubooquity/admin for admin)
 - **[wallabag](https://wallabag.org/en)** 0 Wallabag role (default u/p wallabag/wallabag) - Save and classify websites and articles.
 - **[Wordpress](../../wiki/Wordpress)** - Wordpress deployment
 - **[xteve](https://xteve.de/)**

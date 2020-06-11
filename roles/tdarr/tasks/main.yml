@@ -2,7 +2,7 @@
 # Title:            Community: Tdarr                                    #
 # Author(s):        Visorak, Migz                                       #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  haveagitgat/tdarr_aio                               #
+# Docker Image(s):  haveagitgat/tdarr                                   #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -42,7 +42,7 @@
 - name: Create and start container
   docker_container:
     name: tdarr
-    image: haveagitgat/tdarr_aio
+    image: haveagitgat/tdarr
     pull: yes
     published_ports:
       - "127.0.0.1:8265:8265"
@@ -62,6 +62,8 @@
       - "/opt/tdarr/db:/var/lib/mongodb"
       - "/dev/shm:/dev/shm"
       - "/mnt:/mnt"
+      - "/mnt/unionfs/Media/Movies:/movies"
+      - "/mnt/unionfs/Media/TV:/tv"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

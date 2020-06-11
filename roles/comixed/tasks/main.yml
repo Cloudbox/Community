@@ -1,8 +1,8 @@
 #########################################################################
-# Title:            Community: Coder                                    #
-# Author(s):        astroMD                                             #
+# Title:            Community: comixed                                #
+# Author(s):        theotocopulitos                                     #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  codercom/code-server                                #
+# Docker Image(s):  comixed/comixed                               #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -13,46 +13,45 @@
   include_role:
     name: cloudflare-dns
   vars:
-    record: coder
+    record: comixed
   when: cloudflare_enabled
 
-- name: Stop and remove any existing containers
-  docker_container: "name={{ item }} state=absent"
-  with_items:
-    - coder
+- name: Stop and remove any existing container
+  docker_container:
+    name: comixed
+    state: absent
 
-- name: Create required directories
+- name: Create comixed directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
-    - /opt/coder
-
-- name: Create and start coder container
+    - /opt/comixed
+    - /mnt/local/Media/Comics
+- name: Create and start container
   docker_container:
-    name: coder
-    image: "codercom/code-server"
+    name: comixed
+    image: comixed/comixed:latest
     pull: yes
     published_ports:
-      - "127.0.0.1:8143:8080"
+      - "7171:7171"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      PASSWORD: "{{ user.pass }}"
-      VIRTUAL_HOST: "coder.{{ user.domain }}"
-      VIRTUAL_PORT: "8080"
-      LETSENCRYPT_HOST: "coder.{{ user.domain }}"
+      VIRTUAL_HOST: "comixed.{{ user.domain }}"
+      VIRTUAL_PORT: "7171"
+      LETSENCRYPT_HOST: "comixed.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/home/{{ user.name }}/workspaces:/home/coder/project"
-      - "/mnt:/mnt"
-      - "/opt:/host_opt"
-      - "/home/{{ user.name }}:/home/coder/host"
+      - "/opt/comixed:/root/.comixed"
+      - "/mnt/unionfs/Media/Comics:/comics"
+      - "mnt:/mnt"
+
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
       - name: cloudbox
         aliases:
-          - coder
+          - comixed
     purge_networks: yes
     restart_policy: unless-stopped
     state: started

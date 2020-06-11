@@ -93,7 +93,6 @@
       - "/opt/jellyfin:/config:rw"
       - "/opt/scripts:/scripts"
       - "/mnt:/mnt:rw"
-      - "/mnt/strm:/strm:rw"
       - "/mnt/unionfs/Media:/media"
       - "/mnt/unionfs/Media:/data"
       - "{{ plex.transcodes }}/jellyfin:/transcode"

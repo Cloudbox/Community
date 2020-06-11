@@ -1,8 +1,8 @@
 #########################################################################
-# Title:            Community: Coder                                    #
-# Author(s):        astroMD                                             #
+# Title:            Community: komga                                    #
+# Author(s):        theotocopulitos                                     #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  codercom/code-server                                #
+# Docker Image(s):  gotson/komga                                        #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -13,46 +13,46 @@
   include_role:
     name: cloudflare-dns
   vars:
-    record: coder
+    record: komga
   when: cloudflare_enabled
 
-- name: Stop and remove any existing containers
-  docker_container: "name={{ item }} state=absent"
-  with_items:
-    - coder
+- name: Stop and remove any existing container
+  docker_container:
+    name: komga
+    state: absent
 
-- name: Create required directories
+- name: Create komga directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
-    - /opt/coder
+    - /opt/komga
+    - /mnt/local/Media/Comics
 
-- name: Create and start coder container
+- name: Create and start container
   docker_container:
-    name: coder
-    image: "codercom/code-server"
+    name: komga
+    image: gotson/komga
     pull: yes
     published_ports:
-      - "127.0.0.1:8143:8080"
+      - "8080:8080"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      PASSWORD: "{{ user.pass }}"
-      VIRTUAL_HOST: "coder.{{ user.domain }}"
+      VIRTUAL_HOST: "komga.{{ user.domain }}"
       VIRTUAL_PORT: "8080"
-      LETSENCRYPT_HOST: "coder.{{ user.domain }}"
+      LETSENCRYPT_HOST: "komga.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/home/{{ user.name }}/workspaces:/home/coder/project"
+      - "/opt/komga:/config"
+      - "/mnt/unionfs/Media/Comics:/comics"
       - "/mnt:/mnt"
-      - "/opt:/host_opt"
-      - "/home/{{ user.name }}:/home/coder/host"
+
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
       - name: cloudbox
         aliases:
-          - coder
+          - komga
     purge_networks: yes
     restart_policy: unless-stopped
     state: started

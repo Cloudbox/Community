@@ -1,58 +1,54 @@
 #########################################################################
-# Title:            Community: Coder                                    #
-# Author(s):        astroMD                                             #
+# Title:            Community: RequestrrX | Template                    #
+# Author(s):        Kalroth, Migz93, no5tyle, Mbryde                    #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  codercom/code-server                                #
+# Docker Image(s):  darkalfx/requestrr                                  #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
-- name: "Setting CloudFlare DNS Record"
+- name: "Install named requestrrx role"
+  debug:
+    msg: "Installing {{ rolename }} using port {{ roleport }}"
+
+- name: "Set DNS Record on CloudFlare"
   include_role:
     name: cloudflare-dns
   vars:
-    record: coder
+    record: "requestrr{{ rolename }}"
   when: cloudflare_enabled
 
-- name: Stop and remove any existing containers
-  docker_container: "name={{ item }} state=absent"
-  with_items:
-    - coder
-
-- name: Create required directories
+- name: Create requestrrx directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
-    - /opt/coder
+    - "/opt/requestrr{{ rolename }}"
 
-- name: Create and start coder container
+- name: Create and start container
   docker_container:
-    name: coder
-    image: "codercom/code-server"
+    name: "requestrr{{ rolename }}"
+    image: darkalfx/requestrr
     pull: yes
     published_ports:
-      - "127.0.0.1:8143:8080"
+      - "127.0.0.1:{{ roleport }}:4545"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      PASSWORD: "{{ user.pass }}"
-      VIRTUAL_HOST: "coder.{{ user.domain }}"
-      VIRTUAL_PORT: "8080"
-      LETSENCRYPT_HOST: "coder.{{ user.domain }}"
+      VIRTUAL_HOST: "requestrr{{ rolename }}.{{ user.domain }}"
+      VIRTUAL_PORT: "4545"
+      LETSENCRYPT_HOST: "requestrr{{ rolename }}.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/home/{{ user.name }}/workspaces:/home/coder/project"
-      - "/mnt:/mnt"
-      - "/opt:/host_opt"
-      - "/home/{{ user.name }}:/home/coder/host"
+      - "/opt/requestrr{{ rolename }}:/root/config"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
+      "com.github.cloudbox.community": "requestrrx"
     networks:
       - name: cloudbox
         aliases:
-          - coder
-    purge_networks: yes
+          - "requestrr{{ rolename }}"
     restart_policy: unless-stopped
     state: started
+    

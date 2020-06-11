@@ -28,14 +28,19 @@ environment:
     beets
     bitwarden
     bookstack
+    btrfsmaintenance
+    calibre
     calibre-rdp
     calibre-web
+    comicstreamer
     couchpotato
     coder
+    comixed
     deezloader-remix
     deluge
     delugevpn
     embystat
+    emby2
     epms
     filebot
     filezilla
@@ -51,6 +56,7 @@ environment:
     jellyfin
     jirafeau
     kitana
+    komga
     lazylibrarian
     logarr
     mediabutler
@@ -59,6 +65,7 @@ environment:
     minecraft
     monitorr
     mylar
+    mylar3
     nextcloud
     nowshowing
     nzbhydra
@@ -71,6 +78,7 @@ environment:
     quassel
     radarrx
     resilio-sync
+    requestrrx
     rocketchat
     sickchill
     sonarrx
@@ -86,6 +94,7 @@ environment:
     unmanic
     vnstat
     watchtower
+    wallabag
     wordpress
     xteve
     znc

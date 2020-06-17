@@ -64,6 +64,7 @@
       - "/mnt:/mnt"
       - "/mnt/unionfs/Media/Movies:/movies"
       - "/mnt/unionfs/Media/TV:/tv"
+    devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

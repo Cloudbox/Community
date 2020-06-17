@@ -26,6 +26,11 @@
     mode: 0664
   with_items:
     - tdarr
+    
+- name: "Check if '/dev/dri' exists"
+  stat:
+    path: "/dev/dri"
+  register: dev_dri
 
 - name: Stop and remove any existing container
   docker_container:

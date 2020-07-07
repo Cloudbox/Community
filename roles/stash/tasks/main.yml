@@ -45,11 +45,6 @@
       STASH_GENERATED: "/generated/"
       STASH_METADATA: "/metadata/"
       STASH_CACHE: "/cache/"
-    # logging:
-    #   driver: "json-file"
-    #   options:
-    #     max-file: "10"
-    #     max-size: "2m"
     volumes:
       - "/mnt/unionfs/adult:/data"
       - "/opt/stash/config:/root/.stash"

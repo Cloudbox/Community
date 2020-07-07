@@ -52,7 +52,7 @@
     #     max-size: "2m"
     volumes:
       - "/mnt/unionfs/adult:/data"
-      - "/opt/stash/config:./config:/root/.stash"
+      - "/opt/stash/config:/root/.stash"
       - "/opt/stash/metadata:/metadata"
       - "/opt/stash/cache:/cache"
       - "/opt/stash/generated:/generated"

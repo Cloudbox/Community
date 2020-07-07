@@ -9,12 +9,23 @@
 #                 GNU General Public License v3.0                 #
 ###################################################################
 ---
-- name: "Setting CloudFlare DNS Record"
+- name: Setting CloudFlare DNS Record
   include_role:
     name: cloudflare-dns
   vars:
     record: stash
   when: cloudflare_enabled
+  
+  - name: Create htpasswd
+  htpasswd:
+    path: "/opt/nginx-proxy/htpasswd/{{ item }}.{{ user.domain }}"
+    name: "{{ user.name }}"
+    password: "{{ user.pass }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0664
+  with_items:
+    - stash
 
 - name: Stop and remove any existing container
   docker_container:

@@ -13,7 +13,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    record: winxp
+    record: stash
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container
@@ -21,14 +21,14 @@
     name: stash
     state: absent
 
-- name: Create calibre directories
+- name: Create stash directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
    - /opt/stash
 
 - name: Create and start container
   docker_container:
-    name: calibre-web
+    name: stash
     image: stashapp/stash:latest
     pull: yes
     published_ports:
@@ -37,9 +37,9 @@
       TZ: "{{ tz }}"
       UID: "{{ uid }}"
       GID: "{{ gid }}"
-      VIRTUAL_HOST: "winxp.{{ user.domain }}"
+      VIRTUAL_HOST: "stash.{{ user.domain }}"
       VIRTUAL_PORT: "9999"
-      LETSENCRYPT_HOST: "winxp.{{ user.domain }}"
+      LETSENCRYPT_HOST: "stash.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       STASH_STASH: "/data/"
       STASH_GENERATED: "/generated/"

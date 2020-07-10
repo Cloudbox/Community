@@ -20,10 +20,10 @@
     - /opt/unpackerr
     - /opt/unpackerr/app
 
-- name: Import unpacker.conf template
+- name: Import unpackerr.conf template
   copy:
-    src: "unpacker.conf"
-    dest: "/opt/unpackerr/app/unpacker.conf"
+    src: "unpackerr.conf"
+    dest: "/opt/unpackerr/app/unpackerr.conf"
     owner: "{{ user.name }}"
     group: "{{ user.name }}"
     mode: 0775

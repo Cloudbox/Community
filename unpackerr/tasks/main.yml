@@ -1,0 +1,54 @@
+#########################################################################
+# Title:            Community: unpackerr                                 #
+# Author(s):        maximuskowalski, desimaniac                         #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  hotio/unpackerr                                #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Stop and remove any existing container
+  docker_container:
+    name: unpackerr
+    state: absent
+
+- name: Create unpackerr directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/unpackerr
+    - /opt/unpackerr/app
+
+- name: Import unpacker.conf template
+  copy:
+    src: "unpacker.conf"
+    dest: "/opt/unpackerr/app/unpacker.conf"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+    force: no
+
+- name: Create and start container
+  docker_container:
+    name: unpackerr
+    image: "hotio/unpackerr:latest"
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      DEBUG: "no"
+
+    volumes:
+      - "/opt/unpackerr:/config"
+      - "/mnt:/mnt"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - unpackerr
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

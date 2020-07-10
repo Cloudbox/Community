@@ -94,6 +94,7 @@
     - { role: ubooquity, tags: ['ubooquity'] }
     - { role: unifi, tags: ['unifi'] }
     - { role: unmanic, tags: ['unmanic'] }
+    - { role: unpackerr, tags: ['unpackerr'] }    
     - { role: vnstat, tags: ['vnstat'] }
     - { role: watchtower, tags: ['watchtower'] }
     - { role: wallabag, tags: ['wallabag'] }

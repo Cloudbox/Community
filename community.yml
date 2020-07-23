@@ -14,7 +14,7 @@
     - { role: airdcpp, tags: ['airdcpp'] }
     - { role: airsonic, tags: ['airsonic'] }
     - { role: alltube, tags: ['alltube'] }
-    - { role: aria2web, tags: ['aria2web'] }
+    - { role: aria2, tags: ['aria2web'] }
     - { role: asshama, tags: ['asshama'] }
     - { role: bazarrx, tags: ['bazarrx'] }
     - { role: beets, tags: ['beets'] }

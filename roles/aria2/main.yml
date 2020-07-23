@@ -1,0 +1,57 @@
+#########################################################################
+# Title:         Community: AirDC++ Role                                #
+# Author(s):     l3uddz                                                 #
+# URL:           https://github.com/Cloudbox/Community                  #
+# Docker Image:  gangefors/airdcpp-webclient                            #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: aria2
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: aria2
+    state: absent
+
+- name: Create aria2 directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/aria2
+    - /mnt/local/downloads/aria2
+
+- name: Create and start container
+  docker_container:
+    name: aria2
+    image: "abcminiuser/docker-aria2-with-webui"
+    pull: yes
+    published_ports:
+      - "127.0.0.1:6800:6800"
+      - "127.0.0.1:6880:6880"
+    user: "{{ uid }}:{{ gid }}"
+    env:
+      TZ: "{{ tz }}"
+      VIRTUAL_HOST: "aria2.{{ user.domain }}"
+      VIRTUAL_PORT: "6880"
+      LETSENCRYPT_HOST: "aria2.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/aria2:/conf"
+      - "/mnt/local/downloads/aria:/data"
+      - "/mnt:/mnt"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - aria2
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

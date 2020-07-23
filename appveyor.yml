@@ -23,6 +23,7 @@ environment:
     airdcpp
     airsonic
     alltube
+    aria2web
     asshama
     bazarrx
     beets

@@ -19,6 +19,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **[arrX](../../wiki/arrX)** - Create multiple Sonarr/Radarr/Bazarr Docker containers.
 - **airsonic**
 - **[alltube](../../wiki/alltube)** - [alltube](https://github.com/Rudloff/alltube) HTML GUI for youtube-dl.
+- **[aria2web] - [aria2](https://github.com/abcminiuser/docker-aria2-with-webui)
 - **[beets](../../wiki/beets)** - [Beets](http://beets.io/) Music library manager and MusicBrainz tagger.
 - **[bitwarden](../../wiki/Bitwarden)** - [Bitwarden](https://bitwarden.com/) Installs a self-hosted Bitwarden CE instance.
 - **[bookstack](../../wiki/Bookstack)** - [BookStack](https://www.bookstackapp.com/) Self-hosted platform for organising and storing information.

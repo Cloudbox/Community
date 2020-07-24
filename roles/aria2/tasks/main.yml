@@ -44,6 +44,7 @@
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
+      SECRET: "aria2.{{ user.domain }}"
     volumes:
       - "/opt/aria2:/conf"
       - "/mnt/local/downloads/aria:/data"

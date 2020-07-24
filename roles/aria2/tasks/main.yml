@@ -33,7 +33,7 @@
     image: "abcminiuser/docker-aria2-with-webui:latest-ng"
     pull: yes
     published_ports:
-      - "127.0.0.1:6800:6800"
+      - "6800:6800"
       - "127.0.0.1:6880:80"
 #    user: "{{ uid }}:{{ gid }}"
     env:

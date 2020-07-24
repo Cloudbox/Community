@@ -35,13 +35,15 @@
     published_ports:
       - "127.0.0.1:6800:6800"
       - "127.0.0.1:6880:80"
-    user: "{{ uid }}:{{ gid }}"
+#    user: "{{ uid }}:{{ gid }}"
     env:
       TZ: "{{ tz }}"
       VIRTUAL_HOST: "aria2.{{ user.domain }}"
       VIRTUAL_PORT: "6880"
       LETSENCRYPT_HOST: "aria2.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
     volumes:
       - "/opt/aria2:/conf"
       - "/mnt/local/downloads/aria:/data"

@@ -80,7 +80,7 @@
     state: directory
     recurse: yes
     owner: '{{ user.name }}'
-    group: '{{ user.name }} '
+    group: '{{ user.name }}'
     
 - name: Start docker
   shell: "docker start xbackbone"

@@ -64,18 +64,24 @@
 - name: Stop docker to set permissions
   shell: "docker stop xbackbone"
   args:
-    warn: no
+    warn: no 
     
-- name: "Set XBackBone config folder ownership."
-    shell: "chown -R {{ user.name }}:{{ user.name }} '/opt/xbackbone'"
-    args:
-      warn: no
-
-- name: "Set XBackBone data folder ownership."
-    shell: "chown -R {{ user.name }}:{{ user.name }} '{{ xbackbone.storage }}'"
-    args:
-      warn: no    
-
+- name: Recursively change ownership of XBackBone config directory
+  file:
+    path: /opt/xbackbone
+    state: directory
+    recurse: yes
+    owner: '{{ user.name }}'
+    group: '{{ user.name }}'
+    
+- name: Recursively change ownership of XBackBone data directory
+  file:
+    path: "{{ xbackbone.storage }}"
+    state: directory
+    recurse: yes
+    owner: '{{ user.name }}'
+    group: '{{ user.name }} '
+    
 - name: Start docker
   shell: "docker start xbackbone"
   args:

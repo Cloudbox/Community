@@ -22,7 +22,7 @@
     state: absent
 
 - name: Create xbackbone directories
-  file: "path={{ item }} state=directory mode=0777 owner=1000 group=1000 recurse=yes"
+  file: "path={{ item }} state=directory mode=0777 owner={{ user.name }} group={{ user.name }} recurse=yes"
   with_items:
     - /opt/xbackbone/
     - "{{ xbackbone.storage }}"
@@ -65,11 +65,16 @@
   shell: "docker stop xbackbone"
   args:
     warn: no
+    
+ - name: "Reset logs folder ownership."
+    shell: "chown -R {{ user.name }}:{{ user.name }} '/opt/xbackbone'"
+    args:
+      warn: no
 
-- name: Set '/opt/xbackbone' permissions recursively
-  shell: "sudo chown -R 1000:1000 /opt/xbackbone"
-  args:
-    warn: no    
+ - name: "Reset logs folder ownership."
+    shell: "chown -R {{ user.name }}:{{ user.name }} '{{ xbackbone.storage }}'"
+    args:
+      warn: no    
 
 - name: Start docker
   shell: "docker start xbackbone"

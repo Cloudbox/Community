@@ -66,12 +66,12 @@
   args:
     warn: no
     
- - name: "Reset logs folder ownership."
+- name: "Set XBackBone config folder ownership."
     shell: "chown -R {{ user.name }}:{{ user.name }} '/opt/xbackbone'"
     args:
       warn: no
 
- - name: "Reset logs folder ownership."
+- name: "Set XBackBone data folder ownership."
     shell: "chown -R {{ user.name }}:{{ user.name }} '{{ xbackbone.storage }}'"
     args:
       warn: no    

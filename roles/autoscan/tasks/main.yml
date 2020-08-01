@@ -19,14 +19,14 @@
   with_items:
     - /opt/autoscan
 
-# - name: Import autoscan.conf template
-#   copy:
-#     src: "config.yml"
-#     dest: "/opt/autoscan/config.yml"
-#     owner: "{{ user.name }}"
-#     group: "{{ user.name }}"
-#     mode: 0775
-#     force: no
+- name: Import autoscan.conf template
+  copy:
+    src: "config.yml"
+    dest: "/opt/autoscan/config.yml"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+    force: no
 
 - name: Create and start container
   docker_container:

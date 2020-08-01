@@ -3,8 +3,8 @@ skip_tags: true
 
 skip_commits:
   files:
-    - '*.md'
-    - '*.yml.default'
+    - "*.md"
+    - "*.yml.default"
   message: /\[minor\]/
 
 image: Ubuntu1604
@@ -24,6 +24,7 @@ environment:
     airsonic
     alltube
     asshama
+    autoscan
     bazarrx
     beets
     bitwarden

@@ -32,6 +32,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **[glances](http://nicolargo.github.io/glances/)** - Please have a look at the [official documentation](https://glances.readthedocs.io/en/latest/).
 - **[goplaxt](../../wiki/Goplaxt)** - [goplaxt](https://github.com/XanderStrike/goplaxt) Plex/Trakt Scrobbler
 - **Handbrake** - GUI application (no installation or configuration needed on client-side)
+- **homeassistant** - Open source home automation that puts local control and privacy first.
 - **invoiceninja**
 - **jellyfin** - [jellyfin](https://github.com/jellyfin/jellyfin) emby fork
 - **kitana** - A responsive Plex plugin web frontend

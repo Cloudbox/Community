@@ -1,0 +1,63 @@
+#########################################################################
+# Title:            Community: HomeAssistant                            #
+# Author(s):        kenyonj                                             #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  homeassistant/home-assistant                        #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: homeassistant
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: homeassistant
+    state: absent
+
+- name: Create homeassistant directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/homeassistant
+
+- name: "Check if '/dev/dri' exists"
+  stat:
+    path: "/dev/dri"
+  register: dev_dri
+
+- name: Create and start container
+  docker_container:
+    name: homeassistant
+    image: homeassistant/home-assistant:stable
+    pull: yes
+    published_ports:
+      - "127.0.0.1:8123:8123"
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "homeassistant.{{ user.domain }}"
+      VIRTUAL_PORT: "8123"
+      LETSENCRYPT_HOST: "homeassistant.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      CLEAN_TMP_DIR: "1"
+      ENABLE_CJK_FONT: "1"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/homeassistant:/config:rw"
+    devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - homeassistant
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

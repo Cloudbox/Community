@@ -51,6 +51,7 @@ environment:
     handbrake
     healthchecks
     heimdall
+    homeassistant
     invoiceninja
     jdownloader2
     jellyfin

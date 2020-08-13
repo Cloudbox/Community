@@ -46,3 +46,6 @@ transmissionvpn:
   vpn_endpoint: Netherlands.ovpn
 unifi:
   port: 8080
+redbot:
+  token: your_bot_token
+  prefix: .

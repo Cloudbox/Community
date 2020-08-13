@@ -51,6 +51,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **[qBittorrent](../../wiki/qBittorrent)** - qBittorrent torrent client
 - **radarr1080** - Additional Radarr
 - **radarrX** - Similar to [sonarrX](../../wiki/SonarrX) but for radarr, to create multiple roles
+- **Red Discord Bot** - A customisible self-hosted Discord Bot
 - **sonarr1080** - Additional Sonarr
 - **sonarrv3** - Sonar phantom (v3) branch based role
 - **[sonarrX](../../wiki/SonarrX)** - Experimental Sonarr v3 role to create multiple roles

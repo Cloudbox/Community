@@ -41,7 +41,7 @@
 - name: Create and start container
   docker_container:
     name: calibrerdp
-    image: cgspeck/docker-rdp-calibre
+    image: linuxserver/calibre
     pull: yes
     published_ports:
       - "127.0.0.1:8087:8080"

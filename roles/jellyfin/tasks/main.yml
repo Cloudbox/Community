@@ -28,6 +28,7 @@
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/jellyfin
+    - /opt/jellyfin/app
     - "{{ plex.transcodes }}/jellyfin"
 
 - name: Import 'dlna.xml 'config

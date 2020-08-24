@@ -18,7 +18,7 @@
     path: "/opt/jellyfin/app"
   register: subfolder
 
-- name: hotio Migration | Move 'bazarr' folder contents to 'app' subfolder
+- name: hotio Migration | Move 'jellyfin' folder contents to 'app' subfolder
   shell: |
     mv "/opt/jellyfin" /tmp/app
     mkdir "/opt/jellyfin"

@@ -39,6 +39,12 @@ delugevpn:
   vpn_endpoint: Netherlands.ovpn
 deluge:
   version: v2
+rtorrentvpn:
+  vpn_user: your_vpn_username
+  vpn_pass: your_vpn_password
+  vpn_prov: pia
+  vpn_endpoint: Netherlands.ovpn
+  autodl_irssi: yes
 transmissionvpn:
   vpn_user: your_vpn_username
   vpn_pass: your_vpn_password

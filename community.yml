@@ -81,6 +81,7 @@
     - { role: requestrrx, tags: ['requestrrx'] }
     - { role: resilio-sync, tags: ['resilio-sync'] }
     - { role: rocketchat, tags: ['rocketchat'] }
+    - { role: rtorrentvpn, tags: ['rtorrentvpn'] }
     - { role: sickchill, tags: ['sickchill'] }
     - { role: sonarrx, tags: ['sonarrx'] }
     - { role: speedtest, tags: ['speedtest'] }

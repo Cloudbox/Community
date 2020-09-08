@@ -62,6 +62,7 @@
     - { role: medusa, tags: ['medusa'] }
     - { role: mellow, tags: ['mellow'] }
     - { role: minecraft, tags: ['minecraft'] }
+    - { role: mkvtoolnix, tags: ['mkvtoolnix'] }
     - { role: monitorr, tags: ['monitorr'] }
     - { role: mylar, tags: ['mylar'] }
     - { role: mylar3, tags: ['mylar3'] }

@@ -58,6 +58,7 @@
     - { role: komga, tags: ['komga'] }
     - { role: lazylibrarian, tags: ['lazylibrarian'] }
     - { role: logarr, tags: ['logarr'] }
+    - { role: makemkv, tags: ['makemkv'] }
     - { role: mediabutler, tags: ['mediabutler'] }
     - { role: medusa, tags: ['medusa'] }
     - { role: mellow, tags: ['mellow'] }

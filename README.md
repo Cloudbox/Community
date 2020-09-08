@@ -41,6 +41,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **[komga](https://komga.org/)** - comics server and online reader (similar to ubooquity, but actively developed as of today); to get the original admin username and passowrd, type docker logs komga and follow the [help](https://komga.org/installation/user-accounts.html#automatic-mode-default)
 - **lazylibrarian** - (uses calibre-rdp db)
 - **logarr**
+- **[MakeMKV](https://github.com/jlesage/docker-makemkv)** - Software to convert blu-ray and dvd to mkv.
 - **[mediabutler](../../wiki/Mediabutler)** - Discord bot
 - **[medusa](https://pymedusa.com)** - TV Shows manager
 - **[mellow](../../wiki/Mellow-Discord-Bot)** - Discord Bot

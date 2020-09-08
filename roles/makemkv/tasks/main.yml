@@ -1,0 +1,56 @@
+#########################################################################
+# Title:            Community: MakeMKV                                  #
+# Author(s):        Mnk3y                                               #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  jlesage/makemkv                                     #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: makemkv
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: makemkv
+    state: absent
+
+- name: Create makemkv directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/makemkv
+
+- name: Create and start container
+  docker_container:
+    name: makemkv
+    image: jlesage/makemkv
+    pull: yes
+    published_ports:
+      - "127.0.0.1:5802:5800"
+    env:
+      TZ: "{{ tz }}"
+      USER_ID: "{{ uid }}"
+      GROUP_ID: "{{ gid }}"
+      VIRTUAL_HOST: "makemkv.{{ user.domain }}"
+      VIRTUAL_PORT: "5800"
+      LETSENCRYPT_HOST: "makemkv.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/makemkv:/config"
+      - "/mnt:/mnt"
+      - "/mnt/local/downloads:/storage/downloads"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - makemkv
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

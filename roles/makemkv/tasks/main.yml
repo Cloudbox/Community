@@ -41,6 +41,7 @@
       VIRTUAL_PORT: "5800"
       LETSENCRYPT_HOST: "makemkv.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
+      VNC_PASSWORD: "{{ user.pass }}"
     volumes:
       - "/opt/makemkv:/config"
       - "/mnt:/mnt"

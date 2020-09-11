@@ -1,0 +1,78 @@
+#########################################################################
+# Title:            Community: Transmission                             #
+# Author(s):        giosann                                             #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  linuxserver/trasmission                             #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: transmission
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: transmission
+    state: absent
+
+- name: Create transmission directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/transmission
+
+- name: Create new downloads directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  with_items:
+    - "{{ downloads.torrents }}"
+    - "{{ downloads.torrents }}/transmission"
+    - "{{ downloads.torrents }}/transmission/completed"
+    - "{{ downloads.torrents }}/transmission/incoming"
+    - "{{ downloads.torrents }}/transmission/watched"
+    - "{{ downloads.torrents }}/transmission/torrents"
+    - /opt/transmission/
+  when: (torrents_downloads_path is defined)|default(false)
+
+- name: Set default_volumes variable
+  set_fact:
+    default_volumes:
+      - "/mnt:/mnt"
+      - "/opt/transmission:/opt/transmission"
+      - "/mnt/local/downloads/torrents/transmission:/data"
+      - "/opt/transmission:/config"
+
+- name: Create and start container
+  docker_container:
+    name: transmission
+    image: linuxserver/transmission
+    pull: yes
+    env:
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "transmission.{{ user.domain }}"
+      VIRTUAL_PORT: "9091"
+      LETSENCRYPT_HOST: "transmission.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      UMASK_SET: "002"
+      TRANSMISSION_ALT_SPEED_DOWN: "30"
+      TRANSMISSION_RATIO_LIMIT: "0"
+      TRANSMISSION_RATIO_LIMIT_ENABLED: "true"
+      TRANSMISSION_WATCH_DIR_ENABLED: "false"
+      TRANSMISSION_HOME: "/opt/transmission"
+      TZ: "{{ tz }}"
+    volumes: "{{ default_volumes + torrents_downloads_path|default([]) }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    capabilities:
+      - NET_ADMIN
+    networks:
+      - name: cloudbox
+        aliases:
+          - transmission
+    purge_networks: yes
+    restart_policy: always
+    state: started

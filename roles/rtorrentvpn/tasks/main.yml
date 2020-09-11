@@ -26,6 +26,10 @@
     - /opt/rtorrentvpn
     - /opt/rtorrentvpn/openvpn
     - /opt/rtorrentvpn/piaconfigs
+    - "{{ downloads.torrents }}"
+    - "{{ downloads.torrents }}/rtorrentvpn"
+    - "{{ downloads.torrents }}/rtorrentvpn/completed"
+    - "{{ downloads.torrents }}/rtorrentvpn/watched"
 
 - name: Get the OpenVPN configuration files and certs
   unarchive:

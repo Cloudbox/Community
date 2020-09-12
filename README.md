@@ -57,7 +57,9 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **[speedtest](https://github.com/adolfintel/speedtest)** - Self-hosted HTML5 Speedtest
 - **subsonic**
 - **[telly](../../wiki/Telly)**
+- **[transmission](../../wiki/transmission)**
 - **[transmissionvpn](https://github.com/haugene/docker-transmission-openvpn)**
+- **[transmissionx](../../wiki/transmissionx)**
 - **ubooquity** - comics server and online reader (ubooquity.your.server/ubooquity for main page / your.ip:2203/ubooquity/admin for admin)
 - **[wallabag](https://wallabag.org/en)** 0 Wallabag role (default u/p wallabag/wallabag) - Save and classify websites and articles.
 - **[Wordpress](../../wiki/Wordpress)** - Wordpress deployment

@@ -67,6 +67,8 @@
       TRANSMISSION_WATCH_DIR_ENABLED: "false"
       TRANSMISSION_WATCH_DIR: "/data/watched"
       TRANSMISSION_HOME: "/opt/transmission{{ rolename }}"
+      TRANSMISSION_DOWNLOAD_DIR: "/data/completed"
+      TRANSMISSION_INCOMPLETE_DIR: "/data/incoming"
       TRANSMISSION_RPC_AUTHENTICATION_REQUIRED: "true"
       USER: "{{ user.name }}"
       PASS: "{{ user.pass }}"

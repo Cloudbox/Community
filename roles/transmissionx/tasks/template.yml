@@ -1,0 +1,79 @@
+#########################################################################
+# Title:            Community: TransmissionX | Template                 #
+# Author(s):        giosann                                             #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  linuxserver/trasmission                             #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################---
+---
+- name: "Install named transmission role"
+  debug:
+    msg: "Installing {{ rolename }} using port {{ roleport }}"
+
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: "transmission{{ rolename }}"
+  when: cloudflare_enabled
+
+- name: Create transmissionx directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - "/opt/transmission{{ rolename }}"
+
+- name: Create new downloads directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  with_items:
+    - "{{ downloads.torrents }}"
+    - "{{ downloads.torrents }}/transmission{{ rolename }}"
+    - "{{ downloads.torrents }}/transmission{{ rolename }}/completed"
+    - "{{ downloads.torrents }}/transmission{{ rolename }}/incoming"
+    - "{{ downloads.torrents }}/transmission{{ rolename }}/watched"
+    - "{{ downloads.torrents }}/transmission{{ rolename }}/torrents"
+    - /opt/transmission{{ rolename }}/
+  when: (torrents_downloads_path is defined)|default(false)
+
+- name: Set default_volumes variable
+  set_fact:
+    default_volumes:
+      - "/mnt:/mnt"
+      - "/opt/transmission{{ rolename }}:/opt/transmission{{ rolename }}"
+      - "/mnt/local/downloads/torrents/transmission{{ rolename }}:/data"
+      - "/opt/transmission{{ rolename }}:/config"
+
+- name: Create and start container
+  docker_container:
+    name: "transmission{{ rolename }}"
+    image: "linuxserver/transmission"
+    pull: yes
+    published_ports:
+      - "127.0.0.1:{{ roleport }}:9091"
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "transmission{{ rolename }}.{{ user.domain }}"
+      VIRTUAL_PORT: "9091"
+      LETSENCRYPT_HOST: "transmission{{ rolename }}.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      UMASK_SET: "002"
+      TRANSMISSION_ALT_SPEED_DOWN: "30"
+      TRANSMISSION_RATIO_LIMIT: "0"
+      TRANSMISSION_RATIO_LIMIT_ENABLED: "true"
+      TRANSMISSION_WATCH_DIR_ENABLED: "false"
+      TRANSMISSION_HOME: "/opt/transmission{{ rolename }}"
+    volumes: "{{ default_volumes + torrents_downloads_path|default([]) }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+      "com.github.cloudbox.community": "transmissionx"
+    networks:
+      - name: cloudbox
+        aliases:
+          - "transmission{{ rolename }}"
+    purge_networks: yes
+    restart_policy: always
+    state: started

@@ -67,6 +67,7 @@
       TRANSMISSION_HOME: "/opt/transmission"
       TRANSMISSION_DOWNLOAD_DIR: "/data/completed"
       TRANSMISSION_INCOMPLETE_DIR: "/data/incoming"
+      TRANSMISSION_INCOMPLETE_DIR_ENABLE: "false"
       TRANSMISSION_RPC_AUTHENTICATION_REQUIRED: "true"
       USER: "{{ user.name }}"
       PASS: "{{ user.pass }}"

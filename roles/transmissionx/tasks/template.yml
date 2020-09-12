@@ -65,7 +65,13 @@
       TRANSMISSION_RATIO_LIMIT: "0"
       TRANSMISSION_RATIO_LIMIT_ENABLED: "true"
       TRANSMISSION_WATCH_DIR_ENABLED: "false"
+      TRANSMISSION_WATCH_DIR: "/data/watched"
       TRANSMISSION_HOME: "/opt/transmission{{ rolename }}"
+      TRANSMISSION_RPC_AUTHENTICATION_REQUIRED: "true"
+      USER: "{{ user.name }}"
+      PASS: "{{ user.pass }}"
+      TRANSMISSION_RPC_WHITELIST_ENABLED: "false"
+
     volumes: "{{ default_volumes + torrents_downloads_path|default([]) }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

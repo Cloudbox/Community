@@ -90,7 +90,6 @@
     - { role: tdarr, tags: ['tdarr'] }
     - { role: telly, tags: ['telly'] }
     - { role: thelounge, tags: ['thelounge'] }
-    - { role: transmission, tags: ['transmission'] }
     - { role: transmissionvpn, tags: ['transmissionvpn'] }
     - { role: transmissionx, tags: ['transmissionx'] }
     - { role: ubooquity, tags: ['ubooquity'] }

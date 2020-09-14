@@ -63,6 +63,7 @@
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       UMASK_SET: "002"
       TRANSMISSION_HOME: "/opt/transmission{{ rolename }}"
+      TRANSMISSION_WEB_HOME: "/transmission-web-control/"
       TRANSMISSION_RPC_AUTHENTICATION_REQUIRED: "true"
       USER: "{{ user.name }}"
       PASS: "{{ user.pass }}"

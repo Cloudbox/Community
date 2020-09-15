@@ -42,7 +42,7 @@
     default_volumes:
       - "/mnt:/mnt"
       - "/opt/transmission{{ rolename }}:/opt/transmission{{ rolename }}"
-      - "/mnt/local/downloads/torrents/transmission{{ rolename }}:/data"
+      - "/mnt/local/downloads/torrents/transmission{{ rolename }}:/downloads"
       - "/mnt/local/downloads/torrents/transmission{{ rolename }}/watched:/watch"
       - "/opt/transmission{{ rolename }}:/config"
 

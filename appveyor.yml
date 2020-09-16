@@ -36,6 +36,7 @@ environment:
     couchpotato
     coder
     comixed
+    deemixrr
     deezloader-remix
     deluge
     delugevpn
@@ -97,7 +98,7 @@ environment:
     wallabag
     wordpress
     xteve
-    znc
+    znc    
 
 init:
   - sh: curl -s https://cloudbox.works/scripts/dep.sh | sudo -H sh &> /dev/null

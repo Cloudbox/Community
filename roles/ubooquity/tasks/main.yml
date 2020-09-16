@@ -1,8 +1,8 @@
 #########################################################################
-# Title:            Community: Tdarr                                    #
-# Author(s):        Visorak, Migz                                       #
+# Title:            Community: Ubooquity                                #
+# Author(s):        theotocopulitos                                     #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  haveagitgat/tdarr                                   #
+# Docker Image(s):  linuxserver/ubooquity                               #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -13,63 +13,48 @@
   include_role:
     name: cloudflare-dns
   vars:
-    record: tdarr
+    record: ubooquity
   when: cloudflare_enabled
-
-- name: Create htpasswd
-  htpasswd:
-    path: "/opt/nginx-proxy/htpasswd/{{ item }}.{{ user.domain }}"
-    name: "{{ user.name }}"
-    password: "{{ user.pass }}"
-    owner: "{{ user.name }}"
-    group: "{{ user.name }}"
-    mode: 0664
-  with_items:
-    - tdarr
 
 - name: Stop and remove any existing container
   docker_container:
-    name: tdarr
+    name: ubooquity
     state: absent
 
-- name: Create tdarr directories
+- name: Create ubooquity directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
-    - /opt/tdarr
-    - /opt/tdarr/config
-    - /opt/tdarr/db
+    - /opt/ubooquity
+    - /mnt/local/Media/Comics
 
 - name: Create and start container
   docker_container:
-    name: tdarr
-    image: haveagitgat/tdarr
+    name: ubooquity
+    image: linuxserver/ubooquity
     pull: yes
     published_ports:
-      - "127.0.0.1:8265:8265"
+      - "2203:2203"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      VIRTUAL_HOST: "tdarr.{{ user.domain }}"
-      VIRTUAL_PORT: "8265"
-      LETSENCRYPT_HOST: "tdarr.{{ user.domain }}"
+      VIRTUAL_HOST: "ubooquity.{{ user.domain }}"
+      VIRTUAL_PORT: "2202"
+      LETSENCRYPT_HOST: "ubooquity.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
-      NVIDIA_DRIVER_CAPABILITIES: "{{ 'all' if gpu.nvidia | default(false) else omit }}"
-      NVIDIA_VISIBLE_DEVICES: "{{ 'all' if gpu.nvidia | default(false) else omit }}"
     volumes:
-      - "/mnt/unionfs/Media:/home/Tdarr/media"
-      - "/opt/tdarr/config:/home/Tdarr/Documents/Tdarr"
-      - "/opt/tdarr/db:/var/lib/mongodb"
-      - "/dev/shm:/dev/shm"
+      - "/opt/ubooquity:/config"
+      - "/mnt/unionfs/Media/Comics:/comics"
+      - "/mnt/unionfs/Media/Books:/books"
+      - "/mnt/unionfs/Media/Files:/files"
       - "/mnt:/mnt"
-      - "/mnt/unionfs/Media/Movies:/movies"
-      - "/mnt/unionfs/Media/TV:/tv"
+
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
       - name: cloudbox
         aliases:
-          - tdarr
+          - ubooquity
     purge_networks: yes
     restart_policy: unless-stopped
     state: started

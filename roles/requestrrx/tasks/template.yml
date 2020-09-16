@@ -1,15 +1,15 @@
 #########################################################################
-# Title:            Community: BazarrX | Template                       #
-# Author(s):        Migz93                                              #
+# Title:            Community: RequestrrX | Template                    #
+# Author(s):        Kalroth, Migz93, no5tyle, Mbryde                    #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  linuxserver/bazarr                                  #
+# Docker Image(s):  darkalfx/requestrr                                  #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
-- name: "Install named bazarr role"
+- name: "Install named requestrrx role"
   debug:
     msg: "Installing {{ rolename }} using port {{ roleport }}"
 
@@ -17,49 +17,38 @@
   include_role:
     name: cloudflare-dns
   vars:
-    record: "bazarr{{ rolename }}"
+    record: "requestrr{{ rolename }}"
   when: cloudflare_enabled
 
-- name: Hotio Migration Tasks
-  import_tasks: "subtasks/hotio_migration.yml"
-
-- name: Create bazarrx directories
+- name: Create requestrrx directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
-    - "/opt/bazarr{{ rolename }}"
-
-- name: Set default_volumes variable
-  set_fact:
-    default_volumes:
-      - "/opt/bazarr{{ rolename }}:/config"
-      - "/opt/scripts:/scripts"
-      - "/mnt:/mnt"
-      - "/mnt/unionfs/Media/TV:/tv"
-      - "/mnt/unionfs/Media/Movies:/movies"
+    - "/opt/requestrr{{ rolename }}"
 
 - name: Create and start container
   docker_container:
-    name: "bazarr{{ rolename }}"
-    image: "hotio/bazarr:{{ bazarrx.version }}"
+    name: "requestrr{{ rolename }}"
+    image: darkalfx/requestrr
     pull: yes
     published_ports:
-      - "127.0.0.1:{{ roleport }}:6767"
+      - "127.0.0.1:{{ roleport }}:4545"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      VIRTUAL_HOST: "bazarr{{ rolename }}.{{ user.domain }}"
-      VIRTUAL_PORT: "6767"
-      LETSENCRYPT_HOST: "bazarr{{ rolename }}.{{ user.domain }}"
+      VIRTUAL_HOST: "requestrr{{ rolename }}.{{ user.domain }}"
+      VIRTUAL_PORT: "4545"
+      LETSENCRYPT_HOST: "requestrr{{ rolename }}.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
-    volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"
+    volumes:
+      - "/opt/requestrr{{ rolename }}:/root/config"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
-      "com.github.cloudbox.community": "bazarrx"
+      "com.github.cloudbox.community": "requestrrx"
     networks:
       - name: cloudbox
         aliases:
-          - "bazarr{{ rolename }}"
-    purge_networks: yes
+          - "requestrr{{ rolename }}"
     restart_policy: unless-stopped
     state: started
+    

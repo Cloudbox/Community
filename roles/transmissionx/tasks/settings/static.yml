@@ -32,7 +32,7 @@
   lineinfile:
     path: "/opt/transmission{{ rolename }}/settings.json"
     regexp: '^\s*\"download\-dir\"\:.*'
-    line: '    "download-dir": "/downloads/torrents/transmission{{ rolename }}/completed",'
+    line: '    "download-dir": "/downloads/torrents/transmission{{ rolename }}/complete",'
     state: present
 
 # Change default incomplete directory

@@ -1,0 +1,96 @@
+#########################################################################
+# Title:         Community: TheLounge Role                              #
+# Author(s):     TheUltimateC0der                                       #
+# URL:           https://github.com/Cloudbox/Community                  #
+# Docker Image:  theultimatecoder/deemixrr                              #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: deemixrr
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing mssql container
+  docker_container:
+    name: mssql
+    state: absent
+    
+- name: Stop and remove any existing deemixrr container
+  docker_container:
+    name: deemixrr
+    state: absent
+
+- name: Create deemixrr directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/deemixrr
+    - /opt/deemixrr/deemix-config
+    - /opt/deemixrr/mssql-data
+
+- name: Create and start mssql
+  docker_container:
+    name: mssql
+    image: "microsoft/mssql-server-linux:latest"
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      SA_PASSWORD: password321
+      ACCEPT_EULA: Y
+    volumes:
+      - "/opt/deemixrr/mssql-data:/var/opt/mssql"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - mssql
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started
+    
+- name: Create and start deemixrr
+  docker_container:
+    name: deemixrr
+    image: "theultimatecoder/deemixrr:latest"
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      VIRTUAL_HOST: "deemixrr.{{ user.domain }}"
+      VIRTUAL_PORT: "9000"
+      LETSENCRYPT_HOST: "deemixrr.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      Kestrel__EndPoints__Http__Url=http://0.0.0.0:5555
+      ConnectionStrings__DefaultConnection=server=mssql;uid=sa;pwd=password321;database=Deemixrr;pooling=true
+      Hangfire__DashboardPath=/autoloaderjobs
+      Hangfire__Password={{ user.pass }}
+      Hangfire__Username={{ user.name }}
+      Hangfire__Workers=1
+      JobConfiguration__GetUpdatesRecurringJob=0 2 * * *
+      JobConfiguration__SizeCalculatorRecurringJob=0 12 * * *
+      DelayConfiguration__ImportArtistsBackgroundJob_ExecuteDelay=1000
+      DelayConfiguration__CheckArtistForUpdatesBackgroundJob_GetTrackCountDelay=1000
+      DelayConfiguration__CheckArtistForUpdatesBackgroundJob_ExecuteDelay=1000
+      DelayConfiguration__CheckPlaylistForUpdatesBackgroundJob_ExecuteDelay=1000
+      DelayConfiguration__CreateArtistBackgroundJob_FromPlaylistDelay=1000
+      DelayConfiguration__CreateArtistBackgroundJob_FromUserDelay=1000
+      DelayConfiguration__CreateArtistBackgroundJob_FromCsvDelay=1000
+      DelayConfiguration__CreatePlaylistBackgroundJob_FromCsvDelay=1000
+      PGID={{ gid }}
+      PUID={{ uid }}
+    volumes:
+      - "/opt/deemixrr/deemix-config:/config/.config/deemix"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - deemixrr
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

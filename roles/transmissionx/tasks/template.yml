@@ -36,14 +36,19 @@
     - /opt/transmission{{ rolename }}/
   when: (torrents_downloads_path is defined)|default(false)
 
+- name: Check if settings.json exists
+  stat:
+    path: "/opt/transmission{{ rolename }}/settings.json"
+  register: settings_json
+
 - name: Set default_volumes variable
   set_fact:
     default_volumes:
       - "/mnt:/mnt"
       - "/opt/transmission{{ rolename }}:/opt/transmission{{ rolename }}"
-      - "/mnt/local/downloads/torrents/transmission{{ rolename }}:/downloads"
-      - "/mnt/local/downloads/torrents/transmission{{ rolename }}/watch:/watch"
       - "/opt/transmission{{ rolename }}:/config"
+      - "/mnt/local/downloads/:/downloads"
+      - "/mnt/local/downloads/torrents/transmission{{ rolename }}/watch:/watch"
 
 - name: Create and start container
   docker_container:
@@ -80,3 +85,13 @@
     restart_policy: always
     state: started
 
+- name: transmissionx Settings Tasks
+  include_tasks: "settings/main.yml"
+  vars:
+    rolename: "{{ role }}"
+    roleport: "{{ 9091 + index }}"
+  with_items: "{{ transmissionx.roles }}"
+  loop_control:
+    loop_var: role
+    index_var: index
+  when: (not continuous_integration)

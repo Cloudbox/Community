@@ -30,10 +30,9 @@
   with_items:
     - "{{ downloads.torrents }}"
     - "{{ downloads.torrents }}/transmission{{ rolename }}"
-    - "{{ downloads.torrents }}/transmission{{ rolename }}/completed"
-    - "{{ downloads.torrents }}/transmission{{ rolename }}/incoming"
-    - "{{ downloads.torrents }}/transmission{{ rolename }}/watched"
-    - "{{ downloads.torrents }}/transmission{{ rolename }}/torrents"
+    - "{{ downloads.torrents }}/transmission{{ rolename }}/complete"
+    - "{{ downloads.torrents }}/transmission{{ rolename }}/incomplete"
+    - "{{ downloads.torrents }}/transmission{{ rolename }}/watch"
     - /opt/transmission{{ rolename }}/
   when: (torrents_downloads_path is defined)|default(false)
 
@@ -43,7 +42,7 @@
       - "/mnt:/mnt"
       - "/opt/transmission{{ rolename }}:/opt/transmission{{ rolename }}"
       - "/mnt/local/downloads/torrents/transmission{{ rolename }}:/downloads"
-      - "/mnt/local/downloads/torrents/transmission{{ rolename }}/watched:/watch"
+      - "/mnt/local/downloads/torrents/transmission{{ rolename }}/watch:/watch"
       - "/opt/transmission{{ rolename }}:/config"
 
 - name: Create and start container

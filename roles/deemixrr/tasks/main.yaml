@@ -65,24 +65,24 @@
       VIRTUAL_PORT: "9000"
       LETSENCRYPT_HOST: "deemixrr.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
-      Kestrel__EndPoints__Http__Url=http://0.0.0.0:5555
-      ConnectionStrings__DefaultConnection=server=mssql;uid=sa;pwd=password321;database=Deemixrr;pooling=true
-      Hangfire__DashboardPath=/autoloaderjobs
-      Hangfire__Password={{ user.pass }}
-      Hangfire__Username={{ user.name }}
-      Hangfire__Workers=1
-      JobConfiguration__GetUpdatesRecurringJob=0 2 * * *
-      JobConfiguration__SizeCalculatorRecurringJob=0 12 * * *
-      DelayConfiguration__ImportArtistsBackgroundJob_ExecuteDelay=1000
-      DelayConfiguration__CheckArtistForUpdatesBackgroundJob_GetTrackCountDelay=1000
-      DelayConfiguration__CheckArtistForUpdatesBackgroundJob_ExecuteDelay=1000
-      DelayConfiguration__CheckPlaylistForUpdatesBackgroundJob_ExecuteDelay=1000
-      DelayConfiguration__CreateArtistBackgroundJob_FromPlaylistDelay=1000
-      DelayConfiguration__CreateArtistBackgroundJob_FromUserDelay=1000
-      DelayConfiguration__CreateArtistBackgroundJob_FromCsvDelay=1000
-      DelayConfiguration__CreatePlaylistBackgroundJob_FromCsvDelay=1000
-      PGID={{ gid }}
-      PUID={{ uid }}
+      Kestrel__EndPoints__Http__Url: http://0.0.0.0:5555
+      ConnectionStrings__DefaultConnection: server=mssql;uid=sa;pwd=password321;database=Deemixrr;pooling=true
+      Hangfire__DashboardPath: /autoloaderjobs
+      Hangfire__Password: {{ user.pass }}
+      Hangfire__Username: {{ user.name }}
+      Hangfire__Workers: 1
+      JobConfiguration__GetUpdatesRecurringJob: 0 2 * * *
+      JobConfiguration__SizeCalculatorRecurringJob: 0 12 * * *
+      DelayConfiguration__ImportArtistsBackgroundJob_ExecuteDelay: 1000
+      DelayConfiguration__CheckArtistForUpdatesBackgroundJob_GetTrackCountDelay: 1000
+      DelayConfiguration__CheckArtistForUpdatesBackgroundJob_ExecuteDelay: 1000
+      DelayConfiguration__CheckPlaylistForUpdatesBackgroundJob_ExecuteDelay: 1000
+      DelayConfiguration__CreateArtistBackgroundJob_FromPlaylistDelay: 1000
+      DelayConfiguration__CreateArtistBackgroundJob_FromUserDelay: 1000
+      DelayConfiguration__CreateArtistBackgroundJob_FromCsvDelay: 1000
+      DelayConfiguration__CreatePlaylistBackgroundJob_FromCsvDelay: 1000
+      PGID: {{ gid }}
+      PUID: {{ uid }}
     volumes:
       - "/opt/deemixrr/deemix-config:/config/.config/deemix"
       - "/mnt/unionfs:/mnt/unionfs"

@@ -85,6 +85,7 @@
       PUID={{ uid }}
     volumes:
       - "/opt/deemixrr/deemix-config:/config/.config/deemix"
+      - "/mnt/unionfs:/mnt/unionfs"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

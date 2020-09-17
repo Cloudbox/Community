@@ -68,8 +68,8 @@
       Kestrel__EndPoints__Http__Url: "http://0.0.0.0:5555"
       ConnectionStrings__DefaultConnection: "server=mssql;uid=sa;pwd=password321;database=Deemixrr;pooling=true"
       Hangfire__DashboardPath: "/autoloaderjobs"
-      Hangfire__Password: {{ user.pass }}
-      Hangfire__Username: {{ user.name }}
+      Hangfire__Password: "{{ user.pass }}"
+      Hangfire__Username: "{{ user.name }}"
       Hangfire__Workers: "1"
       JobConfiguration__GetUpdatesRecurringJob: "0 2 * * *"
       JobConfiguration__SizeCalculatorRecurringJob: "0 12 * * *"

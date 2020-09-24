@@ -40,7 +40,7 @@
     pull: yes
     env:
       TZ: "{{ tz }}"
-      SA_PASSWORD: "AeiGh@e7GMhA!"
+      SA_PASSWORD: "AeiGhe7GMhA!"
       ACCEPT_EULA: Y
     volumes:
       - "/opt/deemixrr/mssql-data:/var/opt/mssql"
@@ -66,7 +66,7 @@
       LETSENCRYPT_HOST: "deemixrr.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       Kestrel__EndPoints__Http__Url: "http://0.0.0.0:5000"
-      ConnectionStrings__DefaultConnection: "server=mssql;uid=sa;pwd=AeiGh@e7GMhA!;database=Deemixrr;pooling=true"
+      ConnectionStrings__DefaultConnection: "server=mssql;uid=sa;pwd=AeiGhe7GMhA!;database=Deemixrr;pooling=true"
       Hangfire__DashboardPath: "/autoloaderjobs"
       Hangfire__Password: "{{ user.pass }}"
       Hangfire__Username: "{{ user.name }}"

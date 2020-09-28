@@ -47,7 +47,7 @@
 - name: Create and start container
   docker_container:
     name: "sonarr{{ rolename }}"
-    image: "hotio/sonarr:phantom"
+    image: "hotio/sonarr:nightly"
     pull: yes
     published_ports:
       - "127.0.0.1:{{ roleport }}:8989"

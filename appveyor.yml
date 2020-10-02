@@ -84,6 +84,7 @@ environment:
     sonarrx
     speedtest
     sshwifty
+    stash
     subsonic
     synclounge
     tdarr

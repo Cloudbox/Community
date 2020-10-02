@@ -1,0 +1,63 @@
+###################################################################
+# Title:            Community: Stash                              #
+# Author(s):        -SK                                           #
+# URL:              https://github.com/Cloudbox/Community         #
+# Docker Image(s):  stashapp/stash                                #
+# --                                                              #
+#         Part of the Cloudbox project: https://cloudbox.works    #
+###################################################################
+#                 GNU General Public License v3.0                 #
+###################################################################
+---
+- name: Setting CloudFlare DNS Record
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: stash
+  when: cloudflare_enabled
+  
+- name: Stop and remove any existing container
+  docker_container:
+    name: stash
+    state: absent
+
+- name: Create stash directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+   - /opt/stash
+
+- name: Create and start container
+  docker_container:
+    name: stash
+    image: stashapp/stash:development-x86_64
+    pull: yes
+    published_ports:
+      - "127.0.0.1:9999:9999"
+    env:
+      TZ: "{{ tz }}"
+      UID: "{{ uid }}"
+      GID: "{{ gid }}"
+      VIRTUAL_HOST: "stash.{{ user.domain }}"
+      VIRTUAL_PORT: "9999"
+      LETSENCRYPT_HOST: "stash.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      STASH_STASH: "/data/"
+      STASH_GENERATED: "/generated/"
+      STASH_METADATA: "/metadata/"
+      STASH_CACHE: "/cache/"
+    volumes:
+      - "/mnt/unionfs/Media/adult:/data"
+      - "/opt/stash/config:/root/.stash"
+      - "/opt/stash/metadata:/metadata"
+      - "/opt/stash/cache:/cache"
+      - "/opt/stash/generated:/generated"
+      - "/mnt:/mnt"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - stash
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

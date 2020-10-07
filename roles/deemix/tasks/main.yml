@@ -1,0 +1,57 @@
+#########################################################################
+# Title:            Community: deemix                                   #
+# Author(s):        chazlarson                                          #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  bocki/deemix                                        #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: deemix
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: deemix
+    state: absent
+
+- name: Create deemix directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  with_items:
+    - /opt/deemix/
+
+- name: Create and start container
+  docker_container:
+    name: deemix
+    image: "registry.gitlab.com/bockiii/deemix-docker"
+    pull: yes
+    published_ports:
+      - "127.0.0.1:6595:6595"
+    env:
+      BACKUP: "yes"
+      VIRTUAL_HOST: "deemix.{{ user.domain }}"
+      VIRTUAL_PORT: "6595"
+      LETSENCRYPT_HOST: "deemix.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      TZ: "{{ tz }}"
+      UMASK_SET: "022"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+    volumes:
+      - "/mnt/unionfs/:/mnt/unionfs/"
+      - "/opt/deemix:/config"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - deemix
+    purge_networks: yes
+    restart_policy: always
+    state: started

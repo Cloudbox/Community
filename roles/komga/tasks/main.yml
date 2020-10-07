@@ -33,7 +33,7 @@
     image: gotson/komga
     pull: yes
     published_ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

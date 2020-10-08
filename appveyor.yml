@@ -135,7 +135,7 @@ install:
               --skip-tags sanity_check,settings \
               --extra-vars '{"continuous_integration":true}'
           RC=$?; [ $RC -eq 0 ] || exit $RC;
-          CONTAINERS=$(comm -23 <(docker ps -a --format '{{ .Names}}' | sort) <(echo "letsencrypt\nnginx-proxy") | xargs echo -n)
+          CONTAINERS=$(comm -23 <(sudo docker ps -a --format '{{ .Names}}' | sort) <(echo "letsencrypt\nnginx-proxy") | xargs echo -n)
           sudo docker stop $CONTAINERS &> /dev/null || true
           sudo docker rm $CONTAINERS &> /dev/null || true
           sudo docker image prune -af &> /dev/null || true

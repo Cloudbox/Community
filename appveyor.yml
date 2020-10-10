@@ -90,7 +90,7 @@ environment:
     znc
 
 init:
-  - sh: curl -s https://raw.githubusercontent.com/saltydk/scripts/master/dep.sh | sudo -H sh &> /dev/null
+  - sh: curl -s https://cloudbox.works/scripts/dep.sh | sudo -H sh &> /dev/null
   - sh: curl -s https://cloudbox.works/scripts/repo.sh | bash &> /dev/null
 
 install:

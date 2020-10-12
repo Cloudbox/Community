@@ -30,7 +30,6 @@ environment:
     bookstack
     btrfsmaintenance
     calibre
-    calibre-rdp
     calibre-web
     comicstreamer
     couchpotato

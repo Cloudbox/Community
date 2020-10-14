@@ -31,8 +31,6 @@
     name: coder
     image: "codercom/code-server"
     pull: yes
-    published_ports:
-      - "127.0.0.1:8143:8080"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

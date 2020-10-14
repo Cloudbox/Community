@@ -59,7 +59,6 @@
     - { role: logarr, tags: ['logarr'] }
     - { role: mediabutler, tags: ['mediabutler'] }
     - { role: medusa, tags: ['medusa'] }
-    - { role: mellow, tags: ['mellow'] }
     - { role: minecraft, tags: ['minecraft'] }
     - { role: monitorr, tags: ['monitorr'] }
     - { role: mylar, tags: ['mylar'] }

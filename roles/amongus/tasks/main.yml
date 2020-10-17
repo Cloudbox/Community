@@ -37,10 +37,10 @@
       GID: "{{ gid }}"
       DISCORD_BOT_TOKEN: "{{ amongus.token }}"
       SERVER_URL: "https://amongus.{{ user.domain }}"
-      EXT_PORT: 443
+      EXT_PORT: "443"
       CONFIG_PATH: "/config"
       VIRTUAL_HOST: "amongus.{{ user.domain }}"
-      VIRTUAL_PORT: 443
+      VIRTUAL_PORT: "443"
       LETSENCRYPT_HOST: "amongus.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:

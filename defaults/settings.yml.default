@@ -45,4 +45,6 @@ transmissionvpn:
   vpn_prov: NORDVPN
   vpn_endpoint: Netherlands.ovpn
 unifi:
+amongus:
+  token: your_discord_bot_token
   port: 8080

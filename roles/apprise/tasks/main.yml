@@ -36,6 +36,7 @@
       VIRTUAL_PORT: "8000"
       LETSENCRYPT_HOST: "apprise.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
+      HTTPS_METHOD: "nohttps"
     volumes:
       - "/opt/apprise:/config"
       - "/mnt:/mnt"

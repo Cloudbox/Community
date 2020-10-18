@@ -86,6 +86,7 @@ environment:
     vnstat
     watchtower
     wordpress
+    xbackbone
     xteve
     znc
 

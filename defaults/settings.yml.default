@@ -3,6 +3,8 @@ sonarrx:
   roles: [1080webdl, 1080remux]
 radarrx:
   roles: [1080webdl, 1080remux]
+lidarrx:
+  roles: [flac, mp3]
 bazarrx:
   roles: [1080webdl, 1080remux]
   version: latest

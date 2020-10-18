@@ -58,6 +58,7 @@
     - { role: kitana, tags: ['kitana'] }
     - { role: komga, tags: ['komga'] }
     - { role: lazylibrarian, tags: ['lazylibrarian'] }
+    - { role: lidarrx, tags: ['lidarrx'] }
     - { role: logarr, tags: ['logarr'] }
     - { role: mediabutler, tags: ['mediabutler'] }
     - { role: medusa, tags: ['medusa'] }

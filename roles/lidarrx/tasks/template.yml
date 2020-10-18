@@ -1,0 +1,65 @@
+#########################################################################
+# Title:            Community: LidarrX | Template                       #
+# Author(s):        paris-ci                                            #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  hotio/lidarr                                        #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Install named lidarr role"
+  debug:
+    msg: "Installing {{ rolename }}"
+
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: "lidarr{{ rolename }}"
+  when: cloudflare_enabled
+
+- name: Create lidarrx directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - "/opt/lidarr{{ rolename }}"
+
+- name: "Check if '/dev/dri' exists"
+  stat:
+    path: "/dev/dri"
+  register: dev_dri
+
+- name: Set default_volumes variable
+  set_fact:
+    default_volumes:
+      - "/opt/lidarr{{ rolename }}:/config"
+      - "/opt/scripts:/scripts"
+      - "/mnt:/mnt"
+      - "/mnt/unionfs/Media/Music:/music"
+
+- name: Create and start container
+  docker_container:
+    name: "lidarr{{ rolename }}"
+    image: "hotio/lidarr"
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "lidarr{{ rolename }}.{{ user.domain }}"
+      VIRTUAL_PORT: "8686"
+      LETSENCRYPT_HOST: "lidarr{{ rolename }}.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"
+    devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+      "com.github.cloudbox.community": "lidarrx"
+    networks:
+      - name: cloudbox
+        aliases:
+          - "lidarr{{ rolename }}"
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

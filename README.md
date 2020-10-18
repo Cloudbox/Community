@@ -19,6 +19,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **[arrX](../../wiki/arrX)** - Create multiple Sonarr/Radarr/Bazarr Docker containers.
 - **airsonic**
 - **[alltube](../../wiki/alltube)** - [alltube](https://github.com/Rudloff/alltube) HTML GUI for youtube-dl.
+- **amongus** - [AmongUsAutoMute](https://github.com/denverquane/amongusdiscord) AmongUs discord auto mute bot.
 - **[beets](../../wiki/beets)** - [Beets](http://beets.io/) Music library manager and MusicBrainz tagger.
 - **[bitwarden](../../wiki/Bitwarden)** - [Bitwarden](https://bitwarden.com/) Installs a self-hosted Bitwarden CE instance.
 - **[bookstack](../../wiki/Bookstack)** - [BookStack](https://www.bookstackapp.com/) Self-hosted platform for organising and storing information.
@@ -29,7 +30,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **[CouchPotato](https://couchpota.to)** - Movie manager
 - **[deluge](../../wiki/Deluge)** - Deluge torrent client
 - **[embystat](https://github.com/mregni/EmbyStat)**
-- **[Emby2]** - Second instance of Emby
+- **Emby2** - Second instance of Emby
 - **funkwhale**
 - **gazee** - comic book reader
 - **[glances](http://nicolargo.github.io/glances/)** - Please have a look at the [official documentation](https://glances.readthedocs.io/en/latest/).

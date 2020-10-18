@@ -31,8 +31,6 @@
     name: requestrr
     image: darkalfx/requestrr
     pull: yes
-    published_ports:
-      - "127.0.0.1:4545:4545"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
@@ -48,6 +46,7 @@
     networks:
       - name: cloudbox
         aliases:
-          - rquestrr
+          - requestrr
+    purge_networks: yes
     restart_policy: unless-stopped
     state: started

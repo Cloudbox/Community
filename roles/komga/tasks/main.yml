@@ -32,8 +32,6 @@
     name: komga
     image: gotson/komga
     pull: yes
-    published_ports:
-      - "8080:8080"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

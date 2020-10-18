@@ -14,6 +14,7 @@
     - { role: airdcpp, tags: ['airdcpp'] }
     - { role: airsonic, tags: ['airsonic'] }
     - { role: alltube, tags: ['alltube'] }
+    - { role: amongus, tags: ['amongus'] }
     - { role: asshama, tags: ['asshama'] }
     - { role: bazarrx, tags: ['bazarrx'] }
     - { role: beets, tags: ['beets'] }
@@ -21,7 +22,6 @@
     - { role: booksonic, tags: ['booksonic'] }
     - { role: bookstack, tags: ['bookstack'] }
     - { role: btrfsmaintenance, tags: ['btrfsmaintenance'] }
-    - { role: calibre-rdp, tags: ['calibre-rdp'] }
     - { role: calibre, tags: ['calibre'] }
     - { role: calibre-web, tags: ['calibre-web'] }
     - { role: coder, tags: ['coder'] }
@@ -60,7 +60,6 @@
     - { role: logarr, tags: ['logarr'] }
     - { role: mediabutler, tags: ['mediabutler'] }
     - { role: medusa, tags: ['medusa'] }
-    - { role: mellow, tags: ['mellow'] }
     - { role: minecraft, tags: ['minecraft'] }
     - { role: monitorr, tags: ['monitorr'] }
     - { role: mylar, tags: ['mylar'] }
@@ -86,6 +85,7 @@
     - { role: sonarrx, tags: ['sonarrx'] }
     - { role: speedtest, tags: ['speedtest'] }
     - { role: sshwifty, tags: ['sshwifty'] }
+    - { role: stash, tags: ['stash'] }
     - { role: subsonic, tags: ['subsonic'] }
     - { role: synclounge, tags: ['synclounge'] }
     - { role: tdarr, tags: ['tdarr'] }

@@ -11,7 +11,7 @@
 ---
 - name: "Install named bazarr role"
   debug:
-    msg: "Installing {{ rolename }} using port {{ roleport }}"
+    msg: "Installing {{ rolename }}"
 
 - name: "Set DNS Record on CloudFlare"
   include_role:
@@ -42,8 +42,6 @@
     name: "bazarr{{ rolename }}"
     image: "hotio/bazarr:{{ bazarrx.version }}"
     pull: yes
-    published_ports:
-      - "127.0.0.1:{{ roleport }}:6767"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

@@ -11,7 +11,7 @@
 ---
 - name: "Install named radarr role"
   debug:
-    msg: "Installing {{ rolename }} using port {{ roleport }}"
+    msg: "Installing {{ rolename }}"
 
 - name: "Set DNS Record on CloudFlare"
   include_role:
@@ -47,10 +47,8 @@
 - name: Create and start container
   docker_container:
     name: "radarr{{ rolename }}"
-    image: "hotio/radarr:unstable"
+    image: "hotio/radarr:nightly"
     pull: yes
-    published_ports:
-      - "127.0.0.1:{{ roleport }}:7878"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

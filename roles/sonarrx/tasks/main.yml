@@ -33,8 +33,6 @@
   include_tasks: template.yml
   vars:
     rolename: "{{ role }}"
-    roleport: "{{ 18989 + index }}"
   with_items: "{{ sonarrx.roles }}"
   loop_control:
     loop_var: role
-    index_var: index

@@ -31,8 +31,6 @@
     name: airsonic
     image: linuxserver/airsonic
     pull: yes
-    published_ports:
-      - "127.0.0.1:4040:4040"
     env:
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"

@@ -2,7 +2,7 @@
 # Title:            Community: SonarrX | Template                       #
 # Author(s):        Kalroth, Migz93                                     #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  hotio/sonarr, hotio/sonarr3                         #
+# Docker Image(s):  hotio/sonarr                                        #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -11,7 +11,7 @@
 ---
 - name: "Install named sonarr role"
   debug:
-    msg: "Installing {{ rolename }} using port {{ roleport }}"
+    msg: "Installing {{ rolename }}"
 
 - name: "Set DNS Record on CloudFlare"
   include_role:
@@ -47,10 +47,8 @@
 - name: Create and start container
   docker_container:
     name: "sonarr{{ rolename }}"
-    image: "hotio/sonarr:phantom"
+    image: "hotio/sonarr:nightly"
     pull: yes
-    published_ports:
-      - "127.0.0.1:{{ roleport }}:8989"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

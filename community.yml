@@ -14,6 +14,8 @@
     - { role: airdcpp, tags: ['airdcpp'] }
     - { role: airsonic, tags: ['airsonic'] }
     - { role: alltube, tags: ['alltube'] }
+    - { role: amongus, tags: ['amongus'] }
+    - { role: apprise, tags: ['apprise'] }
     - { role: asshama, tags: ['asshama'] }
     - { role: bazarrx, tags: ['bazarrx'] }
     - { role: beets, tags: ['beets'] }
@@ -21,7 +23,6 @@
     - { role: booksonic, tags: ['booksonic'] }
     - { role: bookstack, tags: ['bookstack'] }
     - { role: btrfsmaintenance, tags: ['btrfsmaintenance'] }
-    - { role: calibre-rdp, tags: ['calibre-rdp'] }
     - { role: calibre, tags: ['calibre'] }
     - { role: calibre-web, tags: ['calibre-web'] }
     - { role: coder, tags: ['coder'] }
@@ -57,14 +58,15 @@
     - { role: kitana, tags: ['kitana'] }
     - { role: komga, tags: ['komga'] }
     - { role: lazylibrarian, tags: ['lazylibrarian'] }
+    - { role: lidarrx, tags: ['lidarrx'] }
     - { role: logarr, tags: ['logarr'] }
     - { role: mediabutler, tags: ['mediabutler'] }
     - { role: medusa, tags: ['medusa'] }
-    - { role: mellow, tags: ['mellow'] }
     - { role: minecraft, tags: ['minecraft'] }
     - { role: monitorr, tags: ['monitorr'] }
     - { role: mylar, tags: ['mylar'] }
     - { role: mylar3, tags: ['mylar3'] }
+    - { role: navidrome, tags: ['navidrome'] }
     - { role: nextcloud, tags: ['nextcloud'] }
     - { role: nowshowing, tags: ['nowshowing'] }
     - { role: nzbhydra, tags: ['nzbhydra'] }
@@ -86,6 +88,7 @@
     - { role: sonarrx, tags: ['sonarrx'] }
     - { role: speedtest, tags: ['speedtest'] }
     - { role: sshwifty, tags: ['sshwifty'] }
+    - { role: stash, tags: ['stash'] }
     - { role: subsonic, tags: ['subsonic'] }
     - { role: synclounge, tags: ['synclounge'] }
     - { role: tdarr, tags: ['tdarr'] }

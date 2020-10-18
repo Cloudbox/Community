@@ -37,8 +37,6 @@
     name: nextcloud
     image: "linuxserver/nextcloud"
     pull: yes
-    published_ports:
-      - "127.0.0.1:4645:443"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

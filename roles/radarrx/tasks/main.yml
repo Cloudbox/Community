@@ -33,8 +33,6 @@
   include_tasks: template.yml
   vars:
     rolename: "{{ role }}"
-    roleport: "{{ 17878 + index }}"
   with_items: "{{ radarrx.roles }}"
   loop_control:
     loop_var: role
-    index_var: index

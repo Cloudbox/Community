@@ -1,8 +1,8 @@
 #########################################################################
 # Title:            Community: Jellyfin                                 #
-# Author(s):        maximuskowalski, desimaniac                         #
+# Author(s):        maximuskowalski, desimaniac, owine                  #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  linuxserver/jellyfin                                #
+# Docker Image(s):  hotio/jellyfin                                      #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################

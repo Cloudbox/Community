@@ -15,6 +15,7 @@
     - { role: airsonic, tags: ['airsonic'] }
     - { role: alltube, tags: ['alltube'] }
     - { role: amongus, tags: ['amongus'] }
+    - { role: apprise, tags: ['apprise'] }
     - { role: asshama, tags: ['asshama'] }
     - { role: bazarrx, tags: ['bazarrx'] }
     - { role: beets, tags: ['beets'] }

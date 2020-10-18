@@ -1,8 +1,8 @@
-#########################################################################
-# Title:            Community: Mellow                                   #
-# Author(s):        Superduper09                                        #
+########################################################################
+# Title:            Community: Calibre              #
+# Author(s):        Andrew Johnson and SK                                            #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  voidp/mellow                                        #
+# Docker Image(s):  linuxserver/calibre                         #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -13,41 +13,49 @@
   include_role:
     name: cloudflare-dns
   vars:
-    record: mellow
+    record: calibre
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container
   docker_container:
-    name: mellow
+    name: calibre
     state: absent
 
-- name: Create mellow directories
+- name: Create calibre directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
-    - /opt/mellow
+   - /opt/calibre
+   - /mnt/local/Media/Books
 
 - name: Create and start container
   docker_container:
-    name: mellow
-    image: voidp/mellow
+    name: calibre
+    image: linuxserver/calibre
     pull: yes
     published_ports:
-      - "127.0.0.1:5060:5060"
+      - "127.0.0.1:8087:8080"
+      - "127.0.0.1:8088:8081"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      VIRTUAL_HOST: "mellow.{{ user.domain }}"
-      VIRTUAL_PORT: "5060"
-      LETSENCRYPT_HOST: "mellow.{{ user.domain }}"
+      GUAC_USER: "{{ user.name }}"
+      GUAC_PASS: "{{ user.pass | hash('md5') }}"
+      LIBRARYINTERNALPATH: "/library"
+      VIRTUAL_HOST: "calibre.{{ user.domain }}"
+      VIRTUAL_PORT: "8080"
+      LETSENCRYPT_HOST: "calibre.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/opt/mellow:/usr/src/app/data/"
+      - "/opt/calibre:/config"
+      - "/mnt/unionfs/Media/Books:/library"
+      - "/mnt:/mnt"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
       - name: cloudbox
         aliases:
-          - mellow
+          - calibre
+    purge_networks: yes
     restart_policy: unless-stopped
     state: started

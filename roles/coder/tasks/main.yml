@@ -31,8 +31,6 @@
     name: coder
     image: "codercom/code-server"
     pull: yes
-    published_ports:
-      - "127.0.0.1:8143:8080"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
@@ -47,7 +45,6 @@
       - "/mnt:/mnt"
       - "/opt:/host_opt"
       - "/home/{{ user.name }}:/home/coder/host"
-    command: "--allow-http"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

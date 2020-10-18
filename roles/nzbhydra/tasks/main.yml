@@ -66,8 +66,6 @@
     name: nzbhydra
     image: linuxserver/hydra
     pull: yes
-    published_ports:
-      - "127.0.0.1:5075:5075"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

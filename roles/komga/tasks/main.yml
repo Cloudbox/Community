@@ -1,0 +1,56 @@
+#########################################################################
+# Title:            Community: komga                                    #
+# Author(s):        theotocopulitos                                     #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  gotson/komga                                        #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: komga
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: komga
+    state: absent
+
+- name: Create komga directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/komga
+    - /mnt/local/Media/Comics
+
+- name: Create and start container
+  docker_container:
+    name: komga
+    image: gotson/komga
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "komga.{{ user.domain }}"
+      VIRTUAL_PORT: "8080"
+      LETSENCRYPT_HOST: "komga.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/komga:/config"
+      - "/mnt/unionfs/Media/Comics:/comics"
+      - "/mnt:/mnt"
+
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - komga
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

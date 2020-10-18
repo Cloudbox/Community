@@ -1,0 +1,28 @@
+#########################################################################
+# Title:         Community: BazarrX | hotio Migration Tasks             #
+# Author(s):     owine                                                  #
+# URL:           https://github.com/Cloudbox/Community                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: hotio Migration | Check folder exists
+  stat:
+    path: "/opt/bazarr{{ rolename }}"
+  register: folder
+
+- name: hotio Migration | Check subfolder exists
+  stat:
+    path: "/opt/bazarr{{ rolename }}/app"
+  register: subfolder
+
+- name: hotio Migration | Move 'bazarr' folder contents to 'app' subfolder
+  shell: |
+    mv "/opt/bazarr{{ rolename }}" /tmp/app
+    mkdir "/opt/bazarr{{ rolename }}"
+    mv /tmp/app "/opt/bazarr{{ rolename }}/"
+    find "/opt/bazarr{{ rolename }}/*" -type d -empty -delete
+    chown -R {{ user.name }}:{{ user.name }} "/opt/bazarr{{ rolename }}"
+  when: (folder.stat.exists) and not (subfolder.stat.exists)

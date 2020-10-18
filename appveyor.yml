@@ -7,7 +7,7 @@ skip_commits:
     - '*.yml.default'
   message: /\[minor\]/
 
-image: Ubuntu1604
+image: Ubuntu1804-minimal
 
 matrix:
   fast_finish: true
@@ -23,19 +23,25 @@ environment:
     airdcpp
     airsonic
     alltube
+    amongus
+    apprise
     asshama
     bazarrx
     beets
     bitwarden
     bookstack
-    calibre-rdp
+    btrfsmaintenance
+    calibre
     calibre-web
+    comicstreamer
     couchpotato
     coder
+    comixed
     deezloader-remix
     deluge
     delugevpn
     embystat
+    emby2
     epms
     filebot
     filezilla
@@ -51,14 +57,17 @@ environment:
     jellyfin
     jirafeau
     kitana
+    komga
     lazylibrarian
+    lidarrx
     logarr
     mediabutler
     medusa
-    mellow
     minecraft
     monitorr
     mylar
+    mylar3
+    navidrome
     nextcloud
     nowshowing
     nzbhydra
@@ -71,20 +80,24 @@ environment:
     quassel
     radarrx
     resilio-sync
+    requestrrx
     rocketchat
     sickchill
     sonarrx
     speedtest
     sshwifty
+    stash
     subsonic
     synclounge
     tdarr
     thelounge
     transmissionvpn
+    ubooquity
     unifi
     unmanic
     vnstat
     watchtower
+    wallabag
     wordpress
     xbackbone
     xteve
@@ -136,10 +149,10 @@ install:
               --skip-tags sanity_check,settings \
               --extra-vars '{"continuous_integration":true}'
           RC=$?; [ $RC -eq 0 ] || exit $RC;
-          CONTAINERS=$(comm -23 <(docker ps -a --format '{{ .Names}}' | sort) <(echo "letsencrypt\nnginx-proxy") | xargs echo -n)
-          docker stop $CONTAINERS &> /dev/null || true
-          docker rm $CONTAINERS &> /dev/null || true
-          docker image prune -af &> /dev/null || true
-          docker volume prune -f &> /dev/null || true
+          CONTAINERS=$(comm -23 <(sudo docker ps -a --format '{{ .Names}}' | sort) <(echo "letsencrypt\nnginx-proxy") | xargs echo -n)
+          sudo docker stop $CONTAINERS &> /dev/null || true
+          sudo docker rm $CONTAINERS &> /dev/null || true
+          sudo docker image prune -af &> /dev/null || true
+          sudo docker volume prune -f &> /dev/null || true
           echo ""
       done

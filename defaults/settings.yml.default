@@ -3,10 +3,15 @@ sonarrx:
   roles: [1080webdl, 1080remux]
 radarrx:
   roles: [1080webdl, 1080remux]
+lidarrx:
+  roles: [flac, mp3]
 bazarrx:
   roles: [1080webdl, 1080remux]
+  version: latest
 ombix:
   roles: [4k]
+requestrrx:
+  roles: [1080, 4k]
 calibreweb:
   caliblur: yes
 goplaxt:
@@ -48,3 +53,7 @@ xbackbone:
  subdomain:
  maxupload: 2G
  storage: /mnt/local/xbackbone
+amongus:
+  token: your_discord_bot_token
+navidrome:
+  musicfolder: /mnt/unionfs/Media/Music

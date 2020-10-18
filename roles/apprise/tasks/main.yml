@@ -1,0 +1,62 @@
+#########################################################################
+# Title:            Community: Apprise                                  #
+# Author(s):        owine                                               #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  caronc/apprise                                      #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: apprise
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: apprise
+    state: absent
+    
+- name: Create htpasswd
+  htpasswd:
+    path: "/opt/nginx-proxy/htpasswd/{{ item }}.{{ user.domain }}"
+    name: "{{ user.name }}"
+    password: "{{ user.pass }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0664
+  with_items:
+    - apprise
+
+- name: Create apprise directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/apprise
+
+- name: Create and start container
+  docker_container:
+    name: apprise
+    image: caronc/apprise
+    pull: yes
+    env:
+      VIRTUAL_HOST: "apprise.{{ user.domain }}"
+      VIRTUAL_PORT: "8000"
+      LETSENCRYPT_HOST: "apprise.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      HTTPS_METHOD: "nohttps"
+    volumes:
+      - "/opt/apprise:/config"
+      - "/mnt:/mnt"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - apprise
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

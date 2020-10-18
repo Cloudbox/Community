@@ -1,0 +1,52 @@
+#########################################################################
+# Title:            Community: Requestrr                                #
+# Author(s):        nostyle                                             #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  darkalfx/requestrr                                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: requestrr
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: requestrr
+    state: absent
+
+- name: Create requestrr directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/requestrr
+
+- name: Create and start container
+  docker_container:
+    name: requestrr
+    image: darkalfx/requestrr
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "requestrr.{{ user.domain }}"
+      VIRTUAL_PORT: "4545"
+      LETSENCRYPT_HOST: "requestrr.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/requestrr:/root/config"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - requestrr
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

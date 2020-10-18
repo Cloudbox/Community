@@ -1,0 +1,51 @@
+#########################################################################
+# Title:            Community: RequestrrX | Template                    #
+# Author(s):        Kalroth, Migz93, no5tyle, Mbryde                    #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  darkalfx/requestrr                                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Install named requestrrx role"
+  debug:
+    msg: "Installing {{ rolename }}"
+
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: "requestrr{{ rolename }}"
+  when: cloudflare_enabled
+
+- name: Create requestrrx directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - "/opt/requestrr{{ rolename }}"
+
+- name: Create and start container
+  docker_container:
+    name: "requestrr{{ rolename }}"
+    image: darkalfx/requestrr
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "requestrr{{ rolename }}.{{ user.domain }}"
+      VIRTUAL_PORT: "4545"
+      LETSENCRYPT_HOST: "requestrr{{ rolename }}.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/requestrr{{ rolename }}:/root/config"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+      "com.github.cloudbox.community": "requestrrx"
+    networks:
+      - name: cloudbox
+        aliases:
+          - "requestrr{{ rolename }}"
+    restart_policy: unless-stopped
+    state: started

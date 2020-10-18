@@ -1,0 +1,54 @@
+#########################################################################
+# Title:            Community: Navidrome                                #
+# Author:           finch                                               #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  deluan/navidrome:latest                             #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+    - name: "Setting CloudFlare DNS Record"
+      include_role:
+        name: cloudflare-dns
+      vars:
+        record: navidrome
+      when: cloudflare_enabled
+    
+    - name: Stop and remove any existing container
+      docker_container:
+        name: navidrome
+        state: absent
+    
+    - name: Create navidrome directories
+      file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+      with_items:
+       - /opt/navidrome
+
+    - name: Create and start container
+      docker_container:
+        name: navidrome
+        image: deluan/navidrome:latest
+        pull: yes
+        env:
+          TZ: "{{ tz }}"
+          PUID: "{{ uid }}"
+          GUID: "{{ gid }}"
+          VIRTUAL_HOST: "navidrome.{{ user.domain }}"
+          VIRTUAL_PORT: "4533"
+          LETSENCRYPT_HOST: "navidrome.{{ user.domain }}"
+          LETSENCRYPT_EMAIL: "{{ user.email }}"
+        volumes:
+          - "{{ navidrome.musicfolder }}:/music"
+          - "/opt/navidrome:/data"
+          - "/mnt:/mnt"
+        labels:
+          "com.github.cloudbox.cloudbox_managed": "true"
+        networks:
+          - name: cloudbox
+            aliases:
+              - navidrome
+        purge_networks: yes
+        restart_policy: unless-stopped
+        state: started

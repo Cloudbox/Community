@@ -46,3 +46,5 @@ transmissionvpn:
   vpn_endpoint: Netherlands.ovpn
 unifi:
   port: 8080
+navidrome:
+  musicfolder: /mnt/unionfs/Media/Music

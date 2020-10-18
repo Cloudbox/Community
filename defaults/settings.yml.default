@@ -48,3 +48,5 @@ unifi:
   port: 8080
 amongus:
   token: your_discord_bot_token
+navidrome:
+  musicfolder: /mnt/unionfs/Media/Music

@@ -32,8 +32,6 @@
     name: mylar3
     image: ajslater/mylar3
     pull: yes
-    published_ports:
-      - "127.0.0.1:8091:8090"
     env:
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"

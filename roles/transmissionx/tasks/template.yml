@@ -11,7 +11,7 @@
 ---
 - name: "Install named transmission role"
   debug:
-    msg: "Installing {{ rolename }} using port {{ roleport }}"
+    msg: "Installing {{ rolename }}"
 
 - name: "Set DNS Record on CloudFlare"
   include_role:
@@ -33,7 +33,6 @@
     - "{{ downloads.torrents }}/transmission{{ rolename }}/complete"
     - "{{ downloads.torrents }}/transmission{{ rolename }}/incomplete"
     - "{{ downloads.torrents }}/transmission{{ rolename }}/watch"
-    - /opt/transmission{{ rolename }}/
   when: (torrents_downloads_path is defined)|default(false)
 
 - name: Check if settings.json exists
@@ -45,18 +44,13 @@
   set_fact:
     default_volumes:
       - "/mnt:/mnt"
-      - "/opt/transmission{{ rolename }}:/opt/transmission{{ rolename }}"
       - "/opt/transmission{{ rolename }}:/config"
-      - "/mnt/local/downloads/:/downloads"
-      - "/mnt/local/downloads/torrents/transmission{{ rolename }}/watch:/watch"
 
 - name: Create and start container
   docker_container:
     name: "transmission{{ rolename }}"
     image: "linuxserver/transmission"
     pull: yes
-    published_ports:
-      - "127.0.0.1:{{ roleport }}:9091"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
@@ -66,12 +60,9 @@
       LETSENCRYPT_HOST: "transmission{{ rolename }}.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       UMASK_SET: "002"
-      TRANSMISSION_HOME: "/opt/transmission{{ rolename }}"
       TRANSMISSION_WEB_HOME: "/transmission-web-control/"
-      TRANSMISSION_RPC_AUTHENTICATION_REQUIRED: "true"
       USER: "{{ user.name }}"
       PASS: "{{ user.pass }}"
-      TRANSMISSION_RPC_WHITELIST_ENABLED: "false"
 
     volumes: "{{ default_volumes + torrents_downloads_path|default([]) }}"
     labels:
@@ -89,8 +80,6 @@
   include_tasks: "settings/main.yml"
   vars:
     rolename: "{{ role }}"
-    roleport: "{{ 9091 + index }}"
   loop_control:
     loop_var: role
-    index_var: index
   when: (not continuous_integration)

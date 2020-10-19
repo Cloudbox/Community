@@ -1,0 +1,28 @@
+#########################################################################
+# Title:         Community: Jellyfin | hotio Migration Tasks             #
+# Author(s):     owine                                                  #
+# URL:           https://github.com/Cloudbox/Community                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: hotio Migration | Check folder exists
+  stat:
+    path: "/opt/jellyfin"
+  register: folder
+
+- name: hotio Migration | Check subfolder exists
+  stat:
+    path: "/opt/jellyfin/app"
+  register: subfolder
+
+- name: hotio Migration | Move 'jellyfin' folder contents to 'app' subfolder
+  shell: |
+    mv "/opt/jellyfin" /tmp/app
+    mkdir "/opt/jellyfin"
+    mv /tmp/app "/opt/jellyfin/"
+    find "/opt/jellyfin/*" -type d -empty -delete
+    chown -R {{ user.name }}:{{ user.name }} "/opt/jellyfin"
+  when: (folder.stat.exists) and not (subfolder.stat.exists)

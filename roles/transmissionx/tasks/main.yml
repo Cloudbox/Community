@@ -28,8 +28,6 @@
   include_tasks: template.yml
   vars:
     rolename: "{{ role }}"
-    roleport: "{{ 9091 + index }}"
   with_items: "{{ transmissionx.roles }}"
   loop_control:
     loop_var: role
-    index_var: index

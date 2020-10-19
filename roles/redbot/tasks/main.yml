@@ -1,0 +1,38 @@
+#########################################################################
+# Title:            Community: Red Discord Bot                          #
+# Author(s):        sil3ntc                                             #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  phasecorex/red-discordbot                           #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Stop and remove any existing container
+  docker_container:
+    name: redbot
+    state: absent
+
+- name: Create redbot directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/redbot
+
+- name: Create and start container
+  docker_container:
+    name: redbot
+    image: phasecorex/red-discordbot
+    pull: yes
+    env:
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      TOKEN: "{{ redbot.token }}"
+      PREFIX: "{{ redbot.prefix }}"
+    volumes:
+      - "/opt/redbot:/data/"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+    restart_policy: unless-stopped
+    state: started

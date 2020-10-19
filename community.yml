@@ -79,6 +79,7 @@
     - { role: qbittorrent, tags: ['qbittorrent'] }
     - { role: quassel, tags: ['quassel'] }
     - { role: radarrx, tags: ['radarrx'] }
+    - { role: redbot, tags: ['redbot'] }
     - { role: requestrr, tags: ['requestrr'] }
     - { role: requestrrx, tags: ['requestrrx'] }
     - { role: resilio-sync, tags: ['resilio-sync'] }

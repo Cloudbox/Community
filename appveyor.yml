@@ -79,6 +79,7 @@ environment:
     qbittorrent
     quassel
     radarrx
+    redbot
     resilio-sync
     requestrrx
     rocketchat

@@ -31,8 +31,6 @@
     name: deemix
     image: "registry.gitlab.com/bockiii/deemix-docker"
     pull: yes
-    published_ports:
-      - "127.0.0.1:6595:6595"
     env:
       BACKUP: "yes"
       VIRTUAL_HOST: "deemix.{{ user.domain }}"
@@ -44,7 +42,7 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
     volumes:
-      - "/mnt/unionfs/:/mnt/unionfs/"
+      - "/mnt:/mnt"
       - "/opt/deemix:/config"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

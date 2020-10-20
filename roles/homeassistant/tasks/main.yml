@@ -53,10 +53,6 @@
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     network_mode: host
-    networks:
-      - name: cloudbox
-        aliases:
-          - homeassistant
     purge_networks: yes
     restart_policy: unless-stopped
     state: started

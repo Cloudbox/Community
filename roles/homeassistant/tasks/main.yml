@@ -36,8 +36,6 @@
     name: homeassistant
     image: homeassistant/home-assistant:stable
     pull: yes
-    published_ports:
-      - "127.0.0.1:8123:8123"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

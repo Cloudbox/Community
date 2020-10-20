@@ -52,6 +52,7 @@
     devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
+    network_mode: host
     networks:
       - name: cloudbox
         aliases:

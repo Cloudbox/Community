@@ -26,7 +26,6 @@
     zone: "{{ user.domain }}"
     state: present
     solo: true
-    proxied: "{{ dns.proxied | default('no') }}"
     type: A
     value: "{{ public_ip }}"
     record: "{{ record }}"

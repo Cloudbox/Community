@@ -52,4 +52,4 @@
           - watchtower
     purge_networks: yes
     state: started
-    restart: unless-stopped
+    restart_policy: unless-stopped

@@ -1,0 +1,59 @@
+#########################################################################
+# Title:            Community: readarr                                  #
+# Author(s):        claym                                               #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  hotio/readarr:unstable                              #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: readarr
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: readarr
+    state: absent
+
+- name: Create readarr directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/readarr
+    - /mnt/local/Media/Books
+    - /mnt/local/Media/AudioBooks
+
+- name: Create and start container
+  docker_container:
+    name: readarr
+    image: hotio/readarr:unstable
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "readarr.{{ user.domain }}"
+      VIRTUAL_PORT: "8080"
+      LETSENCRYPT_HOST: "readarr.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/readarr:/config"
+      - "/mnt/unionfs/Media/Books:/Books"
+      - "/mnt/unionfs/Media/AudioBooks:/AudioBooks"
+      - "/mnt/unionfs/downloads:/downloads"
+      - "/mnt:/mnt"
+
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - readarr
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

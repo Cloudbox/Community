@@ -38,7 +38,7 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "readarr.{{ user.domain }}"
-      VIRTUAL_PORT: "8080"
+      VIRTUAL_PORT: "8787"
       LETSENCRYPT_HOST: "readarr.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:

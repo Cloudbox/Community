@@ -80,6 +80,7 @@ environment:
     qbittorrent
     quassel
     radarrx
+    readarr
     redbot
     resilio-sync
     requestrrx

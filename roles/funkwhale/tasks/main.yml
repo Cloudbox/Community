@@ -27,20 +27,37 @@
     - /opt/funkwhale
     - /opt/funkwhale/data
 
+- name: "Check if funkwhale env file exists"
+  stat:
+    path: "/opt/funkwhale/env"
+  register: funkwhale_env
+
+- name: "Import env file if it doesnt exist"
+  template:
+    src: funkwhale_env.j2
+    dest: /opt/funkwhale/env
+    force: yes
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+  when: not funkwhale_env.stat.exists
+
 - name: "Create and start funkwhale container"
   docker_container:
     name: funkwhale
-    image: funkwhale/all-in-one:develop
+    image: thetarkus/funkwhale:latest
     pull: yes
+    published_ports:
+      - "127.0.0.1:6969:80"
     env:
-      FUNKWHALE_HOSTNAME: "funkwhale.{{ user.domain }}"
-      NESTED_PROXY: "1"
+      FUNKWHALE_URL: "funkwhale.{{ user.domain }}"
       VIRTUAL_HOST: "funkwhale.{{ user.domain }}"
       LETSENCRYPT_HOST: "funkwhale.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       VIRTUAL_PORT: "80"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
+    env_file: /opt/funkwhale/env
     volumes:
       - "/opt/funkwhale/data:/data"
       - "/mnt/unionfs/:/music:ro"

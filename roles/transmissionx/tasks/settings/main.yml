@@ -1,0 +1,37 @@
+#########################################################################
+# Title:            transmissionx: Sttings Tasks                        #
+# Author(s):        giosann                                             #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  linuxserver/trasmission                             #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+## Checks
+
+- name: Settings | Wait for 'settings.json' to be created
+  wait_for:
+    path: "/opt/transmission{{ rolename }}/settings.json"
+    state: present
+
+- name: Settings | Wait for 10 seconds before stopping transmissionx container
+  wait_for:
+    timeout: 10
+
+- name: Settings | Stop container
+  docker_container:
+    name: transmission{{ rolename }}
+    state: stopped
+
+## transmissionx Static Settings Tasks
+
+- name: Settings | transmissionx Static Settings Tasks
+  include_tasks: "static.yml"
+  when: (not settings_json.stat.exists)
+
+- name: Settings | Start container
+  docker_container:
+    name: transmission{{ rolename }}
+    state: started

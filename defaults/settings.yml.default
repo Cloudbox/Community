@@ -46,6 +46,8 @@ transmissionvpn:
   vpn_pass: your_vpn_password
   vpn_prov: NORDVPN
   vpn_endpoint: Netherlands.ovpn
+transmissionx:
+  roles: [""]
 unifi:
   port: 8080
 redbot:

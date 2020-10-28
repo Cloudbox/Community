@@ -50,9 +50,11 @@ environment:
     gazee
     glances
     goplaxt
+    grafana
     handbrake
     healthchecks
     heimdall
+    influxdb
     invoiceninja
     jdownloader2
     jellyfin
@@ -92,11 +94,14 @@ environment:
     subsonic
     synclounge
     tdarr
+    telegraf
     thelounge
     transmissionvpn
+    transmissionx
     ubooquity
     unifi
     unmanic
+    varken
     vnstat
     watchtower
     wallabag

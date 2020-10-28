@@ -60,6 +60,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **subsonic**
 - **[telly](../../wiki/Telly)**
 - **[transmissionvpn](https://github.com/haugene/docker-transmission-openvpn)**
+- **[transmissionx](../../wiki/transmissionx)** - lightweight torrent client - role to create multiple roles (default is one)
 - **ubooquity** - comics server and online reader (ubooquity.your.server/ubooquity for main page / your.ip:2203/ubooquity/admin for admin)
 - **[wallabag](https://wallabag.org/en)** 0 Wallabag role (default u/p wallabag/wallabag) - Save and classify websites and articles.
 - **[Wordpress](../../wiki/Wordpress)** - Wordpress deployment

@@ -46,11 +46,13 @@
     - { role: glances, tags: ['glances'] }
     - { role: goplaxt, tags: ['goplaxt'] }
     - { role: gotify, tags: ['gotify'] }
+    - { role: grafana, tags: ['grafana'] }
     - { role: guacamole, tags: ['guacamole'] }
     - { role: handbrake, tags: ['handbrake'] }
     - { role: healthchecks, tags: ['healthchecks'] }
     - { role: heimdall, tags: ['heimdall'] }
     - { role: hetzner_nfs, tags: ['hetzner_nfs_server', 'hetzner_nfs_server_uninstall', 'hetzner_nfs_client_mount', 'hetzner_nfs_client_unmount'] }
+    - { role: influxdb, tags: ['influxdb'] }
     - { role: invoiceninja, tags: ['invoiceninja'] }
     - { role: jellyfin, tags: ['jellyfin'] }
     - { role: jirafeau, tags: ['jirafeau'] }
@@ -93,12 +95,15 @@
     - { role: subsonic, tags: ['subsonic'] }
     - { role: synclounge, tags: ['synclounge'] }
     - { role: tdarr, tags: ['tdarr'] }
+    - { role: telegraf, tags: ['telegraf'] }
     - { role: telly, tags: ['telly'] }
     - { role: thelounge, tags: ['thelounge'] }
     - { role: transmissionvpn, tags: ['transmissionvpn'] }
+    - { role: transmissionx, tags: ['transmissionx'] }
     - { role: ubooquity, tags: ['ubooquity'] }
     - { role: unifi, tags: ['unifi'] }
     - { role: unmanic, tags: ['unmanic'] }
+    - { role: varken, tags: ['varken'] }
     - { role: vnstat, tags: ['vnstat'] }
     - { role: watchtower, tags: ['watchtower'] }
     - { role: wallabag, tags: ['wallabag'] }

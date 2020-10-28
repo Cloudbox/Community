@@ -1,72 +1,75 @@
----
-alltube:
+--- 
+alltube: 
   domain: ~
-amongus:
+amongus: 
   token: your_discord_bot_token
-bazarrx:
-  roles:
+bazarrx: 
+  roles: 
     - 1080webdl
     - 1080remux
   version: latest
-bookstack:
+bookstack: 
   subdomain: bookstack
-calibreweb:
+calibreweb: 
   caliblur: true
-deluge:
+deluge: 
   version: v2
-delugevpn:
+delugevpn: 
   version: v2
   vpn_endpoint: Netherlands.ovpn
   vpn_pass: your_vpn_password
   vpn_prov: pia
   vpn_user: your_vpn_username
-gitea:
+gitea: 
   subdomain: git
-goplaxt:
+goplaxt: 
   trakt_id: ~
   trakt_secret: ~
-grafana:
+grafana: 
   plugins: "grafana-piechart-panel,grafana-worldmap-panel"
-invoiceninja:
+invoiceninja: 
   subdomain: invoiceninja
-jirafeau:
+jirafeau: 
   domain: ~
-lidarrx:
-  roles:
+lidarrx: 
+  roles: 
     - flac
     - mp3
-navidrome:
+navidrome: 
   musicfolder: /mnt/unionfs/Media/Music
-ombix:
-  roles:
+ombix: 
+  roles: 
     - 4k
-radarrx:
-  roles:
+radarrx: 
+  roles: 
     - 1080webdl
     - 1080remux
-redbot:
+redbot: 
   prefix: "."
   token: your_bot_token
-requestrrx:
-  roles:
+requestrrx: 
+  roles: 
     - 1080
     - 4k
-sonarrx:
-  roles:
+sonarrx: 
+  roles: 
     - 1080webdl
     - 1080remux
-synclounge:
+synclounge: 
   domain: ~
   subdomain: synclounge
-transmissionvpn:
+transmissionvpn: 
   vpn_endpoint: Netherlands.ovpn
   vpn_pass: your_vpn_password
   vpn_prov: NORDVPN
   vpn_user: your_vpn_username
-unifi:
+transmissionx: 
+  roles: 
+    - ""
+unifi: 
   port: 8080
-varken:
+varken: 
   tautulli_subdomain: plexpy
-wordpress:
+wordpress: 
   direct_domain: false
   subdomain: wordpress

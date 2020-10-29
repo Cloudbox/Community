@@ -49,6 +49,8 @@
     name: "radarr{{ rolename }}"
     image: "hotio/radarr:nightly"
     pull: yes
+    published_ports:
+      - "127.0.0.1:{{ roleport }}:7878"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

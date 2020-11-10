@@ -9,11 +9,11 @@
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
-- name: "Setting CloudFlare DNS Record"
+- name: "Set DNS Record on CloudFlare"
   include_role:
-    name: cloudflare
+    name: cloudflare-dns
   vars:
-    subdomain: grafana
+    record: grafana
   when: cloudflare_enabled
 
 - name: Stop and remove any existing containers

@@ -16,7 +16,7 @@ deluge:
   version: v2
 delugevpn: 
   version: v2
-  vpn_endpoint: Netherlands.ovpn
+  vpn_endpoint: netherlands.ovpn
   vpn_pass: your_vpn_password
   vpn_prov: pia
   vpn_user: your_vpn_username

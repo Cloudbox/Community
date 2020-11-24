@@ -19,6 +19,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **[arrX](../../wiki/arrX)** - Create multiple Sonarr/Radarr/Bazarr Docker containers.
 - **airsonic**
 - **[alltube](../../wiki/alltube)** - [alltube](https://github.com/Rudloff/alltube) HTML GUI for youtube-dl.
+- **amongus** - [AmongUsAutoMute](https://github.com/denverquane/amongusdiscord) AmongUs discord auto mute bot.
 - **[beets](../../wiki/beets)** - [Beets](http://beets.io/) Music library manager and MusicBrainz tagger.
 - **[bitwarden](../../wiki/Bitwarden)** - [Bitwarden](https://bitwarden.com/) Installs a self-hosted Bitwarden CE instance.
 - **[bookstack](../../wiki/Bookstack)** - [BookStack](https://www.bookstackapp.com/) Self-hosted platform for organising and storing information.
@@ -29,7 +30,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **[CouchPotato](https://couchpota.to)** - Movie manager
 - **[deluge](../../wiki/Deluge)** - Deluge torrent client
 - **[embystat](https://github.com/mregni/EmbyStat)**
-- **[Emby2]** - Second instance of Emby
+- **Emby2** - Second instance of Emby
 - **funkwhale**
 - **gazee** - comic book reader
 - **[glances](http://nicolargo.github.io/glances/)** - Please have a look at the [official documentation](https://glances.readthedocs.io/en/latest/).
@@ -51,6 +52,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **[qBittorrent](../../wiki/qBittorrent)** - qBittorrent torrent client
 - **radarr1080** - Additional Radarr
 - **radarrX** - Similar to [sonarrX](../../wiki/SonarrX) but for radarr, to create multiple roles
+- **Red Discord Bot** - A customisible self-hosted Discord Bot
 - **sonarr1080** - Additional Sonarr
 - **sonarrv3** - Sonar phantom (v3) branch based role
 - **[sonarrX](../../wiki/SonarrX)** - Experimental Sonarr v3 role to create multiple roles
@@ -58,6 +60,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **subsonic**
 - **[telly](../../wiki/Telly)**
 - **[transmissionvpn](https://github.com/haugene/docker-transmission-openvpn)**
+- **[transmissionx](../../wiki/transmissionx)** - lightweight torrent client - role to create multiple roles (default is one)
 - **ubooquity** - comics server and online reader (ubooquity.your.server/ubooquity for main page / your.ip:2203/ubooquity/admin for admin)
 - **[wallabag](https://wallabag.org/en)** 0 Wallabag role (default u/p wallabag/wallabag) - Save and classify websites and articles.
 - **[Wordpress](../../wiki/Wordpress)** - Wordpress deployment

@@ -39,8 +39,6 @@
     name: medusa
     image: linuxserver/medusa
     pull: yes
-    published_ports:
-      - "127.0.0.1:8083:8081"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

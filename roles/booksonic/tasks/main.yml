@@ -31,8 +31,6 @@
     name: booksonic
     image: linuxserver/booksonic
     pull: yes
-    published_ports:
-      - "127.0.0.1:4042:4040"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

@@ -11,7 +11,7 @@
 ---
 - name: "Wait for 'system.xml' to be created"
   wait_for:
-    path: "/opt/jellyfin/system.xml"
+    path: "/opt/jellyfin/app/system.xml"
     state: present
 
 - name: "Wait 10 seconds before stopping container"
@@ -25,55 +25,55 @@
 
 - name: "Set 'EnableUPnP' to 'false'"
   xml:
-    path: "/opt/jellyfin/system.xml"
+    path: "/opt/jellyfin/app/system.xml"
     xpath: /ServerConfiguration/EnableUPnP
     value: "false"
 
 - name: "Set 'PublicPort' to '80'"
   xml:
-    path: "/opt/jellyfin/system.xml"
+    path: "/opt/jellyfin/app/system.xml"
     xpath: /ServerConfiguration/PublicPort
     value: "80"
 
 - name: "Set 'PublicHttpsPort' to '443'"
   xml:
-    path: "/opt/jellyfin/system.xml"
+    path: "/opt/jellyfin/app/system.xml"
     xpath: /ServerConfiguration/PublicHttpsPort
     value: "443"
 
 - name: "Set 'EnableHttps' to 'true'"
   xml:
-    path: "/opt/jellyfin/system.xml"
+    path: "/opt/jellyfin/app/system.xml"
     xpath: /ServerConfiguration/EnableHttps
     value: "true"
 
 - name: "Set 'WanDdns' to jellyfin.{{ user.domain }}"
   xml:
-    path: "/opt/jellyfin/system.xml"
+    path: "/opt/jellyfin/app/system.xml"
     xpath: /ServerConfiguration/WanDdns
     value: "jellyfin.{{ user.domain }}"
 
 - name: "Set 'EnableAnonymousUsageReporting' to 'false'"
   xml:
-    path: "/opt/jellyfin/system.xml"
+    path: "/opt/jellyfin/app/system.xml"
     xpath: /ServerConfiguration/EnableAnonymousUsageReporting
     value: "false"
 
 - name: "Set 'RequireHttps' to 'false'"
   xml:
-    path: "/opt/jellyfin/system.xml"
+    path: "/opt/jellyfin/app/system.xml"
     xpath: /ServerConfiguration/RequireHttps
     value: "false"
 
 - name: "Set 'IsBehindProxy' to 'true'"
   xml:
-    path: "/opt/jellyfin/system.xml"
+    path: "/opt/jellyfin/app/system.xml"
     xpath: /ServerConfiguration/IsBehindProxy
     value: "true"
 
 - name: "Set 'EnableFolderView' to 'true'"
   xml:
-    path: "/opt/jellyfin/system.xml"
+    path: "/opt/jellyfin/app/system.xml"
     xpath: /ServerConfiguration/EnableFolderView
     value: "true"
 

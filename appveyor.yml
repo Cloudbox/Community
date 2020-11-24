@@ -80,6 +80,7 @@ environment:
     plex2
     pyload
     qbittorrent
+    qbittorrentx
     quassel
     radarrx
     redbot

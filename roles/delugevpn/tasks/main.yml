@@ -30,7 +30,7 @@
 
 - name: Get the OpenVPN configuration files and certs
   unarchive:
-    src: https://www.privateinternetaccess.com/openvpn/openvpn-nextgen.zip
+    src: https://www.privateinternetaccess.com/openvpn/openvpn.zip
     dest: /opt/delugevpn/piaconfigs
     remote_src: yes
 

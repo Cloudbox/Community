@@ -30,7 +30,7 @@
 
 - name: Get the OpenVPN configuration files and certs
   unarchive:
-    src: https://www.privateinternetaccess.com/openvpn/openvpn-nextgen.zip
+    src: https://www.privateinternetaccess.com/openvpn/openvpn.zip
     dest: /opt/delugevpn/piaconfigs
     remote_src: yes
 
@@ -39,7 +39,7 @@
   with_items:
     - "ca.rsa.2048.crt"
     - "crl.rsa.2048.pem"
-    - "{{ delugevpn.vpn_endpoint|default('Netherlands.ovpn',true) }}"
+    - "{{ delugevpn.vpn_endpoint|default('netherlands.ovpn',true) }}"
 
 - name: Create new downloads directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"

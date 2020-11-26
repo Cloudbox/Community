@@ -112,7 +112,6 @@ environment:
 init:
   - sh: curl -s https://cloudbox.works/scripts/dep.sh | sudo -H sh &> /dev/null
   - sh: curl -s https://cloudbox.works/scripts/repo.sh | bash &> /dev/null
-  - sh: docker login -u ${DOCKER_USER} -p ${DOCKER_PWD}
 
 install:
   - sh: |
@@ -140,6 +139,7 @@ install:
           --skip-tags kernel,hetzner,shell,rclone,system,motd,nvidia,mounts,scripts \
           --extra-vars '{"continuous_integration":true}' \
           &> /dev/null
+  - sh: docker login -u ${DOCKER_USER} -p ${DOCKER_PWD}
   - sh: |
       echo ""
       echo "=========================="

@@ -16,6 +16,10 @@ matrix:
 build: off
 
 environment:
+  DOCKER_USER:
+    secure: fI+iutHeCAy6IOez/Oq/GA==
+  DOCKER_PWD:
+    secure: WkT+OK9zFtpukwnbIaMh08EZpfmB89qtUHQCdDO00fc=
   CLOUDBOX_BRANCH: "master"
   CLOUDBOX_PATH: "/home/appveyor/cloudbox"
   COMMUNITY_PATH: "/home/appveyor/projects/community"
@@ -139,7 +143,7 @@ install:
           --skip-tags kernel,hetzner,shell,rclone,system,motd,nvidia,mounts,scripts \
           --extra-vars '{"continuous_integration":true}' \
           &> /dev/null
-  - sh: sudo docker login -u ${DOCKER_USER} -p ${DOCKER_PWD}
+  - sh: sudo docker login -u $DOCKER_USER -p $DOCKER_PWD
   - sh: |
       echo ""
       echo "=========================="

@@ -29,7 +29,7 @@
 
 - name: Get the OpenVPN configuration files and certs (next gen)
   unarchive:
-    src: https://www.privateinternetaccess.com/openvpn/openvpn-nextgen.zip
+    src: https://www.privateinternetaccess.com/openvpn/openvpn.zip
     dest: /opt/qbittorrentvpn/piaconfigs
     remote_src: yes
 

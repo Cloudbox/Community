@@ -65,7 +65,7 @@ synclounge:
   domain: ~
   subdomain: synclounge
 transmissionvpn: 
-  vpn_endpoint: Netherlands.ovpn
+  vpn_endpoint: netherlands.ovpn
   vpn_pass: your_vpn_password
   vpn_prov: NORDVPN
   vpn_user: your_vpn_username

@@ -41,7 +41,7 @@ ombix:
   roles: 
     - 4k
 qbittorrentvpn:
-  vpn_endpoint: Netherlands.ovpn
+  vpn_endpoint: netherlands.ovpn
   vpn_user: your_vpn_username
   vpn_pass: your_vpn_password
   vpn_prov: pia

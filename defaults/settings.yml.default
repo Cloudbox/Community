@@ -40,6 +40,12 @@ navidrome:
 ombix: 
   roles: 
     - 4k
+qbittorrentvpn:
+  vpn_endpoint: Netherlands.ovpn
+  vpn_user: your_vpn_username
+  vpn_pass: your_vpn_password
+  vpn_prov: pia
+  vpn_client: wireguard # 'wireguard' or 'openvpn'
 radarrx: 
   roles: 
     - 1080webdl

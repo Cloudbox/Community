@@ -80,6 +80,7 @@
     - { role: plex2, tags: ['plex2'] }
     - { role: pyload, tags: ['pyload'] }
     - { role: qbittorrent, tags: ['qbittorrent'] }
+    - { role: qbittorrentvpn, tags: ['qbittorrentvpn'] }
     - { role: quassel, tags: ['quassel'] }
     - { role: radarrx, tags: ['radarrx'] }
     - { role: redbot, tags: ['redbot'] }

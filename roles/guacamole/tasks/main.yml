@@ -2,7 +2,7 @@
 # Title:            Community: Guacamole                                #
 # Author(s):        RXWatcher, willjgit                                 #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  jasonbean/guacamole                                 #
+# Docker Image(s):  oznu/guacamole                                      #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -22,7 +22,7 @@
     state: absent
 
 - name: Create guacamole directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  file: "path={{ item }} state=directory mode=0777 owner={{ user.name }} group={{ user.name }} recurse=yes"
   with_items:
     - /opt/guacamole
     - /opt/guacamole/config
@@ -55,6 +55,6 @@
     timeout: 30
 
 - name: Reset guacamole directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  file: "path={{ item }} state=directory mode=0777 owner={{ user.name }} group={{ user.name }} recurse=yes"
   with_items:
     - /opt/guacamole

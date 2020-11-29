@@ -47,7 +47,7 @@
 - name: Create and start container
   docker_container:
     name: "radarr{{ rolename }}"
-    image: "hotio/radarr:nightly"
+    image: "hotio/radarr:release"
     pull: yes
     env:
       TZ: "{{ tz }}"

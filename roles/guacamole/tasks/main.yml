@@ -1,6 +1,6 @@
 #########################################################################
 # Title:            Community: Guacamole                                #
-# Author(s):        RXWatcher                                           #
+# Author(s):        RXWatcher, willjgit                                 #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  jasonbean/guacamole                                 #
 # --                                                                    #
@@ -30,7 +30,7 @@
 - name: Create and start container
   docker_container:
     name: guacamole
-    image: jasonbean/guacamole:latest
+    image: oznu/guacamole:latest
     pull: yes
     env:
       TZ: "{{ tz }}"

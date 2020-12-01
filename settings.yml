@@ -1,0 +1,68 @@
+---
+alltube:
+  domain:
+amongus:
+  token: your_discord_bot_token
+bazarrx:
+  roles: ["", "4k", "lists"]
+  version: latest
+qbittorrentx:
+  roles: ["", rss, "1", "2", "3", "4", "5", gr]
+bookstack:
+  subdomain: bookstack
+calibreweb:
+  caliblur: yes
+deluge:
+  version: v1
+delugevpn:
+  version: v1
+  vpn_endpoint: Netherlands.ovpn
+  vpn_pass: your_vpn_password
+  vpn_prov: pia
+  vpn_user: your_vpn_username
+gitea:
+  subdomain: git
+goplaxt:
+  trakt_id: d2fad7d8467beef51fe049a561ca9ed62ca4365044ddf6f850265e0a111866c2
+  trakt_secret: a0d6daa20260908059236860d111e566d1d4a3a61bf85e3ddb5b05690c48b9c5
+grafana:
+  plugins: "grafana-piechart-panel,grafana-worldmap-panel"
+invoiceninja:
+  subdomain: invoiceninja
+jirafeau:
+  domain:
+lidarrx:
+  roles:
+    - flac
+    - mp3
+navidrome:
+  musicfolder: /mnt/unionfs/Media/Music
+ombix:
+  roles: [4k]
+radarrx:
+  roles: ['grtr', gr, gran, "3", "4", "lists"]
+redbot:
+  prefix: "."
+  token: your_bot_token
+requestrrx:
+  roles: ["", 4k]
+sonarrx:
+  roles: ['4k', gr, grtr, "anime", "lists"]
+synclounge:
+  domain:
+  subdomain: chill
+transmissionvpn:
+  vpn_endpoint: Netherlands.ovpn
+  vpn_pass: your_vpn_password
+  vpn_prov: NORDVPN
+  vpn_user: your_vpn_username
+transmissionx:
+  roles:
+    - ""
+unifi:
+  port: 8080
+varken:
+  tautulli_subdomain: plexpy
+wordpress:
+  direct_domain: no
+  subdomain: wordpress

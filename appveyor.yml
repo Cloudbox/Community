@@ -68,6 +68,7 @@ environment:
     plex2
     pyload
     qbittorrent
+    qbittorrentx
     quassel
     radarrx
     resilio-sync

@@ -4,10 +4,10 @@ alltube:
 amongus:
   token: your_discord_bot_token
 bazarrx:
-  roles: ["", "4k", "lists"]
+  roles: [""]
   version: latest
 qbittorrentx:
-  roles: ["", rss, "1", "2", "3", "4", "5", gr]
+  roles: [""]
 bookstack:
   subdomain: bookstack
 calibreweb:
@@ -23,8 +23,8 @@ delugevpn:
 gitea:
   subdomain: git
 goplaxt:
-  trakt_id: d2fad7d8467beef51fe049a561ca9ed62ca4365044ddf6f850265e0a111866c2
-  trakt_secret: a0d6daa20260908059236860d111e566d1d4a3a61bf85e3ddb5b05690c48b9c5
+  trakt_id:
+  trakt_secret: 
 grafana:
   plugins: "grafana-piechart-panel,grafana-worldmap-panel"
 invoiceninja:
@@ -40,21 +40,21 @@ navidrome:
 ombix:
   roles: [4k]
 radarrx:
-  roles: ['grtr', gr, gran, "3", "4", "lists"]
+  roles: [""]
 redbot:
   prefix: "."
   token: your_bot_token
 requestrrx:
-  roles: ["", 4k]
+  roles: [""]
 sonarrx:
-  roles: ['4k', gr, grtr, "anime", "lists"]
+  roles: ['4k']
 synclounge:
   domain:
   subdomain: chill
 transmissionvpn:
-  vpn_endpoint: Netherlands.ovpn
+  vpn_endpoint: 
   vpn_pass: your_vpn_password
-  vpn_prov: NORDVPN
+  vpn_prov: 
   vpn_user: your_vpn_username
 transmissionx:
   roles:

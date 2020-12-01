@@ -1,0 +1,73 @@
+#########################################################################
+# Title:            Community: qbittorrentX | Template                  #
+# Author(s):        Kromo                                               #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  sc4h/qbittorrent                                    #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Install named qbittorrentx role"
+  debug:
+    msg: "Installing {{ rolename }} using port {{ roleport }}"
+
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: "qbittorrent{{ rolename }}"
+  when: cloudflare_enabled
+
+- name: Create qbittorrentx directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - "/opt/qbittorrent{{ rolename }}"
+
+- name: Create new downloads directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  with_items:
+    - "{{ downloads.torrents }}"
+    - "{{ downloads.torrents }}/qbittorrent{{ rolename }}"
+    - "{{ downloads.torrents }}/qbittorrent{{ rolename }}/complete"
+    - "{{ downloads.torrents }}/qbittorrent{{ rolename }}/incomplete"
+    - "{{ downloads.torrents }}/qbittorrent{{ rolename }}/watch"
+  when: (torrents_downloads_path is defined)|default(true)
+
+
+- name: Set default_volumes variable
+  set_fact:
+    default_volumes:
+      - "/opt/qbittorrent{{ rolename }}:/config"
+      - "/mnt:/mnt"
+      - "/opt/scripts:/scripts"   
+- name: Create and start container
+  docker_container:
+    name: "qbittorrent{{ rolename }}"
+    image: sc4h/qbittorrent
+    pull: yes
+    published_ports:
+      - "{{ roleport }}:56881"
+      - "{{ roleport }}:56881/udp"
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "qbittorrent{{ rolename }}.{{ user.domain }}"
+      VIRTUAL_PORT: "8080"
+      LETSENCRYPT_HOST: "qbittorrent{{ rolename }}.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      UMASK_SET: "002"
+    volumes: "{{ default_volumes + torrents_downloads_path|default(false) }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+      "com.github.cloudbox.community": "qbittorrentx"
+    networks:
+      - name: cloudbox
+        aliases:
+          - "qbittorrent{{ rolename }}"
+    restart_policy: unless-stopped
+    state: started
+
+    

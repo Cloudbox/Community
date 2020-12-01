@@ -47,7 +47,7 @@
 - name: Create and start container
   docker_container:
     name: transmissionvpn
-    image: haugene/transmission-openvpn:latest-alpine
+    image: haugene/transmission-openvpn:latest
     pull: yes
     env:
       PUID: "{{ uid }}"

@@ -34,9 +34,9 @@
     env:
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      UMASK: 002
+      UMASK: "002"
       VIRTUAL_HOST: "{{ overseerr.subdomain|default('overseerr',true) }}.{{ user.domain }}"
-      VIRTUAL_PORT: 3000
+      VIRTUAL_PORT: "3000"
       LETSENCRYPT_HOST: "{{ overseerr.subdomain|default('overseerr',true) }}.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       TZ: "{{ tz }}"

@@ -31,9 +31,8 @@
     name: overseerr
     image: "sctx/overseerr"
     pull: yes
+    user: "{{ uid }}:{{ gid }}"
     env:
-      PUID: "{{ uid }}"
-      PGID: "{{ gid }}"
       UMASK: "002"
       VIRTUAL_HOST: "{{ overseerr.subdomain|default('overseerr',true) }}.{{ user.domain }}"
       VIRTUAL_PORT: "5055"

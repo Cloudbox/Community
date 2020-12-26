@@ -100,3 +100,7 @@
     purge_networks: yes
     restart_policy: unless-stopped
     state: started
+
+- name: DelugeVPN Settings Tasks
+  include_tasks: "settings/main.yml"
+  when: (not continuous_integration)

@@ -1,0 +1,57 @@
+#########################################################################
+# Title:            Community: Mylar3                                   #
+# Author(s):        theotocopulitos                                     #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  ajslater/mylar3                                     #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: mylar3
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: mylar3
+    state: absent
+
+- name: Create mylar3 directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/mylar3
+    - /mnt/local/Media/Comics
+
+- name: Create and start container
+  docker_container:
+    name: mylar3
+    image: ajslater/mylar3
+    pull: yes
+    env:
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "mylar3.{{ user.domain }}"
+      VIRTUAL_PORT: "8090"
+      LETSENCRYPT_HOST: "mylar3.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/mylar3:/config"
+      - "/mnt/local/downloads:/downloads"
+      - "/mnt/unionfs/Media/Comics:/comics"
+      - "/mnt:/mnt"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - mylar3
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

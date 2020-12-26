@@ -1,0 +1,61 @@
+########################################################################
+# Title:            Community: Calibre              #
+# Author(s):        Andrew Johnson and SK                                            #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  linuxserver/calibre                         #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: calibre
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: calibre
+    state: absent
+
+- name: Create calibre directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+   - /opt/calibre
+   - /mnt/local/Media/Books
+
+- name: Create and start container
+  docker_container:
+    name: calibre
+    image: linuxserver/calibre
+    pull: yes
+    published_ports:
+      - "127.0.0.1:8087:8080"
+      - "127.0.0.1:8088:8081"
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      GUAC_USER: "{{ user.name }}"
+      GUAC_PASS: "{{ user.pass | hash('md5') }}"
+      LIBRARYINTERNALPATH: "/library"
+      VIRTUAL_HOST: "calibre.{{ user.domain }}"
+      VIRTUAL_PORT: "8080"
+      LETSENCRYPT_HOST: "calibre.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/calibre:/config"
+      - "/mnt/unionfs/Media/Books:/library"
+      - "/mnt:/mnt"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - calibre
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

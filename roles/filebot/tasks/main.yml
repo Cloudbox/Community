@@ -45,7 +45,7 @@
       - "/opt/filebot:/config"
       - "/mnt:/mnt"
       - "/mnt/unionfs/Media/TV:/storage/Media/TV Shows"
-      - "/mnt/unionfs/Media/Movies/Movies:/storage/Media/Movies"
+      - "/mnt/unionfs/Media/Movies:/storage/Media/Movies"
       - "/mnt/local/downloads:/storage/downloads"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

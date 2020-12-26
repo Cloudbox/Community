@@ -28,8 +28,6 @@
   include_tasks: template.yml
   vars:
     rolename: "{{ role }}"
-    roleport: "{{ 13579 + index }}"
   with_items: "{{ ombix.roles }}"
   loop_control:
     loop_var: role
-    index_var: index

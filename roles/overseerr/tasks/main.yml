@@ -1,0 +1,52 @@
+#########################################################################
+# Title:            Community: overseerr                                #
+# Author(s):        JackDallas                                          #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  sctx/overseerr                                      #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: 'Setting CloudFlare DNS Record'
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: "{{ overseerr.subdomain|default('overseerr',true) }}"
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: overseerr
+    state: absent
+
+- name: Create overseerr directories
+  file: 'path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}'
+  with_items:
+    - /opt/overseerr
+
+- name: Create and start container
+  docker_container:
+    name: overseerr
+    image: "sctx/overseerr"
+    pull: yes
+    user: "{{ uid }}:{{ gid }}"
+    env:
+      UMASK: "002"
+      VIRTUAL_HOST: "{{ overseerr.subdomain|default('overseerr',true) }}.{{ user.domain }}"
+      VIRTUAL_PORT: "5055"
+      LETSENCRYPT_HOST: "{{ overseerr.subdomain|default('overseerr',true) }}.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      TZ: "{{ tz }}"
+    volumes:
+      - "/opt/overseerr:/app/config"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - overseerr
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

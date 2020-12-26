@@ -44,8 +44,6 @@
     name: beets
     image: linuxserver/beets
     pull: yes
-    published_ports:
-      - "127.0.0.1:8337:8337"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
@@ -73,7 +71,7 @@
     name: "Beets Import"
     user: "{{ user.name }}"
     special_time: hourly
-    job: "docker exec -u abc -it beets /bin/bash -c 'beet import -q /downloads'"
+    job: "docker exec -u abc beets /bin/bash -c 'beet import -q /downloads'"
     state: present
 
 - name: Wait for config.yaml to be created

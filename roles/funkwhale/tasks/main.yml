@@ -27,37 +27,20 @@
     - /opt/funkwhale
     - /opt/funkwhale/data
 
-- name: "Check if funkwhale env file exists"
-  stat:
-    path: "/opt/funkwhale/env"
-  register: funkwhale_env
-
-- name: "Import env file if it doesnt exist"
-  template:
-    src: funkwhale_env.j2
-    dest: /opt/funkwhale/env
-    force: yes
-    owner: "{{ user.name }}"
-    group: "{{ user.name }}"
-    mode: 0775
-  when: not funkwhale_env.stat.exists
-
 - name: "Create and start funkwhale container"
   docker_container:
     name: funkwhale
-    image: thetarkus/funkwhale:latest
+    image: funkwhale/all-in-one:develop
     pull: yes
-    published_ports:
-      - "127.0.0.1:6969:80"
     env:
-      FUNKWHALE_URL: "funkwhale.{{ user.domain }}"
+      FUNKWHALE_HOSTNAME: "funkwhale.{{ user.domain }}"
+      NESTED_PROXY: "1"
       VIRTUAL_HOST: "funkwhale.{{ user.domain }}"
+      VIRTUAL_PORT: "80"
       LETSENCRYPT_HOST: "funkwhale.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
-      VIRTUAL_PORT: "80"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-    env_file: /opt/funkwhale/env
     volumes:
       - "/opt/funkwhale/data:/data"
       - "/mnt/unionfs/:/music:ro"
@@ -72,9 +55,5 @@
     state: started
 
 - name: "sleep for 10 seconds and continue"
-  wait_for: timeout=10
-
-- name: "Create Admin User"
-  command: docker exec -i funkwhale /usr/bin/python3 /app/api/manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('{{ user.name }}', '{{ user.email }}', '{{ user.pass }}')"
-  ignore_errors: yes
-  no_log: True
+  wait_for: 
+    timeout: 10

@@ -1,53 +1,55 @@
 #########################################################################
-# Title:            Community: Mellow                                   #
-# Author(s):        Superduper09                                        #
+# Title:            Community: deemix                                   #
+# Author(s):        chazlarson                                          #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  voidp/mellow                                        #
+# Docker Image(s):  bocki/deemix                                        #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
-- name: "Setting CloudFlare DNS Record"
+- name: "Set DNS Record on CloudFlare"
   include_role:
     name: cloudflare-dns
   vars:
-    record: mellow
+    record: deemix
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container
   docker_container:
-    name: mellow
+    name: deemix
     state: absent
 
-- name: Create mellow directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+- name: Create deemix directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
   with_items:
-    - /opt/mellow
+    - /opt/deemix/
 
 - name: Create and start container
   docker_container:
-    name: mellow
-    image: voidp/mellow
+    name: deemix
+    image: "registry.gitlab.com/bockiii/deemix-docker"
     pull: yes
-    published_ports:
-      - "127.0.0.1:5060:5060"
     env:
+      BACKUP: "yes"
+      VIRTUAL_HOST: "deemix.{{ user.domain }}"
+      VIRTUAL_PORT: "6595"
+      LETSENCRYPT_HOST: "deemix.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
       TZ: "{{ tz }}"
+      UMASK_SET: "022"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      VIRTUAL_HOST: "mellow.{{ user.domain }}"
-      VIRTUAL_PORT: "5060"
-      LETSENCRYPT_HOST: "mellow.{{ user.domain }}"
-      LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/opt/mellow:/usr/src/app/data/"
+      - "/mnt:/mnt"
+      - "/opt/deemix:/config"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
       - name: cloudbox
         aliases:
-          - mellow
-    restart_policy: unless-stopped
+          - deemix
+    purge_networks: yes
+    restart_policy: always
     state: started

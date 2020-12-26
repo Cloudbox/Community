@@ -1,0 +1,61 @@
+#########################################################################
+# Title:            Community: Wallabag                                 #
+# Author(s):        addbee                                              #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  wallabag/wallabag                                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: bag
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing containers
+  docker_container: "name={{ item }} state=absent"
+  with_items:
+    - wallabag
+
+- name: Create required directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/wallabag
+    - /opt/wallabag/data
+    - /opt/wallabag/images
+
+- name: Create and start Wallabag container
+  docker_container:
+    name: wallabag
+    image: "wallabag/wallabag:latest"
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      PASSWORD: "{{ user.pass }}"
+      VIRTUAL_HOST: "bag.{{ user.domain }}"
+      VIRTUAL_PORT: "80"
+      LETSENCRYPT_HOST: "bag.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      SYMFONY__ENV__DOMAIN_NAME: "https://bag.{{ user.domain }}"
+    ports:
+      - "127.0.0.1:7780:80"
+    volumes:
+      - "/opt/wallabag/data:/var/www/wallabag/data:rw"
+      - "/opt/wallabag/images:/var/www/wallabag/web/assets/images:rw"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - wallabag
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started
+
+

@@ -21,13 +21,11 @@
     name: flaresolverr
     image: "flaresolverr/flaresolverr"
     pull: yes
-    published_ports:
-      - "127.0.0.1:8191:8191"
     env:
       BACKUP: "no"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      UMASK: 002
+      UMASK: "002"
       CAPTCHA_SOLVER: "hcaptcha-solver"
       TZ: "{{ tz }}"
     labels:

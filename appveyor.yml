@@ -46,6 +46,7 @@ environment:
     epms
     filebot
     filezilla
+    flaresolverr
     funkwhale
     gazee
     glances

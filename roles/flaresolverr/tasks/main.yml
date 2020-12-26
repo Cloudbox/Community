@@ -1,0 +1,39 @@
+#########################################################################
+# Title:            Community: Flaresolverr                             #
+# Author(s):        Flaresolverr, Grostim                               #
+# URL:              https://github.com/Cloudbox/Community               #
+# URL:              https://github.com/FlareSolverr/FlareSolverr        #
+# Docker Image(s):  flaresolverr/flaresolverr                           #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: flaresolverr
+    state: absent
+
+- name: Create and start container
+  docker_container:
+    name: flaresolverr
+    image: "flaresolverr/flaresolverr"
+    pull: yes
+    env:
+      BACKUP: "no"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      UMASK: "002"
+      CAPTCHA_SOLVER: "hcaptcha-solver"
+      TZ: "{{ tz }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - flaresolverr
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

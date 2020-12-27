@@ -34,7 +34,7 @@
 - name: "Fail when 'config.yml' isn't present"
   fail:
     msg: "You need to setup your config file. https://github.com/Cloudbox/autoscan"
-  when: (not autoscan_config.exists) AND (not continuous_integration)
+  when: (not autoscan_config.exists) and (not continuous_integration)
 
 - name: Create and start container
   docker_container:

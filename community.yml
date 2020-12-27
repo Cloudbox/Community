@@ -17,6 +17,7 @@
     - { role: amongus, tags: ['amongus'] }
     - { role: apprise, tags: ['apprise'] }
     - { role: asshama, tags: ['asshama'] }
+    - { role: autoscan, tags: ['autoscan'] }
     - { role: bazarrx, tags: ['bazarrx'] }
     - { role: beets, tags: ['beets'] }
     - { role: bitwarden, tags: ['bitwarden'] }

@@ -31,10 +31,10 @@
     path: "/opt/autoscan/config.yml"
   register: autoscan_config
 
-- name: "Fail when 'config.yml' isn't present"
+- name: "Fail when 'config.yml' is not present"
   fail:
     msg: "You need to setup your config file. https://github.com/Cloudbox/autoscan"
-  when: (not autoscan_config.exists) and (not continuous_integration)
+  when: (not autoscan_config.stat.exists) and (not continuous_integration)
 
 - name: Create and start container
   docker_container:

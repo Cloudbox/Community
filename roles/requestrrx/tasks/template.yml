@@ -13,6 +13,11 @@
   debug:
     msg: "Installing {{ rolename }}"
 
+- name: Stop and remove any existing container
+  docker_container:
+    name: "requestrr{{ rolename }}"
+    state: absent
+
 - name: "Set DNS Record on CloudFlare"
   include_role:
     name: cloudflare-dns

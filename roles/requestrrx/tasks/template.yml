@@ -47,5 +47,6 @@
       - name: cloudbox
         aliases:
           - "requestrr{{ rolename }}"
+    purge_networks: yes
     restart_policy: unless-stopped
     state: started

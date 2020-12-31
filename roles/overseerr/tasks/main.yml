@@ -9,12 +9,23 @@
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
-- name: 'Setting CloudFlare DNS Record'
+
+- name: "Set DNS Record on CloudFlare"
   include_role:
     name: cloudflare-dns
   vars:
     record: "{{ overseerr.subdomain|default('overseerr',true) }}"
-  when: cloudflare_enabled
+  when: (cloudflare_enabled) and not (overseerr.direct_domain|default(false,true))
+
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: "{{ item }}"
+  with_items:
+    - "{{ user.domain }}"
+    - "www"
+  when: (cloudflare_enabled) and (overseerr.direct_domain|default(false,true))
 
 - name: Stop and remove any existing container
   docker_container:
@@ -34,9 +45,9 @@
     user: "{{ uid }}:{{ gid }}"
     env:
       UMASK: "002"
-      VIRTUAL_HOST: "{{ overseerr.subdomain|default('overseerr',true) }}.{{ user.domain }}"
+      VIRTUAL_HOST: "{{ (overseerr.direct_domain|default(false,true)) | ternary(user.domain + ',' + 'www.' + user.domain, overseerr.subdomain|default('overseerr',true) + '.' + user.domain) }}"
       VIRTUAL_PORT: "5055"
-      LETSENCRYPT_HOST: "{{ overseerr.subdomain|default('overseerr',true) }}.{{ user.domain }}"
+      LETSENCRYPT_HOST: "{{ (overseerr.direct_domain|default(false,true)) | ternary(user.domain + ',' + 'www.' + user.domain, overseerr.subdomain|default('overseerr',true) + '.' + user.domain) }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       TZ: "{{ tz }}"
     volumes:

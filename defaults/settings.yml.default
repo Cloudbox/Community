@@ -81,3 +81,4 @@ wordpress:
   subdomain: wordpress
 overseerr:
   subdomain: overseerr
+  direct_domain: false

@@ -31,8 +31,6 @@
     name: archivebox
     image: "archivebox/archivebox:latest"
     pull: yes
-    published_ports:
-      - "127.0.0.1:8000:8000"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
@@ -44,8 +42,6 @@
     command: 
     volumes:
       - "/opt/archivebox:/data"
-      # Optional for creating a symlink in order to store it on GDrive
-      # - "/mnt/local/Backups:/mnt/local/Backups"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

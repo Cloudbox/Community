@@ -64,8 +64,6 @@
     privileged: true
     sysctls:
       net.ipv4.conf.all.src_valid_mark: 1
-    published_ports:
-      - "127.0.0.1:8080:8080"
     capabilities: NET_ADMIN
     env:
       TZ: "{{ tz }}"

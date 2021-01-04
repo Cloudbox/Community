@@ -1,0 +1,98 @@
+#########################################################################
+# Title:            Cloudbox Community: qbittorrentvpn                  #
+# Author(s):        bonny1992                                           #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  binhex/arch-qbittorrentvpn                          #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: qbittorrentvpn
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: qbittorrentvpn
+    state: absent
+
+- name: Create qbittorrentvpn directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/qbittorrentvpn
+    - /opt/qbittorrentvpn/openvpn
+    - /opt/qbittorrentvpn/piaconfigs
+
+- name: Get the OpenVPN configuration files and certs (next gen)
+  unarchive:
+    src: https://www.privateinternetaccess.com/openvpn/openvpn.zip
+    dest: /opt/qbittorrentvpn/piaconfigs
+    remote_src: yes
+
+- name: Copy Cert and config
+  copy: "src=/opt/qbittorrentvpn/piaconfigs/{{ item }} dest=/opt/qbittorrentvpn/openvpn"
+  with_items:
+    - "ca.rsa.2048.crt"
+    - "crl.rsa.2048.pem"
+    - "{{ qbittorrentvpn.vpn_endpoint|default('Netherlands.ovpn',true) }}"
+
+- name: Create new downloads directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  with_items:
+    - "{{ downloads.torrents }}"
+    - "{{ downloads.torrents }}/qbittorrentvpn"
+    - "{{ downloads.torrents }}/qbittorrentvpn/completed"
+    - "{{ downloads.torrents }}/qbittorrentvpn/incoming"
+    - "{{ downloads.torrents }}/qbittorrentvpn/watched"
+
+- name: Set default_volumes variable
+  set_fact:
+    default_volumes:
+      - "/opt/qbittorrentvpn:/config"
+      - "/opt/scripts:/scripts"
+      - "/mnt:/mnt"
+
+- name: Create and start container
+  docker_container:
+    name: qbittorrentvpn
+    image: binhex/arch-qbittorrentvpn
+    pull: yes
+    privileged: true
+    sysctls:
+      net.ipv4.conf.all.src_valid_mark: 1
+    capabilities: NET_ADMIN
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "qbittorrentvpn.{{ user.domain }}"
+      VIRTUAL_PORT: "8080"
+      LETSENCRYPT_HOST: "qbittorrentvpn.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      UMASK_SET: "022"
+      VPN_ENABLED: "yes"
+      VPN_USER: "{{ qbittorrentvpn.vpn_user|default('username',true) }}"
+      VPN_PASS: "{{ qbittorrentvpn.vpn_pass|default('password',true) }}"
+      VPN_PROV: "{{ qbittorrentvpn.vpn_prov|default('pia',true) }}"
+      VPN_CLIENT: "{{ qbittorrentvpn.vpn_client|default('openvpn', 'openvpn') }}"
+      STRICT_PORT_FORWARD: "yes"
+      ENABLE_PRIVOXY: "no"
+      LAN_NETWORK: "172.18.0.1/16"
+      NAME_SERVERS: "209.222.18.222,84.200.69.80,37.235.1.174,1.1.1.1,209.222.18.218,37.235.1.177,84.200.70.40,1.0.0.1"
+      PHP_TZ: "{{ tz }}"
+      WEBUI_PORT: "8080"
+      DEBUG: "false"
+    volumes: "{{ default_volumes + torrents_downloads_path|default([]) }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - qbittorrentvpn
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

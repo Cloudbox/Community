@@ -11,7 +11,7 @@
 ---
 - name: "Install named Ombi role"
   debug:
-    msg: "Installing {{ rolename }} using port {{ roleport }}"
+    msg: "Installing {{ rolename }}"
 
 - name: "Set DNS Record on CloudFlare"
   include_role:
@@ -30,8 +30,6 @@
     name: ombi{{ rolename }}
     image: "hotio/ombi"
     pull: yes
-    published_ports:
-      - "127.0.0.1:{{ roleport }}:5000"
     env:
       BACKUP: "no"
       PUID: "{{ uid }}"

@@ -14,78 +14,104 @@
     - { role: airdcpp, tags: ['airdcpp'] }
     - { role: airsonic, tags: ['airsonic'] }
     - { role: alltube, tags: ['alltube'] }
+    - { role: amongus, tags: ['amongus'] }
+    - { role: apprise, tags: ['apprise'] }
+    - { role: archivebox, tags: ['archivebox'] }
     - { role: asshama, tags: ['asshama'] }
+    - { role: autoscan, tags: ['autoscan'] }
     - { role: bazarrx, tags: ['bazarrx'] }
     - { role: beets, tags: ['beets'] }
     - { role: bitwarden, tags: ['bitwarden'] }
     - { role: booksonic, tags: ['booksonic'] }
     - { role: bookstack, tags: ['bookstack'] }
-    - { role: calibre-rdp, tags: ['calibre-rdp'] }
+    - { role: btrfsmaintenance, tags: ['btrfsmaintenance'] }
+    - { role: calibre, tags: ['calibre'] }
     - { role: calibre-web, tags: ['calibre-web'] }
     - { role: coder, tags: ['coder'] }
+    - { role: comixed, tags: ['comixed'] }
+    - { role: comicstreamer, tags: ['comicstreamer'] }
+    - { role: deemix, tags: ['deemix'] }
     - { role: deezloader-remix, tags: ['deezloader-remix'] }
     - { role: couchpotato, tags: ['couchpotato'] }
     - { role: deluge, tags: ['deluge'] }
     - { role: delugevpn, tags: ['delugevpn'] }
     - { role: drive_strm, tags: ['drive_strm', 'drive_strm_rebuild'] }
     - { role: embystat, tags: ['embystat'] }
+    - { role: emby2, tags: ['emby2'] }
     - { role: epms, tags: ['epms'] }
     - { role: filebot, tags: ['filebot'] }
     - { role: filebrowser, tags: ['filebrowser'] }
     - { role: filezilla, tags: ['filezilla'] }
+    - { role: flaresolverr, tags: ['flaresolverr'] }
     - { role: funkwhale, tags: ['funkwhale'] }
     - { role: gazee, tags: ['gazee'] }
     - { role: gitea, tags: ['gitea'] }
     - { role: glances, tags: ['glances'] }
     - { role: goplaxt, tags: ['goplaxt'] }
     - { role: gotify, tags: ['gotify'] }
+    - { role: grafana, tags: ['grafana'] }
     - { role: guacamole, tags: ['guacamole'] }
     - { role: handbrake, tags: ['handbrake'] }
     - { role: healthchecks, tags: ['healthchecks'] }
     - { role: heimdall, tags: ['heimdall'] }
     - { role: hetzner_nfs, tags: ['hetzner_nfs_server', 'hetzner_nfs_server_uninstall', 'hetzner_nfs_client_mount', 'hetzner_nfs_client_unmount'] }
+    - { role: influxdb, tags: ['influxdb'] }
     - { role: invoiceninja, tags: ['invoiceninja'] }
     - { role: jellyfin, tags: ['jellyfin'] }
     - { role: jirafeau, tags: ['jirafeau'] }
     - { role: kcptun-client, tags: ['kcptun-client'] }
     - { role: kcptun-server, tags: ['kcptun-server'] }
     - { role: kitana, tags: ['kitana'] }
+    - { role: komga, tags: ['komga'] }
     - { role: lazylibrarian, tags: ['lazylibrarian'] }
+    - { role: lidarrx, tags: ['lidarrx'] }
     - { role: logarr, tags: ['logarr'] }
     - { role: mediabutler, tags: ['mediabutler'] }
     - { role: medusa, tags: ['medusa'] }
-    - { role: mellow, tags: ['mellow'] }
     - { role: minecraft, tags: ['minecraft'] }
     - { role: monitorr, tags: ['monitorr'] }
     - { role: mylar, tags: ['mylar'] }
+    - { role: mylar3, tags: ['mylar3'] }
+    - { role: navidrome, tags: ['navidrome'] }
     - { role: nextcloud, tags: ['nextcloud'] }
     - { role: nowshowing, tags: ['nowshowing'] }
     - { role: nzbhydra, tags: ['nzbhydra'] }
     - { role: ombix, tags: ['ombix'] }
     - { role: organizrv1, tags: ['organizrv1'] }
     - { role: ouroboros, tags: ['ouroboros'] }
+    - { role: overseerr, tags: ['overseerr'] }
     - { role: jdownloader2, tags: ['jdownloader2'] }
     - { role: plex2, tags: ['plex2'] }
     - { role: pyload, tags: ['pyload'] }
     - { role: qbittorrent, tags: ['qbittorrent'] }
+    - { role: qbittorrentvpn, tags: ['qbittorrentvpn'] }
     - { role: quassel, tags: ['quassel'] }
     - { role: radarrx, tags: ['radarrx'] }
+    - { role: redbot, tags: ['redbot'] }
+    - { role: requestrr, tags: ['requestrr'] }
+    - { role: requestrrx, tags: ['requestrrx'] }
     - { role: resilio-sync, tags: ['resilio-sync'] }
     - { role: rocketchat, tags: ['rocketchat'] }
     - { role: sickchill, tags: ['sickchill'] }
     - { role: sonarrx, tags: ['sonarrx'] }
     - { role: speedtest, tags: ['speedtest'] }
     - { role: sshwifty, tags: ['sshwifty'] }
+    - { role: stash, tags: ['stash'] }
     - { role: subsonic, tags: ['subsonic'] }
     - { role: synclounge, tags: ['synclounge'] }
     - { role: tdarr, tags: ['tdarr'] }
+    - { role: telegraf, tags: ['telegraf'] }
     - { role: telly, tags: ['telly'] }
     - { role: thelounge, tags: ['thelounge'] }
     - { role: transmissionvpn, tags: ['transmissionvpn'] }
+    - { role: transmissionx, tags: ['transmissionx'] }
+    - { role: ubooquity, tags: ['ubooquity'] }
     - { role: unifi, tags: ['unifi'] }
     - { role: unmanic, tags: ['unmanic'] }
+    - { role: varken, tags: ['varken'] }
     - { role: vnstat, tags: ['vnstat'] }
     - { role: watchtower, tags: ['watchtower'] }
+    - { role: wallabag, tags: ['wallabag'] }
     - { role: wordpress, tags: ['wordpress'] }
     - { role: xteve, tags: ['xteve'] }
     - { role: znc, tags: ['znc'] }

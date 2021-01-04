@@ -1,0 +1,63 @@
+#########################################################################
+# Title:            Community: Autoscan                                 #
+# Author(s):        Salty                                               #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  cloudb0x/autoscan                                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: autoscan
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: autoscan
+    state: absent
+
+- name: Create autoscan directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/autoscan
+
+- name: "Look for 'config.yml' file in autoscan folder"
+  stat:
+    path: "/opt/autoscan/config.yml"
+  register: autoscan_config
+
+- name: "Fail when 'config.yml' is not present"
+  fail:
+    msg: "You need to setup your config file. https://github.com/Cloudbox/autoscan"
+  when: (not autoscan_config.stat.exists) and (not continuous_integration)
+
+- name: Create and start container
+  docker_container:
+    name: autoscan
+    image: cloudb0x/autoscan
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "autoscan.{{ user.domain }}"
+      VIRTUAL_PORT: "3030"
+      LETSENCRYPT_HOST: "autoscan.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/autoscan:/config"
+      - "/mnt:/mnt:ro"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - autoscan
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

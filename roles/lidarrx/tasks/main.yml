@@ -1,0 +1,33 @@
+#########################################################################
+# Title:            Community: Lidarrx                                  #
+# Author(s):        paris-ci                                            #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  hotio/lidarr                                        #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Gather list of lidarrx Docker containers"
+  shell: "docker ps -a --format '{{ '{{' }} .Names{{ '}}' }}' --filter label=com.github.cloudbox.community=lidarrx | xargs echo -n"
+  register: cloudbox_community_lidarrx
+  ignore_errors: yes
+
+- name: "Stop all lidarrx Docker containers"
+  shell: "docker stop {{ cloudbox_community_lidarrx.stdout }}"
+  ignore_errors: yes
+  when: (cloudbox_community_lidarrx.stdout | trim | length > 0)
+
+- name: "Remove all lidarrx Docker containers"
+  shell: "docker rm {{ cloudbox_community_lidarrx.stdout }}"
+  ignore_errors: yes
+  when: (cloudbox_community_lidarrx.stdout | trim | length > 0)
+
+- name: "Execute LidarrX roles"
+  include_tasks: template.yml
+  vars:
+    rolename: "{{ role }}"
+  with_items: "{{ lidarrx.roles }}"
+  loop_control:
+    loop_var: role

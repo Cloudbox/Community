@@ -35,7 +35,6 @@
     - "{{ downloads.torrents }}/transmissionvpn/incoming"
     - "{{ downloads.torrents }}/transmissionvpn/watched"
     - "{{ downloads.torrents }}/transmissionvpn/torrents"
-    - /opt/transmissionvpn/
   when: (torrents_downloads_path is defined)|default(false)
 
 - name: Set default_volumes variable
@@ -43,8 +42,6 @@
     default_volumes:
       - "/opt/transmissionvpn/vpn:/etc/openvpn/custom"
       - "/mnt:/mnt"
-      - "/opt/transmissionvpn:/opt/transmissionvpn"
-      - "/mnt/local/downloads/torrents/transmissionvpn:/data"
       - "/opt/transmissionvpn:/config"
 
 - name: Create and start container
@@ -71,6 +68,7 @@
       TRANSMISSION_HOME: "/opt/transmissionvpn"
       TZ: "{{ tz }}"
     volumes: "{{ default_volumes + torrents_downloads_path|default([]) }}"
+    dns_servers: 8.8.8.8
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     capabilities:
@@ -80,5 +78,5 @@
         aliases:
           - transmissionvpn
     purge_networks: yes
-    restart_policy: always
+    restart_policy: unless-stopped
     state: started

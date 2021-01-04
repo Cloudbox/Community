@@ -23,68 +23,93 @@ environment:
     airdcpp
     airsonic
     alltube
+    amongus
+    apprise
+    archivebox
     asshama
+    autoscan
     bazarrx
     beets
     bitwarden
     bookstack
-    calibre-rdp
+    btrfsmaintenance
+    calibre
     calibre-web
+    comicstreamer
     couchpotato
     coder
+    comixed
+    deemix
     deezloader-remix
     deluge
     delugevpn
     embystat
+    emby2
     epms
     filebot
     filezilla
+    flaresolverr
     funkwhale
     gazee
     glances
     goplaxt
+    grafana
     handbrake
     healthchecks
     heimdall
+    influxdb
     invoiceninja
     jdownloader2
     jellyfin
     jirafeau
     kitana
+    komga
     lazylibrarian
+    lidarrx
     logarr
     mediabutler
     medusa
-    mellow
     minecraft
     monitorr
     mylar
+    mylar3
+    navidrome
     nextcloud
     nowshowing
     nzbhydra
     ombix
     organizrv1
     ouroboros
+    overseerr
     plex2
     pyload
     qbittorrent
+    qbittorrentvpn
     quassel
     radarrx
+    redbot
     resilio-sync
+    requestrrx
     rocketchat
     sickchill
     sonarrx
     speedtest
     sshwifty
+    stash
     subsonic
     synclounge
     tdarr
+    telegraf
     thelounge
     transmissionvpn
+    transmissionx
+    ubooquity
     unifi
     unmanic
+    varken
     vnstat
     watchtower
+    wallabag
     wordpress
     xteve
     znc

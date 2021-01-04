@@ -1,0 +1,57 @@
+#########################################################################
+# Title:            Community: Minecraft Server                         #
+# Author(s):        FML128                                              #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  denverquane/amongusdiscord                          #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: amongus
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: amongus
+    state: absent
+
+- name: Create amongus directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/amongus
+
+- name: Create and start container
+  docker_container:
+    name: amongus
+    image: denverquane/amongusdiscord
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      UID: "{{ uid }}"
+      GID: "{{ gid }}"
+      DISCORD_BOT_TOKEN: "{{ amongus.token }}"
+      SERVER_URL: "https://amongus.{{ user.domain }}"
+      EXT_PORT: "443"
+      CONFIG_PATH: "/config"
+      VIRTUAL_HOST: "amongus.{{ user.domain }}"
+      VIRTUAL_PORT: "443"
+      LETSENCRYPT_HOST: "amongus.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/amongus:/config"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - amongus
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

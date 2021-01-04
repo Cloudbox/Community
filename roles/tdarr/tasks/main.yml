@@ -2,7 +2,7 @@
 # Title:            Community: Tdarr                                    #
 # Author(s):        Visorak, Migz                                       #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  haveagitgat/tdarr_aio                               #
+# Docker Image(s):  haveagitgat/tdarr                                   #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -26,6 +26,11 @@
     mode: 0664
   with_items:
     - tdarr
+    
+- name: "Check if '/dev/dri' exists"
+  stat:
+    path: "/dev/dri"
+  register: dev_dri
 
 - name: Stop and remove any existing container
   docker_container:
@@ -42,7 +47,7 @@
 - name: Create and start container
   docker_container:
     name: tdarr
-    image: haveagitgat/tdarr_aio
+    image: haveagitgat/tdarr
     pull: yes
     published_ports:
       - "127.0.0.1:8265:8265"
@@ -62,6 +67,9 @@
       - "/opt/tdarr/db:/var/lib/mongodb"
       - "/dev/shm:/dev/shm"
       - "/mnt:/mnt"
+      - "/mnt/unionfs/Media/Movies:/movies"
+      - "/mnt/unionfs/Media/TV:/tv"
+    devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

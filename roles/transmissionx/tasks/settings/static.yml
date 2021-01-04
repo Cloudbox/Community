@@ -1,0 +1,84 @@
+#########################################################################
+# Title:         ruTorrent -  Static Settings Tasks                     #
+# Author(s):     l3uddz, desimaniac                                     #
+# URL:           https://github.com/cloudbox/cloudbox                   #
+# Docker Image:  horjulf/rutorrent-autodl                               #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+## rtorrent.rc
+
+# Disable DHT - i.e. disables trackerless torrents.
+- name: Settings | Static | Disable DHT
+  lineinfile:
+    path: "/opt/transmission{{ rolename }}/settings.json"
+    regexp: '^\s*\"dht\-enabled\"\:.*'
+    line: '    "dht-enabled": false,'
+    state: present
+
+# Disable Peer exchange (PEX) - i.e. allows torrents marked private, only.
+- name: Settings | Static | Disable PEX
+  lineinfile:
+    path: "/opt/transmission{{ rolename }}/settings.json"
+    regexp: '^\s*\"pex\-enabled\"\:.*'
+    line: '    "pex-enabled": false,'
+    state: present
+
+# Change default download directory - change download directory for sonarr/radarr compatibility.
+- name: Settings | Static | Change download-dir
+  lineinfile:
+    path: "/opt/transmission{{ rolename }}/settings.json"
+    regexp: '^\s*\"download\-dir\"\:.*'
+    line: '    "download-dir": "/downloads/torrents/transmission{{ rolename }}/complete",'
+    state: present
+
+# Change default incomplete directory
+- name: Settings | Static | Change incomplete-dir
+  lineinfile:
+    path: "/opt/transmission{{ rolename }}/settings.json"
+    regexp: '^\s*\"incomplete\-dir\"\:.*'
+    line: '    "incomplete-dir": "/downloads/torrents/transmission{{ rolename }}/incomplete",'
+    state: present
+
+# Disable incomplete directory
+- name: Settings | Static | Disable incomplete-dir
+  lineinfile:
+    path: "/opt/transmission{{ rolename }}/settings.json"
+    regexp: '^\s*\"incomplete\-dir\-enabled\"\:.*'
+    line: '    "incomplete-dir-enabled": false,'
+    state: present
+
+# Maximum number of simultaneous upload slots per torrent
+- name: Settings | Static | Set upload-slots-per-torrent
+  lineinfile:
+    path: "/opt/transmission{{ rolename }}/settings.json"
+    regexp: '^\s*\"upload\-slots\-per\-torrent\"\:.*'
+    line: '    "upload-slots-per-torrent": 50,'
+    state: present
+
+# Maximum number of global peers
+- name: Settings | Static | Set peer-limit-global
+  lineinfile:
+    path: "/opt/transmission{{ rolename }}/settings.json"
+    regexp: '^\s*\"peer\-limit\-global\"\:.*'
+    line: '    "peer-limit-global": 1024,'
+    state: present
+
+# Allocate disk space
+- name: Settings | Static | Disable preallocation
+  lineinfile:
+    path: "/opt/transmission{{ rolename }}/settings.json"
+    regexp: '^\s*\"preallocation\"\:.*'
+    line: '    "preallocation": 0,'
+    state: present
+
+# Allocate disk space
+- name: Settings | Static | Set cache-size-mb
+  lineinfile:
+    path: "/opt/transmission{{ rolename }}/settings.json"
+    regexp: '^\s*\"cache\-size\-mb\"\:.*'
+    line: '    "cache-size-mb": 20,'
+    state: present

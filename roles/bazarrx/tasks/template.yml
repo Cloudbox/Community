@@ -11,7 +11,7 @@
 ---
 - name: "Install named bazarr role"
   debug:
-    msg: "Installing {{ rolename }} using port {{ roleport }}"
+    msg: "Installing {{ rolename }}"
 
 - name: "Set DNS Record on CloudFlare"
   include_role:
@@ -19,6 +19,9 @@
   vars:
     record: "bazarr{{ rolename }}"
   when: cloudflare_enabled
+
+- name: Hotio Migration Tasks
+  import_tasks: "subtasks/hotio_migration.yml"
 
 - name: Create bazarrx directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
@@ -37,10 +40,8 @@
 - name: Create and start container
   docker_container:
     name: "bazarr{{ rolename }}"
-    image: "linuxserver/bazarr"
+    image: "hotio/bazarr:{{ bazarrx.version }}"
     pull: yes
-    published_ports:
-      - "127.0.0.1:{{ roleport }}:6767"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

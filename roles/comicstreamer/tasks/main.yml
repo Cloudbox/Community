@@ -1,8 +1,8 @@
 #########################################################################
-# Title:            Community: Calibre-RDP GUI and Server               #
-# Author(s):        Thomvh                                              #
+# Title:            Community: comicstreamer                                #
+# Author(s):        theotocopulitos                                     #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  cgspeck/docker-rdp-calibre                          #
+# Docker Image(s):  kalinon/comicstreamer                               #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -13,60 +13,46 @@
   include_role:
     name: cloudflare-dns
   vars:
-    record: calibrerdp
+    record: comicstreamer
   when: cloudflare_enabled
-
-- name: Create htpasswd
-  htpasswd:
-    path: "/opt/nginx-proxy/htpasswd/{{ item }}.{{ user.domain }}"
-    name: "{{ user.name }}"
-    password: "{{ user.pass }}"
-    owner: "{{ user.name }}"
-    group: "{{ user.name }}"
-    mode: 0664
-  with_items:
-    - calibrerdp
 
 - name: Stop and remove any existing container
   docker_container:
-    name: calibrerdp
+    name: comicstreamer
     state: absent
 
-- name: Create calibre directories
+- name: Create comicstreamer directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
-   - /opt/calibre
-   - /mnt/local/Media/Books
+    - /opt/comicstreamer
+    - /mnt/local/Media/Comics
 
 - name: Create and start container
   docker_container:
-    name: calibrerdp
-    image: cgspeck/docker-rdp-calibre
+    name: comicstreamer
+    image: kalinon/comicstreamer
     pull: yes
     published_ports:
-      - "127.0.0.1:8087:8080"
-      - "127.0.0.1:8088:8081"
+      - "32500:32500"
     env:
       TZ: "{{ tz }}"
-      USER_ID: "{{ uid }}"
-      GROUP_ID: "{{ gid }}"
-      LIBRARYINTERNALPATH: "/library"
-      EDGE: "0"
-      WIDTH: "1280"
-      HEIGHT: "720"
-      VIRTUAL_HOST: "calibrerdp.{{ user.domain }}"
-      VIRTUAL_PORT: "8080"
-      LETSENCRYPT_HOST: "calibrerdp.{{ user.domain }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "comicstreamer.{{ user.domain }}"
+      VIRTUAL_PORT: "32500"
+      LETSENCRYPT_HOST: "comicstreamer.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/opt/calibre:/config"
-      - "/mnt/unionfs/Media/Books:/library"
+      - "/opt/comicstreamer:/config"
+      - "/mnt/unionfs/Media/Comics:/comics"
+      - "/mnt:/mnt"
+
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
       - name: cloudbox
         aliases:
-          - calibrerdp
+          - comicstreamer
     purge_networks: yes
     restart_policy: unless-stopped
     state: started

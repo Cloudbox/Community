@@ -1,8 +1,8 @@
 #########################################################################
 # Title:            Community: Jellyfin                                 #
-# Author(s):        maximuskowalski, desimaniac                         #
+# Author(s):        maximuskowalski, desimaniac, owine                  #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  linuxserver/jellyfin                                #
+# Docker Image(s):  hotio/jellyfin                                      #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -21,16 +21,20 @@
     name: jellyfin
     state: absent
 
+- name: Hotio Migration Tasks
+  import_tasks: "subtasks/hotio_migration.yml"
+
 - name: Create jellyfin directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/jellyfin
+    - /opt/jellyfin/app
     - "{{ plex.transcodes }}/jellyfin"
 
 - name: Import 'dlna.xml 'config
   copy:
     src: "dlna.xml"
-    dest: "/opt/jellyfin/dlna.xml"
+    dest: "/opt/jellyfin/app/dlna.xml"
     owner: "{{ user.name }}"
     group: "{{ user.name }}"
     mode: 0775
@@ -38,13 +42,13 @@
 
 - name: "Check if old 'system.xml' exists"
   stat:
-    path: "/opt/jellyfin/config/system.xml"
+    path: "/opt/jellyfin/app/config/system.xml"
   register: jellyfin_system_xml_old
 
 - name: Import old 'system.xml' config if it exists
   copy:
-    src: "/opt/jellyfin/config/system.xml"
-    dest: "/opt/jellyfin/system.xml"
+    src: "/opt/jellyfin/app/config/system.xml"
+    dest: "/opt/jellyfin/app/system.xml"
     owner: "{{ user.name }}"
     group: "{{ user.name }}"
     mode: 0775
@@ -53,13 +57,13 @@
 
 - name: "Remove old 'system.xml' if it exists"
   file:
-    path: "/opt/jellyfin/config/system.xml"
+    path: "/opt/jellyfin/app/config/system.xml"
     state: absent
   when: jellyfin_system_xml_old.stat.exists
 
 - name: "Check if 'system.xml' exists"
   stat:
-    path: "/opt/jellyfin/system.xml"
+    path: "/opt/jellyfin/app/system.xml"
   register: jellyfin_system_xml
 
 - name: "Check if '/dev/dri' exists"
@@ -77,7 +81,7 @@
 - name: Create and start container
   docker_container:
     name: jellyfin
-    image: "linuxserver/jellyfin:latest"
+    image: "hotio/jellyfin:latest"
     pull: yes
     env:
       TZ: "{{ tz }}"
@@ -93,7 +97,6 @@
       - "/opt/jellyfin:/config:rw"
       - "/opt/scripts:/scripts"
       - "/mnt:/mnt:rw"
-      - "/mnt/strm:/strm:rw"
       - "/mnt/unionfs/Media:/media"
       - "/mnt/unionfs/Media:/data"
       - "{{ plex.transcodes }}/jellyfin:/transcode"

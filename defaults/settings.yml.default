@@ -1,45 +1,83 @@
----
-sonarrx:
-  roles: [1080webdl, 1080remux]
-radarrx:
-  roles: [1080webdl, 1080remux]
-bazarrx:
-  roles: [1080webdl, 1080remux]
-ombix:
-  roles: [4k]
-calibreweb:
-  caliblur: yes
-goplaxt:
-  trakt_id:
-  trakt_secret:
-bookstack:
+--- 
+alltube: 
+  domain: ~
+amongus: 
+  token: your_discord_bot_token
+bazarrx: 
+  roles: 
+    - 1080webdl
+    - 1080remux
+  version: latest
+bookstack: 
   subdomain: bookstack
-invoiceninja:
-  subdomain: invoiceninja
-wordpress:
-  direct_domain: no
-  subdomain: wordpress
-gitea:
-  subdomain: git
-jirafeau:
-  domain:
-alltube:
-  domain:
-synclounge:
-  domain:
-  subdomain: synclounge
-delugevpn:
+calibreweb: 
+  caliblur: true
+deluge: 
   version: v2
+delugevpn: 
+  version: v2
+  vpn_endpoint: netherlands.ovpn
+  vpn_pass: your_vpn_password
+  vpn_prov: pia
+  vpn_user: your_vpn_username
+gitea: 
+  subdomain: git
+goplaxt: 
+  trakt_id: ~
+  trakt_secret: ~
+grafana: 
+  plugins: "grafana-piechart-panel,grafana-worldmap-panel"
+invoiceninja: 
+  subdomain: invoiceninja
+jirafeau: 
+  domain: ~
+lidarrx: 
+  roles: 
+    - flac
+    - mp3
+navidrome: 
+  musicfolder: /mnt/unionfs/Media/Music
+ombix: 
+  roles: 
+    - 4k
+qbittorrentvpn:
+  vpn_endpoint: netherlands.ovpn
   vpn_user: your_vpn_username
   vpn_pass: your_vpn_password
   vpn_prov: pia
+  vpn_client: wireguard # 'wireguard' or 'openvpn'
+radarrx: 
+  roles: 
+    - 1080webdl
+    - 1080remux
+redbot: 
+  prefix: "."
+  token: your_bot_token
+requestrrx: 
+  roles: 
+    - 1080
+    - 4k
+sonarrx: 
+  roles: 
+    - 1080webdl
+    - 1080remux
+synclounge: 
+  domain: ~
+  subdomain: synclounge
+transmissionvpn: 
   vpn_endpoint: netherlands.ovpn
-deluge:
-  version: v2
-transmissionvpn:
-  vpn_user: your_vpn_username
   vpn_pass: your_vpn_password
   vpn_prov: NORDVPN
-  vpn_endpoint: Netherlands.ovpn
-unifi:
+  vpn_user: your_vpn_username
+transmissionx: 
+  roles: 
+    - ""
+unifi: 
   port: 8080
+varken: 
+  tautulli_subdomain: plexpy
+wordpress: 
+  direct_domain: false
+  subdomain: wordpress
+overseerr:
+  subdomain: overseerr

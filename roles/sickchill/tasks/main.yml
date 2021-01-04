@@ -39,8 +39,6 @@
     name: sickchill
     image: linuxserver/sickchill
     pull: yes
-    published_ports:
-      - "127.0.0.1:8082:8081"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

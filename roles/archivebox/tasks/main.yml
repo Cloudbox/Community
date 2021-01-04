@@ -1,0 +1,53 @@
+#########################################################################
+# Title:            Community: Archive Box                              #
+# Author(s):        4everfun                                            #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  archivebox/archivebox                              #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: archivebox
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: archivebox
+    state: absent
+
+- name: Create archivebox directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/archivebox
+
+- name: Create and start container
+  docker_container:
+    name: archivebox
+    image: "archivebox/archivebox:latest"
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "archivebox.{{ user.domain }}"
+      VIRTUAL_PORT: "8000"
+      LETSENCRYPT_HOST: "archivebox.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    command: 
+    volumes:
+      - "/opt/archivebox:/data"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - archivebox
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

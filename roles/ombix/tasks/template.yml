@@ -37,7 +37,7 @@
       UMASK: "002"
       VIRTUAL_HOST: "ombi{{ rolename }}.{{ user.domain }}"
       VIRTUAL_PORT: "5000"
-      LETSENCRYPT_HOST: "{{ ombi.subdomain|default('ombi',true) }}.{{ user.domain }}"
+      LETSENCRYPT_HOST: "ombi{{ rolename }}.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       LC_ALL: "en_US.UTF-8"
       TZ: "{{ tz }}"

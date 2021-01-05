@@ -47,7 +47,6 @@
       TZ: "{{ tz }}"
       USER_ID: "{{ uid }}"
       GROUP_ID: "{{ gid }}"
-      UMASK: "664"
       KEEP_APP_RUNNING: "1"
       VIRTUAL_HOST: "filezilla.{{ user.domain }}"
       VIRTUAL_PORT: "5800"

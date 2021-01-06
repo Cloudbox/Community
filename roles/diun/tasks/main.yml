@@ -1,0 +1,69 @@
+#########################################################################
+# Title:            Community: Diun                                     #
+# Author(s):        Salty                                               #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  ghcr.io/crazy-max/diun                              #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: diun
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: diun
+    state: absent
+
+- name: Create diun directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/diun
+
+- name: "Look for 'diun.yml' file in diun folder"
+  stat:
+    path: "/opt/diun/diun.yml"
+  register: diun_config
+
+- name: Import default 'diun.yml'
+  copy:
+    src: diun.yml
+    dest: /opt/diun/diun.yml
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+    force: yes
+  when: not diun_config.stat.exists
+
+- name: Create and start container
+  docker_container:
+    name: diun
+    image: ghcr.io/crazy-max/diun
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      LOG_LEVEL: "info"
+      LOG_JSON: "false"
+    volumes:
+      - "/opt/diun:/data"
+      - "/opt/diun/diun.yml:/diun.yml:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+      "diun.enable": "true"
+      "diun.watch_repo": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - diun
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

@@ -35,6 +35,7 @@
     - { role: couchpotato, tags: ['couchpotato'] }
     - { role: deluge, tags: ['deluge'] }
     - { role: delugevpn, tags: ['delugevpn'] }
+    - { role: diun, tags: ['diun'] }
     - { role: drive_strm, tags: ['drive_strm', 'drive_strm_rebuild'] }
     - { role: embystat, tags: ['embystat'] }
     - { role: emby2, tags: ['emby2'] }

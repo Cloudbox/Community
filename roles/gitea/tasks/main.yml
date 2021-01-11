@@ -9,11 +9,6 @@
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
-- name: Install required packages
-  apt: "name={{ item }} state=latest"
-  with_items:
-    - python-pymysql
-
 - name: MariaDB Role
   include_role:
     name: mariadb
@@ -33,12 +28,9 @@
   with_items:
     - gitea
 
-- name: Create gitea database
-  mysql_db:
-    name: gitea
-    login_user: root
-    login_password: password321
-    state: present
+- name: "Create gitea database"
+  command: "docker exec mariadb mysql -u root -ppassword321 -e 'create schema gitea DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'"
+  ignore_errors: yes
 
 - name: Create required directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
@@ -50,8 +42,6 @@
     name: gitea
     image: "gitea/gitea:latest"
     pull: yes
-    published_ports:
-      - "127.0.0.1:3000:3000"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

@@ -32,8 +32,6 @@
     name: unmanic
     image: josh5/unmanic:latest
     pull: yes
-    published_ports:
-      - "127.0.0.1:8888:8888"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
@@ -53,6 +51,8 @@
       - name: cloudbox
         aliases:
           - unmanic
+    exposed_ports:
+      - 8888
     purge_networks: yes
     restart_policy: unless-stopped
     state: started

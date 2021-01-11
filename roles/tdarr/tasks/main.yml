@@ -49,8 +49,6 @@
     name: tdarr
     image: haveagitgat/tdarr
     pull: yes
-    published_ports:
-      - "127.0.0.1:8265:8265"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

@@ -57,8 +57,6 @@
     name: "mediabutler"
     image: "mediabutler/server"
     pull: yes
-    published_ports:
-      - "0.0.0.0:9876:9876"
     env:
       TZ: "{{ tz }}"
       UID: "{{ uid }}"

@@ -31,8 +31,6 @@
     name: filebot
     image: jlesage/filebot
     pull: yes
-    published_ports:
-      - "127.0.0.1:5801:5800"
     env:
       TZ: "{{ tz }}"
       USER_ID: "{{ uid }}"
@@ -53,6 +51,8 @@
       - name: cloudbox
         aliases:
           - filebot
+    exposed_ports:
+      - 5800
     purge_networks: yes
     restart_policy: unless-stopped
     state: started

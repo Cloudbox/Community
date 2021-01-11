@@ -61,8 +61,6 @@
     name: filebrowser
     image: filebrowser/filebrowser:latest
     pull: yes
-    published_ports:
-      - "127.0.0.1:6469:1216"
     env:
       TZ: "{{ tz }}"
       VIRTUAL_HOST: "filebrowser.{{ user.domain }}"
@@ -80,5 +78,7 @@
       - name: cloudbox
         aliases:
           - filebrowser
+    exposed_ports:
+      - 1216
     restart_policy: unless-stopped
     state: started

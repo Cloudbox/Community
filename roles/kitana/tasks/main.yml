@@ -31,8 +31,6 @@
     name: kitana
     image: "pannal/kitana:latest"
     pull: yes
-    published_ports:
-      - "127.0.0.1:31337:31337"
     env:
       TZ: "{{ tz }}"
       VIRTUAL_HOST: "kitana.{{ user.domain }}"

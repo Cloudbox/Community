@@ -32,8 +32,6 @@
     name: jirafeau
     image: "jgeusebroek/jirafeau"
     pull: yes
-    published_ports:
-      - "127.0.0.1:6234:80"
     env:
       TZ: "{{ tz }}"
       VIRTUAL_HOST: "jirafeau.{{ jirafeau.domain | default(user.domain,true) }}"

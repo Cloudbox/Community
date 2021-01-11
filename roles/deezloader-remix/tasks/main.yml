@@ -43,8 +43,6 @@
     name: deezloader
     image: "bocki/deezloaderrmx"
     pull: yes
-    published_ports:
-      - "127.0.0.1:1730:1730"
     env:
       BACKUP: "yes"
       VIRTUAL_HOST: "deezloader.{{ user.domain }}"

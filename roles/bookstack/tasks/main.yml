@@ -46,6 +46,7 @@
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
+      APP_URL: "https://{{ bookstack.subdomain|default('bookstack',true) }}.{{ user.domain }}"
       DB_HOST: "mariadb:3306"
       DB_USER: root
       DB_PASS: password321

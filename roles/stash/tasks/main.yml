@@ -31,8 +31,6 @@
     name: stash
     image: stashapp/stash:development-x86_64
     pull: yes
-    published_ports:
-      - "127.0.0.1:9999:9999"
     env:
       TZ: "{{ tz }}"
       UID: "{{ uid }}"

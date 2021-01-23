@@ -1,8 +1,8 @@
 #########################################################################
-# Title:            transmissionx: Sttings Tasks                        #
+# Title:            Community: transmissionx | Settings Tasks           #
 # Author(s):        giosann                                             #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  linuxserver/trasmission                             #
+# Docker Image:     linuxserver/trasmission                             #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -30,6 +30,13 @@
 - name: Settings | transmissionx Static Settings Tasks
   include_tasks: "static.yml"
   when: (not settings_json.stat.exists)
+
+## transmissionx Dynamic Settings Tasks
+
+- name: Settings | transmissionx Dynamic Settings Tasks
+  include_tasks: "dynamic.yml"
+
+## Start container
 
 - name: Settings | Start container
   docker_container:

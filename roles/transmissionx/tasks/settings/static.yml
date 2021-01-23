@@ -1,15 +1,15 @@
 #########################################################################
-# Title:         ruTorrent -  Static Settings Tasks                     #
-# Author(s):     l3uddz, desimaniac                                     #
-# URL:           https://github.com/cloudbox/cloudbox                   #
-# Docker Image:  horjulf/rutorrent-autodl                               #
+# Title:            Community: transmissionx | Static Settings Tasks    #
+# Author(s):        giosann                                             #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image:     linuxserver/trasmission                             #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
-## rtorrent.rc
+# settings.json
 
 # Disable DHT - i.e. disables trackerless torrents.
 - name: Settings | Static | Disable DHT

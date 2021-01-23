@@ -2,7 +2,7 @@
 # Title:            Community: TransmissionX                            #
 # Author(s):        giosann                                             #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  linuxserver/trasmission                             #
+# Docker Image:     linuxserver/trasmission                             #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -28,6 +28,8 @@
   include_tasks: template.yml
   vars:
     rolename: "{{ role }}"
+    roleport: "{{ 51413 + index}}"
   with_items: "{{ transmissionx.roles }}"
   loop_control:
     loop_var: role
+    index_var: index

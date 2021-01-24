@@ -9,13 +9,6 @@
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
-- name: "Setting CloudFlare DNS Record"
-  include_role:
-    name: cloudflare-dns
-  vars:
-    record: diun
-  when: cloudflare_enabled
-
 - name: Stop and remove any existing container
   docker_container:
     name: diun
@@ -50,7 +43,7 @@
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      LOG_LEVEL: "info"
+      LOG_LEVEL: "debug"
       LOG_JSON: "false"
     volumes:
       - "/opt/diun:/data"
@@ -60,10 +53,5 @@
       "com.github.cloudbox.cloudbox_managed": "true"
       "diun.enable": "true"
       "diun.watch_repo": "true"
-    networks:
-      - name: cloudbox
-        aliases:
-          - diun
-    purge_networks: yes
     restart_policy: unless-stopped
     state: started

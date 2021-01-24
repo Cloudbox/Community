@@ -1,0 +1,20 @@
+#########################################################################
+# Title:            Community: transmissionx | Dynamic Settings Tasks   #
+# Author(s):        giosann                                             #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image:     linuxserver/trasmission                             #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+# settings.json
+
+# Change Published Port
+- name: Settings | Dynamic | Set peer-port
+  lineinfile:
+    path: "/opt/transmission{{ rolename }}/settings.json"
+    regexp: '^\s*\"peer\-port\"\:.*'
+    line: '    "peer-port": {{ roleport }},'
+    state: present

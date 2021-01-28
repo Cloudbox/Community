@@ -9,11 +9,6 @@
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
-- name: Install required packages
-  apt: "name={{ item }} state=latest"
-  with_items:
-    - python-pymysql
-
 - name: MariaDB Role
   include_role:
     name: mariadb
@@ -33,12 +28,9 @@
   with_items:
     - bookstack
 
-- name: Create bookstack database
-  mysql_db:
-    name: bookstackapp
-    login_user: root
-    login_password: password321
-    state: present
+- name: "Create bookstackapp database"
+  command: "docker exec mariadb mysql -u root -ppassword321 -e 'create schema bookstackapp DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'"
+  ignore_errors: yes
 
 - name: Create required directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
@@ -50,12 +42,11 @@
     name: bookstack
     image: "linuxserver/bookstack"
     pull: yes
-    published_ports:
-      - "127.0.0.1:6875:443"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
+      APP_URL: "https://{{ bookstack.subdomain|default('bookstack',true) }}.{{ user.domain }}"
       DB_HOST: "mariadb:3306"
       DB_USER: root
       DB_PASS: password321

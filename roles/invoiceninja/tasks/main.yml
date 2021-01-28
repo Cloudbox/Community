@@ -13,8 +13,8 @@
   include_role:
     name: mariadb
 
-- name: "sleep for 20 seconds and continue"
-  wait_for: timeout=20
+- name: "sleep for 120 seconds and continue"
+  wait_for: timeout=120
 
 - name: "Set DNS Record on CloudFlare"
   include_role:

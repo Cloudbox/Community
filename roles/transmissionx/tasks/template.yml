@@ -1,8 +1,8 @@
 #########################################################################
 # Title:            Community: TransmissionX | Template                 #
-# Author(s):        giosann                                             #
+# Author(s):        giosann,saltydk                                     #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  linuxserver/trasmission                             #
+# Docker Image:     linuxserver/trasmission                             #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -51,6 +51,8 @@
     name: "transmission{{ rolename }}"
     image: "linuxserver/transmission"
     pull: yes
+    published_ports:
+      - "{{ roleport }}:{{ roleport }}"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
@@ -80,6 +82,8 @@
   include_tasks: "settings/main.yml"
   vars:
     rolename: "{{ role }}"
+    roleport: "{{ 51513 + index }}"
   loop_control:
     loop_var: role
+    index_var: index
   when: (not continuous_integration)

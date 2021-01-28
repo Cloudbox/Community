@@ -32,9 +32,6 @@
     name: calibre
     image: linuxserver/calibre
     pull: yes
-    published_ports:
-      - "127.0.0.1:8087:8080"
-      - "127.0.0.1:8088:8081"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
@@ -56,6 +53,9 @@
       - name: cloudbox
         aliases:
           - calibre
+    exposed_ports:
+      - 8080
+      - 8081
     purge_networks: yes
     restart_policy: unless-stopped
     state: started

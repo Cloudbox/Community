@@ -31,8 +31,6 @@
     name: lazylibrarian
     image: thraxis/lazylibrarian-calibre
     pull: yes
-    published_ports:
-      - "127.0.0.1:5299:5299"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

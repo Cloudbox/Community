@@ -32,8 +32,6 @@
     name: gazee
     image: linuxserver/gazee
     pull: yes
-    published_ports:
-      - "127.0.0.1:4242:4242"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

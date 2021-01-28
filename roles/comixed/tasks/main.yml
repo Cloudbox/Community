@@ -1,8 +1,8 @@
 #########################################################################
-# Title:            Community: comixed                                #
+# Title:            Community: comixed                                  #
 # Author(s):        theotocopulitos                                     #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  comixed/comixed                               #
+# Docker Image(s):  comixed/comixed                                     #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -31,8 +31,6 @@
     name: comixed
     image: comixed/comixed:latest
     pull: yes
-    published_ports:
-      - "7171:7171"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

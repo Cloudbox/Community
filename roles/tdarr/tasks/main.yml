@@ -47,10 +47,8 @@
 - name: Create and start container
   docker_container:
     name: tdarr
-    image: haveagitgat/tdarr
+    image: haveagitgat/tdarr:1.3003
     pull: yes
-    published_ports:
-      - "127.0.0.1:8265:8265"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

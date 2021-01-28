@@ -55,9 +55,6 @@
     name: jdownloader2
     image: "jlesage/jdownloader-2:latest"
     pull: yes
-    published_ports:
-      - "127.0.0.1:5800:5800"
-      - "127.0.0.1:5900:5900"
     env:
       TZ: "{{ tz }}"
       VIRTUAL_HOST: "jdownloader2.{{ user.domain }}"
@@ -81,6 +78,8 @@
       - name: cloudbox
         aliases:
           - jdownloader2
+    exposed_ports:
+      - 5800
     purge_networks: yes
     restart_policy: unless-stopped
     state: started

@@ -43,8 +43,6 @@
       LETSENCRYPT_HOST: "bag.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       SYMFONY__ENV__DOMAIN_NAME: "https://bag.{{ user.domain }}"
-    ports:
-      - "127.0.0.1:7780:80"
     volumes:
       - "/opt/wallabag/data:/var/www/wallabag/data:rw"
       - "/opt/wallabag/images:/var/www/wallabag/web/assets/images:rw"

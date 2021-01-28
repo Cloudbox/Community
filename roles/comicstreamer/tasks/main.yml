@@ -32,8 +32,6 @@
     name: comicstreamer
     image: kalinon/comicstreamer
     pull: yes
-    published_ports:
-      - "32500:32500"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

@@ -1,8 +1,8 @@
 #########################################################################
 # Title:            Community: Mylar3                                   #
-# Author(s):        theotocopulitos                                     #
+# Author(s):        theotocopulitos,owine                               #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  ajslater/mylar3                                     #
+# Docker Image(s):  hotio/mylar3                                        #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -21,6 +21,9 @@
     name: mylar3
     state: absent
 
+- name: Hotio Migration Tasks
+  import_tasks: "subtasks/hotio_migration.yml"
+
 - name: Create mylar3 directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
@@ -30,11 +33,12 @@
 - name: Create and start container
   docker_container:
     name: mylar3
-    image: ajslater/mylar3
+    image: hotio/mylar3
     pull: yes
     env:
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
+      TZ: "{{ tz }}"
       VIRTUAL_HOST: "mylar3.{{ user.domain }}"
       VIRTUAL_PORT: "8090"
       LETSENCRYPT_HOST: "mylar3.{{ user.domain }}"
@@ -44,8 +48,6 @@
       - "/mnt/local/downloads:/downloads"
       - "/mnt/unionfs/Media/Comics:/comics"
       - "/mnt:/mnt"
-      - "/etc/timezone:/etc/timezone:ro"
-      - "/etc/localtime:/etc/localtime:ro"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

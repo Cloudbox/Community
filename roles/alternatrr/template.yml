@@ -1,0 +1,59 @@
+#########################################################################
+# Title:            Community: alternatrr | Template                    #
+# Author(s):        TheUltimateC0der                                    #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  theultimatecoder/alternatrr                         #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Install named alternatrr role"
+  debug:
+    msg: "Installing {{ rolename }}"
+
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: "alternatrr{{ rolename }}"
+  when: cloudflare_enabled
+
+- name: Create alternatrrx directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - "/opt/alternatrr{{ rolename }}"
+    - "/opt/alternatrr{{ rolename }}/app"
+
+- name: Set default_volumes variable
+  set_fact:
+    default_volumes:
+      - "/opt/alternatrr{{ rolename }}/app:/opt/alternatrr/app"
+      - "/opt/sonarr{{ rolename }}/app:/opt/sonarr/app"
+
+- name: Create and start container
+  docker_container:
+    name: "alternatrr{{ rolename }}"
+    image: "theultimatecoder/alternatrr:latest"
+    pull: yes
+    env:
+      ConnectionStrings__DefaultConnection: Data Source=/opt/alternatrr/app/alternatrr.db
+      ConnectionStrings__sonarr: Data Source=/opt/sonarr/app/sonarr.db
+      Login__Username: "{{ user.name }}"
+      Login__Password: "{{ user.pass }}"
+      VIRTUAL_HOST: "alternatrr{{ rolename }}.{{ user.domain }}"
+      VIRTUAL_PORT: "80"
+      LETSENCRYPT_HOST: "alternatrr{{ rolename }}.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes: "{{ default_volumes }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+      "com.github.cloudbox.community": "alternatrrx"
+    networks:
+      - name: cloudbox
+        aliases:
+          - "alternatrr{{ rolename }}"
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

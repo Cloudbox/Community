@@ -14,6 +14,8 @@
     - { role: airdcpp, tags: ['airdcpp'] }
     - { role: airsonic, tags: ['airsonic'] }
     - { role: alltube, tags: ['alltube'] }
+    - { role: alternatrr, tags: ['alternatrr'] }
+    - { role: alternatrrx, tags: ['alternatrrx'] }
     - { role: amongus, tags: ['amongus'] }
     - { role: apprise, tags: ['apprise'] }
     - { role: archivebox, tags: ['archivebox'] }

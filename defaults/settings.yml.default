@@ -1,6 +1,10 @@
 --- 
 alltube: 
   domain: ~
+alternatrrx:
+  roles:
+    - 1080webdl
+    - 1080remux
 amongus: 
   token: your_discord_bot_token
 bazarrx: 

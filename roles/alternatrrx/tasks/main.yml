@@ -1,0 +1,33 @@
+#########################################################################
+# Title:            Community: alternatrr                               #
+# Author(s):        TheUltimateC0der                                    #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  theultimatecoder/alternatrr                         #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Gather list of alternatrrx Docker containers"
+  shell: "docker ps -a --format '{{ '{{' }} .Names{{ '}}' }}' --filter label=com.github.cloudbox.community=alternatrrx | xargs echo -n"
+  register: cloudbox_community_alternatrrx
+  ignore_errors: yes
+
+- name: "Stop all alternatrrx Docker containers"
+  shell: "docker stop {{ cloudbox_community_alternatrrx.stdout }}"
+  ignore_errors: yes
+  when: (cloudbox_community_alternatrrx.stdout | trim | length > 0)
+
+- name: "Remove all alternatrrx Docker containers"
+  shell: "docker rm {{ cloudbox_community_alternatrrx.stdout }}"
+  ignore_errors: yes
+  when: (cloudbox_community_alternatrrx.stdout | trim | length > 0)
+
+- name: "Execute alternatrrx roles"
+  include_tasks: template.yml
+  vars:
+    rolename: "{{ role }}"
+  with_items: "{{ alternatrrx.roles }}"
+  loop_control:
+    loop_var: role

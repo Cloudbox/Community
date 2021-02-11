@@ -29,6 +29,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **[comixed](https://github.com/mcpierce/comixed/tree/develop/docker)** - comics server and online reader
 - **[comicstreamer](https://github.com/beville/ComicStreamer)** - comics server and online reader (old, unmaintained, but fast and efficient)
 - **[CouchPotato](https://couchpota.to)** - Movie manager
+- **[Deemixrr](https://github.com/TheUltimateC0der/Deemixrr/wiki)** - A smart and easy to use WebUI for deemix to manage your music and audiobooks
 - **[deluge](../../wiki/Deluge)** - Deluge torrent client
 - **[embystat](https://github.com/mregni/EmbyStat)**
 - **Emby2** - Second instance of Emby

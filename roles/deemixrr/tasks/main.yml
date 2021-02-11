@@ -41,7 +41,7 @@
 - name: Create and start container
   docker_container:
     name: "deemixrr"
-    image: "theultimatecoder/deemixrr:latest"
+    image: "theultimatecoder/deemixrr:develop"
     pull: yes
     env:
       TZ: "{{ tz }}"

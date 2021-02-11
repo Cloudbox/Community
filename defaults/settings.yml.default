@@ -17,6 +17,7 @@ bookstack:
 calibreweb: 
   caliblur: true
 deemixrr:
+  version: nightly
   subdomain: deemixrr
   dashboardPath: /jobs
   Hangfire_Workers: 2

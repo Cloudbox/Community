@@ -47,6 +47,7 @@
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
+      Kestrel__EndPoints__Http__Url: http://0.0.0.0:5000
       ConnectionStrings__DefaultConnection: "server=mariadb;uid=root;pwd=password321;database=deemixrr;Allow User Variables=true"
       Login__Username: "{{ user.name }}"
       Login__Password: "{{ user.pass }}"

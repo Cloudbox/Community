@@ -33,6 +33,7 @@
     - { role: comixed, tags: ['comixed'] }
     - { role: comicstreamer, tags: ['comicstreamer'] }
     - { role: deemix, tags: ['deemix'] }
+    - { role: deemixrr, tags: ['deemixrr'] }
     - { role: deezloader-remix, tags: ['deezloader-remix'] }
     - { role: couchpotato, tags: ['couchpotato'] }
     - { role: deluge, tags: ['deluge'] }

@@ -21,9 +21,6 @@
     name: mylar3
     state: absent
 
-- name: Hotio Migration Tasks
-  import_tasks: "subtasks/hotio_migration.yml"
-
 - name: Create mylar3 directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:

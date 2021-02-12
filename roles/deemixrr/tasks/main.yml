@@ -1,0 +1,84 @@
+#########################################################################
+# Title:            Community: deemixrr | Template                      #
+# Author(s):        TheUltimateC0der                                    #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  theultimatecoder/deemixrr                           #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: MariaDB Role
+  include_role:
+    name: mariadb
+
+- name: "sleep for 120 seconds and continue"
+  wait_for: timeout=120
+
+- name: "Create deemixrr database"
+  command: "docker exec mariadb mysql -u root -ppassword321 -e 'create schema deemixrr DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'"
+  ignore_errors: yes
+
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: deemixrr
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing containers
+  docker_container: "name={{ item }} state=absent"
+  with_items:
+    - deemixrr
+
+- name: Create required directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/deemixrr
+    - /opt/deemixrr/deemix-config
+
+- name: Create and start container
+  docker_container:
+    name: "deemixrr"
+    image: "theultimatecoder/deemixrr:{{ deemixrr.version }}"
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      Kestrel__EndPoints__Http__Url: http://0.0.0.0:5000
+      ConnectionStrings__DefaultConnection: "server=mariadb;uid=root;pwd=password321;database=deemixrr;Allow User Variables=true"
+      LoginConfiguration__Username: "{{ user.name }}"
+      LoginConfiguration__Password: "{{ user.pass }}"
+      Hangfire__DashboardPath: "{{ deemixrr.dashboardPath|default('/jobs',true) }}"
+      Hangfire__Username: "{{ user.name }}"
+      Hangfire__Password: "{{ user.pass }}"
+      Hangfire__Workers: "{{ deemixrr.Hangfire_Workers|default('0 2 * * *',true) }}"
+      JobConfiguration__GetUpdatesRecurringJob: "{{ deemixrr.GetUpdatesRecurringJob|default('0 2 * * *',true) }}"
+      JobConfiguration__SizeCalculatorRecurringJob: "{{ deemixrr.SizeCalculatorRecurringJob|default('0 12 * * *',true) }}"
+      DelayConfiguration__ImportArtistsBackgroundJob_ExecuteDelay: "{{ deemixrr.ImportArtistsBackgroundJob_ExecuteDelay|default('1000',true) }}"
+      DelayConfiguration__CheckArtistForUpdatesBackgroundJob_GetTrackCountDelay: "{{ deemixrr.CheckArtistForUpdatesBackgroundJob_GetTrackCountDelay|default('1000',true) }}"
+      DelayConfiguration__CheckArtistForUpdatesBackgroundJob_ExecuteDelay: "{{ deemixrr.CheckArtistForUpdatesBackgroundJob_ExecuteDelay|default('1000',true) }}"
+      DelayConfiguration__CheckPlaylistForUpdatesBackgroundJob_ExecuteDelay: "{{ deemixrr.CheckPlaylistForUpdatesBackgroundJob_ExecuteDelay|default('1000',true) }}"
+      DelayConfiguration__CreateArtistBackgroundJob_FromPlaylistDelay: "{{ deemixrr.CreateArtistBackgroundJob_FromPlaylistDelay|default('1000',true) }}"
+      DelayConfiguration__CreateArtistBackgroundJob_FromUserDelay: "{{ deemixrr.CreateArtistBackgroundJob_FromUserDelay|default('1000',true) }}"
+      DelayConfiguration__CreateArtistBackgroundJob_FromCsvDelay: "{{ deemixrr.CreateArtistBackgroundJob_FromCsvDelay|default('1000',true) }}"
+      DelayConfiguration__CreatePlaylistBackgroundJob_FromCsvDelay: "{{ deemixrr.CreatePlaylistBackgroundJob_FromCsvDelay|default('1000',true) }}"
+      VIRTUAL_HOST: "{{ deemixrr.subdomain|default('deemixrr',true) }}.{{ user.domain }}"
+      VIRTUAL_PORT: "5000"
+      LETSENCRYPT_HOST: "{{ deemixrr.subdomain|default('deemixrr',true) }}.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/deemixrr/deemix-config:/config/.config/deemix"
+      - "/mnt/unionfs:/mnt/unionfs"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+      "com.github.cloudbox.community": "deemixrr"
+    networks:
+      - name: cloudbox
+        aliases:
+          - "deemixrr"
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

@@ -1,0 +1,28 @@
+#########################################################################
+# Title:         Community: Mylar3 | hotio Migration Tasks              #
+# Author(s):     owine                                                  #
+# URL:           https://github.com/Cloudbox/Community                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: hotio Migration | Check 'mylar' subfolder exists
+  stat:
+    path: "/opt/mylar3/mylar"
+  register: subfolder1
+
+- name: hotio Migration | Check 'app' subfolder exists
+  stat:
+    path: "/opt/mylar3/app"
+  register: subfolder2
+
+- name: hotio Migration | Move 'mylar3' folder contents to 'app' subfolder
+  shell: |
+    mv "/opt/mylar3/mylar" /tmp/app
+    mkdir "/opt/mylar3"
+    mv /tmp/app "/opt/mylar3/"
+    find "/opt/mylar3/*" -type d -empty -delete
+    chown -R {{ user.name }}:{{ user.name }} "/opt/mylar3"
+  when: (subfolder1.stat.exists) and not (subfolder2.stat.exists)

@@ -14,6 +14,8 @@
     - { role: airdcpp, tags: ['airdcpp'] }
     - { role: airsonic, tags: ['airsonic'] }
     - { role: alltube, tags: ['alltube'] }
+    - { role: alternatrr, tags: ['alternatrr'] }
+    - { role: alternatrrx, tags: ['alternatrrx'] }
     - { role: amongus, tags: ['amongus'] }
     - { role: apprise, tags: ['apprise'] }
     - { role: archivebox, tags: ['archivebox'] }
@@ -31,6 +33,7 @@
     - { role: comixed, tags: ['comixed'] }
     - { role: comicstreamer, tags: ['comicstreamer'] }
     - { role: deemix, tags: ['deemix'] }
+    - { role: deemixrr, tags: ['deemixrr'] }
     - { role: deezloader-remix, tags: ['deezloader-remix'] }
     - { role: couchpotato, tags: ['couchpotato'] }
     - { role: deluge, tags: ['deluge'] }

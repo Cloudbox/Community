@@ -1,6 +1,10 @@
 --- 
 alltube: 
   domain: ~
+alternatrrx:
+  roles:
+    - 1080webdl
+    - 1080remux
 amongus: 
   token: your_discord_bot_token
 bazarrx: 
@@ -12,6 +16,21 @@ bookstack:
   subdomain: bookstack
 calibreweb: 
   caliblur: true
+deemixrr:
+  version: nightly
+  subdomain: deemixrr
+  dashboardPath: /jobs
+  Hangfire_Workers: 2
+  GetUpdatesRecurringJob: 0 2 * * *
+  SizeCalculatorRecurringJob: 0 12 * * *
+  ImportArtistsBackgroundJob_ExecuteDelay: 1000
+  CheckArtistForUpdatesBackgroundJob_GetTrackCountDelay: 1000
+  CheckArtistForUpdatesBackgroundJob_ExecuteDelay: 1000
+  CheckPlaylistForUpdatesBackgroundJob_ExecuteDelay: 1000
+  CreateArtistBackgroundJob_FromPlaylistDelay: 1000
+  CreateArtistBackgroundJob_FromUserDelay: 1000
+  CreateArtistBackgroundJob_FromCsvDelay: 1000
+  CreatePlaylistBackgroundJob_FromCsvDelay: 1000
 deluge: 
   version: v2
 delugevpn: 

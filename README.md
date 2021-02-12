@@ -19,6 +19,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **[arrX](../../wiki/arrX)** - Create multiple Sonarr/Radarr/Bazarr Docker containers.
 - **airsonic**
 - **[alltube](../../wiki/alltube)** - [alltube](https://github.com/Rudloff/alltube) HTML GUI for youtube-dl.
+- **[alternatrr](../../wiki/alternatrr)** - [alternatrr](https://github.com/TheUltimateC0der/alternatrr) alternatrr lets you add alternative titles to your sonarr instance with a simple WebUI.
 - **amongus** - [AmongUsAutoMute](https://github.com/denverquane/amongusdiscord) AmongUs discord auto mute bot.
 - **[beets](../../wiki/beets)** - [Beets](http://beets.io/) Music library manager and MusicBrainz tagger.
 - **[bitwarden](../../wiki/Bitwarden)** - [Bitwarden](https://bitwarden.com/) Installs a self-hosted Bitwarden CE instance.
@@ -28,6 +29,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **[comixed](https://github.com/mcpierce/comixed/tree/develop/docker)** - comics server and online reader
 - **[comicstreamer](https://github.com/beville/ComicStreamer)** - comics server and online reader (old, unmaintained, but fast and efficient)
 - **[CouchPotato](https://couchpota.to)** - Movie manager
+- **[Deemixrr](https://github.com/TheUltimateC0der/Deemixrr/wiki)** - A smart and easy to use WebUI for deemix to manage your music and audiobooks
 - **[deluge](../../wiki/Deluge)** - Deluge torrent client
 - **[embystat](https://github.com/mregni/EmbyStat)**
 - **Emby2** - Second instance of Emby

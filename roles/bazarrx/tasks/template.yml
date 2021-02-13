@@ -20,9 +20,6 @@
     record: "bazarr{{ rolename }}"
   when: cloudflare_enabled
 
-- name: Hotio Migration Tasks
-  import_tasks: "subtasks/hotio_migration.yml"
-
 - name: Create bazarrx directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:

@@ -21,20 +21,16 @@
     name: jellyfin
     state: absent
 
-- name: Hotio Migration Tasks
-  import_tasks: "subtasks/hotio_migration.yml"
-
 - name: Create jellyfin directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/jellyfin
-    - /opt/jellyfin/app
     - "{{ plex.transcodes }}/jellyfin"
 
 - name: Import 'dlna.xml 'config
   copy:
     src: "dlna.xml"
-    dest: "/opt/jellyfin/app/dlna.xml"
+    dest: "/opt/jellyfin/dlna.xml"
     owner: "{{ user.name }}"
     group: "{{ user.name }}"
     mode: 0775
@@ -48,7 +44,7 @@
 - name: Import old 'system.xml' config if it exists
   copy:
     src: "/opt/jellyfin/app/config/system.xml"
-    dest: "/opt/jellyfin/app/system.xml"
+    dest: "/opt/jellyfin/system.xml"
     owner: "{{ user.name }}"
     group: "{{ user.name }}"
     mode: 0775

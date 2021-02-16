@@ -37,6 +37,19 @@
     - "{{ downloads.torrents }}/qbittorrent/torrents"
   when: (torrents_downloads_path is defined)|default(false)
 
+- name: Check if data folder exists.
+  stat:
+    path: "/opt/qbittorrent/data"
+  register: folder
+
+- name: Move '/opt/qbittorrent/data' folder contents into '/opt/qbittorrent/'
+  shell: |
+    rm -rf /opt/qbittorrent/qBittorrent/rss/
+    mv /opt/qbittorrent/data/qBittorrent/* /opt/qbittorrent/qBittorrent/
+    find /opt/qbittorrent/* -type d -empty -delete
+    chown -R {{ user.name }}:{{ user.name }} /opt/qbittorrent/
+  when: folder.stat.exists
+
 - name: Set default_volumes variable
   set_fact:
     default_volumes:

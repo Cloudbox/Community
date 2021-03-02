@@ -44,6 +44,7 @@
     volumes:
       - "/mnt:/mnt"
       - "/opt/deemix:/config"
+      - "/mnt/unionfs/downloads/deezer:/downloads:rw"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

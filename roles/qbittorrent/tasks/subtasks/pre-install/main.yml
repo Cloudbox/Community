@@ -1,0 +1,16 @@
+#########################################################################
+# Title:         Community: qBittorrent | Pre-Install Tasks             #
+# Author(s):     salty                                                  #
+# URL:           https://github.com/cloudbox/cloudbox                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Pre-Install | Get next available port within the range of '56881-56901'
+  find_next_open_port:
+    low_bound: 56881
+    high_bound: 56901
+  register: port_lookup_56881
+  ignore_errors: yes

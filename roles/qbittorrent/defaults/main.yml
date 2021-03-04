@@ -79,7 +79,7 @@ qbittorrent_docker_ports_56881: "{{ port_lookup_56881.port
                                       and (port_lookup_56881.port | trim | length > 0)
                                   else '56881' }}"
 qbittorrent_docker_ports_torrents:
-  - "{{ qbittorrent_docker_ports_51413 }}:{{ qbittorrent_docker_ports_51413 }}"
+  - "{{ qbittorrent_docker_ports_56881 }}:{{ qbittorrent_docker_ports_56881 }}"
 qbittorrent_docker_ports_custom: []
 qbittorrent_docker_ports: "{{ qbittorrent_docker_ports_defaults
                                 + qbittorrent_docker_ports_torrents

@@ -2,7 +2,7 @@
 # Title:            Community: qBittorrent                              #
 # Author(s):        salty                                               #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  linuxserver/qbittorrent                             #
+# Docker Image(s):  sc4h/qbittorrent                                    #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -71,7 +71,7 @@ qbittorrent_docker_image: "sc4h/qbittorrent:{{ qbittorrent_docker_image_tag }}"
 
 # Ports
 qbittorrent_docker_ports_defaults:
-  - "{{ qbittorrent_web_port }}"
+  - "{{ qbittorrent_web_port }}:{{ qbittorrent_web_port }}"
 # - Internal and External ports need to match for the next set of ports
 # - Lookup available ports and set docker ports accordingly
 qbittorrent_docker_ports_56881: "{{ port_lookup_56881.port

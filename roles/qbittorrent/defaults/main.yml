@@ -25,10 +25,10 @@ qbittorrent_paths_downloads_location: "{{ downloads.torrents }}/{{ qbittorrent_p
 qbittorrent_paths_folders_list:
   - "{{ qbittorrent_paths_location }}"
   - "{{ qbittorrent_paths_downloads_location }}"
-  - "{{ qbittorrent_paths_downloads_location }}/qbittorrent/completed"
-  - "{{ qbittorrent_paths_downloads_location }}/qbittorrent/incoming"
-  - "{{ qbittorrent_paths_downloads_location }}/qbittorrent/watched"
-  - "{{ qbittorrent_paths_downloads_location }}/qbittorrent/torrents"
+  - "{{ qbittorrent_paths_downloads_location }}/completed"
+  - "{{ qbittorrent_paths_downloads_location }}/incoming"
+  - "{{ qbittorrent_paths_downloads_location }}/watched"
+  - "{{ qbittorrent_paths_downloads_location }}/torrents"
 
 ################################
 # Web

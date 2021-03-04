@@ -1,0 +1,173 @@
+#########################################################################
+# Title:            Community: qBittorrent                              #
+# Author(s):        salty                                               #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  linuxserver/qbittorrent                             #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+################################
+# Basics
+################################
+
+qbittorrent_name: qbittorrent
+
+################################
+# Paths
+################################
+
+qbittorrent_paths_folder: "{{ qbittorrent_name }}"
+qbittorrent_paths_location: "{{ server_appdata_path }}/{{ qbittorrent_paths_folder }}"
+qbittorrent_paths_downloads_location: "{{ downloads.torrents }}/{{ qbittorrent_paths_folder }}"
+qbittorrent_paths_folders_list:
+  - "{{ qbittorrent_paths_location }}"
+  - "{{ qbittorrent_paths_downloads_location }}"
+  - "{{ qbittorrent_paths_downloads_location }}/qbittorrent/completed"
+  - "{{ qbittorrent_paths_downloads_location }}/qbittorrent/incoming"
+  - "{{ qbittorrent_paths_downloads_location }}/qbittorrent/watched"
+  - "{{ qbittorrent_paths_downloads_location }}/qbittorrent/torrents"
+
+################################
+# Web
+################################
+
+qbittorrent_web_subdomain: "{{ qbittorrent_name }}"
+qbittorrent_web_domain: "{{ user.domain }}"
+qbittorrent_web_port: "8080"
+qbittorrent_web_url: "{{ 'https://' + qbittorrent_web_subdomain + '.' + qbittorrent_web_domain
+                        if (reverse_proxy_is_enabled)
+                        else 'http://localhost:' + qbittorrent_web_port }}"
+
+################################
+# DNS
+################################
+
+qbittorrent_dns_record: "{{ qbittorrent_web_subdomain }}"
+qbittorrent_dns_zone: "{{ qbittorrent_web_domain }}"
+
+################################
+# Traefik
+################################
+
+qbittorrent_traefik_middleware: "secureHeaders@file,gzip"
+qbittorrent_traefik_host: "{{ qbittorrent_web_subdomain + '.' + qbittorrent_web_domain }}"
+qbittorrent_traefik_certresolver: "{{ traefik_default_certresolver }}"
+qbittorrent_traefik_enabled: yes
+
+################################
+# Docker
+################################
+
+# Container
+qbittorrent_docker_container: "{{ qbittorrent_name }}"
+
+# Image
+qbittorrent_docker_image_pull: yes
+qbittorrent_docker_image_tag: "latest"
+qbittorrent_docker_image: "sc4h/qbittorrent:{{ qbittorrent_docker_image_tag }}"
+
+# Ports
+qbittorrent_docker_ports_defaults:
+  - "{{ qbittorrent_web_port }}"
+# - Internal and External ports need to match for the next set of ports
+# - Lookup available ports and set docker ports accordingly
+qbittorrent_docker_ports_56881: "{{ port_lookup_56881.port
+                                  if (port_lookup_56881.port is defined)
+                                      and (port_lookup_56881.port | trim | length > 0)
+                                  else '56881' }}"
+qbittorrent_docker_ports_torrents:
+  - "{{ qbittorrent_docker_ports_51413 }}:{{ qbittorrent_docker_ports_51413 }}"
+qbittorrent_docker_ports_custom: []
+qbittorrent_docker_ports: "{{ qbittorrent_docker_ports_defaults
+                                + qbittorrent_docker_ports_torrents
+                                + qbittorrent_docker_ports_custom
+                            if (not reverse_proxy_is_enabled)
+                            else qbittorrent_docker_ports_torrents
+                                + qbittorrent_docker_ports_custom }}"
+
+# Envs
+qbittorrent_docker_envs_default:
+  PUID: "{{ uid }}"
+  PGID: "{{ gid }}"
+  TZ: "{{ tz }}"
+  UMASK_SET: "002"
+qbittorrent_docker_envs_custom: {}
+qbittorrent_docker_envs_reverse_proxy: {}
+qbittorrent_docker_envs: "{{ qbittorrent_docker_envs_default
+                                | combine(qbittorrent_docker_envs_custom)
+                                | combine(qbittorrent_docker_envs_reverse_proxy)
+                                | combine(docker_envs_reverse_proxy_common)
+                            if (reverse_proxy_is_enabled)
+                            else qbittorrent_docker_envs_default
+                                | combine(qbittorrent_docker_envs_custom) }}"
+
+# Commands
+qbittorrent_docker_commands_default: []
+qbittorrent_docker_commands_custom: []
+qbittorrent_docker_commands: "{{ qbittorrent_docker_commands_default
+                              + qbittorrent_docker_commands_custom}}"
+
+# Volumes
+qbittorrent_docker_volumes_default:
+  - "{{ qbittorrent_paths_location }}:/config"
+  - "{{ server_appdata_path }}/scripts:/scripts"
+  - "/mnt:/mnt"
+qbittorrent_docker_volumes_custom: []
+qbittorrent_docker_volumes: "{{ qbittorrent_docker_volumes_default
+                                + qbittorrent_docker_volumes_custom
+                                + docker_volumes_downloads_common  }}"
+
+# Devices
+qbittorrent_docker_devices_default: []
+qbittorrent_docker_devices_custom: []
+qbittorrent_docker_devices: "{{ qbittorrent_docker_devices_default
+                                  + qbittorrent_docker_devices_custom }}"
+
+# Hosts
+qbittorrent_docker_hosts_default: []
+qbittorrent_docker_hosts_custom: []
+qbittorrent_docker_hosts: "{{ docker_hosts_common
+                                | combine(qbittorrent_docker_hosts_default)
+                                | combine(qbittorrent_docker_hosts_custom) }}"
+
+# Labels
+qbittorrent_docker_labels_default: {}
+qbittorrent_docker_labels_custom: {}
+qbittorrent_docker_labels: "{{ docker_labels_common
+                                  | combine(qbittorrent_docker_labels_default)
+                                  | combine(qbittorrent_docker_labels_custom) }}"
+
+# Hostname
+qbittorrent_docker_hostname: "{{ qbittorrent_name }}"
+
+# Networks
+qbittorrent_docker_networks_alias: "{{ qbittorrent_name }}"
+qbittorrent_docker_networks_default: []
+qbittorrent_docker_networks_custom: []
+qbittorrent_docker_networks: "{{ docker_networks_common
+                                    + qbittorrent_docker_networks_default
+                                    + qbittorrent_docker_networks_custom }}"
+
+# Capabilities
+qbittorrent_docker_capabilities_default: []
+qbittorrent_docker_capabilities_custom: []
+qbittorrent_docker_capabilities: "{{ qbittorrent_docker_capabilities_default
+                                        + qbittorrent_docker_capabilities_custom }}"
+
+# Security Opts
+qbittorrent_docker_security_opts_default: []
+qbittorrent_docker_security_opts_custom: []
+qbittorrent_docker_security_opts: "{{ qbittorrent_docker_security_opts_default
+                                        + qbittorrent_docker_security_opts_custom }}"
+
+# Restart Policy
+qbittorrent_docker_restart_policy: unless-stopped
+
+# Stop Timeout
+qbittorrent_docker_stop_timeout: 900
+
+# State
+qbittorrent_docker_state: started

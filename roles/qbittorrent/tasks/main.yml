@@ -1,86 +1,29 @@
 #########################################################################
 # Title:            Community: qBittorrent                              #
-# Author(s):        Kalroth                                             #
+# Author(s):        Kalroth, salty                                      #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  linuxserver/qbittorrent                             #
+# Docker Image(s):  sc4h/qbittorrent                                    #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
-- name: "Setting CloudFlare DNS Record"
-  include_role:
-    name: cloudflare-dns
+- name: Add DNS record
+  include_tasks: "{{ resources_tasks_path }}/dns/tasker.yml"
   vars:
-    record: qbittorrent
-  when: cloudflare_enabled
+    dns_record: "{{ lookup('vars', role_name + '_dns_record') }}"
+    dns_zone: "{{ lookup('vars', role_name + '_dns_zone') }}"
 
-- name: Stop and remove any existing container
+- name: Remove existing Docker container
   docker_container:
-    name: qbittorrent
+    name: "{{ lookup('vars', role_name + '_docker_container') }}"
     state: absent
+    container_default_behavior: compatibility
 
-- name: Create qbittorrent directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
-  with_items:
-    - /opt/qbittorrent
+- name: Create directories
+  file: "path={{ item }} state=directory owner={{ user.name }} group={{ user.name }} mode=0775"
+  with_items: "{{ lookup('vars', role_name + '_paths_folders_list') }}"
 
-- name: Create new downloads directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
-  with_items:
-    - "{{ downloads.torrents }}"
-    - "{{ downloads.torrents }}/qbittorrent"
-    - "{{ downloads.torrents }}/qbittorrent/completed"
-    - "{{ downloads.torrents }}/qbittorrent/incoming"
-    - "{{ downloads.torrents }}/qbittorrent/watched"
-    - "{{ downloads.torrents }}/qbittorrent/torrents"
-  when: (torrents_downloads_path is defined)|default(false)
-
-- name: Check if data folder exists.
-  stat:
-    path: "/opt/qbittorrent/data"
-  register: folder
-
-- name: Move '/opt/qbittorrent/data' folder contents into '/opt/qbittorrent/'
-  shell: |
-    rm -rf /opt/qbittorrent/qBittorrent/rss/
-    mv /opt/qbittorrent/data/qBittorrent/* /opt/qbittorrent/qBittorrent/
-    find /opt/qbittorrent/* -type d -empty -delete
-    chown -R {{ user.name }}:{{ user.name }} /opt/qbittorrent/
-  when: folder.stat.exists
-
-- name: Set default_volumes variable
-  set_fact:
-    default_volumes:
-      - "/opt/qbittorrent:/config"
-      - "/opt/scripts:/scripts"
-      - "/mnt:/mnt"
-
-- name: Create and start container
-  docker_container:
-    name: qbittorrent
-    image: sc4h/qbittorrent
-    pull: yes
-    published_ports:
-      - "56881:56881"
-      - "56881:56881/udp"
-    env:
-      TZ: "{{ tz }}"
-      PUID: "{{ uid }}"
-      PGID: "{{ gid }}"
-      VIRTUAL_HOST: "qbittorrent.{{ user.domain }}"
-      VIRTUAL_PORT: "8080"
-      LETSENCRYPT_HOST: "qbittorrent.{{ user.domain }}"
-      LETSENCRYPT_EMAIL: "{{ user.email }}"
-      UMASK_SET: "002"
-    volumes: "{{ default_volumes + torrents_downloads_path|default([]) }}"
-    labels:
-      "com.github.cloudbox.cloudbox_managed": "true"
-    networks:
-      - name: cloudbox
-        aliases:
-          - qbittorrent
-    purge_networks: yes
-    restart_policy: unless-stopped
-    state: started
+- name: Create Docker container
+  include_tasks: "{{ resources_tasks_path }}/docker/create_docker_container.yml"

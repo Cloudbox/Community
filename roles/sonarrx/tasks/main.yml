@@ -1,8 +1,7 @@
 #########################################################################
 # Title:            Community: SonarrX                                  #
-# Author(s):        Kalroth, Migz93                                     #
+# Author(s):        Kalroth, Migz93, salty                              #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  hotio/sonarr, hotio/sonarr3                         #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -24,15 +23,13 @@
   ignore_errors: yes
   when: (cloudbox_community_sonarrx.stdout | trim | length > 0)
 
-- name: Stop and remove sonarr4k Docker container if it exists
-  docker_container:
-    name: sonarr4k
-    state: absent
-
 - name: "Execute SonarrX roles"
-  include_tasks: template.yml
+  include_role: 
+    name: sonarr
   vars:
-    rolename: "{{ role }}"
+    sonarr_docker_labels_custom:
+      "com.github.cloudbox.community": "sonarrx"
+    sonarr_name: "sonarr{{ role }}"
   with_items: "{{ sonarrx.roles }}"
   loop_control:
     loop_var: role

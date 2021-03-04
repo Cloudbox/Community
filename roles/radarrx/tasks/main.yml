@@ -8,27 +8,10 @@
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
-- name: "Gather list of radarrx Docker containers"
-  shell: "docker ps -a --format '{{ '{{' }} .Names{{ '}}' }}' --filter label=com.github.cloudbox.community=radarrx | xargs echo -n"
-  register: cloudbox_community_radarrx
-  ignore_errors: yes
-
-- name: "Stop all radarrx Docker containers"
-  shell: "docker stop {{ cloudbox_community_radarrx.stdout }}"
-  ignore_errors: yes
-  when: (cloudbox_community_radarrx.stdout | trim | length > 0)
-
-- name: "Remove all radarrx Docker containers"
-  shell: "docker rm {{ cloudbox_community_radarrx.stdout }}"
-  ignore_errors: yes
-  when: (cloudbox_community_radarrx.stdout | trim | length > 0)
-
 - name: "Execute RadarrX roles"
   include_role: 
     name: radarr
   vars:
-    radarr_docker_labels_custom:
-      "com.github.cloudbox.community": "radarrx"
     radarr_name: "radarr{{ role }}"
   with_items: "{{ radarrx.roles }}"
   loop_control:

@@ -8,27 +8,10 @@
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
-- name: "Gather list of sonarrx Docker containers"
-  shell: "docker ps -a --format '{{ '{{' }} .Names{{ '}}' }}' --filter label=com.github.cloudbox.community=sonarrx | xargs echo -n"
-  register: cloudbox_community_sonarrx
-  ignore_errors: yes
-
-- name: "Stop all sonarrx Docker containers"
-  shell: "docker stop {{ cloudbox_community_sonarrx.stdout }}"
-  ignore_errors: yes
-  when: (cloudbox_community_sonarrx.stdout | trim | length > 0)
-
-- name: "Remove all sonarrx Docker containers"
-  shell: "docker rm {{ cloudbox_community_sonarrx.stdout }}"
-  ignore_errors: yes
-  when: (cloudbox_community_sonarrx.stdout | trim | length > 0)
-
 - name: "Execute SonarrX roles"
   include_role: 
     name: sonarr
   vars:
-    sonarr_docker_labels_custom:
-      "com.github.cloudbox.community": "sonarrx"
     sonarr_name: "sonarr{{ role }}"
   with_items: "{{ sonarrx.roles }}"
   loop_control:

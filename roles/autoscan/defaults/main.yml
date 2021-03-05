@@ -27,7 +27,7 @@ autoscan_paths_folders_list:
 # Web
 ################################
 
-autoscan_web_subdomain: "web"
+autoscan_web_subdomain: "autoscan"
 autoscan_web_domain: "{{ user.domain }}"
 autoscan_web_port: "3030"
 autoscan_web_url: "{{ 'https://' + autoscan_web_subdomain + '.' + autoscan_web_domain

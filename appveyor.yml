@@ -37,6 +37,7 @@ environment:
     btrfsmaintenance
     calibre
     calibre-web
+    changedetection
     comicstreamer
     couchpotato
     coder

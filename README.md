@@ -26,6 +26,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **[bookstack](../../wiki/Bookstack)** - [BookStack](https://www.bookstackapp.com/) Self-hosted platform for organising and storing information.
 - **[calibre-rdp](../../wiki/Calibre-RDP-and-Calibre-WEB)** - [Calibre-RDP](https://github.com/cgspeck/docker-rdp-calibre) Media path set to `/Media/Books` - a web app providing a clean interface for browsing, reading and downloading eBooks using an existing Calibre database.
 - **[calibre-web](../../wiki/Calibre-RDP-and-Calibre-WEB)** - [Calibre-RDP](https://github.com/janeczku/calibre-web) Loads opt/calibre - a web app providing a clean interface for browsing, reading and downloading eBooks using an existing Calibre database.
+- **[changedetection.io](https://github.com/dgtlmoon/changedetection.io)** - Self-hosted change monitoring of web pages.
 - **[comixed](https://github.com/mcpierce/comixed/tree/develop/docker)** - comics server and online reader
 - **[comicstreamer](https://github.com/beville/ComicStreamer)** - comics server and online reader (old, unmaintained, but fast and efficient)
 - **[CouchPotato](https://couchpota.to)** - Movie manager

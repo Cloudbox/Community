@@ -1,0 +1,64 @@
+#########################################################################
+# Title:            Community: Changedetection.io                       #
+# Author(s):        mariosemes                                          #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  dgtlmoon/changedetection.io                         #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: changedetection
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: changedetection
+    state: absent
+
+- name: Create htpasswd
+  htpasswd:
+    path: "/opt/nginx-proxy/htpasswd/{{ item }}.{{ user.domain }}"
+    name: "{{ user.name }}"
+    password: "{{ user.pass }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0664
+  with_items:
+    - changedetection
+
+- name: Create changedetection directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  with_items:
+      - /opt/changedetection/datastore/
+
+- name: Create and start container
+  docker_container:
+    name: changedetection
+    image: "dgtlmoon/changedetection.io"
+    pull: yes
+    published_ports:
+      - "127.0.0.1:5000:5000"
+    env:
+      TZ: "{{ tz }}"
+      UID: "{{ uid }}"
+      GID: "{{ gid }}"
+      VIRTUAL_HOST: "changedetection.{{ user.domain }}"
+      VIRTUAL_PORT: "5000"
+      LETSENCRYPT_HOST: "changedetection.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/changedetection/datastore:/datastore"
+    networks:
+      - name: cloudbox
+        aliases:
+          - changedetection
+    pid_mode: host
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

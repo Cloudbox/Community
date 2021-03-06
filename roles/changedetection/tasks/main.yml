@@ -42,8 +42,8 @@
     name: changedetection
     image: "dgtlmoon/changedetection.io"
     pull: yes
-    published_ports:
-      - "127.0.0.1:5000:5000"
+    exposed_ports:
+      - 5000
     env:
       TZ: "{{ tz }}"
       UID: "{{ uid }}"
@@ -58,7 +58,6 @@
       - name: cloudbox
         aliases:
           - changedetection
-    pid_mode: host
     purge_networks: yes
     restart_policy: unless-stopped
     state: started

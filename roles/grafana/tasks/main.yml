@@ -1,7 +1,7 @@
 #########################################################################
-# Title:            Cloudbox: Grafana Role                              #
-# Author(s):        desimaniac                                          #
-# URL:              https://github.com/cloudbox/cloudbox                #
+# Title:            Community: Grafana Role                             #
+# Author(s):        desimaniac, salty                                   #
+# URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  grafana/grafana                                     #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
@@ -9,46 +9,21 @@
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
-- name: "Set DNS Record on CloudFlare"
-  include_role:
-    name: cloudflare-dns
+- name: Add DNS record
+  include_tasks: "{{ resources_tasks_path }}/dns/tasker.yml"
   vars:
-    record: grafana
-  when: cloudflare_enabled
+    dns_record: "{{ lookup('vars', role_name + '_dns_record') }}"
+    dns_zone: "{{ lookup('vars', role_name + '_dns_zone') }}"
 
-- name: Stop and remove any existing containers
+- name: Remove existing Docker container
   docker_container:
-    name: grafana
+    name: "{{ lookup('vars', role_name + '_docker_container') }}"
     state: absent
+    container_default_behavior: compatibility
 
-- name: Create required directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
-  with_items:
-    - /opt/grafana
+- name: Create directories
+  file: "path={{ item }} state=directory owner={{ user.name }} group={{ user.name }} mode=0775"
+  with_items: "{{ lookup('vars', role_name + '_paths_folders_list') }}"
 
-- name: Create and start grafana container
-  docker_container:
-    name: grafana
-    image: "grafana/grafana"
-    pull: yes
-    user: "{{ uid }}:{{ gid }}"
-    env:
-      GF_SERVER_ROOT_URL: "https://grafana.{{ user.domain }}"
-      GF_SECURITY_ADMIN_PASSWORD: "{{ user.pass }}"
-      GF_INSTALL_PLUGINS: "{{ grafana.plugins }}"
-      VIRTUAL_HOST: "grafana.{{ user.domain }}"
-      VIRTUAL_PORT: "3000"
-      LETSENCRYPT_HOST: "grafana.{{ user.domain }}"
-      LETSENCRYPT_EMAIL: "{{ user.email }}"
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/grafana:/var/lib/grafana"
-    labels:
-      "com.github.cloudbox.cloudbox_managed": "true"
-    networks:
-      - name: cloudbox
-        aliases:
-          - grafana
-    purge_networks: yes
-    restart_policy: unless-stopped
-    state: started
+- name: Create Docker container
+  include_tasks: "{{ resources_tasks_path }}/docker/create_docker_container.yml"

@@ -39,6 +39,7 @@ environment:
     calibre-web
     changedetection
     comicstreamer
+    conreq
     couchpotato
     coder
     comixed

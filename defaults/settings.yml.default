@@ -105,3 +105,6 @@ vscode:
   subdomain: code
   direct_domain: false
   password: "{{ user.pass }}"
+conreq:
+  subdomain: conreq
+  direct_domain: false

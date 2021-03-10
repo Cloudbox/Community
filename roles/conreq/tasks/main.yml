@@ -9,6 +9,13 @@
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: "{{ conreq.subdomain|default('conreq',true) }}"
+  when: (cloudflare_enabled) and not (conreq.direct_domain|default(false,true))
+
 - name: "Setting CloudFlare DNS Record"
   include_role:
     name: cloudflare-dns
@@ -54,7 +61,3 @@
     purge_networks: yes
     restart_policy: unless-stopped
     state: started
-
-- name: conreq url
-  debug:
-    msg: "url: https://{{ (conreq.direct_domain|default(false,true)) | ternary(user.domain + ',' + 'www.' + user.domain, conreq.subdomain|default('code',true) + '.' + user.domain) }}"

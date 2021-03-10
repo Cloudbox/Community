@@ -1,8 +1,8 @@
 #########################################################################
-# Title:            Community: VSCode                                   #
+# Title:            Community: Conreq                                   #
 # Author(s):        kungfoome                                           #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  ghcr.io/linuxserver/code-server                     #
+# Docker Image(s):  ghcr.io/roxedus/conreq                              #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################

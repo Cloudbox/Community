@@ -9,6 +9,13 @@
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: "{{ vscode.subdomain|default('vscode',true) }}"
+  when: (cloudflare_enabled) and not (vscode.direct_domain|default(false,true))
+
 - name: "Setting CloudFlare DNS Record"
   include_role:
     name: cloudflare-dns
@@ -54,7 +61,3 @@
     purge_networks: yes
     restart_policy: unless-stopped
     state: started
-
-- name: vscode url
-  debug:
-    msg: "vscode url: https://{{ (vscode.direct_domain|default(false,true)) | ternary(user.domain + ',' + 'www.' + user.domain, vscode.subdomain|default('code',true) + '.' + user.domain) }}"

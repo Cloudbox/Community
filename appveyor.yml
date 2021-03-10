@@ -112,6 +112,7 @@ environment:
     unmanic
     varken
     vnstat
+    vscode
     watchtower
     wallabag
     wordpress

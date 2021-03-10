@@ -114,6 +114,7 @@
     - { role: unmanic, tags: ['unmanic'] }
     - { role: varken, tags: ['varken'] }
     - { role: vnstat, tags: ['vnstat'] }
+    - { role: vscode, tags: ['vscode'] }
     - { role: watchtower, tags: ['watchtower'] }
     - { role: wallabag, tags: ['wallabag'] }
     - { role: wordpress, tags: ['wordpress'] }

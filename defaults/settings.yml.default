@@ -101,3 +101,7 @@ wordpress:
 overseerr:
   subdomain: overseerr
   direct_domain: false
+conreq:
+  subdomain: conreq
+  direct_domain: false
+

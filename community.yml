@@ -33,6 +33,7 @@
     - { role: coder, tags: ['coder'] }
     - { role: comixed, tags: ['comixed'] }
     - { role: comicstreamer, tags: ['comicstreamer'] }
+    - { role: conreq, tags: ['conreq'] }
     - { role: deemix, tags: ['deemix'] }
     - { role: deemixrr, tags: ['deemixrr'] }
     - { role: deezloader-remix, tags: ['deezloader-remix'] }
@@ -114,6 +115,7 @@
     - { role: unmanic, tags: ['unmanic'] }
     - { role: varken, tags: ['varken'] }
     - { role: vnstat, tags: ['vnstat'] }
+    - { role: vscode, tags: ['vscode'] }
     - { role: watchtower, tags: ['watchtower'] }
     - { role: wallabag, tags: ['wallabag'] }
     - { role: wordpress, tags: ['wordpress'] }

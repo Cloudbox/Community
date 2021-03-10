@@ -1,0 +1,63 @@
+#########################################################################
+# Title:            Community: VSCode                                   #
+# Author(s):        kungfoome                                           #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  ghcr.io/linuxserver/code-server                     #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: "{{ vscode.subdomain|default('vscode',true) }}"
+  when: (cloudflare_enabled) and not (vscode.direct_domain|default(false,true))
+
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: "{{ item }}"
+  with_items:
+    - "{{ user.domain }}"
+    - "www"
+  when: (cloudflare_enabled) and (vscode.direct_domain|default(false,true))
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: vscode
+    state: absent
+
+- name: Create vscode directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/vscode
+
+- name: Create and start container
+  docker_container:
+    name: vscode
+    image: ghcr.io/linuxserver/code-server
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      PASSWORD: "{{ vscode.password | default(omit) }}"
+      VIRTUAL_HOST:  "{{ (vscode.direct_domain|default(false,true)) | ternary(user.domain + ',' + 'www.' + user.domain, vscode.subdomain|default('code',true) + '.' + user.domain) }}"
+      VIRTUAL_PORT: "8443"
+      LETSENCRYPT_HOST: "{{ (vscode.direct_domain|default(false,true)) | ternary(user.domain + ',' + 'www.' + user.domain, vscode.subdomain|default('code',true) + '.' + user.domain) }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/vscode:/config"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - vscode
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

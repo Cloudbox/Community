@@ -1,0 +1,63 @@
+#########################################################################
+# Title:            Community: Conreq                                   #
+# Author(s):        kungfoome                                           #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  ghcr.io/roxedus/conreq                              #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: "{{ conreq.subdomain|default('conreq',true) }}"
+  when: (cloudflare_enabled) and not (conreq.direct_domain|default(false,true))
+
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: "{{ item }}"
+  with_items:
+    - "{{ user.domain }}"
+    - "www"
+  when: (cloudflare_enabled) and (conreq.direct_domain|default(false,true))
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: conreq
+    state: absent
+
+- name: Create conreq directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/conreq
+
+- name: Create and start container
+  docker_container:
+    name: conreq
+    image: ghcr.io/roxedus/conreq
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST:  "{{ (conreq.direct_domain|default(false,true)) | ternary(user.domain + ',' + 'www.' + user.domain, conreq.subdomain|default('code',true) + '.' + user.domain) }}"
+      VIRTUAL_PORT: "8000"
+      LETSENCRYPT_HOST: "{{ (conreq.direct_domain|default(false,true)) | ternary(user.domain + ',' + 'www.' + user.domain, conreq.subdomain|default('code',true) + '.' + user.domain) }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    exposed_ports: 8000 
+    volumes:
+      - "/opt/conreq:/config"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - conreq
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

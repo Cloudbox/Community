@@ -104,4 +104,7 @@ overseerr:
 conreq:
   subdomain: conreq
   direct_domain: false
-
+vscode:
+  subdomain: code
+  direct_domain: false
+  password: "{{ user.pass }}"

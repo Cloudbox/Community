@@ -29,6 +29,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **[changedetection.io](https://github.com/dgtlmoon/changedetection.io)** - Self-hosted change monitoring of web pages.
 - **[comixed](https://github.com/mcpierce/comixed/tree/develop/docker)** - comics server and online reader
 - **[comicstreamer](https://github.com/beville/ComicStreamer)** - comics server and online reader (old, unmaintained, but fast and efficient)
+- **[conreq](https://github.com/Archmonger/Conreq)** - Conreq, a Content Requesting platform like ombi
 - **[CouchPotato](https://couchpota.to)** - Movie manager
 - **[Deemixrr](https://github.com/TheUltimateC0der/Deemixrr/wiki)** - A smart and easy to use WebUI for deemix to manage your music and audiobooks
 - **[deluge](../../wiki/Deluge)** - Deluge torrent client

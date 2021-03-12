@@ -16,7 +16,7 @@
     record: filebot
   when: cloudflare_enabled
 
-  - name: Create htpasswd
+- name: Create htpasswd
   htpasswd:
     path: "/opt/nginx-proxy/htpasswd/{{ item }}.{{ user.domain }}"
     name: "{{ user.name }}"

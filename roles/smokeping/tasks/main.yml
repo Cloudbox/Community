@@ -1,0 +1,65 @@
+#########################################################################
+# Title:            Community: SmokePing                                #
+# Author(s):        mariosemes                                          #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  linuxserver/smokeping                               #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: smokeping
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: smokeping
+    state: absent
+
+- name: Create htpasswd
+  htpasswd:
+    path: "/opt/nginx-proxy/htpasswd/{{ item }}.{{ user.domain }}"
+    name: "{{ user.name }}"
+    password: "{{ user.pass }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0664
+  with_items:
+    - smokeping
+
+- name: Create smokeping directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  with_items:
+      - /opt/smokeping/config/
+      - /opt/smokeping/data/
+
+- name: Create and start container
+  docker_container:
+    name: smokeping
+    image: "linuxserver/smokeping"
+    pull: yes
+    exposed_ports:
+      - 80
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "smokeping.{{ user.domain }}"
+      VIRTUAL_PORT: "80"
+      LETSENCRYPT_HOST: "smokeping.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/smokeping/config:/config"
+      - "/opt/smokeping/data:/data"
+    networks:
+      - name: cloudbox
+        aliases:
+          - smokeping
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

@@ -96,6 +96,7 @@
     - { role: resilio-sync, tags: ['resilio-sync'] }
     - { role: rocketchat, tags: ['rocketchat'] }
     - { role: sickchill, tags: ['sickchill'] }
+    - { role: smokeping, tags: ['smokeping'] }
     - { role: sonarrx, tags: ['sonarrx'] }
     - { role: speedtest, tags: ['speedtest'] }
     - { role: sshwifty, tags: ['sshwifty'] }

@@ -58,6 +58,7 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **radarr1080** - Additional Radarr
 - **radarrX** - Similar to [sonarrX](../../wiki/SonarrX) but for radarr, to create multiple roles
 - **Red Discord Bot** - A customisible self-hosted Discord Bot
+- **[SmokePing](https://hub.docker.com/r/linuxserver/smokeping)** - Smokeping keeps track of your network latency.
 - **sonarr1080** - Additional Sonarr
 - **sonarrv3** - Sonar phantom (v3) branch based role
 - **[sonarrX](../../wiki/SonarrX)** - Experimental Sonarr v3 role to create multiple roles

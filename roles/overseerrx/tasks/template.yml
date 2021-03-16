@@ -9,7 +9,6 @@
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
-
 - name: "Install named overseerrx role"
   debug:
     msg: "Installing {{ rolename }}"

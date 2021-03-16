@@ -54,6 +54,8 @@ Community Repository for Unofficial Cloudbox Add-ons
 - **[jdownloader2](../../wiki/JDownloader2)** - [JDownloader2](https://github.com/jlesage/docker-jdownloader-2) Self-hosted free, open-source download management tool with GUI website frontend.
 - **mylar** - automated comic book downloader
 - **mylar3** - newest version of the automated comic book downloader, migrated to python 3. Actively developed.
+- **Overseerr** - Plex request management and media discovery tool
+- **OverseerrX** - To create multiple Overseerr roles
 - **[qBittorrent](../../wiki/qBittorrent)** - qBittorrent torrent client
 - **radarr1080** - Additional Radarr
 - **radarrX** - Similar to [sonarrX](../../wiki/SonarrX) but for radarr, to create multiple roles

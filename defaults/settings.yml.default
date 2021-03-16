@@ -59,6 +59,10 @@ navidrome:
 ombix: 
   roles: 
     - 4k
+overseerrx:
+  roles:
+    - 1080
+    - 4k
 qbittorrentvpn:
   vpn_endpoint: netherlands.ovpn
   vpn_user: your_vpn_username

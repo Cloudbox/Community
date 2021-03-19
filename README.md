@@ -16,6 +16,8 @@ Community Repository for Unofficial Cloudbox Add-ons
 
 ## Roles
 
+This is a partial list of roles available via Community; once the repo is installed,`sudo ansible-playbook community.yml --list-tags` will show you all available roles.
+
 - **[arrX](../../wiki/arrX)** - Create multiple Sonarr/Radarr/Bazarr Docker containers.
 - **airsonic**
 - **[alltube](../../wiki/alltube)** - [alltube](https://github.com/Rudloff/alltube) HTML GUI for youtube-dl.

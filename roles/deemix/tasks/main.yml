@@ -25,6 +25,7 @@
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
   with_items:
     - /opt/deemix/
+    - /mnt/local/downloads/deezer
 
 - name: Create and start container
   docker_container:
@@ -44,6 +45,7 @@
     volumes:
       - "/mnt:/mnt"
       - "/opt/deemix:/config"
+      - "/mnt/local/downloads/deezer:/downloads"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

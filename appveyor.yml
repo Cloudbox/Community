@@ -86,6 +86,7 @@ environment:
     organizrv1
     ouroboros
     overseerr
+    petio
     plex2
     pyload
     qbittorrent

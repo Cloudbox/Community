@@ -22,7 +22,7 @@
 - name: Create and start influxdb container
   docker_container:
     name: influxdb
-    image: "influxdb:latest"
+    image: "influxdb:1.8.4"
     pull: yes
     volumes:
       - "/etc/localtime:/etc/localtime:ro"

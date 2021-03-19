@@ -37,10 +37,12 @@ environment:
     btrfsmaintenance
     calibre
     calibre-web
+    changedetection
     comicstreamer
     couchpotato
     coder
     comixed
+    conreq
     deemix
     deemixrr
     deezloader-remix
@@ -111,6 +113,7 @@ environment:
     unmanic
     varken
     vnstat
+    vscode
     watchtower
     wallabag
     wordpress

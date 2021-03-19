@@ -24,6 +24,7 @@
     name: "mongo"
     image: "mongo:latest"
     pull: yes
+    user: "{{ uid }}:{{ gid }}"
     env:
       MONGO_DATA_DIR: "/data/db"
       MONGO_LOG_DIR: "/dev/null"

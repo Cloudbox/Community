@@ -84,6 +84,7 @@
     - { role: organizrv1, tags: ['organizrv1'] }
     - { role: ouroboros, tags: ['ouroboros'] }
     - { role: jdownloader2, tags: ['jdownloader2'] }
+    - { role: petio, tags: ['petio'] }
     - { role: plex2, tags: ['plex2'] }
     - { role: pyload, tags: ['pyload'] }
     - { role: qbittorrent, tags: ['qbittorrent'] }

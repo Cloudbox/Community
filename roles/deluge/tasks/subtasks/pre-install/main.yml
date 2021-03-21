@@ -1,0 +1,23 @@
+#########################################################################
+# Title:         Community: Deluge | Pre-Install Tasks                  #
+# Author(s):     salty                                                  #
+# URL:           https://github.com/cloudbox/cloudbox                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Pre-Install | Get next available port within the range of '58112-58132'
+  find_next_open_port:
+    low_bound: 58112
+    high_bound: 58132
+  register: port_lookup_58112
+  ignore_errors: yes
+
+- name: Pre-Install | Get next available port within the range of '58846-58866'
+  find_next_open_port:
+    low_bound: 58846
+    high_bound: 58866
+  register: port_lookup_58866
+  ignore_errors: yes

@@ -1,6 +1,6 @@
 #########################################################################
 # Title:            Community: Deluge                                   #
-# Author(s):        fuller882, Kalroth, Migz93                          #
+# Author(s):        salty                                               #
 # URL:              https://github.com/Cloudbox/Community               #
 # Docker Image(s):  linuxserver/deluge                                  #
 # --                                                                    #
@@ -9,67 +9,25 @@
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
-- name: "Setting CloudFlare DNS Record"
-  include_role:
-    name: cloudflare-dns
+- name: Add DNS record
+  include_tasks: "{{ resources_tasks_path }}/dns/tasker.yml"
   vars:
-    record: deluge
-  when: cloudflare_enabled
+    dns_record: "{{ lookup('vars', role_name + '_dns_record') }}"
+    dns_zone: "{{ lookup('vars', role_name + '_dns_zone') }}"
 
-- name: Stop and remove any existing container
+- name: Remove existing Docker container
   docker_container:
-    name: deluge
+    name: "{{ lookup('vars', role_name + '_docker_container') }}"
     state: absent
+    container_default_behavior: compatibility
 
-- name: Create deluge directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
-  with_items:
-    - /opt/deluge
+- name: Create directories
+  file: "path={{ item }} state=directory owner={{ user.name }} group={{ user.name }} mode=0775"
+  with_items: "{{ lookup('vars', role_name + '_paths_folders_list') }}"
 
-- name: Create new downloads directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
-  with_items:
-    - "{{ downloads.torrents }}"
-    - "{{ downloads.torrents }}/deluge"
-    - "{{ downloads.torrents }}/deluge/completed"
-    - "{{ downloads.torrents }}/deluge/incoming"
-    - "{{ downloads.torrents }}/deluge/watched"
+- name: Pre-Install Tasks
+  import_tasks: "subtasks/pre-install/main.yml"
+  when: not continuous_integration
 
-- name: Set default_volumes variable
-  set_fact:
-    default_volumes:
-      - "/opt/deluge:/config"
-      - "/opt/scripts:/scripts"
-      - "/mnt:/mnt"
-
-- name: Set 'deluge_docker_image' variable
-  set_fact:
-    deluge_docker_image: "{{ (deluge.version | lower == 'v2') | ternary('linuxserver/deluge:latest','linuxserver/deluge:5b398f77-ls22') }}"
-
-- name: Create and start container
-  docker_container:
-    name: deluge
-    image: "{{ deluge_docker_image }}"
-    pull: yes
-    published_ports:
-      - "58112:58112"
-      - "58846:58846"
-    env:
-      TZ: "{{ tz }}"
-      PUID: "{{ uid }}"
-      PGID: "{{ gid }}"
-      VIRTUAL_HOST: "deluge.{{ user.domain }}"
-      VIRTUAL_PORT: "8112"
-      LETSENCRYPT_HOST: "deluge.{{ user.domain }}"
-      LETSENCRYPT_EMAIL: "{{ user.email }}"
-      UMASK_SET: "022"
-    volumes: "{{ default_volumes + torrents_downloads_path|default([]) }}"
-    labels:
-      "com.github.cloudbox.cloudbox_managed": "true"
-    networks:
-      - name: cloudbox
-        aliases:
-          - deluge
-    purge_networks: yes
-    restart_policy: unless-stopped
-    state: started
+- name: Create Docker container
+  include_tasks: "{{ resources_tasks_path }}/docker/create_docker_container.yml"

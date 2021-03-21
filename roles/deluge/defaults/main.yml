@@ -1,0 +1,179 @@
+#########################################################################
+# Title:            Community: Deluge                                   #
+# Author(s):        salty                                               #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  linuxserver/deluge                                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+################################
+# Basics
+################################
+
+deluge_name: deluge
+
+################################
+# Paths
+################################
+
+deluge_paths_folder: "{{ deluge_name }}"
+deluge_paths_location: "{{ server_appdata_path }}/{{ deluge_paths_folder }}"
+deluge_paths_downloads_location: "{{ downloads.torrents }}/{{ deluge_paths_folder }}"
+deluge_paths_folders_list:
+  - "{{ deluge_paths_location }}"
+  - "{{ deluge_paths_downloads_location }}"
+  - "{{ deluge_paths_downloads_location }}/completed"
+  - "{{ deluge_paths_downloads_location }}/incoming"
+  - "{{ deluge_paths_downloads_location }}/watched"
+  - "{{ deluge_paths_downloads_location }}/torrents"
+
+################################
+# Web
+################################
+
+deluge_web_subdomain: "{{ deluge_name }}"
+deluge_web_domain: "{{ user.domain }}"
+deluge_web_port: "8080"
+deluge_web_url: "{{ 'https://' + deluge_web_subdomain + '.' + deluge_web_domain
+                        if (reverse_proxy_is_enabled)
+                        else 'http://localhost:' + deluge_web_port }}"
+
+################################
+# DNS
+################################
+
+deluge_dns_record: "{{ deluge_web_subdomain }}"
+deluge_dns_zone: "{{ deluge_web_domain }}"
+
+################################
+# Traefik
+################################
+
+deluge_traefik_middleware: "secureHeaders@file,gzip"
+deluge_traefik_host: "{{ deluge_web_subdomain + '.' + deluge_web_domain }}"
+deluge_traefik_certresolver: "{{ traefik_default_certresolver }}"
+deluge_traefik_enabled: yes
+
+################################
+# Docker
+################################
+
+# Container
+deluge_docker_container: "{{ deluge_name }}"
+
+# Image
+deluge_docker_image_pull: yes
+deluge_docker_image_tag: "latest"
+deluge_docker_image: "linuxserver/deluge:{{ deluge_docker_image_tag }}"
+
+# Ports
+deluge_docker_ports_defaults:
+  - "{{ deluge_web_port }}:{{ deluge_web_port }}"
+# - Internal and External ports need to match for the next set of ports
+# - Lookup available ports and set docker ports accordingly
+deluge_docker_ports_58112: "{{ port_lookup_58112.port
+                                  if (port_lookup_58112.port is defined)
+                                      and (port_lookup_58112.port | trim | length > 0)
+                                  else '58112' }}"
+deluge_docker_ports_58846: "{{ port_lookup_58846.port
+                                  if (port_lookup_58846.port is defined)
+                                      and (port_lookup_58846.port | trim | length > 0)
+                                  else '58846' }}"
+
+deluge_docker_ports_torrents:
+  - "{{ deluge_docker_ports_58112 }}:{{ deluge_docker_ports_58112 }}"
+  - "{{ deluge_docker_ports_58846 }}:{{ deluge_docker_ports_58846 }}"
+deluge_docker_ports_custom: []
+deluge_docker_ports: "{{ deluge_docker_ports_defaults
+                                + deluge_docker_ports_torrents
+                                + deluge_docker_ports_custom
+                            if (not reverse_proxy_is_enabled)
+                            else deluge_docker_ports_torrents
+                                + deluge_docker_ports_custom }}"
+
+# Envs
+deluge_docker_envs_default:
+  PUID: "{{ uid }}"
+  PGID: "{{ gid }}"
+  TZ: "{{ tz }}"
+  UMASK_SET: "002"
+deluge_docker_envs_custom: {}
+deluge_docker_envs_reverse_proxy: {}
+deluge_docker_envs: "{{ deluge_docker_envs_default
+                                | combine(deluge_docker_envs_custom)
+                                | combine(deluge_docker_envs_reverse_proxy)
+                                | combine(docker_envs_reverse_proxy_common)
+                            if (reverse_proxy_is_enabled)
+                            else deluge_docker_envs_default
+                                | combine(deluge_docker_envs_custom) }}"
+
+# Commands
+deluge_docker_commands_default: []
+deluge_docker_commands_custom: []
+deluge_docker_commands: "{{ deluge_docker_commands_default
+                              + deluge_docker_commands_custom}}"
+
+# Volumes
+deluge_docker_volumes_default:
+  - "{{ deluge_paths_location }}:/config"
+  - "{{ server_appdata_path }}/scripts:/scripts"
+  - "/mnt:/mnt"
+deluge_docker_volumes_custom: []
+deluge_docker_volumes: "{{ deluge_docker_volumes_default
+                                + deluge_docker_volumes_custom
+                                + docker_volumes_downloads_common  }}"
+
+# Devices
+deluge_docker_devices_default: []
+deluge_docker_devices_custom: []
+deluge_docker_devices: "{{ deluge_docker_devices_default
+                                  + deluge_docker_devices_custom }}"
+
+# Hosts
+deluge_docker_hosts_default: []
+deluge_docker_hosts_custom: []
+deluge_docker_hosts: "{{ docker_hosts_common
+                                | combine(deluge_docker_hosts_default)
+                                | combine(deluge_docker_hosts_custom) }}"
+
+# Labels
+deluge_docker_labels_default: {}
+deluge_docker_labels_custom: {}
+deluge_docker_labels: "{{ docker_labels_common
+                                  | combine(deluge_docker_labels_default)
+                                  | combine(deluge_docker_labels_custom) }}"
+
+# Hostname
+deluge_docker_hostname: "{{ deluge_name }}"
+
+# Networks
+deluge_docker_networks_alias: "{{ deluge_name }}"
+deluge_docker_networks_default: []
+deluge_docker_networks_custom: []
+deluge_docker_networks: "{{ docker_networks_common
+                                    + deluge_docker_networks_default
+                                    + deluge_docker_networks_custom }}"
+
+# Capabilities
+deluge_docker_capabilities_default: []
+deluge_docker_capabilities_custom: []
+deluge_docker_capabilities: "{{ deluge_docker_capabilities_default
+                                        + deluge_docker_capabilities_custom }}"
+
+# Security Opts
+deluge_docker_security_opts_default: []
+deluge_docker_security_opts_custom: []
+deluge_docker_security_opts: "{{ deluge_docker_security_opts_default
+                                        + deluge_docker_security_opts_custom }}"
+
+# Restart Policy
+deluge_docker_restart_policy: unless-stopped
+
+# Stop Timeout
+deluge_docker_stop_timeout: 900
+
+# State
+deluge_docker_state: started

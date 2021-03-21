@@ -36,7 +36,7 @@ deluge_paths_folders_list:
 
 deluge_web_subdomain: "{{ deluge_name }}"
 deluge_web_domain: "{{ user.domain }}"
-deluge_web_port: "8080"
+deluge_web_port: "8112"
 deluge_web_url: "{{ 'https://' + deluge_web_subdomain + '.' + deluge_web_domain
                         if (reverse_proxy_is_enabled)
                         else 'http://localhost:' + deluge_web_port }}"

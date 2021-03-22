@@ -101,3 +101,10 @@ wordpress:
 overseerr:
   subdomain: overseerr
   direct_domain: false
+conreq:
+  subdomain: conreq
+  direct_domain: false
+vscode:
+  subdomain: code
+  direct_domain: false
+  password: "{{ user.pass }}"

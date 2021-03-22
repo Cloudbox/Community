@@ -1,20 +1,25 @@
 #########################################################################
-# Title:            Community: FileBot                                  #
-# Author(s):        atilling                                            #
+# Title:            Community: Changedetection.io                       #
+# Author(s):        mariosemes                                          #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  jlesage/filebot                                     #
+# Docker Image(s):  dgtlmoon/changedetection.io                         #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
-- name: "Setting CloudFlare DNS Record"
+- name: "Set DNS Record on CloudFlare"
   include_role:
     name: cloudflare-dns
   vars:
-    record: filebot
+    record: changedetection
   when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: changedetection
+    state: absent
 
 - name: Create htpasswd
   htpasswd:
@@ -25,45 +30,34 @@
     group: "{{ user.name }}"
     mode: 0664
   with_items:
-    - filebot
+    - changedetection
 
-- name: Stop and remove any existing container
-  docker_container:
-    name: filebot
-    state: absent
-
-- name: Create filebot directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+- name: Create changedetection directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
   with_items:
-    - /opt/filebot
+      - /opt/changedetection/datastore/
 
 - name: Create and start container
   docker_container:
-    name: filebot
-    image: jlesage/filebot
+    name: changedetection
+    image: "dgtlmoon/changedetection.io"
     pull: yes
+    exposed_ports:
+      - 5000
     env:
       TZ: "{{ tz }}"
-      USER_ID: "{{ uid }}"
-      GROUP_ID: "{{ gid }}"
-      VIRTUAL_HOST: "filebot.{{ user.domain }}"
-      VIRTUAL_PORT: "5800"
-      LETSENCRYPT_HOST: "filebot.{{ user.domain }}"
+      UID: "{{ uid }}"
+      GID: "{{ gid }}"
+      VIRTUAL_HOST: "changedetection.{{ user.domain }}"
+      VIRTUAL_PORT: "5000"
+      LETSENCRYPT_HOST: "changedetection.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/opt/filebot:/config"
-      - "/mnt:/mnt"
-      - "/mnt/unionfs/Media/TV:/storage/Media/TV Shows"
-      - "/mnt/unionfs/Media/Movies:/storage/Media/Movies"
-      - "/mnt/local/downloads:/storage/downloads"
-    labels:
-      "com.github.cloudbox.cloudbox_managed": "true"
+      - "/opt/changedetection/datastore:/datastore"
     networks:
       - name: cloudbox
         aliases:
-          - filebot
-    exposed_ports:
-      - 5800
+          - changedetection
     purge_networks: yes
     restart_policy: unless-stopped
     state: started

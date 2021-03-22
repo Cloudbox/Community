@@ -1,0 +1,176 @@
+#########################################################################
+# Title:            Community: Transmission                             #
+# Author(s):        salty                                               #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  linuxserver/transmission                            #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+################################
+# Basics
+################################
+
+transmission_name: transmission
+
+################################
+# Paths
+################################
+
+transmission_paths_folder: "{{ transmission_name }}"
+transmission_paths_location: "{{ server_appdata_path }}/{{ transmission_paths_folder }}"
+transmission_paths_downloads_location: "{{ downloads.torrents }}/{{ transmission_paths_folder }}"
+transmission_paths_folders_list:
+  - "{{ transmission_paths_location }}"
+  - "{{ transmission_paths_downloads_location }}"
+  - "{{ transmission_paths_downloads_location }}/completed"
+  - "{{ transmission_paths_downloads_location }}/incoming"
+  - "{{ transmission_paths_downloads_location }}/watched"
+  - "{{ transmission_paths_downloads_location }}/torrents"
+
+################################
+# Web
+################################
+
+transmission_web_subdomain: "{{ transmission_name }}"
+transmission_web_domain: "{{ user.domain }}"
+transmission_web_port: "9091"
+transmission_web_url: "{{ 'https://' + transmission_web_subdomain + '.' + transmission_web_domain
+                        if (reverse_proxy_is_enabled)
+                        else 'http://localhost:' + transmission_web_port }}"
+
+################################
+# DNS
+################################
+
+transmission_dns_record: "{{ transmission_web_subdomain }}"
+transmission_dns_zone: "{{ transmission_web_domain }}"
+
+################################
+# Traefik
+################################
+
+transmission_traefik_middleware: "secureHeaders@file,gzip"
+transmission_traefik_host: "{{ transmission_web_subdomain + '.' + transmission_web_domain }}"
+transmission_traefik_certresolver: "{{ traefik_default_certresolver }}"
+transmission_traefik_enabled: yes
+
+################################
+# Docker
+################################
+
+# Container
+transmission_docker_container: "{{ transmission_name }}"
+
+# Image
+transmission_docker_image_pull: yes
+transmission_docker_image_tag: "latest"
+transmission_docker_image: "linuxserver/transmission:{{ transmission_docker_image_tag }}"
+
+# Ports
+transmission_docker_ports_defaults:
+  - "{{ transmission_web_port }}:{{ transmission_web_port }}"
+# - Internal and External ports need to match for the next set of ports
+# - Lookup available ports and set docker ports accordingly
+transmission_docker_ports_51413: "{{ port_lookup_51413.port
+                                  if (port_lookup_51413.port is defined)
+                                      and (port_lookup_51413.port | trim | length > 0)
+                                  else '51413' }}"
+transmission_docker_ports_torrents:
+  - "{{ transmission_docker_ports_51413 }}:{{ transmission_docker_ports_51413 }}"
+transmission_docker_ports_custom: []
+transmission_docker_ports: "{{ transmission_docker_ports_defaults
+                                + transmission_docker_ports_torrents
+                                + transmission_docker_ports_custom
+                            if (not reverse_proxy_is_enabled)
+                            else transmission_docker_ports_torrents
+                                + transmission_docker_ports_custom }}"
+
+# Envs
+transmission_docker_envs_default:
+  PUID: "{{ uid }}"
+  PGID: "{{ gid }}"
+  TZ: "{{ tz }}"
+  UMASK_SET: "002"
+  USER: "{{ user.name }}"
+  PASS: "{{ user.pass }}"
+  TRANSMISSION_WEB_HOME: "/transmission-web-control/"
+transmission_docker_envs_custom: {}
+transmission_docker_envs_reverse_proxy: {}
+transmission_docker_envs: "{{ transmission_docker_envs_default
+                                | combine(transmission_docker_envs_custom)
+                                | combine(transmission_docker_envs_reverse_proxy)
+                                | combine(docker_envs_reverse_proxy_common)
+                            if (reverse_proxy_is_enabled)
+                            else transmission_docker_envs_default
+                                | combine(transmission_docker_envs_custom) }}"
+
+# Commands
+transmission_docker_commands_default: []
+transmission_docker_commands_custom: []
+transmission_docker_commands: "{{ transmission_docker_commands_default
+                              + transmission_docker_commands_custom}}"
+
+# Volumes
+transmission_docker_volumes_default:
+  - "{{ transmission_paths_location }}:/config"
+  - "{{ server_appdata_path }}/scripts:/scripts"
+  - "/mnt:/mnt"
+transmission_docker_volumes_custom: []
+transmission_docker_volumes: "{{ transmission_docker_volumes_default
+                                + transmission_docker_volumes_custom
+                                + docker_volumes_downloads_common  }}"
+
+# Devices
+transmission_docker_devices_default: []
+transmission_docker_devices_custom: []
+transmission_docker_devices: "{{ transmission_docker_devices_default
+                                  + transmission_docker_devices_custom }}"
+
+# Hosts
+transmission_docker_hosts_default: []
+transmission_docker_hosts_custom: []
+transmission_docker_hosts: "{{ docker_hosts_common
+                                | combine(transmission_docker_hosts_default)
+                                | combine(transmission_docker_hosts_custom) }}"
+
+# Labels
+transmission_docker_labels_default: {}
+transmission_docker_labels_custom: {}
+transmission_docker_labels: "{{ docker_labels_common
+                                  | combine(transmission_docker_labels_default)
+                                  | combine(transmission_docker_labels_custom) }}"
+
+# Hostname
+transmission_docker_hostname: "{{ transmission_name }}"
+
+# Networks
+transmission_docker_networks_alias: "{{ transmission_name }}"
+transmission_docker_networks_default: []
+transmission_docker_networks_custom: []
+transmission_docker_networks: "{{ docker_networks_common
+                                    + transmission_docker_networks_default
+                                    + transmission_docker_networks_custom }}"
+
+# Capabilities
+transmission_docker_capabilities_default: []
+transmission_docker_capabilities_custom: []
+transmission_docker_capabilities: "{{ transmission_docker_capabilities_default
+                                        + transmission_docker_capabilities_custom }}"
+
+# Security Opts
+transmission_docker_security_opts_default: []
+transmission_docker_security_opts_custom: []
+transmission_docker_security_opts: "{{ transmission_docker_security_opts_default
+                                        + transmission_docker_security_opts_custom }}"
+
+# Restart Policy
+transmission_docker_restart_policy: unless-stopped
+
+# Stop Timeout
+transmission_docker_stop_timeout: 900
+
+# State
+transmission_docker_state: started

@@ -84,6 +84,7 @@
     - { role: ouroboros, tags: ['ouroboros'] }
     - { role: overseerr, tags: ['overseerr'] }
     - { role: jdownloader2, tags: ['jdownloader2'] }
+    - { role: petio, tags: ['petio'] }
     - { role: plex2, tags: ['plex2'] }
     - { role: pyload, tags: ['pyload'] }
     - { role: qbittorrent, tags: ['qbittorrent'] }

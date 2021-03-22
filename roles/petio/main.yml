@@ -1,42 +1,58 @@
 #########################################################################
-# Title:            Community: MongoDB                                  #
-# Author(s):        Superduper09, desimaniac                            #
+# Title:            Community: Petio                                    #
+# Author(s):        chazlarson                                          #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  mongo:latest                                        #
+# Docker Image(s):  hotio/petio                                         #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
+- name: MongoDB Role
+  include_role:
+    name: mongodb
+
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: petio
+  when: cloudflare_enabled
+
 - name: Stop and remove any existing container
   docker_container: "name={{ item }} state=absent"
   with_items:
-    - mongodb
+    - petio
 
 - name: Create required directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
-    - "/opt/mongodb"
+    - "/opt/petio"
 
-- name: Create and start mongodb container
+- name: Create and start petio container
   docker_container:
-    name: "mongo"
-    image: "mongo:latest"
+    name: "petio"
+    image: "hotio/petio"
     pull: yes
-    user: "{{ uid }}:{{ gid }}"
     env:
-      MONGO_DATA_DIR: "/data/db"
-      MONGO_LOG_DIR: "/dev/null"
-      MONGO_URL: "mongodb://mongo:27017/"
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      UMASK: "002"
+      VIRTUAL_HOST: "petio.{{ user.domain }}"
+      VIRTUAL_PORT: "7777"
+      LETSENCRYPT_HOST: "petio.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/opt/mongodb:/data/db:rw"
+      - "/opt/petio:/config:rw"
+      - "/mnt:/mnt"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
       - name: cloudbox
         aliases:
-          - "mongodb"
+          - "petio"
     purge_networks: yes
     restart_policy: unless-stopped
     state: started

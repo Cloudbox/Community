@@ -85,6 +85,7 @@
     - { role: organizrv1, tags: ['organizrv1'] }
     - { role: ouroboros, tags: ['ouroboros'] }
     - { role: overseerr, tags: ['overseerr'] }
+    - { role: overseerrx, tags: ['overseerrx'] }
     - { role: jdownloader2, tags: ['jdownloader2'] }
     - { role: petio, tags: ['petio'] }
     - { role: plex2, tags: ['plex2'] }
@@ -99,6 +100,7 @@
     - { role: resilio-sync, tags: ['resilio-sync'] }
     - { role: rocketchat, tags: ['rocketchat'] }
     - { role: sickchill, tags: ['sickchill'] }
+    - { role: smokeping, tags: ['smokeping'] }
     - { role: sonarrx, tags: ['sonarrx'] }
     - { role: speedtest, tags: ['speedtest'] }
     - { role: sshwifty, tags: ['sshwifty'] }

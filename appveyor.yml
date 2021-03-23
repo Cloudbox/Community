@@ -87,6 +87,7 @@ environment:
     ouroboros
     overseerr
     overseerrx
+    petio
     plex2
     pyload
     qbittorrent

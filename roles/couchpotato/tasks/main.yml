@@ -32,7 +32,7 @@
     image: linuxserver/couchpotato
     pull: yes
     env:
-      UMASK_SET: "002"
+      UMASK: "002"
       TZ: '{{ tz }}'
       PUID: '{{ uid }}'
       PGID: '{{ gid }}'

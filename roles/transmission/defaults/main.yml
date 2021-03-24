@@ -93,7 +93,7 @@ transmission_docker_envs_default:
   PUID: "{{ uid }}"
   PGID: "{{ gid }}"
   TZ: "{{ tz }}"
-  UMASK_SET: "002"
+  UMASK: "002"
   USER: "{{ user.name }}"
   PASS: "{{ user.pass }}"
   TRANSMISSION_WEB_HOME: "/transmission-web-control/"

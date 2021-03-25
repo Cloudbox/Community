@@ -47,6 +47,7 @@
     - { role: filebot, tags: ['filebot'] }
     - { role: filebrowser, tags: ['filebrowser'] }
     - { role: filezilla, tags: ['filezilla'] }
+    - { role: firefly, tags: ['firefly'] }
     - { role: flaresolverr, tags: ['flaresolverr'] }
     - { role: funkwhale, tags: ['funkwhale'] }
     - { role: gazee, tags: ['gazee'] }

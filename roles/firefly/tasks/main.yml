@@ -41,11 +41,11 @@
     image: "jc5x/firefly-iii:latest"
     pull: yes
     exposed_ports:
-      - "80:8080"
+      - 8080
     env:
       TZ: "{{ tz }}"
-      PGID: "1000"
-      PUID: "1000"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
       APP_KEY: "{{ lookup('password', '/opt/firefly/passwordfile length=32') }}"
       DB_HOST: "mariadb"
       DB_PORT: "3306"

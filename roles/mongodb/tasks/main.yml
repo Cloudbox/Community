@@ -18,19 +18,21 @@
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - "/opt/mongodb"
+    - "/opt/mongodb/config"
 
 - name: Create and start mongodb container
   docker_container:
     name: "mongo"
     image: "mongo:latest"
     pull: yes
-    user: "{{ uid }}:{{ gid }}"
+    user: "{{ user.name }}:{{ user.name }}"
     env:
       MONGO_DATA_DIR: "/data/db"
       MONGO_LOG_DIR: "/dev/null"
       MONGO_URL: "mongodb://mongo:27017/"
     volumes:
       - "/opt/mongodb:/data/db:rw"
+      - "/opt/mongodb/config:/data/configdb"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

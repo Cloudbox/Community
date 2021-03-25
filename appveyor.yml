@@ -51,6 +51,7 @@ environment:
     epms
     filebot
     filezilla
+    firefly
     flaresolverr
     funkwhale
     gazee

@@ -25,7 +25,7 @@
     name: "mongo"
     image: "mongo:latest"
     pull: yes
-    user: "{{ user.name }}:{{ user.name }}"
+    user: "{{ user.name }}":"{{ user.name }}"
     env:
       MONGO_DATA_DIR: "/data/db"
       MONGO_LOG_DIR: "/dev/null"

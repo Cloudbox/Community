@@ -90,14 +90,17 @@ environment:
     ouroboros
     overseerr
     overseerrx
+    paperless-ng
     petio
     plex2
+    postgres
     pyload
     qbittorrent
     qbittorrentvpn
     quassel
     radarrx
     redbot
+    redis
     resilio-sync
     requestrrx
     rocketchat

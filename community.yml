@@ -35,6 +35,7 @@
     - { role: comicstreamer, tags: ['comicstreamer'] }
     - { role: countdown, tags: ['countdown'] }
     - { role: conreq, tags: ['conreq'] }
+    - { role: dashmachine, tags: ['dashmachine'] }
     - { role: deemix, tags: ['deemix'] }
     - { role: deemixrr, tags: ['deemixrr'] }
     - { role: deezloader-remix, tags: ['deezloader-remix'] }

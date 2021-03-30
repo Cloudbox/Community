@@ -87,7 +87,7 @@ environment:
     ouroboros
     overseerr
     overseerrx
-    paperless
+    paperless-ng
     petio
     plex2
     postgres

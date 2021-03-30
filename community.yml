@@ -87,7 +87,7 @@
     - { role: overseerr, tags: ['overseerr'] }
     - { role: overseerrx, tags: ['overseerrx'] }
     - { role: jdownloader2, tags: ['jdownloader2'] }
-    - { role: paperless, tags: ['paperless'] }
+    - { role: paperless-ng, tags: ['paperless-ng'] }
     - { role: petio, tags: ['petio'] }
     - { role: plex2, tags: ['plex2'] }
     - { role: postgres, tags: ['postgres'] }

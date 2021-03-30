@@ -1,9 +1,6 @@
 # MacOS
 .DS_Store
 
-#Custom Repo for update command
-/repo.sh
-
 # Python
 *.pyc
 

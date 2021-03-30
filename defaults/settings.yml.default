@@ -63,6 +63,12 @@ overseerrx:
   roles:
     - 1080
     - 4k
+phantombot: 
+  subdomain: phantombot
+  bot_user:
+  bot_oauth:
+  caster_oauth:
+  caster_channel:
 qbittorrentvpn:
   vpn_endpoint: netherlands.ovpn
   vpn_user: your_vpn_username

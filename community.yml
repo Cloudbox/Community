@@ -88,6 +88,7 @@
     - { role: overseerrx, tags: ['overseerrx'] }
     - { role: jdownloader2, tags: ['jdownloader2'] }
     - { role: petio, tags: ['petio'] }
+    - { role: phantombot, tags: ['phantombot'] }
     - { role: plex2, tags: ['plex2'] }
     - { role: pyload, tags: ['pyload'] }
     - { role: qbittorrent, tags: ['qbittorrent'] }

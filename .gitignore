@@ -2,7 +2,7 @@
 .DS_Store
 
 #Custom Repo for update command
-repo.sh
+/repo.sh
 
 # Python
 *.pyc

@@ -75,6 +75,7 @@
     - { role: medusa, tags: ['medusa'] }
     - { role: minecraft, tags: ['minecraft'] }
     - { role: monitorr, tags: ['monitorr'] }
+    - { role: moviematch, tags: ['moviematch'] }
     - { role: mylar, tags: ['mylar'] }
     - { role: mylar3, tags: ['mylar3'] }
     - { role: navidrome, tags: ['navidrome'] }

@@ -99,6 +99,7 @@
     - { role: requestrrx, tags: ['requestrrx'] }
     - { role: resilio-sync, tags: ['resilio-sync'] }
     - { role: rocketchat, tags: ['rocketchat'] }
+    - { role: searx, tags: ['searx'] }
     - { role: sickchill, tags: ['sickchill'] }
     - { role: smokeping, tags: ['smokeping'] }
     - { role: sonarrx, tags: ['sonarrx'] }

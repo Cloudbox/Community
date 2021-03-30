@@ -98,6 +98,7 @@ environment:
     resilio-sync
     requestrrx
     rocketchat
+    searx
     sickchill
     smokeping
     sonarrx

@@ -73,17 +73,12 @@
     restart_policy: unless-stopped
     state: started
     
-
-- name: Check if pexpect is installed
-  command: "pip list --format columns | grep pexpect"
-  register: pexpect_check
-
   
 - name: install pexpect if not installed
   pip:
     name: pexpect
   become: yes
-  when: pexpect_check.stdout.find('pexpect') == -1
+
 
 - name: "sleep for 60 seconds and continue"
   wait_for: timeout=60

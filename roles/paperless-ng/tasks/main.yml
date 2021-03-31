@@ -80,17 +80,22 @@
   become: yes
 
 
-- name: "sleep for 60 seconds and continue"
-  wait_for: timeout=60
+- name: "sleep for 20 seconds and continue"
+  wait_for: timeout=20
   
 - name: Attempt to Automatically Create SuperUser
+  register: userout
   expect:
     command: docker exec -it paperless-ng python manage.py createsuperuser --username "{{ user.name }}"
-    creates: /opt/paperless-ng/.user_created
+    creates: /opt/paperless-ng/user_created
     responses:
-      (?i)email address: "{{ user.email }}"
+      (?i)address: "{{ user.email }}"
       (?i)password: "{{ user.pass }}"
-      (?i)password (again): "{{ user.pass }}"
+      (?i)again: "{{ user.pass }}"
+      (?i)bypass: y
+
+- debug: var=out.stdout_lines
+- debug: var=out.stderr
 
 
 - name: Alert user to consume folder

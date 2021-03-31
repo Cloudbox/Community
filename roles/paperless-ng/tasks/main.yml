@@ -80,27 +80,25 @@
   become: yes
 
 
-- name: "sleep for 60 seconds and continue"
-  wait_for: timeout=60
-  
-- name: User Creation
-  block:
-    - name: Attempt to Automatically Create SuperUser
-      async: 120
-      poll: 60
-      expect:
-        command: docker exec -it paperless-ng python manage.py createsuperuser --username "{{ user.name }}"
-        responses:
-          (?i)Email address: "{{ user.email }}"
-          (?i)Password: "{{ user.pass }}"
-          (?i)Password (again): "{{ user.pass }}"
-  rescue:
-    - name: Failed auto user creation. Alert.
-      debug:
-        msg: 
-        - "Could not create defualt user. Please run 'docker exec -it paperless-ng python manage.py createsuperuser'"
-        - "Ignore if this is a re-run/you know the user already exists"
+- name: "sleep for 20 seconds and continue"
+  wait_for: timeout=20
 
+
+- name: Attempt to Automatically Create SuperUser
+  expect:
+    command: docker exec -it paperless-ng python manage.py createsuperuser --username "{{ user.name }}"
+    creates: /opt/paperless-ng/.user_created
+    responses:
+      Email: "{{ user.email }}"
+      Password: "{{ user.pass }}"
+      Bypass: 'y'
+  register: usercreate
+
+- name: Create user.created file
+  file: "path={{ item }} state=touch mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/paperless-ng/.user_created
+  when: usercreate is success
 
 
 - name: Alert user to consume folder

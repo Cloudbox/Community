@@ -2,7 +2,10 @@
 # Title:            Community: phantombot                               #
 # Author(s):        Bonny1992                                           #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  gmt2001/phantombot-nightly                          #
+# Docker Image(s):  bonny1992/phantombot - To be considered a 'fix'.    #
+#                                          Please update this with the  # 
+#                                          official one as soon as      #
+#                                          possible                     #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################

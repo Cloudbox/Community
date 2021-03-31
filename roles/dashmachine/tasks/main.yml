@@ -45,8 +45,6 @@
       "com.github.cloudbox.cloudbox_managed": "true"
     volumes:
       - /opt/dashmachine/user_data:/dashmachine/dashmachine/user_data
-    exposed_ports:
-     - 5000
     networks:
       - name: cloudbox
         aliases:

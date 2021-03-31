@@ -38,8 +38,6 @@
       LOG_LEVEL: DEBUG
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
-    expose:
-     - "8080/tcp"
     networks:
       - name: cloudbox
         aliases:

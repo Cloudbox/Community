@@ -73,8 +73,8 @@
     restart_policy: unless-stopped
     state: started
     
-- name: "sleep for 60 seconds and continue"
-  wait_for: timeout=60
+- name: "sleep for 20 seconds and continue"
+  wait_for: timeout=20
   
 - name: install pexpect
   pip:

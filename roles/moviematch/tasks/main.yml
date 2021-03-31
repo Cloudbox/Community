@@ -40,6 +40,7 @@
       PLEX_URL: "https://plex.{{ user.domain }}"
       PLEX_TOKEN: "{{ plex_auth_token | default('') }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
+      LETSENCRYPT_HOST: "moviematch.{{ user.domain }}"
       LOG_LEVEL: DEBUG
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

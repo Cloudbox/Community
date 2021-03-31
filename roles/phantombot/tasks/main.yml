@@ -34,9 +34,10 @@
 - name: Create and start container
   docker_container:
     name: phantombot
-    image: "gmt2001/phantombot-nightly"
+    # image: "gmt2001/phantombot-nightly" # The original one - As 31/03/2021 requires root
+    image: "bonny1992/phantombot"
     pull: yes
-    # user: "{{ uid }}:{{ gid }}"
+    user: "{{ uid }}:{{ gid }}"
     env:
       PHANTOMBOT_PANELUSER: "{{ user.name }}"
       PHANTOMBOT_PANELPASSWORD: "{{ user.pass }}"

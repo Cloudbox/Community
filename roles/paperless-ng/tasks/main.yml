@@ -33,17 +33,10 @@
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:
     - /opt/paperless-ng
-    - /mnt/unionfs/Media/Documents/paperless/media
-    - /mnt/unionfs/Media/Documents/paperless/consume
-    - /mnt/unionfs/Media/Documents/paperless/export
+    - /mnt/local/Media/Documents/paperless/media
+    - /mnt/local/Media/Documents/paperless/consume
+    - /mnt/local/Media/Documents/paperless/export
     
-- name: Create blank file - Stops Cloudplow deleting empty dir
-  file: "path={{ item }} state=touch mode=0775 owner={{ user.name }} group={{ user.name }}"
-  with_items:
-    - /mnt/unionfs/Media/Documents/paperless/media/cloudplow.dont.delete_HIDDEN
-    - /mnt/unionfs/Media/Documents/paperless/consume/cloudplow.dont.delete_HIDDEN
-    - /mnt/unionfs/Media/Documents/paperless/export/cloudplow.dont.delete_HIDDEN
-
 - name: Create and start Paperless container
   docker_container:
     name: paperless-ng
@@ -51,10 +44,8 @@
     pull: yes
     env:
       TZ: "{{ tz }}"
-      PUID: "{{ uid }}"
       USERMAP_UID: "{{ uid }}"
       USERMAP_GID: "{{ gid }}"
-      PGID: "{{ gid }}"
       VIRTUAL_HOST: "paperless.{{ user.domain }}"
       VIRTUAL_PORT: "8000"
       LETSENCRYPT_HOST: "paperless.{{ user.domain }}"
@@ -74,8 +65,6 @@
       - /mnt/unionfs/Media/Documents/paperless/media:/usr/src/paperless/media
       - /mnt/unionfs/Media/Documents/paperless/consume:/usr/src/paperless/consume
       - /mnt/unionfs/Media/Documents/paperless/export:/usr/src/paperless/export
-    exposed_ports:
-     - 8000
     networks:
       - name: cloudbox
         aliases:
@@ -84,8 +73,8 @@
     restart_policy: unless-stopped
     state: started
     
-- name: "sleep for 60 seconds and continue"
-  wait_for: timeout=60
+- name: "sleep for 20 seconds and continue"
+  wait_for: timeout=20
   
 - name: install pexpect
   pip:
@@ -99,3 +88,8 @@
       (?i)Email address: "{{ user.email }}"
       (?i)Password: "{{ user.pass }}"
       (?i)Password (again): "{{ user.pass }}"
+
+- name: Alert user to consume folder
+  debug:
+    msg:
+    - "Make sure to add the consume directory to be ignored by cloudplow, or stop cloudplow from deleteing empty dirs. Do this in /opt/cloudplow/config.json"

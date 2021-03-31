@@ -73,8 +73,8 @@
     restart_policy: unless-stopped
     state: started
     
-- name: "sleep for 20 seconds and continue"
-  wait_for: timeout=20
+- name: "sleep for 60 seconds and continue"
+  wait_for: timeout=60
   
 - name: install pexpect
   pip:
@@ -89,7 +89,7 @@
       (?i)Password: "{{ user.pass }}"
       (?i)Password (again): "{{ user.pass }}"
 
-- name: Alert user to consume folder
-  debug:
-    msg:
-    - "Make sure to add the consume directory to be ignored by cloudplow, or stop cloudplow from deleteing empty dirs. Do this in /opt/cloudplow/config.json"
+#- name: Alert user to consume folder
+#  debug:
+#    msg:
+#    - "Make sure to add the consume directory to be ignored by cloudplow, or stop cloudplow from deleteing empty dirs. Do this in /opt/cloudplow/config.json"

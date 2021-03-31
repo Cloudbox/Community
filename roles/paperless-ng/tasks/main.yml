@@ -73,21 +73,40 @@
     restart_policy: unless-stopped
     state: started
     
-- name: "sleep for 60 seconds and continue"
-  wait_for: timeout=60
+
+- name: Check if pexpect is installed
+  command: "pip list --format columns | grep pexpect"
+  register: pexpect_check
+
   
-- name: install pexpect
+- name: install pexpect if not installed
   pip:
     name: pexpect
   become: yes
+  when: pexpect_check.stdout.find('pexpect') == -1
+
+- name: "sleep for 60 seconds and continue"
+  wait_for: timeout=60
   
 - name: User Creation
-  expect:
-    command: docker exec -it paperless-ng python manage.py createsuperuser --username "{{ user.name }}"
-    responses:
-      (?i)Email address: "{{ user.email }}"
-      (?i)Password: "{{ user.pass }}"
-      (?i)Password (again): "{{ user.pass }}"
+  block:
+    - name: Attempt to Automatically Create SuperUser
+      async: 120
+      poll: 60
+      expect:
+        command: docker exec -it paperless-ng python manage.py createsuperuser --username "{{ user.name }}"
+        responses:
+          (?i)Email address: "{{ user.email }}"
+          (?i)Password: "{{ user.pass }}"
+          (?i)Password (again): "{{ user.pass }}"
+  rescue:
+    - name: Failed auto user creation. Alert.
+      debug:
+        msg: 
+        - "Could not create defualt user. Please run 'docker exec -it paperless-ng python manage.py createsuperuser'"
+        - "Ignore if this is a re-run/you know the user already exists"
+
+
 
 - name: Alert user to consume folder
   debug:

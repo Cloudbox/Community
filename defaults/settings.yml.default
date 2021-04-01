@@ -16,6 +16,8 @@ bookstack:
   subdomain: bookstack
 calibreweb: 
   caliblur: true
+dashmachine:
+  subdomain: dashmachine
 deemixrr:
   version: nightly
   subdomain: deemixrr

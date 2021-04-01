@@ -1,0 +1,54 @@
+
+#########################################################################
+# Title:            Community: DashMachine                              #
+# Author(s):        Jolbol1                                             #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  rmountjoy/dashmachine                               #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: dashmachine
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing containers
+  docker_container: "name={{ item }} state=absent"
+  with_items:
+    - dashmachine
+    
+- name: Create required directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/dashmachine/user_data
+
+- name: Create and start DashMachine container
+  docker_container:
+    name: dashmachine
+    image: "rmountjoy/dashmachine:latest"
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "{{ dashmachine.subdomain }}.{{ user.domain }}"
+      VIRTUAL_PORT: "5000"
+      LETSENCRYPT_HOST: "{{ dashmachine.subdomain }}.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      LOG_LEVEL: DEBUG
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    volumes:
+      - /opt/dashmachine/user_data:/dashmachine/dashmachine/user_data
+    networks:
+      - name: cloudbox
+        aliases:
+          - dashmachine
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

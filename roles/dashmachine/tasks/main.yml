@@ -36,9 +36,9 @@
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      VIRTUAL_HOST: "dashmachine.{{ user.domain }}"
+      VIRTUAL_HOST: "{{ dashmachine.subdomain }}.{{ user.domain }}"
       VIRTUAL_PORT: "5000"
-      LETSENCRYPT_HOST: "dashmachine.{{ user.domain }}"
+      LETSENCRYPT_HOST: "{{ dashmachine.subdomain }}.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       LOG_LEVEL: DEBUG
     labels:

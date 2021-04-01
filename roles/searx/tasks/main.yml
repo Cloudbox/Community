@@ -1,0 +1,46 @@
+#########################################################################
+# Title:            Community: Searx                                    #
+# Author(s):        Jolbol1                                             #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  searx/searx:latest                                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: "{{ searx.subdomain|default('searx',true) }}"
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing containers
+  docker_container: "name={{ item }} state=absent"
+  with_items:
+    - searx
+    
+- name: Create and start SearX container
+  docker_container:
+    name: searx
+    image: "searx/searx:latest"
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "{{ searx.subdomain|default('searx',true) }}.{{ user.domain }}"
+      VIRTUAL_PORT: "8888"
+      LETSENCRYPT_HOST: "{{ searx.subdomain|default('searx',true) }}.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      LOG_LEVEL: DEBUG
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - searx
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

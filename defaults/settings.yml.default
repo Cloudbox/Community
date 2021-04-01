@@ -80,6 +80,8 @@ requestrrx:
   roles: 
     - 1080
     - 4k
+searx:
+  subdomain: searx
 sonarrx: 
   roles: 
     - 1080webdl

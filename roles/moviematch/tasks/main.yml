@@ -13,7 +13,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    record: moviematch
+    record: "{{ moviematch.subdomain }}"
   when: cloudflare_enabled
 
 - name: Stop and remove any existing containers
@@ -35,13 +35,14 @@
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      VIRTUAL_HOST: "moviematch.{{ user.domain }}"
+      VIRTUAL_HOST: "{{ moviematch.subdomain }}.{{ user.domain }}"
       VIRTUAL_PORT: "8000"
       PLEX_URL: "https://plex.{{ user.domain }}"
       PLEX_TOKEN: "{{ plex_auth_token | default('') }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
-      LETSENCRYPT_HOST: "moviematch.{{ user.domain }}"
+      LETSENCRYPT_HOST: "{{ moviematch.subdomain }}.{{ user.domain }}"
       LOG_LEVEL: DEBUG
+      LIBRARY_TITLE_FILTER: "{{ moviematch.libraries }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     exposed_ports:

@@ -40,7 +40,6 @@ environment:
     changedetection
     comicstreamer
     couchpotato
-    countdown
     coder
     comixed
     conreq
@@ -49,6 +48,7 @@ environment:
     deezloader-remix
     deluge
     delugevpn
+    easycountdown
     embystat
     emby2
     epms

@@ -16,11 +16,6 @@ bookstack:
   subdomain: bookstack
 calibreweb: 
   caliblur: true
-countdown:
- sub_domain: countdown
- background: 
- target: Sat Feb 05 2022 08:15:00 GMT+0000
- title: Change me at community settings.yml
 deemixrr:
   version: nightly
   subdomain: deemixrr
@@ -44,6 +39,11 @@ delugevpn:
   vpn_pass: your_vpn_password
   vpn_prov: pia
   vpn_user: your_vpn_username
+easycountdown:
+ subdomain: easycountdown
+ background: https://raw.githubusercontent.com/jolbol1/CloudboxRoles/main/1920x1080-black-solid-color-background.jpg
+ target: Sat Feb 05 2022 08:15:00 GMT+0000
+ title: Change me at community settings.yml
 gitea: 
   subdomain: git
 goplaxt: 

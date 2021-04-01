@@ -87,14 +87,17 @@
     - { role: overseerr, tags: ['overseerr'] }
     - { role: overseerrx, tags: ['overseerrx'] }
     - { role: jdownloader2, tags: ['jdownloader2'] }
+    - { role: paperless-ng, tags: ['paperless-ng'] }
     - { role: petio, tags: ['petio'] }
     - { role: plex2, tags: ['plex2'] }
+    - { role: postgres, tags: ['postgres'] }
     - { role: pyload, tags: ['pyload'] }
     - { role: qbittorrent, tags: ['qbittorrent'] }
     - { role: qbittorrentvpn, tags: ['qbittorrentvpn'] }
     - { role: quassel, tags: ['quassel'] }
     - { role: radarrx, tags: ['radarrx'] }
     - { role: redbot, tags: ['redbot'] }
+    - { role: redis, tags: ['redis'] }
     - { role: requestrr, tags: ['requestrr'] }
     - { role: requestrrx, tags: ['requestrrx'] }
     - { role: resilio-sync, tags: ['resilio-sync'] }

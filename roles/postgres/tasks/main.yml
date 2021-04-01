@@ -1,0 +1,42 @@
+#########################################################################
+# Title:            Community: Postgres                                 #
+# Author(s):        Jolbol1                                             #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  postgres                                            #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+
+- name: Stop and remove any existing containers
+  docker_container: "name={{ item }} state=absent"
+  with_items:
+    - postgres
+    
+- name: Create required directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/postgres
+
+- name: Create and start postgres container
+  docker_container:
+    name: postgres
+    image: "postgres"
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      LOG_LEVEL: DEBUG
+      POSTGRES_PASSWORD: mysecretpassword
+    volumes:
+      - /opt/postgres/data:/var/lib/postgresql/data
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

@@ -90,6 +90,7 @@ environment:
     overseerrx
     paperless-ng
     petio
+    phantombot
     plex2
     postgres
     pyload

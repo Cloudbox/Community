@@ -1,0 +1,66 @@
+#########################################################################
+# Title:            Community: phantombot                               #
+# Author(s):        Bonny1992                                           #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  bonny1992/phantombot - To be considered a 'fix'.    #
+#                                          Please update this with the  # 
+#                                          official one as soon as      #
+#                                          possible                     #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: "{{ phantombot.subdomain|default('phantombot',true) }}"
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: phantombot
+    state: absent
+
+- name: Create phantombot directories
+  file: 'path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}'
+  with_items:
+    - /opt/phantombot
+    - /opt/phantombot/addons
+    - /opt/phantombot/config
+    - /opt/phantombot/dbbackup
+    - /opt/phantombot/logs
+
+- name: Create and start container
+  docker_container:
+    name: phantombot
+    # image: "gmt2001/phantombot-nightly" # The original one - As 31/03/2021 requires root
+    image: "bonny1992/phantombot"
+    pull: yes
+    user: "{{ uid }}:{{ gid }}"
+    env:
+      PHANTOMBOT_PANELUSER: "{{ user.name }}"
+      PHANTOMBOT_PANELPASSWORD: "{{ user.pass }}"
+      PHANTOMBOT_USEHTTPS: "false"
+      PHANTOMBOT_USER: "{{ phantombot.bot_user }}"
+      PHANTOMBOT_OAUTH: "{{ phantombot.bot_oauth }}"
+      PHANTOMBOT_APIOAUTH: "{{ phantombot.caster_oauth }}"
+      PHANTOMBOT_CHANNEL: "{{ phantombot.caster_channel }}"
+      VIRTUAL_HOST: "{{ phantombot.subdomain|default('phantombot',true) }}.{{ user.domain }}"
+      VIRTUAL_PORT: "25000"
+      LETSENCRYPT_HOST: "{{ phantombot.subdomain|default('phantombot',true) }}.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/phantombot:/opt/PhantomBot_data"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - phantombot
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

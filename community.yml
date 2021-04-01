@@ -90,6 +90,7 @@
     - { role: jdownloader2, tags: ['jdownloader2'] }
     - { role: paperless-ng, tags: ['paperless-ng'] }
     - { role: petio, tags: ['petio'] }
+    - { role: phantombot, tags: ['phantombot'] }
     - { role: plex2, tags: ['plex2'] }
     - { role: postgres, tags: ['postgres'] }
     - { role: pyload, tags: ['pyload'] }

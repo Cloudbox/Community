@@ -83,7 +83,7 @@
 
 - name: Attempt to Automatically Create SuperUser
   expect:
-    command: docker exec -it paperless-ng python manage.py createsuperuser --username "{{ user.name }}"
+    command: docker exec -it paperless python manage.py createsuperuser --username "{{ user.name }}"
     creates: /opt/paperless-ng/.user_created
     responses:
       Email: "{{ user.email }}"

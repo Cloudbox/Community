@@ -39,7 +39,7 @@
     
 - name: Create and start Paperless container
   docker_container:
-    name: paperless-ng
+    name: paperless
     image: "jonaswinkler/paperless-ng:latest"
     pull: yes
     env:

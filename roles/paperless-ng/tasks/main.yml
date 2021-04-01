@@ -100,4 +100,4 @@
 - name: Alert user to consume folder
   debug:
     msg:
-    - "Make sure to add the consume directory to be ignored by cloudplow, or stop cloudplow from deleteing empty dirs. Do this in /opt/cloudplow/config.json"
+    - "Make sure to add the consume directory to be ignored by cloudplow, or stop cloudplow from deleteing empty dirs. Please see https://github.com/Cloudbox/Community/wiki/Paperless-Ng"

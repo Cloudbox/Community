@@ -1,3 +1,12 @@
+ADDED:
+paperless-ng
+countdown
+postgres
+redis
+dashmachine
+moviematch
+searx
+
 # Community Repo
 
 Community Repository for Unofficial Cloudbox Add-ons

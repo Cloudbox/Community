@@ -16,6 +16,13 @@ bookstack:
   subdomain: bookstack
 calibreweb: 
   caliblur: true
+countdown:
+ sub_domain: countdown
+ background: 
+ target: Sat Feb 05 2022 08:15:00 GMT+0000
+ title: Change me at community settings.yml
+dashmachine:
+  subdomain: dashmachine
 deemixrr:
   version: nightly
   subdomain: deemixrr

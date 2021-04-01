@@ -93,6 +93,7 @@ environment:
     petio
     phantombot
     plex2
+    plex-auto-collections
     postgres
     pyload
     qbittorrent

@@ -1,0 +1,70 @@
+#########################################################################
+# Title:            Community: firefly                                  #
+# Author(s):        mariosemes                                          #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  jc5x/firefly-iii:latest                             #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: firefly
+  when: cloudflare_enabled
+
+- name: MariaDB Role
+  include_role:
+    name: mariadb
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: firefly
+    state: absent
+
+- name: Create firefly directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  with_items:
+      - /opt/firefly/upload/
+
+- name: Check if passwordfile exists
+  stat:
+    path: "/opt/firefly/passwordfile"
+  register: passwordfile_exists
+
+- name: Create and start FireFly container
+  docker_container:
+    name: firefly
+    image: "jc5x/firefly-iii:latest"
+    pull: yes
+    exposed_ports:
+      - 8080
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      APP_KEY: "{{ lookup('password', '/opt/firefly/passwordfile length=32') }}"
+      DB_HOST: "mariadb"
+      DB_PORT: "3306"
+      DB_CONNECTION: "mysql"
+      DB_DATABASE: "firefly"
+      DB_USERNAME: "root"
+      DB_PASSWORD: "password321"
+      VIRTUAL_HOST: "firefly.{{ user.domain }}"
+      VIRTUAL_PORT: "8080"
+      LETSENCRYPT_HOST: "firefly.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      APP_URL: "https://firefly.{{ user.domain }}"
+      TRUSTED_PROXIES: "**"
+    volumes:
+      - "/opt/firefly/upload:/var/www/html/storage/upload"
+    networks:
+      - name: cloudbox
+        aliases:
+          - firefly
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

@@ -1,0 +1,51 @@
+#########################################################################
+# Title:            Community: Countdown                            #
+# Author(s):        Jolbol1                                             #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  yooooomi/easy-countdown                             #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: "{{ easycountdown.subdomain }}"
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing containers
+  docker_container: "name={{ item }} state=absent"
+  with_items:
+    - countdown
+
+- name: Create and start countdown container
+  docker_container:
+    name: easycountdown
+    image: "yooooomi/easy-countdown"
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "{{ easycountdown.subdomain }}.{{ user.domain }}"
+      VIRTUAL_PORT: "3000"
+      LETSENCRYPT_HOST: "{{ easycountdown.subdomain }}.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      TIMER_BACKGROUND: "{{ easycountdown.background }}"
+      TIMER_TARGET: "{{ easycountdown.target }}"
+      LOG_LEVEL: DEBUG
+      TIMER_TITLE: "{{ easycountdown.title }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    exposed_ports:
+     - 3000
+    networks:
+      - name: cloudbox
+        aliases:
+          - easycountdown
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

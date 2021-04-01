@@ -14,7 +14,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    record: dash
+    record: dashmachine
   when: cloudflare_enabled
 
 - name: Stop and remove any existing containers
@@ -36,9 +36,9 @@
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      VIRTUAL_HOST: "dash.{{ user.domain }}"
+      VIRTUAL_HOST: "{{ dashmachine.subdomain }}.{{ user.domain }}"
       VIRTUAL_PORT: "5000"
-      LETSENCRYPT_HOST: "dash.{{ user.domain }}"
+      LETSENCRYPT_HOST: "{{ dashmachine.subdomain }}.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       LOG_LEVEL: DEBUG
     labels:
@@ -48,7 +48,7 @@
     networks:
       - name: cloudbox
         aliases:
-          - dash
+          - dashmachine
     purge_networks: yes
     restart_policy: unless-stopped
     state: started

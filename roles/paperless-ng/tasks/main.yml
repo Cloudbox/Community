@@ -27,7 +27,7 @@
 - name: Stop and remove any existing containers
   docker_container: "name={{ item }} state=absent"
   with_items:
-    - paperless-ng
+    - paperless
     
 - name: Create required directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
@@ -73,16 +73,13 @@
     restart_policy: unless-stopped
     state: started
     
-  
 - name: install pexpect if not installed
   pip:
     name: pexpect
   become: yes
 
-
 - name: "sleep for 20 seconds and continue"
   wait_for: timeout=20
-
 
 - name: Attempt to Automatically Create SuperUser
   expect:
@@ -99,7 +96,6 @@
   with_items:
     - /opt/paperless-ng/.user_created
   when: usercreate is success
-
 
 - name: Alert user to consume folder
   debug:

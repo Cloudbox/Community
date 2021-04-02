@@ -1,6 +1,6 @@
 #########################################################################
 # Title:         Cloudbox: Plex Auto Collections                        #
-# Author(s):     l3uddz, desimaniac                                     #
+# Author(s):     Jolbol1                                                #
 # URL:           https://github.com/mza921/Plex-Auto-Collections        #
 # --                                                                    #
 #                                                                       #
@@ -58,7 +58,7 @@
 - name: download config.yml.template
   get_url: url=https://raw.githubusercontent.com/mza921/Plex-Auto-Collections/master/config/config.yml.template dest=/opt/plex-auto-collections/config/config.yml.template
 
-- name: Create cronjob every day"
+- name: Create cronjob per settings.yml"
   cron:
     name: "Plex-Auto-Collections job"
     special_time: "{{ plex_auto_collections.cron_time|default('@hourly',true) }}"

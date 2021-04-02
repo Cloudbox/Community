@@ -64,7 +64,7 @@
     special_time: "{{ plex_auto_collections.cron_time|default('@hourly',true) }}"
     state: "{{ plex_auto_collections.state|default('present',true) }}"
     user: "{{ user.name }}"
-    job: "/usr/bin/flock -xn /tmp/cron-plex-auto-collections.lock /opt/plex-auto-collections/pac-headless.sh /config/config.yml"
+    job: "/usr/bin/flock -xn /tmp/cron-plex-auto-collections.lock /opt/plex-auto-collections/pac-headless.sh /config/config.yml plex-auto-collections"
 
 - name: Alert user to make and verify the config and auth.
   debug:

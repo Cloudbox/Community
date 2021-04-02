@@ -12,7 +12,6 @@
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
   with_items:
     - /opt/plex-auto-collections
-    - /opt/plex-auto-collections/config
 
 - name: Clone CB-Plex-Auto-Collections repo 'HEAD'
   git:
@@ -51,6 +50,11 @@
     group: "{{ user.name }}"
     mode: a+x
 
+- name: Create plex-auto-collections config directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  with_items:
+    - /opt/plex-auto-collections/config
+
 - name: download config.yml.template
   get_url: url=https://raw.githubusercontent.com/mza921/Plex-Auto-Collections/master/config/config.yml.template dest=/opt/plex-auto-collections/config/config.yml.template
 
@@ -61,4 +65,11 @@
     state: "{{ plex_auto_collections.state|default('present',true) }}"
     user: "{{ user.name }}"
     job: "/opt/plex-auto-collections/pac-headless.sh /config/config.yml"
+
+- name: Alert user to make and verify the config and auth.
+  debug:
+    msg:
+    - "Please set up the config.yml at /opt/plex-auto-collections/config and ensure it runs, particularly if using trakt. More info at wiki"
+    - "https://github.com/Cloudbox/Community/wiki/Plex-Auto-Collections"
+
 

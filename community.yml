@@ -42,6 +42,7 @@
     - { role: deluge, tags: ['deluge'] }
     - { role: delugevpn, tags: ['delugevpn'] }
     - { role: drive_strm, tags: ['drive_strm', 'drive_strm_rebuild'] }
+    - { role: easycountdown, tags: [ 'easycountdown'] }
     - { role: embystat, tags: ['embystat'] }
     - { role: emby2, tags: ['emby2'] }
     - { role: epms, tags: ['epms'] }

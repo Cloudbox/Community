@@ -1,0 +1,56 @@
+#########################################################################
+# Title:            Community: MovieMatch                               #
+# Author(s):        Jolbol1                                             #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  lukechannings/moviematch                            #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: "{{ moviematch.subdomain|default('moviematch',true) }}"
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing containers
+  docker_container: "name={{ item }} state=absent"
+  with_items:
+    - moviematch
+    
+- name: Settings | Import Plex Auth Token role
+  import_role:
+    name: plex_auth_token
+  when: plex_account_enabled
+
+- name: Create and start moviematch container
+  docker_container:
+    name: moviematch
+    image: "lukechannings/moviematch"
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "{{ moviematch.subdomain|default('moviematch',true) }}.{{ user.domain }}"
+      VIRTUAL_PORT: "8000"
+      PLEX_URL: "https://plex.{{ user.domain }}"
+      PLEX_TOKEN: "{{ plex_auth_token | default('') }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      LETSENCRYPT_HOST: "{{ moviematch.subdomain|default('moviematch',true) }}.{{ user.domain }}"
+      LOG_LEVEL: DEBUG
+      LIBRARY_TITLE_FILTER: "{{ moviematch.libraries }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    exposed_ports:
+     - 8000/tcp
+    networks:
+      - name: cloudbox
+        aliases:
+          - moviematch
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

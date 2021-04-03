@@ -61,6 +61,9 @@ lidarrx:
   roles: 
     - flac
     - mp3
+moviematch:
+  subdomain: moviematch
+  libraries: Movies
 navidrome: 
   musicfolder: /mnt/unionfs/Media/Music
 ombix: 

@@ -71,6 +71,9 @@ phantombot:
   bot_oauth:
   caster_oauth:
   caster_channel:
+plex_auto_collections:
+  cron_time: hourly
+  state: present 
 qbittorrentvpn:
   vpn_endpoint: netherlands.ovpn
   vpn_user: your_vpn_username

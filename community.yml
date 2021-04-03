@@ -93,6 +93,7 @@
     - { role: petio, tags: ['petio'] }
     - { role: phantombot, tags: ['phantombot'] }
     - { role: plex2, tags: ['plex2'] }
+    - { role: plex-auto-collections, tags: ['plex-auto-collections'] }
     - { role: postgres, tags: ['postgres'] }
     - { role: pyload, tags: ['pyload'] }
     - { role: qbittorrent, tags: ['qbittorrent'] }

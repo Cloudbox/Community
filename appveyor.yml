@@ -96,6 +96,7 @@ environment:
     phantombot
     plex2
     plex-auto-collections
+    plex-meta-manager
     postgres
     pyload
     qbittorrent

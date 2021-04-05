@@ -96,6 +96,7 @@
     - { role: phantombot, tags: ['phantombot'] }
     - { role: plex2, tags: ['plex2'] }
     - { role: plex-auto-collections, tags: ['plex-auto-collections'] }
+    - { role: plex-meta-manager, tags: ['plex-meta-manager'] }
     - { role: postgres, tags: ['postgres'] }
     - { role: pyload, tags: ['pyload'] }
     - { role: qbittorrent, tags: ['qbittorrent'] }

@@ -63,4 +63,4 @@
   debug:
       msg:
           - "You should attempt a manual run first to ensure the config is working and to use oAuth for Trakt config etc. To do this run the below command"
-          - 'docker run --rm -it -v "/opt/plex-meta-manager/config:/config:rw" meisnate12/plex-meta-manager --run --test'
+          - 'docker run --rm -it -v /opt/plex-meta-manager/config:/config:rw meisnate12/plex-meta-manager --run --test'

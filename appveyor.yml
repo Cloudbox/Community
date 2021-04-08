@@ -18,7 +18,7 @@ max_jobs: 10
 environment:
   CLOUDBOX_BRANCH: "develop_python3"
   CLOUDBOX_PATH: "/srv/git/cloudbox"
-  COMMUNITY_PATH: "/home/appveyor/projects/community-o9pf2"
+  COMMUNITY_PATH: "/home/appveyor/projects/community"
   
   matrix:
 

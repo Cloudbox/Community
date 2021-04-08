@@ -37,7 +37,7 @@
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "{{ moviematch.subdomain|default('moviematch',true) }}.{{ user.domain }}"
       VIRTUAL_PORT: "8000"
-      PLEX_URL: "https://plex.{{ user.domain }}"
+      PLEX_URL: "{{ moviematch.plex_url }}"
       PLEX_TOKEN: "{{ plex_auth_token | default('') }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       LETSENCRYPT_HOST: "{{ moviematch.subdomain|default('moviematch',true) }}.{{ user.domain }}"

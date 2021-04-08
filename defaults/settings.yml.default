@@ -64,6 +64,7 @@ lidarrx:
 moviematch:
   subdomain: moviematch
   libraries: Movies
+  plex_url: http://plex:32400
 navidrome: 
   musicfolder: /mnt/unionfs/Media/Music
 ombix: 

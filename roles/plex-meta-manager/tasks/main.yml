@@ -1,0 +1,67 @@
+#########################################################################
+# Title:            Community: Plex-Meta-Manager                        #
+# Author(s):        jolbol1                                             #
+# URL:              https://github.com/meisnate12/Plex-Meta-Manager     #
+# Docker Image(s):  meisnate12/plex-meta-manager                        #
+# --                                                                    #
+#                                                                       #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Create plex-auto-collections directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  with_items:
+    - /opt/plex-meta-manager/config
+
+- name: Stop and remove any existing containers
+  docker_container: "name={{ item }} state=absent"
+  with_items:
+    - plex_meta_manager
+    
+- name: download config.yml.template
+  get_url: url=https://raw.githubusercontent.com/meisnate12/Plex-Meta-Manager/master/config/config.yml.template dest=/opt/plex-meta-manager/config/config.yml.template
+  
+- name: download Movies.yml template
+  get_url: url=https://raw.githubusercontent.com/meisnate12/Plex-Meta-Manager/master/config/Movies.yml.template dest=/opt/plex-meta-manager/config/Movies.yml.template
+
+- name: "Look for 'config.yml' file in plex-meta-manager/config folder"
+  stat:
+    path: "/opt/plex-meta-manager/config/config.yml"
+  register: meta_config
+
+- name: "Fail when 'config.yml' is not present"
+  fail:
+    msg: "You need to setup your config file. https://github.com/meisnate12/Plex-Meta-Manager/wiki/Configuration-File"
+  when: (not meta_config.stat.exists) and (not continuous_integration)
+
+
+- name: 'Create and start plex meta manager container'
+  docker_container:
+    name: plex_meta_manager
+    image: "meisnate12/plex-meta-manager"
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      LOG_LEVEL: DEBUG
+      PMM_TIME: "{{ plex_meta_manager.time }}"
+    volumes:
+          - /opt/plex-meta-manager/config:/config
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - plex_meta_manager
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started
+
+- name: Alert user to make and verify the config and auth.
+  debug:
+      msg:
+          - "You should attempt a manual run first to ensure the config is working and to use oAuth for Trakt config etc. To do this run the below command"
+          - 'docker run --rm -it --label com.github.cloudbox.cloudbox_managed=true --network=cloudbox -v /opt/plex-meta-manager/config:/config:rw meisnate12/plex-meta-manager --run
+'

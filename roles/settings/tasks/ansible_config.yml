@@ -28,8 +28,8 @@
     path: "{{ playbook_dir }}/{{ item }}"
     section: "{{ inner_item.section }}"
     option: "{{ inner_item.option }}"
-    value: "{{ inner_item.value }}"
-    state: present
+    value: "{{ inner_item.value | default(omit) }}"
+    state: "{{ inner_item.state | default('present') }}"
     no_extra_spaces: no
     owner: "{{ community_yml.stat.uid }}"
     group: "{{ community_yml.stat.gid }}"
@@ -45,7 +45,7 @@
     - { section: 'defaults', option: 'callback_whitelist', value: 'profile_tasks' }
     - { section: 'defaults', option: 'command_warnings', value: 'False' }
     - { section: 'defaults', option: 'retry_files_enabled', value: 'False' }
-    - { section: 'defaults', option: 'hash_behaviour', state: absent }
+    - { section: 'defaults', option: 'hash_behaviour', state: 'absent' }
   loop_control:
     loop_var: "inner_item"
   when: file.stat.exists

@@ -39,12 +39,12 @@
     - { section: 'defaults', option: 'inventory', value: '/srv/git/cloudbox/inventories/local' }
     - { section: 'defaults', option: 'roles_path', value: 'roles:/srv/git/cloudbox/roles:/srv/git/cloudbox/resources/roles' }
     - { section: 'defaults', option: 'fact_path', value: '/srv/git/cloudbox/ansible_facts.d' }
-    - { section: 'defaults', option: 'filter_plugins', value: '/srv/git/cloudbox/ansible_facts.d' }
+    - { section: 'defaults', option: 'filter_plugins', value: '/srv/git/cloudbox/filter_plugins' }
     - { section: 'defaults', option: 'interpreter_python', value: '/usr/bin/python3' }
     - { section: 'defaults', option: 'log_path', value: './community.log' }
     - { section: 'defaults', option: 'callback_whitelist', value: 'profile_tasks' }
-    - { section: 'defaults', option: 'command_warnings', value: 'False' }
-    - { section: 'defaults', option: 'retry_files_enabled', value: 'False' }
+    - { section: 'defaults', option: 'command_warnings', value: False }
+    - { section: 'defaults', option: 'retry_files_enabled', value: False }
     - { section: 'defaults', option: 'hash_behaviour', state: 'absent' }
   loop_control:
     loop_var: "inner_item"

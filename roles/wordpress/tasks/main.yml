@@ -38,6 +38,10 @@
   with_items:
     - wordpress
 
+- name: "Create wordpress database"
+  command: "docker exec mariadb mysql -u root -ppassword321 -e 'create schema wordpress DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'"
+  ignore_errors: yes
+
 - name: Create required directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:

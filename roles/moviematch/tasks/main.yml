@@ -42,7 +42,7 @@
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       LETSENCRYPT_HOST: "{{ moviematch.subdomain|default('moviematch',true) }}.{{ user.domain }}"
       LOG_LEVEL: DEBUG
-      LIBRARY_TITLE_FILTER: "{{ moviematch.libraries }}"
+      LIBRARY_FILTER: "{{ moviematch.libraries }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     exposed_ports:

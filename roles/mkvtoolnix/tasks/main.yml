@@ -1,0 +1,67 @@
+#########################################################################
+# Title:            Community: MKVToolNix                               #
+# Author(s):        edzeg (w/ TABLE's source and salty's help debugging)#
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  jlesage/mkvtoolnix                                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: mkvtoolnix
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: mkvtoolnix
+    state: absent
+
+- name: Lookup htpasswd
+  stat:
+    path: "/opt/nginx-proxy/htpasswd/mkvtoolnix.{{ user.domain }}"
+  register: htpasswd_lookup
+
+- name: Create htpasswd
+  htpasswd:
+    path: "/opt/nginx-proxy/htpasswd/mkvtoolnix.{{ user.domain }}"
+    name: "{{ user.name }}"
+    password: "{{ user.pass }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0664
+  when: not htpasswd_lookup.stat.exists
+
+- name: Create opt directory
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/mkvtoolnix
+
+- name: Create and start container
+  docker_container:
+    name: mkvtoolnix
+    image: jlesage/mkvtoolnix:latest
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      USER_ID: "{{ uid }}"
+      GROUP_ID: "{{ gid }}"
+      VIRTUAL_HOST: "mkvtoolnix.{{ user.domain }}"
+      VIRTUAL_PORT: "5800"
+      LETSENCRYPT_HOST: "mkvtoolnix.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/mkvtoolnix:/config"
+      - "/mnt/unionfs:/storage"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - mkvtoolnix
+    restart_policy: unless-stopped
+    state: started

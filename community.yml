@@ -77,6 +77,7 @@
     - { role: mediabutler, tags: ['mediabutler'] }
     - { role: medusa, tags: ['medusa'] }
     - { role: minecraft, tags: ['minecraft'] }
+    - { role: mkvtoolnix, tags: ['mkvtoolnix'] }
     - { role: monitorr, tags: ['monitorr'] }
     - { role: moviematch, tags: ['moviematch'] }
     - { role: mylar, tags: ['mylar'] }

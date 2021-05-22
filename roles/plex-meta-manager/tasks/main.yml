@@ -19,7 +19,7 @@
   with_items:
     - plex_meta_manager
     
-- name: download config.yml.template
+- name: Download config.yml.template
   get_url: 
     url: https://raw.githubusercontent.com/meisnate12/Plex-Meta-Manager/master/config/config.yml.template
     dest: /opt/plex-meta-manager/config/config.yml.template

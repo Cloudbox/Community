@@ -19,11 +19,16 @@
   with_items:
     - plex_meta_manager
     
-- name: download config.yml.template
-  get_url: url=https://raw.githubusercontent.com/meisnate12/Plex-Meta-Manager/master/config/config.yml.template dest=/opt/plex-meta-manager/config/config.yml.template
-  
-- name: download Movies.yml template
-  get_url: url=https://raw.githubusercontent.com/meisnate12/Plex-Meta-Manager/master/config/Movies.yml.template dest=/opt/plex-meta-manager/config/Movies.yml.template
+- name: Download config.yml.template
+  get_url: 
+    url: https://raw.githubusercontent.com/meisnate12/Plex-Meta-Manager/master/config/config.yml.template
+    dest: /opt/plex-meta-manager/config/config.yml.template
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+    force: yes
+    validate_certs: no
+  ignore_errors: yes
 
 - name: "Look for 'config.yml' file in plex-meta-manager/config folder"
   stat:

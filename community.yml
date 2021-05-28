@@ -134,5 +134,6 @@
     - { role: watchtower, tags: ['watchtower'] }
     - { role: wallabag, tags: ['wallabag'] }
     - { role: wordpress, tags: ['wordpress'] }
+    - { role: xbackbone, tags: ['xbackbone'] }
     - { role: xteve, tags: ['xteve'] }
     - { role: znc, tags: ['znc'] }

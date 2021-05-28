@@ -132,6 +132,7 @@ environment:
     watchtower
     wallabag
     wordpress
+    xbackbone
     xteve
     znc
 

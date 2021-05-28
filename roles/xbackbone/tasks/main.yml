@@ -1,0 +1,71 @@
+#########################################################################
+# Title:            Community: XBackbone                                #
+# Author(s):        TurboCheetah                                        #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  pe46dro/xbackbone-docker                            #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: MariaDB Role
+  include_role:
+    name: mariadb
+
+- name: "sleep for 20 seconds and continue"
+  wait_for: timeout=20
+
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: "{{ xbackbone.subdomain|default('xbackbone',true) }}"
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing containers
+  docker_container: "name={{ item }} state=absent"
+  with_items:
+    - xbackbone
+
+- name: "Create XBackbone database"
+  command: "docker exec mariadb mysql -u root -ppassword321 -e 'create schema xbb DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'"
+  ignore_errors: yes
+
+- name: Create required directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/xbackbone
+
+- name: Create and start container
+  docker_container:
+    name: xbackbone
+    image: pe46dro/xbackbone-docker
+    pull: yes
+    env:
+      URL: https:\/\/{{ xbackbone.subdomain|default('xbackbone',true) }}.{{ user.domain }}
+      PHP_UPLOAD_MAX_FILESIZE: 1G
+      DB_TYPE: mysql
+      MYSQL_HOST: mariadb:3306
+      MYSQL_DATABASE: xbb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password321
+      MYSQL_ROOT_PASSWORD: password321
+      VIRTUAL_HOST: "{{ xbackbone.subdomain|default('xbackbone',true) }}.{{ user.domain }}"
+      VIRTUAL_PORT: "80"
+      LETSENCRYPT_HOST: "{{ xbackbone.subdomain|default('xbackbone',true) }}.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/xbackbone/storage:/app/storage"
+      - "/opt/xbackbone/database:/app/resources/database"
+      - "/opt/xbackbone/logs:/app/logs"
+      - "/opt/xbackbone/config:/app/config"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - xbackbone
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

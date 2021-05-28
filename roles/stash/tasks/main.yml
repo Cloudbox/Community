@@ -29,7 +29,7 @@
 - name: Create and start container
   docker_container:
     name: stash
-    image: stashapp/stash:development
+    image: stashapp/stash:latest
     pull: yes
     env:
       TZ: "{{ tz }}"

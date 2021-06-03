@@ -39,7 +39,7 @@
       LETSENCRYPT_HOST: "haste.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/opt/hastebin/data:/app/data
+      - "/opt/hastebin/data:/app/data"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

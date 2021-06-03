@@ -1,0 +1,51 @@
+#########################################################################
+# Title:            Community: Hastebin                                 #
+# Author(s):        TurboCheetah                                        #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  angristan/hastebin                                  #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: haste
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing containers
+  docker_container: "name={{ item }} state=absent"
+  with_items:
+    - hastebin
+
+- name: Create required directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/hastebin
+
+- name: Create and start container
+  docker_container:
+    name: hastebin
+    image: angristan/hastebin
+    pull: yes
+    env:
+      GID: "{{ gid }}"
+      UID: "{{ uid }}"
+      VIRTUAL_HOST: "haste.{{ user.domain }}"
+      VIRTUAL_PORT: "7777"
+      LETSENCRYPT_HOST: "haste.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/hastebin/data:/app/data
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - hastebin
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

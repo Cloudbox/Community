@@ -63,6 +63,7 @@ environment:
     goplaxt
     grafana
     handbrake
+    hastebin
     healthchecks
     heimdall
     influxdb

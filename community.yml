@@ -86,6 +86,7 @@
     - { role: jdownloader2, tags: ['jdownloader2'] }
     - { role: petio, tags: ['petio'] }
     - { role: plex2, tags: ['plex2'] }
+    - { role: prowlarr, tags: ['prowlarr'] }
     - { role: pyload, tags: ['pyload'] }
     - { role: qbittorrent, tags: ['qbittorrent'] }
     - { role: qbittorrentvpn, tags: ['qbittorrentvpn'] }

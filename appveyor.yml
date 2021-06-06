@@ -92,6 +92,7 @@ environment:
   - job_name: overseerr
   - job_name: petio
   - job_name: plex2
+  - job_name: prowlarr
   - job_name: pyload
   - job_name: qbittorrent
   - job_name: qbittorrentvpn

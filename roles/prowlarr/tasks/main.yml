@@ -1,0 +1,53 @@
+#########################################################################
+# Title:         Cloudbox: Prowlarr Role                                #
+# Author(s):     TABLE                                                  #
+# URL:           https://github.com/Cloudbox/Community                  #
+# Docker Image(s):  hotio/prowlarr                                      #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: prowlarr
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: prowlarr
+    state: absent
+
+- name: Create prowlarr directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/prowlarr
+
+- name: Create and start container
+  docker_container:
+    name: prowlarr
+    image: hotio/prowlarr:testing
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      UMASK: 002
+      VIRTUAL_HOST: "prowlarr.{{ user.domain }}"
+      VIRTUAL_PORT: 9696
+      LETSENCRYPT_HOST: "prowlarr.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes:
+      - "/opt/prowlarr:/config"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - prowlarr
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

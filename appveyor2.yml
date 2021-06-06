@@ -13,7 +13,7 @@ matrix:
 
 # to disable automatic builds
 build: off
-max_jobs: 10
+max_jobs: 20
 
 environment:
   CLOUDBOX_BRANCH: "develop_python3"

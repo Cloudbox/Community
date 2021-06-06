@@ -59,7 +59,7 @@ prowlarr_docker_container: "{{ prowlarr_name }}"
 
 # Image
 prowlarr_docker_image_pull: yes
-prowlarr_docker_image_tag: "nightly"
+prowlarr_docker_image_tag: "testing"
 prowlarr_docker_image: "hotio/prowlarr:{{ prowlarr_docker_image_tag }}"
 
 # Ports

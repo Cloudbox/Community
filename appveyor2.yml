@@ -6,7 +6,7 @@ skip_commits:
     - '*.yml.default'
   message: /\[minor\]/
 
-image: Ubuntu1804-minimal
+image: Ubuntu1804
 
 matrix:
   fast_finish: false

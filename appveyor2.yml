@@ -1,0 +1,176 @@
+skip_tags: true
+
+skip_commits:
+  files:
+    - '*.md'
+    - '*.yml.default'
+  message: /\[minor\]/
+
+image: Ubuntu1804-minimal
+
+matrix:
+  fast_finish: false
+
+# to disable automatic builds
+build: off
+max_jobs: 10
+
+environment:
+  CLOUDBOX_BRANCH: "develop_python3"
+  CLOUDBOX_PATH: "/srv/git/cloudbox"
+  COMMUNITY_PATH: "/home/appveyor/projects/community"
+  
+  matrix:
+
+  - job_name: airdcpp
+  - job_name: airsonic
+  - job_name: alltube
+  - job_name: alternatrr
+  - job_name: alternatrrx
+  - job_name: amongus
+  - job_name: apprise
+  - job_name: archivebox
+  - job_name: asshama
+  - job_name: autoscan
+  - job_name: bazarrx
+  - job_name: beets
+  - job_name: bitwarden
+  - job_name: booksonic
+  - job_name: bookstack
+  - job_name: btrfsmaintenance
+  - job_name: calibre
+  - job_name: calibre-web
+  - job_name: coder
+  - job_name: comicstreamer
+  - job_name: comixed
+  - job_name: couchpotato
+  - job_name: deemix
+  - job_name: deemixrr
+  - job_name: deezloader-remix
+  - job_name: deluge
+  - job_name: delugevpn
+  - job_name: emby2
+  - job_name: embystat
+  - job_name: epms
+  - job_name: filebot
+  - job_name: filebrowser
+  - job_name: filezilla
+  - job_name: flaresolverr
+  - job_name: funkwhale
+  - job_name: gazee
+  - job_name: glances
+  - job_name: goplaxt
+  - job_name: gotify
+  - job_name: grafana
+  - job_name: handbrake
+  - job_name: healthchecks
+  - job_name: heimdall
+  - job_name: influxdb
+  - job_name: invoiceninja
+  - job_name: jdownloader2
+  - job_name: jellyfin
+  - job_name: jirafeau
+  - job_name: kitana
+  - job_name: komga
+  - job_name: lazylibrarian
+  - job_name: lidarrx
+  - job_name: logarr
+  - job_name: mediabutler
+  - job_name: medusa
+  - job_name: minecraft
+  - job_name: monitorr
+  - job_name: mylar
+  - job_name: mylar3
+  - job_name: navidrome
+  - job_name: nextcloud
+  - job_name: nowshowing
+  - job_name: nzbhydra
+  - job_name: ombi
+  - job_name: ombix
+  - job_name: organizrv1
+  - job_name: ouroboros
+  - job_name: overseerr
+  - job_name: petio
+  - job_name: plex2
+  - job_name: prowlarr
+  - job_name: pyload
+  - job_name: qbittorrent
+  - job_name: qbittorrentvpn
+  - job_name: quassel
+  - job_name: radarrx
+  - job_name: redbot
+  - job_name: requestrr
+  - job_name: requestrrx
+  - job_name: resilio-sync
+  - job_name: rocketchat
+  - job_name: sickchill
+  - job_name: sonarrx
+  - job_name: speedtest
+  - job_name: sshwifty
+  - job_name: stash
+  - job_name: subsonic
+  - job_name: synclounge
+  - job_name: tdarr
+  - job_name: telegraf
+  - job_name: thelounge
+  - job_name: transfer
+  - job_name: transmission
+  - job_name: transmissionvpn
+  - job_name: transmissionx
+  - job_name: ubooquity
+  - job_name: unifi
+  - job_name: unmanic
+  - job_name: varken
+  - job_name: vnstat
+  - job_name: wallabag
+  - job_name: watchtower
+  - job_name: wordpress
+  - job_name: xteve
+  - job_name: znc
+    
+init:
+  - sh: curl -s https://raw.githubusercontent.com/Cloudbox/cb/develop_python3/cb_install.sh | sudo -H bash
+
+install:
+  - sh: |
+      echo "=========================="
+      echo ""
+      echo "Community Branch: $APPVEYOR_REPO_BRANCH"
+      echo ""
+      cd ${COMMUNITY_PATH}
+      cp -n defaults/ansible.cfg.default ansible.cfg
+      cp -n defaults/settings.yml.default settings.yml
+      sudo ansible-playbook community.yml --syntax-check
+      RC=$?; [ $RC -eq 0 ] || exit $RC;
+  - sh: |
+      echo ""
+      echo "=========================="
+      echo ""
+      echo "Cloudbox Branch: $CLOUDBOX_BRANCH"
+      echo ""
+      cd ${CLOUDBOX_PATH}
+      sudo chown -R appveyor:appveyor ${CLOUDBOX_PATH}
+      rm settings.yml accounts.yml adv_settings.yml
+      git checkout $CLOUDBOX_BRANCH &> /dev/null
+      curl -o ${CLOUDBOX_PATH}/daemon.json https://raw.githubusercontent.com/saltydk/AppveyorTest/main/daemon.json
+      cp -f daemon.json ${CLOUDBOX_PATH}/roles/docker/templates/daemon.json.j2
+      sudo ansible-playbook cloudbox.yml --syntax-check
+      sudo ansible-playbook cloudbox.yml --tags core \
+          --skip-tags sanity_check,settings \
+          --skip-tags kernel,hetzner,shell,rclone,system,motd,nvidia,mounts,scripts \
+          --extra-vars '{"continuous_integration":true}'
+  - sh: |
+      echo ""
+      echo "=========================="
+      echo ""
+      echo "Community Roles:"
+      echo ""
+      cd ${COMMUNITY_PATH}
+      echo --------------------------
+      echo ""
+      echo Running Tag: ${APPVEYOR_JOB_NAME}
+      sudo ansible-playbook community.yml --tags ${APPVEYOR_JOB_NAME} \
+          --skip-tags sanity_check,settings \
+          --extra-vars '{"continuous_integration":true}'
+      RC=$?; [ $RC -eq 0 ] || exit $RC;
+      echo ""

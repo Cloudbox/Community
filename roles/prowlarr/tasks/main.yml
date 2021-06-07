@@ -35,9 +35,9 @@
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      UMASK: 002
+      UMASK: "002"
       VIRTUAL_HOST: "prowlarr.{{ user.domain }}"
-      VIRTUAL_PORT: 9696
+      VIRTUAL_PORT: "9696"
       LETSENCRYPT_HOST: "prowlarr.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:

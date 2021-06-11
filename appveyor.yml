@@ -18,7 +18,7 @@ build: off
 environment:
   CLOUDBOX_BRANCH: "master"
   CLOUDBOX_PATH: "/home/appveyor/cloudbox"
-  COMMUNITY_PATH: "/home/appveyor/projects/community"
+  COMMUNITY_PATH: "/home/appveyor/projects/community-3sh24"
   TAGS: >
     airdcpp
     airsonic

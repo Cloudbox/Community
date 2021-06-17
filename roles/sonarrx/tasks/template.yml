@@ -47,7 +47,7 @@
 - name: Create and start container
   docker_container:
     name: "sonarr{{ rolename }}"
-    image: "hotio/sonarr:nightly"
+    image: "hotio/sonarr:release"
     pull: yes
     env:
       TZ: "{{ tz }}"

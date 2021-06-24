@@ -1,0 +1,57 @@
+#########################################################################
+# Title:            Community: Mango                                    #
+# Author(s):        Mio.                                                #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  hkalexling/mango                                    #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: mango
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: mango
+    state: absent
+
+- name: Create mango directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/mango
+
+- name: Create and start container
+  docker_container:
+    name: mango
+    image: hkalexling/mango
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "mango.{{ user.domain }}"
+      VIRTUAL_PORT: "9000"
+      LETSENCRYPT_HOST: "mango.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      REDIRECT_URI: "https://mango.{{ user.domain }}"
+    volumes:
+      - "/opt/mango:/root/mango"
+      - "/opt/mango/.config:/root/.config/mango"
+      - "/mnt:/mnt"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - mango
+    exposed_ports:
+      - 9000
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

@@ -1,0 +1,153 @@
+name: CI
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  install:
+    name: '${{ matrix.roles }}'
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        roles:
+          - airdcpp
+          - airsonic
+          - alltube
+          - alternatrr
+          - alternatrrx
+          - amongus
+          - apprise
+          - archivebox
+          - asshama
+          - autoscan
+          - bazarrx
+          - beets
+          - bitwarden
+          - bookstack
+          - btrfsmaintenance
+          - calibre
+          - calibre-web
+          - changedetection
+          - comicstreamer
+          - couchpotato
+          - coder
+          - comixed
+          - conreq
+          - dashmachine
+          - deemix
+          - deemixrr
+          - deezloader-remix
+          - deluge
+          - delugevpn
+          - easycountdown
+          - embystat
+          - emby2
+          - epms
+          - filebot
+          - filezilla
+          - firefly
+          - flaresolverr
+          - funkwhale
+          - gazee
+          - glances
+          - goplaxt
+          - grafana
+          - handbrake
+          - healthchecks
+          - heimdall
+          - influxdb
+          - invoiceninja
+          - jdownloader2
+          - jellyfin
+          - jirafeau
+          - kitana
+          - komga
+          - lazylibrarian
+          - lidarrx
+          - logarr
+          - mediabutler
+          - medusa
+          - minecraft
+          - mkvtoolnix
+          - monitorr
+          - moviematch
+          - mylar
+          - mylar3
+          - navidrome
+          - nextcloud
+          - nowshowing
+          - nzbhydra
+          - ombix
+          - organizrv1
+          - ouroboros
+          - overseerr
+          - overseerrx
+          - paperless-ng
+          - petio
+          - phantombot
+          - plex2
+          - plex-auto-collections
+          - plex-meta-manager
+          - postgres
+          - prowlarr
+          - pyload
+          - qbittorrent
+          - qbittorrentvpn
+          - quassel
+          - radarrx
+          - redbot
+          - redis
+          - resilio-sync
+          - requestrrx
+          - rocketchat
+          - searx
+          - sickchill
+          - smokeping
+          - sonarrx
+          - speedtest
+          - sshwifty
+          - stash
+          - subsonic
+          - synclounge
+          - tdarr
+          - telegraf
+          - thelounge
+          - transmissionvpn
+          - transmissionx
+          - ubooquity
+          - unifi
+          - unmanic
+          - varken
+          - vnstat
+          - vscode
+          - watchtower
+          - wallabag
+          - wordpress
+          - xbackbone
+          - xteve
+          - znc
+      fail-fast: false
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: curl -s https://cloudbox.works/scripts/dep.sh | sudo -H sh &> /dev/null
+
+      - name: Install Repository
+        run: curl -s https://cloudbox.works/scripts/repo.sh | bash &> /dev/null
+
+      - name: Change default configuration user
+        run: cd /home/runner/cloudbox && sed -i 's/seed/runner/g' accounts.yml
+
+      - name: Syntax Check
+        run: cd /home/runner/cloudbox && sudo ansible-playbook cloudbox.yml --syntax-check
+
+      - name: Install Cloudbox
+        run: cd /home/runner/cloudbox && sudo ansible-playbook cloudbox.yml --tags "core" --skip-tags "sanity_check,settings,kernel,hetzner,shell,rclone,system,motd,nvidia,mounts,scripts" --extra-vars '{"continuous_integration":true}'
+
+      - name: Copy default configuration
+        run: cp -n defaults/ansible.cfg.default ansible.cfg && cp -n defaults/settings.yml.default settings.yml
+
+      - name: Install ${{ matrix.roles }}
+        run: sudo ansible-playbook community.yml --tags "${{ matrix.roles }}" --skip-tags "sanity_check,settings" --extra-vars '{"continuous_integration":true}'

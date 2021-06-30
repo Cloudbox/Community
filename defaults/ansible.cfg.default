@@ -7,3 +7,4 @@ hash_behaviour = merge
 callback_whitelist = profile_tasks
 command_warnings = False
 retry_files_enabled = False
+force_color = True

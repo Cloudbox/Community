@@ -42,6 +42,7 @@
       UMASK_SET: "022"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
+      REVERSEPROXY: true
     volumes:
       - "/mnt:/mnt"
       - "/opt/deemix:/config"

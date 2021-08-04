@@ -44,6 +44,7 @@ This is a partial list of roles available via Community; once the repo is instal
 - **[goplaxt](../../wiki/Goplaxt)** - [goplaxt](https://github.com/XanderStrike/goplaxt) Plex/Trakt Scrobbler
 - **Handbrake** - GUI application (no installation or configuration needed on client-side)
 - **invoiceninja**
+- **[jdownloader2](../../wiki/JDownloader2)** - [JDownloader2](https://github.com/jlesage/docker-jdownloader-2) Self-hosted free, open-source download management tool with GUI website frontend.
 - **jellyfin** - [jellyfin](https://github.com/jellyfin/jellyfin) emby fork
 - **kitana** - A responsive Plex plugin web frontend
 - **[komga](https://komga.org/)** - comics server and online reader (similar to ubooquity, but actively developed as of today); to get the original admin username and passowrd, type docker logs komga and follow the [help](https://komga.org/installation/user-accounts.html#automatic-mode-default)
@@ -52,8 +53,8 @@ This is a partial list of roles available via Community; once the repo is instal
 - **[mediabutler](../../wiki/Mediabutler)** - Discord bot
 - **[medusa](https://pymedusa.com)** - TV Shows manager
 - **[mellow](../../wiki/Mellow-Discord-Bot)** - Discord Bot
+- **[mkvtoolnix](https://github.com/jlesage/docker-mkvtoolnix)** - MKVToolNix GUI - a set of tools to create, alter and inspect Matroska files
 - **monitorr**
-- **[jdownloader2](../../wiki/JDownloader2)** - [JDownloader2](https://github.com/jlesage/docker-jdownloader-2) Self-hosted free, open-source download management tool with GUI website frontend.
 - **mylar** - automated comic book downloader
 - **mylar3** - newest version of the automated comic book downloader, migrated to python 3. Actively developed.
 - **Overseerr** - Plex request management and media discovery tool
@@ -61,6 +62,7 @@ This is a partial list of roles available via Community; once the repo is instal
 - **[qBittorrent](../../wiki/qBittorrent)** - qBittorrent torrent client
 - **radarr1080** - Additional Radarr
 - **radarrX** - Similar to [sonarrX](../../wiki/SonarrX) but for radarr, to create multiple roles
+- **[readarr](https://hotio.dev/containers/readarr/)** - BETA role of Readarr for eBook or Audiobook use, supports integration with 'Calibre' role
 - **Red Discord Bot** - A customisible self-hosted Discord Bot
 - **[SmokePing](https://hub.docker.com/r/linuxserver/smokeping)** - Smokeping keeps track of your network latency.
 - **sonarr1080** - Additional Sonarr

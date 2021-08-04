@@ -94,6 +94,7 @@ jobs:
           - qbittorrentvpn
           - quassel
           - radarrx
+          - readarr
           - redbot
           - redis
           - resilio-sync

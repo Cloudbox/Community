@@ -1,0 +1,61 @@
+#########################################################################
+# Title:            Community: ReadarrX | Template                      #
+# Author(s):        salty                                               #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  hotio/readarr                                       #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Install named readarr role"
+  debug:
+    msg: "Installing {{ rolename }}"
+
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: "readarr{{ rolename }}"
+  when: cloudflare_enabled
+
+- name: Create readarrx directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - "/opt/readarr{{ rolename }}"
+
+- name: Set default_volumes variable
+  set_fact:
+    default_volumes:
+      - "/opt/readarr{{ rolename }}:/config"
+      - "/opt/scripts:/scripts"
+      - "/mnt:/mnt"
+      - "/mnt/unionfs/Media/Books:/library"
+
+- name: Create and start container
+  docker_container:
+    name: "readarr{{ rolename }}"
+    image: hotio/readarr:nightly
+    pull: yes
+    env:
+      BACKUP: "no"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      UMASK: 002
+      VIRTUAL_HOST: "readarr{{ rolename }}.{{ user.domain }}"
+      VIRTUAL_PORT: 8787
+      LETSENCRYPT_HOST: "readarr{{ rolename }}.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      TZ: "{{ tz }}"
+    volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+      "com.github.cloudbox.community": "readarrx"
+    networks:
+      - name: cloudbox
+        aliases:
+          - "readarr{{ rolename }}"
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

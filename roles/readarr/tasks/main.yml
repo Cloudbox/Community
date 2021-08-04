@@ -2,20 +2,12 @@
 # Title:            Community: Readarr                                  #
 # Author(s):        edzeg                                               #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  hotio/readarr:nightly                               #
+# Docker Image(s):  hotio/readarr                                       #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
 #                   GNU General Public License v3.0                     #
 #########################################################################
-#                                                        #
-# *****NOTES*****                                        #
-# 1) Currently only Nightly tag is available.            #
-#    Once stable is available will change to Latest      #
-#                                                        #
-# 2) The 'Media/Books' directory is passed as '/library' #
-#    in order to allow integration with 'Calibre' role   #
-##########################################################
 ---
 - name: "Setting CloudFlare DNS Record"
   include_role:
@@ -47,8 +39,6 @@
     name: readarr
     image: hotio/readarr:nightly
     pull: yes
-    published_ports:
-      - "127.0.0.1:8787:8787"
     env:
       BACKUP: "no"
       PUID: "{{ uid }}"

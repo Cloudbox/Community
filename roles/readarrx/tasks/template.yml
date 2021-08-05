@@ -39,7 +39,6 @@
     image: hotio/readarr:nightly
     pull: yes
     env:
-      BACKUP: "no"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       UMASK: "002"

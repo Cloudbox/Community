@@ -43,9 +43,9 @@
       BACKUP: "no"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      UMASK: 002
+      UMASK: "002"
       VIRTUAL_HOST: "readarr.{{ user.domain }}"
-      VIRTUAL_PORT: 8787
+      VIRTUAL_PORT: "8787"
       LETSENCRYPT_HOST: "readarr.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       TZ: "{{ tz }}"

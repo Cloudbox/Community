@@ -18,25 +18,25 @@ Community Repository for Unofficial Cloudbox Add-ons
 
 This is a partial list of roles available via Community; once the repo is installed,`sudo ansible-playbook community.yml --list-tags` will show you all available roles.
 
-- **[arrX](../../wiki/arrX)** - Create multiple Sonarr/Radarr/Bazarr Docker containers.
 - **airsonic**
 - **[alltube](../../wiki/alltube)** - [alltube](https://github.com/Rudloff/alltube) HTML GUI for youtube-dl.
 - **[alternatrr](../../wiki/alternatrr)** - [alternatrr](https://github.com/TheUltimateC0der/alternatrr) alternatrr lets you add alternative titles to your sonarr instance with a simple WebUI.
 - **amongus** - [AmongUsAutoMute](https://github.com/denverquane/amongusdiscord) AmongUs discord auto mute bot.
+- **[arrX](../../wiki/arrX)** - Create multiple Sonarr/Radarr/Bazarr Docker containers.
 - **[beets](../../wiki/beets)** - [Beets](http://beets.io/) Music library manager and MusicBrainz tagger.
 - **[bitwarden](../../wiki/Bitwarden)** - [Bitwarden](https://bitwarden.com/) Installs a self-hosted Bitwarden CE instance.
 - **[bookstack](../../wiki/Bookstack)** - [BookStack](https://www.bookstackapp.com/) Self-hosted platform for organising and storing information.
 - **[calibre-rdp](../../wiki/Calibre-RDP-and-Calibre-WEB)** - [Calibre-RDP](https://github.com/cgspeck/docker-rdp-calibre) Media path set to `/Media/Books` - a web app providing a clean interface for browsing, reading and downloading eBooks using an existing Calibre database.
 - **[calibre-web](../../wiki/Calibre-RDP-and-Calibre-WEB)** - [Calibre-RDP](https://github.com/janeczku/calibre-web) Loads opt/calibre - a web app providing a clean interface for browsing, reading and downloading eBooks using an existing Calibre database.
 - **[changedetection.io](https://github.com/dgtlmoon/changedetection.io)** - Self-hosted change monitoring of web pages.
-- **[comixed](https://github.com/mcpierce/comixed/tree/develop/docker)** - comics server and online reader
 - **[comicstreamer](https://github.com/beville/ComicStreamer)** - comics server and online reader (old, unmaintained, but fast and efficient)
+- **[comixed](https://github.com/mcpierce/comixed/tree/develop/docker)** - comics server and online reader
 - **[conreq](https://github.com/Archmonger/Conreq)** - Conreq, a Content Requesting platform like ombi
 - **[CouchPotato](https://couchpota.to)** - Movie manager
 - **[Deemixrr](https://github.com/TheUltimateC0der/Deemixrr/wiki)** - A smart and easy to use WebUI for deemix to manage your music and audiobooks
 - **[deluge](../../wiki/Deluge)** - Deluge torrent client
-- **[embystat](https://github.com/mregni/EmbyStat)**
 - **Emby2** - Second instance of Emby
+- **[embystat](https://github.com/mregni/EmbyStat)**
 - **flaresolverr** - Captcha resolver to be used jointly with [Jackett to solve cloudflare challenges](https://github.com/Jackett/Jackett/issues/9029)
 - **funkwhale**
 - **gazee** - comic book reader
@@ -64,6 +64,7 @@ This is a partial list of roles available via Community; once the repo is instal
 - **radarrX** - Similar to [sonarrX](../../wiki/SonarrX) but for radarr, to create multiple roles
 - **[readarr](https://hotio.dev/containers/readarr/)** - BETA role of Readarr for eBook or Audiobook use, supports integration with 'Calibre' role
 - **Red Discord Bot** - A customisible self-hosted Discord Bot
+- **[scrutiny](https://hotio.dev/containers/scrutiny/)** - View/Monito S.M.A.R.T data for your server's drives with **[scrutiny](https://github.com/analogj/scrutiny)** using hotio's image. You will need to add/edit/remove "DEVICES" under 'Scrutiny' in the 'settings.yml' file in the community directory.
 - **[SmokePing](https://hub.docker.com/r/linuxserver/smokeping)** - Smokeping keeps track of your network latency.
 - **sonarr1080** - Additional Sonarr
 - **sonarrv3** - Sonar phantom (v3) branch based role

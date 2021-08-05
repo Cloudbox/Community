@@ -1,0 +1,76 @@
+#########################################################################
+# Title:            Community: scrutiny                                  #
+# Author(s):        edzeg                                               #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  hotio/scrutiny                                      #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: scrutiny
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: scrutiny
+    state: absent
+
+- name: Lookup htpasswd
+  stat:
+    path: "/opt/nginx-proxy/htpasswd/scrutiny.{{ user.domain }}"
+  register: htpasswd_lookup
+
+- name: Create htpasswd
+  htpasswd:
+    path: "/opt/nginx-proxy/htpasswd/scrutiny.{{ user.domain }}"
+    name: "{{ user.name }}"
+    password: "{{ user.pass }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0664
+  when: not htpasswd_lookup.stat.exists
+  
+- name: Create scrutiny directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/scrutiny
+
+- name: Set default_volumes variable
+  set_fact:
+    default_volumes:
+      - "/opt/scrutiny:/config"
+      - "/run/udev:/run/udev:ro"
+
+- name: Create and start container
+  docker_container:
+    name: scrutiny
+    image: hotio/scrutiny
+    pull: yes
+    env:
+      BACKUP: "no"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      UMASK: "002"
+      VIRTUAL_HOST: "scrutiny.{{ user.domain }}"
+      VIRTUAL_PORT: "8080"
+      LETSENCRYPT_HOST: "scrutiny.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      TZ: "{{ tz }}"
+    volumes: "{{ default_volumes }}"
+    capabilities:
+      - SYS_RAWIO
+    devices: "{{ scrutiny.devices }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - scrutiny
+    purge_networks: yes
+    restart_policy: unless-stopped

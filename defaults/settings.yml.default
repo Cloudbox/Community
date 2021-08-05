@@ -106,6 +106,10 @@ requestrrx:
   roles: 
     - 1080
     - 4k
+scrutiny:
+  devices:
+    - /dev/sda
+    - /dev/sdb
 searx:
   subdomain: searx
 sonarrx: 

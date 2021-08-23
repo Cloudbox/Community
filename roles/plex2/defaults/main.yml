@@ -33,7 +33,7 @@ plex2_folders:
 # Docker Image
 ################################
 
-plex2_docker_image: "cloudb0x/plex:{{ plex.tag }}"
+plex2_docker_image: "plexinc/pms-docker:{{ plex.tag }}"
 
 ################################
 # Docker Volumes

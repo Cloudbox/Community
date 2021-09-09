@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - id: set-matrix
-        run: OUTPUT=$(awk -F'[][]' -e '/ role:/ && FNR > 13' community.yml | awk '!/#/' | awk -F'[][]' '{print $2}' | tr '\n' ',' | sed 's/,*$//' | sed "s/.\(hetzner_nfs_server\|hetzner_nfs_server_uninstall\|hetzner_nfs_client_mount\|hetzner_nfs_client_unmount\).,//g") && echo "::set-output name=matrix::{\"roles\":[$OUTPUT]}"
+        run: OUTPUT=$(awk -F'[][]' -e '/ role:/ && FNR > 13' community.yml | awk '!/#/' | awk -F'[][]' '{print $2}' | tr '\n' ',' | sed 's/,*$//' | sed "s/.\(drive_strm\|drive_strm_rebuild\|hetzner_nfs_server\|hetzner_nfs_server_uninstall\|hetzner_nfs_client_mount\|hetzner_nfs_client_unmount\).,//g") && echo "::set-output name=matrix::{\"roles\":[$OUTPUT]}"
 
   install:
     name: '${{ matrix.roles }}'

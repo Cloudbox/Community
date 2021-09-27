@@ -41,6 +41,8 @@ delugevpn:
   vpn_pass: your_vpn_password
   vpn_prov: pia
   vpn_user: your_vpn_username
+doplarr: 
+  token: your_discord_bot_token
 easycountdown:
   subdomain: easycountdown
   title: Change me in community settings.yml

@@ -1,0 +1,84 @@
+#########################################################################
+# Title:            Cloudbox: Varken Role                               #
+# Author(s):        desimaniac                                          #
+# URL:              https://github.com/cloudbox/cloudbox                #
+# Docker Image(s):  boerderij/varken                                    #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+# Get Public IP Address
+- name: Get IP Address
+  ipinfoio_facts:
+
+# Tautulli Tasks
+- name: "Check if tautulli exists"
+  stat:
+    path: "/opt/{{ varken.tautulli_subdomain }}/config.ini"
+  register: tautulli_config
+
+- name: Set 'tautulli_api_key'
+  set_fact:
+    tautulli_api_key: "{{ (lookup('ini', 'api_key section=General file=/opt/{{ varken.tautulli_subdomain }}/config.ini')) if tautulli_config.stat.exists else '' }}"
+
+# Sonarr Tasks
+- name: "Check if sonarr exists"
+  stat:
+    path: "/opt/sonarr/app/config.xml"
+  register: sonarr_config
+
+- name: Pull sonarr api key
+  xml:
+    path: "/opt/sonarr/app/config.xml"
+    xpath: /Config/ApiKey
+    content: text
+  register: xmlresp
+  when: sonarr_config.stat.exists
+
+- name: Set 'sonarr_api_key'
+  set_fact:
+    sonarr_api_key: "{{ xmlresp.matches[0].ApiKey if sonarr_config.stat.exists else '' }}"
+
+# Radarr Tasks
+- name: "Check if radarr exists"
+  stat:
+    path: "/opt/radarr/app/config.xml"
+  register: radarr_config
+
+- name: Pull radarr api key
+  xml:
+    path: "/opt/radarr/app/config.xml"
+    xpath: /Config/ApiKey
+    content: text
+  register: xmlresp
+  when: radarr_config.stat.exists
+
+- name: Set 'radarr_api_key'
+  set_fact:
+    radarr_api_key: "{{ xmlresp.matches[0].ApiKey if radarr_config.stat.exists else '' }}"
+
+# Ombi Tasks
+- name: "Check if ombi exists"
+  stat:
+    path: "/opt/ombi/OmbiSettings.db"
+  register: ombi_config
+
+- name: Get Ombi API key
+  shell: sqlite3 "/opt/ombi/OmbiSettings.db" "SELECT Content,SettingsName FROM GlobalSettings WHERE SettingsName = 'OmbiSettings';" | sed 's/|[^|]*$//' | jq -r .ApiKey
+  register: ombi_api_key
+  when: ombi_config.stat.exists
+
+- name: Set 'ombi_api_key'
+  set_fact:
+    ombi_api_key: "{{ ombi_api_key.stdout if ombi_config.stat.exists else '' }}"
+
+- name: Import 'config.ini'
+  template:
+    src: varken.ini.js2
+    dest: /opt/varken/varken.ini
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+    force: yes

@@ -41,6 +41,7 @@
     - { role: couchpotato, tags: ['couchpotato'] }
     - { role: deluge, tags: ['deluge'] }
     - { role: delugevpn, tags: ['delugevpn'] }
+    - { role: doplarr, tags: ['doplarr'] }
     - { role: drive_strm, tags: ['drive_strm', 'drive_strm_rebuild'] }
     - { role: easycountdown, tags: [ 'easycountdown'] }
     - { role: embystat, tags: ['embystat'] }

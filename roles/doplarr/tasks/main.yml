@@ -1,0 +1,92 @@
+#########################################################################
+# Title:            Cloudbox: Doplarr Role                              #
+# Author(s):        chazlarson                                          #
+# URL:              https://github.com/cloudbox/cloudbox                #
+# Docker Image(s):  ghcr.io/kiranshila/doplarr:latest                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Stop and remove any existing containers
+  docker_container:
+    name: doplarr
+    state: absent
+
+- name: Create required directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/doplarr
+
+- name: Fail when default doplarr.token is specified
+  fail: msg="You must specify a Discord bot token in the settings under doplarr.token."
+  when: doplarr.token == 'your_discord_bot_token'
+
+# Sonarr Tasks
+- name: "Check if sonarr exists"
+  stat:
+    path: "/opt/sonarr/config.xml"
+  register: sonarr_config
+
+- name: Pull sonarr api key
+  xml:
+    path: "/opt/sonarr/config.xml"
+    xpath: /Config/ApiKey
+    content: text
+  register: xmlresp
+  when: sonarr_config.stat.exists
+
+- name: Set 'sonarr_api_key'
+  set_fact:
+    sonarr_api_key: "{{ xmlresp.matches[0].ApiKey if sonarr_config.stat.exists else '' }}"
+
+- name: Fail when no Sonarr API key is found
+  fail: msg="Doplarr requires a Sonarr API key and one could not be found on this machine."
+  when: sonarr_api_key == ''
+
+# Radarr Tasks
+- name: "Check if radarr exists"
+  stat:
+    path: "/opt/radarr/config.xml"
+  register: radarr_config
+
+- name: Pull radarr api key
+  xml:
+    path: "/opt/radarr/config.xml"
+    xpath: /Config/ApiKey
+    content: text
+  register: xmlresp
+  when: radarr_config.stat.exists
+
+- name: Set 'radarr_api_key'
+  set_fact:
+    radarr_api_key: "{{ xmlresp.matches[0].ApiKey if radarr_config.stat.exists else '' }}"
+
+- name: Fail when no Radarr API key is found
+  fail: msg="Doplarr requires a Radarr API key and one could not be found on this machine."
+  when: radarr_api_key == ''
+
+- name: Create and start doplarr container
+  docker_container:
+    name: doplarr
+    image: "ghcr.io/kiranshila/doplarr:latest"
+    pull: yes
+    env:
+      SONARR_URL: "https://sonarr.{{ user.domain }}"
+      RADARR_URL: "https://radarr.{{ user.domain }}"
+      SONARR_API: "{{ sonarr_api_key }}"
+      RADARR_API: "{{ radarr_api_key }}"
+      BOT_TOKEN:  "{{ doplarr.token }}"
+    volumes:
+      - "/opt/doplarr:/config"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - doplarr
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started
+

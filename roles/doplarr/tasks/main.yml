@@ -14,11 +14,6 @@
     name: doplarr
     state: absent
 
-- name: Create required directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
-  with_items:
-    - /opt/doplarr
-
 - name: Fail when default doplarr.token is specified
   fail: msg="You must specify a Discord bot token in the settings under doplarr.token."
   when: doplarr.token == 'your_discord_bot_token'
@@ -72,14 +67,13 @@
     name: doplarr
     image: "ghcr.io/kiranshila/doplarr:latest"
     pull: yes
+    user: "{{ uid }}:{{ gid }}"
     env:
       SONARR_URL: "https://sonarr.{{ user.domain }}"
       RADARR_URL: "https://radarr.{{ user.domain }}"
       SONARR_API: "{{ sonarr_api_key }}"
       RADARR_API: "{{ radarr_api_key }}"
       BOT_TOKEN:  "{{ doplarr.token }}"
-    volumes:
-      - "/opt/doplarr:/config"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

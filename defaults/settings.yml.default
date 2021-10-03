@@ -95,6 +95,10 @@ radarrx:
   roles: 
     - 1080webdl
     - 1080remux
+readarrx: 
+  roles: 
+    - ebooks
+    - audiobooks
 redbot: 
   prefix: "."
   token: your_bot_token

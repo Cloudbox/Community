@@ -1,0 +1,45 @@
+name: CI
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  find-roles:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v2
+      - id: set-matrix
+        run: OUTPUT=$(awk -F'[][]' -e '/ role:/ && FNR > 13' community.yml | awk '!/#/' | awk -F'[][]' '{print $2}' | tr '\n' ',' | sed 's/,*$//' | sed "s/.\(drive_strm\|drive_strm_rebuild\|hetzner_nfs_server\|hetzner_nfs_server_uninstall\|hetzner_nfs_client_mount\|hetzner_nfs_client_unmount\).,//g") && echo "::set-output name=matrix::{\"roles\":[$OUTPUT]}"
+
+  install:
+    name: '${{ matrix.roles }}'
+    needs: find-roles
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix: ${{fromJson(needs.find-roles.outputs.matrix)}}
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: curl -s https://cloudbox.works/scripts/dep.sh | sudo -H sh &> /dev/null
+
+      - name: Install Repository
+        run: curl -s https://cloudbox.works/scripts/repo.sh | bash &> /dev/null
+
+      - name: Change default configuration user
+        run: cd /home/runner/cloudbox && sed -i 's/seed/runner/g' accounts.yml
+
+      - name: Syntax Check
+        run: cd /home/runner/cloudbox && sudo ansible-playbook cloudbox.yml --syntax-check
+
+      - name: Install Cloudbox
+        run: cd /home/runner/cloudbox && sudo ansible-playbook cloudbox.yml --tags "core" --skip-tags "sanity_check,settings,kernel,hetzner,shell,rclone,system,motd,nvidia,mounts,scripts" --extra-vars '{"continuous_integration":true}'
+
+      - name: Copy default configuration
+        run: cp -n defaults/ansible.cfg.default ansible.cfg && cp -n defaults/settings.yml.default settings.yml
+
+      - name: Install ${{ matrix.roles }}
+        run: sudo ansible-playbook community.yml --tags "${{ matrix.roles }}" --skip-tags "sanity_check,settings" --extra-vars '{"continuous_integration":true}'

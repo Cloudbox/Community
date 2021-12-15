@@ -2,7 +2,7 @@
 # Title:            Community: SmokePing                                #
 # Author(s):        mariosemes                                          #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  linuxserver/smokeping                               #
+# Docker Image(s):  lscr.io/linuxserver/smokeping                               #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -41,7 +41,7 @@
 - name: Create and start container
   docker_container:
     name: smokeping
-    image: "linuxserver/smokeping"
+    image: "lscr.io/linuxserver/smokeping"
     pull: yes
     exposed_ports:
       - 80

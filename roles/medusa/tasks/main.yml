@@ -2,7 +2,7 @@
 # Title:            Community: Medusa                                   #
 # Author(s):        javi11                                              #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  linuxserver/medusa                                  #
+# Docker Image(s):  lscr.io/linuxserver/medusa                                  #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -37,7 +37,7 @@
 - name: Create and start container
   docker_container:
     name: medusa
-    image: linuxserver/medusa
+    image: lscr.io/linuxserver/medusa
     pull: yes
     env:
       TZ: "{{ tz }}"

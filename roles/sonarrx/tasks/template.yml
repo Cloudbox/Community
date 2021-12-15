@@ -2,7 +2,7 @@
 # Title:            Community: SonarrX | Template                       #
 # Author(s):        Kalroth, Migz93                                     #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  hotio/sonarr                                        #
+# Docker Image(s):  cr.hotio.dev/hotio/sonarr                                        #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -47,7 +47,7 @@
 - name: Create and start container
   docker_container:
     name: "sonarr{{ rolename }}"
-    image: "hotio/sonarr:release"
+    image: "cr.hotio.dev/hotio/sonarr:release"
     pull: yes
     env:
       TZ: "{{ tz }}"

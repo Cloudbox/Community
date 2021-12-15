@@ -2,7 +2,7 @@
 # Title:            Community: LidarrX | Template                       #
 # Author(s):        paris-ci                                            #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  hotio/lidarr                                        #
+# Docker Image(s):  cr.hotio.dev/hotio/lidarr                                        #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -41,7 +41,7 @@
 - name: Create and start container
   docker_container:
     name: "lidarr{{ rolename }}"
-    image: "hotio/lidarr"
+    image: "cr.hotio.dev/hotio/lidarr"
     pull: yes
     env:
       TZ: "{{ tz }}"

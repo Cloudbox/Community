@@ -2,7 +2,7 @@
 # Title:            Community: Mylar                                    #
 # Author(s):        fuller882                                           #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  linuxserver/mylar                                   #
+# Docker Image(s):  lscr.io/linuxserver/mylar                                   #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -30,7 +30,7 @@
 - name: Create and start container
   docker_container:
     name: mylar
-    image: linuxserver/mylar
+    image: lscr.io/linuxserver/mylar
     pull: yes
     published_ports:
       - "127.0.0.1:8090:8090"

@@ -2,7 +2,7 @@
 # Title:            Community: qBittorrent                              #
 # Author(s):        Kalroth                                             #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  linuxserver/qbittorrent                             #
+# Docker Image(s):  lscr.io/linuxserver/qbittorrent                             #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################

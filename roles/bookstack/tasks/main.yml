@@ -2,7 +2,7 @@
 # Title:            Community: BookStack                                #
 # Author(s):        Thomvh                                              #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  linuxserver/bookstack                               #
+# Docker Image(s):  lscr.io/linuxserver/bookstack                               #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -40,7 +40,7 @@
 - name: Create and start bookstack container
   docker_container:
     name: bookstack
-    image: "linuxserver/bookstack"
+    image: "lscr.io/linuxserver/bookstack"
     pull: yes
     env:
       TZ: "{{ tz }}"

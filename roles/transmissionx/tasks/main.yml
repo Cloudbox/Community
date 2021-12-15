@@ -2,7 +2,7 @@
 # Title:            Community: TransmissionX                            #
 # Author(s):        giosann,saltydk                                     #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image:     linuxserver/trasmission                             #
+# Docker Image:     lscr.io/linuxserver/trasmission                             #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################

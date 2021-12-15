@@ -2,7 +2,7 @@
 # Title:            Community: RadarrX | Template                       #
 # Author(s):        Superduper09, Migz93                                #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  hotio/radarr                                        #
+# Docker Image(s):  cr.hotio.dev/hotio/radarr                                        #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -47,7 +47,7 @@
 - name: Create and start container
   docker_container:
     name: "radarr{{ rolename }}"
-    image: "hotio/radarr:release"
+    image: "cr.hotio.dev/hotio/radarr:release"
     pull: yes
     env:
       TZ: "{{ tz }}"

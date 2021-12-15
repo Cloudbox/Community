@@ -2,7 +2,7 @@
 # Title:            Community: Jellyfin                                 #
 # Author(s):        maximuskowalski, desimaniac, owine                  #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  hotio/jellyfin                                      #
+# Docker Image(s):  cr.hotio.dev/hotio/jellyfin                                      #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -77,7 +77,7 @@
 - name: Create and start container
   docker_container:
     name: jellyfin
-    image: "hotio/jellyfin:latest"
+    image: "cr.hotio.dev/hotio/jellyfin:latest"
     pull: yes
     env:
       TZ: "{{ tz }}"

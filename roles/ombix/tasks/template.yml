@@ -2,7 +2,7 @@
 # Title:            Community: OmbiX                                    #
 # Author(s):        FML128                                              #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  hotio/ombi                                          #
+# Docker Image(s):  cr.hotio.dev/hotio/ombi                                          #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -28,7 +28,7 @@
 - name: Create and start container
   docker_container:
     name: ombi{{ rolename }}
-    image: "hotio/ombi"
+    image: "cr.hotio.dev/hotio/ombi"
     pull: yes
     env:
       BACKUP: "no"

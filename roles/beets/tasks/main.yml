@@ -2,7 +2,7 @@
 # Title:            Community: Beets                                    #
 # Author(s):        fuller882                                           #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  linuxserver/beets                                   #
+# Docker Image(s):  lscr.io/linuxserver/beets                                   #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -42,7 +42,7 @@
 - name: Create and start container
   docker_container:
     name: beets
-    image: linuxserver/beets
+    image: lscr.io/linuxserver/beets
     pull: yes
     env:
       TZ: "{{ tz }}"

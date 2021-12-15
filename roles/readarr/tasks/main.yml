@@ -2,7 +2,7 @@
 # Title:            Community: Readarr                                  #
 # Author(s):        edzeg                                               #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  hotio/readarr                                       #
+# Docker Image(s):  cr.hotio.dev/hotio/readarr                                       #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -38,7 +38,7 @@
 - name: Create and start container
   docker_container:
     name: readarr
-    image: hotio/readarr:nightly
+    image: cr.hotio.dev/hotio/readarr:nightly
     pull: yes
     env:
       PUID: "{{ uid }}"

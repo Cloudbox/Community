@@ -2,7 +2,7 @@
 # Title:            Community: Petio                                    #
 # Author(s):        chazlarson                                          #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  hotio/petio                                         #
+# Docker Image(s):  cr.hotio.dev/hotio/petio                                         #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -33,7 +33,7 @@
 - name: Create and start petio container
   docker_container:
     name: "petio"
-    image: "hotio/petio"
+    image: "cr.hotio.dev/hotio/petio"
     pull: yes
     env:
       TZ: "{{ tz }}"

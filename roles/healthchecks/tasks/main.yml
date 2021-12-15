@@ -2,7 +2,7 @@
 # Title:         Community: Healthchecks Role                           #
 # Author(s):     danqbudz                                               #
 # URL:           https://github.com/Cloudbox/Community                  #
-# Docker Image:  linuxserver/healthchecks                               #
+# Docker Image:  lscr.io/linuxserver/healthchecks                               #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -44,7 +44,7 @@
 - name: Create and start container
   docker_container:
     name: healthchecks
-    image: linuxserver/healthchecks
+    image: lscr.io/linuxserver/healthchecks
     pull: yes
     env:
       TZ: "{{ tz }}"

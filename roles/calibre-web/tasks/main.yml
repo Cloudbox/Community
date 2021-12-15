@@ -2,7 +2,7 @@
 # Title:            Community: Calibre-Web                              #
 # Author(s):        Superduper09, -SK                                   #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  linuxserver/calibre-web                             #
+# Docker Image(s):  lscr.io/linuxserver/calibre-web                             #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -29,7 +29,7 @@
 - name: Create and start container
   docker_container:
     name: calibre-web
-    image: linuxserver/calibre-web
+    image: lscr.io/linuxserver/calibre-web
     pull: yes
     env:
       TZ: "{{ tz }}"
@@ -40,7 +40,7 @@
       LETSENCRYPT_HOST: "books.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       USE_CONFIG_DIR: "true"
-      DOCKER_MODS: linuxserver/calibre-web:calibre
+      DOCKER_MODS: lscr.io/linuxserver/calibre-web:calibre
     volumes:
       - "/mnt/unionfs/Media/Books:/books"
       - "/opt/calibre-web/config:/config"

@@ -2,7 +2,7 @@
 # Title:            Community: ReadarrX                                 #
 # Author(s):        salty                                               #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  hotio/readarr                                       #
+# Docker Image(s):  cr.hotio.dev/hotio/readarr                                       #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################

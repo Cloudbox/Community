@@ -2,7 +2,7 @@
 # Title:            Community: Couchpotato                              #
 # Author(s):        javi11                                              #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  linuxserver/couchpotato                             #
+# Docker Image(s):  lscr.io/linuxserver/couchpotato                             #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -29,7 +29,7 @@
 - name: Create and start container
   docker_container:
     name: couchpotato
-    image: linuxserver/couchpotato
+    image: lscr.io/linuxserver/couchpotato
     pull: yes
     env:
       UMASK: "002"

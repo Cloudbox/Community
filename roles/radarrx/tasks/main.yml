@@ -2,7 +2,7 @@
 # Title:            Community: Radarrx                                  #
 # Author(s):        Superduper09, Migz93                                #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  hotio/radarr                                        #
+# Docker Image(s):  cr.hotio.dev/hotio/radarr                                        #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################

@@ -2,7 +2,7 @@
 # Title:         Community: Prowlarr                                    #
 # Author(s):     TABLE                                                  #
 # URL:           https://github.com/Cloudbox/Community                  #
-# Docker Image(s):  hotio/prowlarr                                      #
+# Docker Image(s):  cr.hotio.dev/hotio/prowlarr                                      #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -29,7 +29,7 @@
 - name: Create and start container
   docker_container:
     name: prowlarr
-    image: hotio/prowlarr:testing
+    image: cr.hotio.dev/hotio/prowlarr:testing
     pull: yes
     env:
       TZ: "{{ tz }}"

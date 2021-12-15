@@ -2,7 +2,7 @@
 # Title:            Community: BazarrX | Template                       #
 # Author(s):        Migz93                                              #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  linuxserver/bazarr                                  #
+# Docker Image(s):  lscr.io/linuxserver/bazarr                                  #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -37,7 +37,7 @@
 - name: Create and start container
   docker_container:
     name: "bazarr{{ rolename }}"
-    image: "hotio/bazarr:{{ bazarrx.version }}"
+    image: "cr.hotio.dev/hotio/bazarr:{{ bazarrx.version }}"
     pull: yes
     env:
       TZ: "{{ tz }}"

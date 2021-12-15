@@ -2,7 +2,7 @@
 # Title:            Community: Ubooquity                                #
 # Author(s):        theotocopulitos                                     #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  linuxserver/ubooquity                               #
+# Docker Image(s):  lscr.io/linuxserver/ubooquity                               #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -30,7 +30,7 @@
 - name: Create and start container
   docker_container:
     name: ubooquity
-    image: linuxserver/ubooquity
+    image: lscr.io/linuxserver/ubooquity
     pull: yes
     published_ports:
       - "2203:2203"

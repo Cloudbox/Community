@@ -2,7 +2,7 @@
 # Title:            Community: Lidarrx                                  #
 # Author(s):        paris-ci                                            #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  hotio/lidarr                                        #
+# Docker Image(s):  cr.hotio.dev/hotio/lidarr                                        #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################

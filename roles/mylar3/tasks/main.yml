@@ -2,7 +2,7 @@
 # Title:            Community: Mylar3                                   #
 # Author(s):        theotocopulitos,owine                               #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  hotio/mylar3                                        #
+# Docker Image(s):  cr.hotio.dev/hotio/mylar3                                        #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -33,7 +33,7 @@
 - name: Create and start container
   docker_container:
     name: mylar3
-    image: hotio/mylar3
+    image: cr.hotio.dev/hotio/mylar3
     pull: yes
     env:
       PUID: "{{ uid }}"

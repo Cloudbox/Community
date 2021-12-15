@@ -2,7 +2,7 @@
 # Title:            Community: Gazee                                    #
 # Author(s):        Aki                                                 #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  linuxserver/gazee                                   #
+# Docker Image(s):  lscr.io/linuxserver/gazee                                   #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -30,7 +30,7 @@
 - name: Create and start container
   docker_container:
     name: gazee
-    image: linuxserver/gazee
+    image: lscr.io/linuxserver/gazee
     pull: yes
     env:
       TZ: "{{ tz }}"

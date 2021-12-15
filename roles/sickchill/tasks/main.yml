@@ -2,7 +2,7 @@
 # Title:            Community: SickChill                                #
 # Author(s):        javi11                                              #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  linuxserver/sickchill                               #
+# Docker Image(s):  lscr.io/linuxserver/sickchill                               #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -37,7 +37,7 @@
 - name: Create and start container
   docker_container:
     name: sickchill
-    image: linuxserver/sickchill
+    image: lscr.io/linuxserver/sickchill
     pull: yes
     env:
       TZ: "{{ tz }}"

@@ -2,7 +2,7 @@
 # Title:            Community: VSCode                                   #
 # Author(s):        kungfoome                                           #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  ghcr.io/linuxserver/code-server                     #
+# Docker Image(s):  ghcr.io/lscr.io/linuxserver/code-server                     #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -39,7 +39,7 @@
 - name: Create and start container
   docker_container:
     name: vscode
-    image: ghcr.io/linuxserver/code-server
+    image: ghcr.io/lscr.io/linuxserver/code-server
     pull: yes
     env:
       TZ: "{{ tz }}"

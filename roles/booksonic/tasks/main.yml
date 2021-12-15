@@ -2,7 +2,7 @@
 # Title:            Community: Booksonic                                #
 # Author(s):        moarbytes, muplah                                   #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  linuxserver/booksonic                               #
+# Docker Image(s):  lscr.io/linuxserver/booksonic                               #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -29,7 +29,7 @@
 - name: Create and start container
   docker_container:
     name: booksonic
-    image: linuxserver/booksonic
+    image: lscr.io/linuxserver/booksonic
     pull: yes
     env:
       TZ: "{{ tz }}"

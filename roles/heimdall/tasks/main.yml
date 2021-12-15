@@ -2,7 +2,7 @@
 # Title:         Community: Heimdall Role                               #
 # Author(s):     TheBradz, desimaniac                                   #
 # URL:           https://github.com/Cloudbox/Community                  #
-# Docker Image:  linuxserver/heimdall                                   #
+# Docker Image:  lscr.io/linuxserver/heimdall                                   #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
@@ -40,7 +40,7 @@
 - name: Create and start container
   docker_container:
     name: heimdall
-    image: linuxserver/heimdall
+    image: lscr.io/linuxserver/heimdall
     pull: yes
     env:
       TZ: "{{ tz }}"

@@ -30,7 +30,7 @@
 - name: Create and start container
   docker_container:
     name: gazee
-    image: lscr.io/linuxserver/gazee
+    image: linuxserver/gazee
     pull: yes
     env:
       TZ: "{{ tz }}"

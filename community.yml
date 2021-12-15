@@ -105,6 +105,8 @@
     - { role: qbittorrentvpn, tags: ['qbittorrentvpn'] }
     - { role: quassel, tags: ['quassel'] }
     - { role: radarrx, tags: ['radarrx'] }
+    - { role: readarr, tags: ['readarr'] }
+    - { role: readarrx, tags: ['readarrx'] }
     - { role: redbot, tags: ['redbot'] }
     - { role: redis, tags: ['redis'] }
     - { role: requestrr, tags: ['requestrr'] }

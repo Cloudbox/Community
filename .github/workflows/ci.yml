@@ -3,132 +3,24 @@ name: CI
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
+  find-roles:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v2
+      - id: set-matrix
+        run: OUTPUT=$(awk -F'[][]' -e '/ role:/ && FNR > 13' community.yml | awk '!/#/' | awk -F'[][]' '{print $2}' | tr '\n' ',' | sed 's/,*$//' | sed "s/.\(drive_strm\|drive_strm_rebuild\|hetzner_nfs_server\|hetzner_nfs_server_uninstall\|hetzner_nfs_client_mount\|hetzner_nfs_client_unmount\).,//g") && echo "::set-output name=matrix::{\"roles\":[$OUTPUT]}"
+
   install:
     name: '${{ matrix.roles }}'
+    needs: find-roles
     runs-on: ubuntu-18.04
     strategy:
-      matrix:
-        roles:
-          - airdcpp
-          - airsonic
-          - alltube
-          - alternatrr
-          - alternatrrx
-          - amongus
-          - apprise
-          - archivebox
-          - asshama
-          - autoscan
-          - bazarrx
-          - beets
-          - bitwarden
-          - bookstack
-          - btrfsmaintenance
-          - calibre
-          - calibre-web
-          - changedetection
-          - comicstreamer
-          - couchpotato
-          - coder
-          - comixed
-          - conreq
-          - dashmachine
-          - deemix
-          - deemixrr
-          - deezloader-remix
-          - deluge
-          - delugevpn
-          - easycountdown
-          - embystat
-          - emby2
-          - epms
-          - filebot
-          - filezilla
-          - firefly
-          - flaresolverr
-          - funkwhale
-          - gazee
-          - glances
-          - goplaxt
-          - grafana
-          - handbrake
-          - healthchecks
-          - heimdall
-          - influxdb
-          - invoiceninja
-          - jdownloader2
-          - jellyfin
-          - jirafeau
-          - kitana
-          - komga
-          - lazylibrarian
-          - lidarrx
-          - logarr
-          - mediabutler
-          - medusa
-          - minecraft
-          - mkvtoolnix
-          - monitorr
-          - moviematch
-          - mylar
-          - mylar3
-          - navidrome
-          - nextcloud
-          - nowshowing
-          - nzbhydra
-          - ombix
-          - organizrv1
-          - ouroboros
-          - overseerr
-          - overseerrx
-          - paperless-ng
-          - petio
-          - phantombot
-          - plex2
-          - plex-auto-collections
-          - plex-meta-manager
-          - postgres
-          - prowlarr
-          - pyload
-          - qbittorrent
-          - qbittorrentvpn
-          - quassel
-          - radarrx
-          - redbot
-          - redis
-          - resilio-sync
-          - requestrrx
-          - rocketchat
-          - searx
-          - sickchill
-          - smokeping
-          - sonarrx
-          - speedtest
-          - sshwifty
-          - stash
-          - subsonic
-          - synclounge
-          - tdarr
-          - telegraf
-          - thelounge
-          - transmissionvpn
-          - transmissionx
-          - ubooquity
-          - unifi
-          - unmanic
-          - varken
-          - vnstat
-          - vscode
-          - watchtower
-          - wallabag
-          - wordpress
-          - xbackbone
-          - xteve
-          - znc
+      matrix: ${{fromJson(needs.find-roles.outputs.matrix)}}
       fail-fast: false
 
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
       - name: Install Dependencies
@@ -151,16 +43,3 @@ jobs:
 
       - name: Install ${{ matrix.roles }}
         run: sudo ansible-playbook community.yml --tags "${{ matrix.roles }}" --skip-tags "sanity_check,settings" --extra-vars '{"continuous_integration":true}'
-
-#  webhook:
-#    name: '${{ matrix.roles }}'
-#    runs-on: ubuntu-20.04
-#    needs: install
-#    if: always()
-#    steps:
-#      - uses: technote-space/workflow-conclusion-action@v2
-#      - uses: sarisia/actions-status-discord@v1
-#        if: always()
-#        with:
-#          webhook: ${{ secrets.DISCORD_WEBHOOK }}
-#          status: ${{ env.WORKFLOW_CONCLUSION }}

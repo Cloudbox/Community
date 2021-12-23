@@ -87,7 +87,6 @@
     - { role: nowshowing, tags: ['nowshowing'] }
     - { role: nzbhydra, tags: ['nzbhydra'] }
     - { role: ombix, tags: ['ombix'] }
-    - { role: organizrv1, tags: ['organizrv1'] }
     - { role: ouroboros, tags: ['ouroboros'] }
     - { role: overseerr, tags: ['overseerr'] }
     - { role: overseerrx, tags: ['overseerrx'] }

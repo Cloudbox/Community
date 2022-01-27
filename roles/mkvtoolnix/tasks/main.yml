@@ -57,6 +57,7 @@
     volumes:
       - "/opt/mkvtoolnix:/config"
       - "/mnt/unionfs:/storage"
+      - "/mnt:/mnt"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

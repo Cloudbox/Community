@@ -68,7 +68,7 @@
   register: dev_dri
 
 - name: "Get IP for LazyMan"
-  set_fact: lazyman_ip="{{ lookup('dig', 'nhl.freegamez.ga.', '@8.8.8.8', 'qtype=A') }}"
+  set_fact: lazyman_ip="{{ lookup('dig', 'freesports.ddns.net.', '@8.8.8.8', 'qtype=A') }}"
 
 - name: "Set custom hosts"
   set_fact:

@@ -40,9 +40,7 @@
 # https://haugene.github.io/docker-transmission-openvpn/run-container/#1_the_container_assumes_that_you_mount_a_folder_to_data
 - name: Set the data_volume variable
   set_fact:
-    data_volume:
-      - "{{ downloads.torrents }}/transmissionvpn:/data"
-  when: (torrents_downloads_path is defined)|default(false)
+    data_volume: "{{[downloads.torrents + '/transmissionvpn:/data'] if torrents_downloads_path_is_defined else [] }}"
 
 - name: Set default_volumes variable
   set_fact:

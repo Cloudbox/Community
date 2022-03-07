@@ -40,7 +40,7 @@
       LETSENCRYPT_HOST: "books.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
       USE_CONFIG_DIR: "true"
-      DOCKER_MODS: lscr.io/linuxserver/calibre-web:calibre
+      DOCKER_MODS: linuxserver/calibre-web:calibre
     volumes:
       - "/mnt/unionfs/Media/Books:/books"
       - "/opt/calibre-web/config:/config"

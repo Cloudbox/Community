@@ -13,7 +13,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    record: jfa-go
+    record: "{{ jfa_go.subdomain|default('jfa-go',true) }}"
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container
@@ -35,9 +35,9 @@
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       GUID: "{{ gid }}"
-      VIRTUAL_HOST: "jfa-go.{{ user.domain }}"
+      VIRTUAL_HOST: "{{ jfa_go.subdomain|default('jfa-go',true) }}.{{ user.domain }}"
       VIRTUAL_PORT: "8056"
-      LETSENCRYPT_HOST: "jfa-go.{{ user.domain }}"
+      LETSENCRYPT_HOST: "{{ jfa_go.subdomain|default('jfa-go',true) }}.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
       - "/opt/jfa-go:/data"

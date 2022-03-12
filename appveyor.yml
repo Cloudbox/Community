@@ -66,6 +66,7 @@ environment:
     invoiceninja
     jdownloader2
     jellyfin
+    jfa-go
     jirafeau
     kitana
     komga

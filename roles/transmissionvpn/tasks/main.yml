@@ -37,6 +37,11 @@
     - "{{ downloads.torrents }}/transmissionvpn/torrents"
   when: (torrents_downloads_path is defined)|default(false)
 
+# https://haugene.github.io/docker-transmission-openvpn/run-container/#1_the_container_assumes_that_you_mount_a_folder_to_data
+- name: Set the data_volume variable
+  set_fact:
+    data_volume: "{{[downloads.torrents + '/transmissionvpn:/data'] if torrents_downloads_path_is_defined else [] }}"
+
 - name: Set default_volumes variable
   set_fact:
     default_volumes:
@@ -67,7 +72,7 @@
       TRANSMISSION_WATCH_DIR_ENABLED: "false"
       TRANSMISSION_HOME: "/opt/transmissionvpn"
       TZ: "{{ tz }}"
-    volumes: "{{ default_volumes + torrents_downloads_path|default([]) }}"
+    volumes: "{{ default_volumes + torrents_downloads_path + data_volume|default([]) }}"
     dns_servers: 8.8.8.8
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

@@ -46,7 +46,6 @@
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/minecraft:/config"
       - "/opt/minecraft/data:/data"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

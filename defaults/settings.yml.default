@@ -55,6 +55,8 @@ grafana:
   plugins: "grafana-piechart-panel,grafana-worldmap-panel"
 invoiceninja: 
   subdomain: invoiceninja
+jfa_go:
+  subdomain: jfa-go
 jirafeau: 
   domain: ~
 lidarrx: 

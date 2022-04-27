@@ -52,6 +52,8 @@
       - name: cloudbox
         aliases:
           - "overseerr{{ rolename }}"
+    dns_servers:
+      - 8.8.8.8
     purge_networks: yes
     restart_policy: unless-stopped
     state: started

@@ -39,9 +39,9 @@
       PGID: "{{ gid }}"
       NVIDIA_DRIVER_CAPABILITIES: "{{ 'all' if gpu.nvidia | default(false) else omit }}"
       NVIDIA_VISIBLE_DEVICES: "{{ 'all' if gpu.nvidia | default(false) else omit }}"
-      nodeID: MainNode
-      nodeIP: tdarrv2-node
-      serverIP: tdarrv2
+      nodeID: "MainNode"
+      nodeIP: "tdarrv2-node"
+      serverIP: "{{ tdarrv2.serverip }}"
     volumes:
       - "/mnt/unionfs/Media:/media"
       - "/mnt:/mnt"

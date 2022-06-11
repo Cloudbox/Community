@@ -136,6 +136,7 @@
     - { role: vscode, tags: ['vscode'] }
     - { role: watchtower, tags: ['watchtower'] }
     - { role: wallabag, tags: ['wallabag'] }
+    - { role: whisparr, tags: ['whisparr'] }
     - { role: wordpress, tags: ['wordpress'] }
     - { role: xbackbone, tags: ['xbackbone'] }
     - { role: xteve, tags: ['xteve'] }

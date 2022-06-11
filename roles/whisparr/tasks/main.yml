@@ -1,0 +1,61 @@
+#########################################################################
+# Title:         Community: Whisparr                                    #
+# Author(s):     L0rdShrek                                              #
+# URL:           https://github.com/Cloudbox/Community                  #
+# Docker Image(s):  cr.hotio.dev/hotio/whisparr                         #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: whisparr
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: whisparr
+    state: absent
+
+- name: Create whisparr directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/whisparr
+
+- name: Set default_volumes variable
+  set_fact:
+    default_volumes:
+      - "/opt/whisparr:/config"
+      - "/opt/scripts:/scripts"
+      - "/mnt:/mnt"
+      - "/mnt/unionfs/Media/adult:/adult"
+
+- name: Create and start container
+  docker_container:
+    name: whisparr
+    image: cr.hotio.dev/hotio/whisparr:nightly
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      UMASK: "002"
+      VIRTUAL_HOST: "whisparr.{{ user.domain }}"
+      VIRTUAL_PORT: "6969"
+      LETSENCRYPT_HOST: "whisparr.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+    volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+      "com.github.cloudbox.community": "whisparr"
+    networks:
+      - name: cloudbox
+        aliases:
+          - whisparr
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

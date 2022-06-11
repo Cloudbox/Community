@@ -87,6 +87,9 @@ plex_auto_collections:
   state: present 
 plex_meta_manager:
   time: 03:00
+postgres:
+  published_ports:
+    - 127.0.0.1:5432:5432
 qbittorrentvpn:
   vpn_endpoint: netherlands.ovpn
   vpn_user: your_vpn_username

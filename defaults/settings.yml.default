@@ -131,6 +131,8 @@ transmissionx:
     - ""
 unifi: 
   port: 8080
+varken:
+  tautulli_subdomain: plexpy
 wordpress: 
   direct_domain: false
   subdomain: wordpress

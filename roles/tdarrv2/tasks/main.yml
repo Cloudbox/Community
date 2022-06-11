@@ -1,0 +1,82 @@
+#########################################################################
+# Title:            Community: Tdarrv2                                  #
+# Author(s):        Kungfoome | Visorak, Migz                           #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  haveagitgat/tdarr                                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: tdarr
+  when: cloudflare_enabled
+
+- name: Create htpasswd
+  htpasswd:
+    path: "/opt/nginx-proxy/htpasswd/{{ item }}.{{ user.domain }}"
+    name: "{{ user.name }}"
+    password: "{{ user.pass }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0664
+  with_items:
+    - tdarrv2
+    
+- name: "Check if '/dev/dri' exists"
+  stat:
+    path: "/dev/dri"
+  register: dev_dri
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: tdarrv2
+    state: absent
+
+- name: Create tdarr directories
+  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  with_items:
+    - /opt/tdarrv2
+    - /opt/tdarrv2/server
+    - /opt/tdarrv2/config
+    - /opt/tdarrv2/logs
+    - "{{ (tdarrv2.transcode_dir|default('/tdarrv2_transcode_tmp_cache',true)) }}"
+
+- name: Create and start container
+  docker_container:
+    name: tdarrv2
+    image: ghcr.io/haveagitgat/tdarr
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      VIRTUAL_HOST: "{{ (tdarrv2.direct_domain|default(false,true)) | ternary(user.domain + ',' + 'www.' + user.domain, tdarrv2.subdomain|default('code',true) + '.' + user.domain) }}" 
+      VIRTUAL_PORT: "8265"
+      LETSENCRYPT_HOST: "{{ (tdarrv2.direct_domain|default(false,true)) | ternary(user.domain + ',' + 'www.' + user.domain, tdarrv2.subdomain|default('code',true) + '.' + user.domain) }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      NVIDIA_DRIVER_CAPABILITIES: "{{ 'all' if gpu.nvidia | default(false) else omit }}"
+      NVIDIA_VISIBLE_DEVICES: "{{ 'all' if gpu.nvidia | default(false) else omit }}"
+    volumes:
+      - "/mnt/unionfs/Media:/media"
+      - "/mnt:/mnt"
+      - "/opt/tdarrv2/server:/app/server"
+      - "/opt/tdarrv2/config:/app/configs"
+      - "/opt/tdarrv2/logs:/app/logs"
+      - "/dev/shm:/dev/shm"
+      - "{{ (tdarrv2.transcode_dir|default('/tdarrv2_transcode_tmp_cache',true)) }}:/transcode_tmp_cache"
+    devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - tdarrv2
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started
+

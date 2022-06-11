@@ -71,6 +71,7 @@ This is a partial list of roles available via Community; once the repo is instal
 - **[speedtest](https://github.com/adolfintel/speedtest)** - Self-hosted HTML5 Speedtest
 - **subsonic**
 - **[telly](../../wiki/Telly)**
+- **[tdarrv2](../../wiki/tdarrv2)** - Tdarr V2 is a cross-platform conditional based transcoding application for automating media library transcode/remux management in order to process your media files as required.
 - **[transmissionvpn](https://github.com/haugene/docker-transmission-openvpn)**
 - **[transmissionx](../../wiki/transmissionx)** - lightweight torrent client - role to create multiple roles (default is one)
 - **ubooquity** - comics server and online reader (ubooquity.your.server/ubooquity for main page / your.ip:2203/ubooquity/admin for admin)

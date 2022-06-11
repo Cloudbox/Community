@@ -117,6 +117,10 @@ sonarrx:
 synclounge: 
   domain: ~
   subdomain: synclounge
+tdarrv2:
+  subdomain: tdarrv2
+  direct_domain: false
+  transcode_dir: /tdarrv2_transcode_tmp_cache
 transmissionvpn: 
   vpn_endpoint: netherlands.ovpn
   vpn_pass: your_vpn_password
@@ -127,8 +131,6 @@ transmissionx:
     - ""
 unifi: 
   port: 8080
-varken: 
-  tautulli_subdomain: plexpy
 wordpress: 
   direct_domain: false
   subdomain: wordpress

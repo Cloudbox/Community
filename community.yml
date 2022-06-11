@@ -124,7 +124,7 @@
     - { role: synclounge, tags: ['synclounge'] }
     - { role: tdarr, tags: ['tdarr'] }
     - { role: tdarrv2, tags: ['tdarrv2'] }
-    - { role: tdarrv2-node, tags: ['tdarrv2'] }
+    - { role: tdarrv2-node, tags: ['tdarrv2', 'tdarrv2-node'] }
     - { role: telegraf, tags: ['telegraf'] }
     - { role: telly, tags: ['telly'] }
     - { role: thelounge, tags: ['thelounge'] }

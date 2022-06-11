@@ -127,6 +127,7 @@ transmissionvpn:
   vpn_pass: your_vpn_password
   vpn_prov: NORDVPN
   vpn_user: your_vpn_username
+  rpc_authentication_required: false
 transmissionx: 
   roles: 
     - ""

@@ -38,7 +38,7 @@
 - name: Create and start FireFly container
   docker_container:
     name: firefly
-    image: "jc5x/firefly-iii:latest"
+    image: "fireflyiii/core:latest"
     pull: yes
     exposed_ports:
       - 8080

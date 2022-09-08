@@ -44,7 +44,7 @@
 
 - name: Set 'deluge_docker_image' variable
   set_fact:
-    deluge_docker_image: "{{ (deluge.version | lower == 'v2') | ternary('lscr.io/linuxserver/deluge:latest','lscr.io/linuxserver/deluge:5b398f77-ls22') }}"
+    deluge_docker_image: "{{ (deluge.version | lower == 'v2') | ternary('lscr.io/linuxserver/deluge:latest','linuxserver/deluge:5b398f77-ls22') }}"
 
 - name: Create and start container
   docker_container:

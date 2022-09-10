@@ -143,3 +143,4 @@
     - { role: xbackbone, tags: ['xbackbone'] }
     - { role: xteve, tags: ['xteve'] }
     - { role: znc, tags: ['znc'] }
+    - { role: krusader, tags: ['krusader'] }

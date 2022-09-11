@@ -72,6 +72,7 @@
     - { role: kcptun-server, tags: ['kcptun-server'] }
     - { role: kitana, tags: ['kitana'] }
     - { role: komga, tags: ['komga'] }
+    - { role: krusader, tags: ['krusader'] }
     - { role: lazylibrarian, tags: ['lazylibrarian'] }
     - { role: lidarrx, tags: ['lidarrx'] }
     - { role: logarr, tags: ['logarr'] }
@@ -143,4 +144,3 @@
     - { role: xbackbone, tags: ['xbackbone'] }
     - { role: xteve, tags: ['xteve'] }
     - { role: znc, tags: ['znc'] }
-    - { role: krusader, tags: ['krusader'] }

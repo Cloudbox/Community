@@ -33,19 +33,17 @@
 - name: Create and start petio container
   docker_container:
     name: "petio"
-    image: "cr.hotio.dev/hotio/petio"
+    image: "ghcr.io/petio-team/petio"
     pull: yes
+    user: "{{ uid }}:{{ gid }}"
     env:
       TZ: "{{ tz }}"
-      PUID: "{{ uid }}"
-      PGID: "{{ gid }}"
-      UMASK: "002"
       VIRTUAL_HOST: "petio.{{ user.domain }}"
       VIRTUAL_PORT: "7777"
       LETSENCRYPT_HOST: "petio.{{ user.domain }}"
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
-      - "/opt/petio:/config:rw"
+      - "/opt/petio:/app/api/config:rw"
       - "/mnt:/mnt"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

@@ -72,6 +72,8 @@
     name: jellyfin
     image: "cr.hotio.dev/hotio/jellyfin:latest"
     pull: yes
+    exposed_ports:
+      - "8096"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

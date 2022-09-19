@@ -43,6 +43,8 @@
     name: "lidarr{{ rolename }}"
     image: "cr.hotio.dev/hotio/lidarr"
     pull: yes
+    exposed_ports:
+      - "8686"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

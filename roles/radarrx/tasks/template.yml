@@ -49,6 +49,8 @@
     name: "radarr{{ rolename }}"
     image: "cr.hotio.dev/hotio/radarr:release"
     pull: yes
+    exposed_ports:
+      - "7878"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

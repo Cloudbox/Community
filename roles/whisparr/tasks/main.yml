@@ -39,6 +39,8 @@
     name: whisparr
     image: cr.hotio.dev/hotio/whisparr:nightly
     pull: yes
+    exposed_ports:
+      - "6969"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

@@ -31,6 +31,8 @@
     name: prowlarr
     image: cr.hotio.dev/hotio/prowlarr:testing
     pull: yes
+    exposed_ports:
+      - "9696"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

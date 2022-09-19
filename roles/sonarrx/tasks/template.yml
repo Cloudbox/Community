@@ -49,6 +49,8 @@
     name: "sonarr{{ rolename }}"
     image: "cr.hotio.dev/hotio/sonarr:release"
     pull: yes
+    exposed_ports:
+      - "8989"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

@@ -40,6 +40,8 @@
     name: readarr
     image: cr.hotio.dev/hotio/readarr:nightly
     pull: yes
+    exposed_ports:
+      - "8787"
     env:
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"

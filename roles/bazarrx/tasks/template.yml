@@ -39,6 +39,8 @@
     name: "bazarr{{ rolename }}"
     image: "cr.hotio.dev/hotio/bazarr:{{ bazarrx.version }}"
     pull: yes
+    exposed_ports:
+      - "6767"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

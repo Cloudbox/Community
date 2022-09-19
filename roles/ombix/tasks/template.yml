@@ -2,7 +2,7 @@
 # Title:            Community: OmbiX                                    #
 # Author(s):        FML128                                              #
 # URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  cr.hotio.dev/hotio/ombi                                          #
+# Docker Image(s):  lscr.io/linuxserver/ombi                            #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################

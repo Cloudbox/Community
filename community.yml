@@ -20,7 +20,7 @@
     - { role: apprise, tags: ['apprise'] }
     - { role: archivebox, tags: ['archivebox'] }
     - { role: asshama, tags: ['asshama'] }
-    - { role: audiobookshelf, tags: ['audiobookshelf']}
+    - { role: audiobookshelf, tags: ['audiobookshelf'] }
     - { role: autoscan, tags: ['autoscan'] }
     - { role: bazarrx, tags: ['bazarrx'] }
     - { role: beets, tags: ['beets'] }

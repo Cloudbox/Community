@@ -27,7 +27,7 @@
   shell: |
     mv "/opt/sonarr{{ rolename }}/app" "/tmp/sonarr{{ rolename }}"
     mkdir "/opt/sonarr{{ rolename }}"
-    mv "/tmp/sonarr{{ rolename }}" "/opt/sonarr{{ rolename }}/"
+    mv "/tmp/sonarr{{ rolename }}/*" "/opt/sonarr{{ rolename }}/"
     find "/opt/sonarr{{ rolename }}/*" -type d -empty -delete
     chown -R {{ user.name }}:{{ user.name }} "/opt/sonarr{{ rolename }}"
   when: (folder.stat.exists) and (subfolder2.stat.exists) and (not subfolder1.stat.exists)

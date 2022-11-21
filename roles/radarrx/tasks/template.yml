@@ -47,7 +47,7 @@
 - name: Create and start container
   docker_container:
     name: "radarr{{ rolename }}"
-    image: "cr.hotio.dev/hotio/radarr:release"
+    image: "cr.hotio.dev/hotio/radarr:v5"
     pull: yes
     exposed_ports:
       - "7878"

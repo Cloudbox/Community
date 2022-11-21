@@ -47,7 +47,7 @@
 - name: Create and start container
   docker_container:
     name: "sonarr{{ rolename }}"
-    image: "cr.hotio.dev/hotio/sonarr:release"
+    image: "cr.hotio.dev/hotio/sonarr:v4"
     pull: yes
     exposed_ports:
       - "8989"

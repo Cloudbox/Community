@@ -1,0 +1,25 @@
+#########################################################################
+# Title:         Cloudbox: Sonarr - Suitarr Migration Tasks             #
+# Author(s):     desimaniac                                             #
+# URL:           https://github.com/cloudbox/cloudbox                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Suitarr Migration | Check folder exists
+  stat:
+    path: /opt/sonarr
+  register: folder
+
+- name: Suitarr Migration | Check subfolder1 exists
+  stat:
+    path: /opt/sonarr/Sonarr
+  register: subfolder1
+
+- name: Suitarr Migration | Move 'Sonarr' subfolder to 'sonarr' folder
+  shell: |
+    mv /opt/sonarr/Sonarr/* /opt/sonarr
+    chown -R {{ user.name }}:{{ user.name }} /opt/sonarr
+  when: (folder.stat.exists) and (subfolder1.stat.exists)

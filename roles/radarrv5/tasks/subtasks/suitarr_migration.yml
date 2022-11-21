@@ -1,0 +1,25 @@
+#########################################################################
+# Title:         Cloudbox: Radarr - Suitarr Migration Tasks             #
+# Author(s):     desimaniac                                             #
+# URL:           https://github.com/cloudbox/cloudbox                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Suitarr Migration | Check folder exists
+  stat:
+    path: /opt/radarr
+  register: folder
+
+- name: Suitarr Migration | Check subfolder1 exists
+  stat:
+    path: /opt/radarr/Radarr
+  register: subfolder1
+
+- name: Suitarr Migration | Move 'Radarr' subfolder to 'radarr' folder
+  shell: |
+    mv /opt/radarr/Radarr/* /opt/radarr
+    chown -R {{ user.name }}:{{ user.name }} /opt/radarr
+  when: (folder.stat.exists) and (subfolder1.stat.exists)

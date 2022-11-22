@@ -41,6 +41,9 @@
       LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
       - "/opt/monitorr:/app"
+      - "/opt:/opt:ro"
+      - "/mnt/unionfs:/mnt/unionfs:ro"
+      - "/:/mnt/root:ro"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:

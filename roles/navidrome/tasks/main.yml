@@ -39,6 +39,7 @@
           VIRTUAL_PORT: "4533"
           LETSENCRYPT_HOST: "navidrome.{{ user.domain }}"
           LETSENCRYPT_EMAIL: "{{ user.email }}"
+          ND_SCANNER_EXTRACTOR: "ffmpeg"
         volumes:
           - "{{ navidrome.musicfolder }}:/music"
           - "/opt/navidrome:/data"

@@ -30,13 +30,15 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       LOG_LEVEL: DEBUG
-      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_USER: "{{ postgres.user }}"
+      POSTGRES_PASSWORD: "{{ postgres.password }}"
     volumes:
       - /opt/postgres/data:/var/lib/postgresql/data
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
     networks:
       - name: cloudbox
+    published_ports: "{{ postgres.published_ports|default('127.0.0.1:5432:5432',true) }}"
     purge_networks: yes
     restart_policy: unless-stopped
     state: started

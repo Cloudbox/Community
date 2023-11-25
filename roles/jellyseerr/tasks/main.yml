@@ -1,0 +1,64 @@
+#########################################################################
+# Title:            Community: jellyseerr                               #
+# Author(s):        JackDallas, Thundernerd                             #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  fallenbagel/jellyseerr                              #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: "{{ jellyseerr.subdomain|default('jellyseerr',true) }}"
+  when: (cloudflare_enabled) and not (jellyseerr.direct_domain|default(false,true))
+
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    record: "{{ item }}"
+  with_items:
+    - "{{ user.domain }}"
+    - "www"
+  when: (cloudflare_enabled) and (jellyseerr.direct_domain|default(false,true))
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: jellyseerr
+    state: absent
+
+- name: Create jellyseerr directories
+  file: 'path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}'
+  with_items:
+    - /opt/jellyseerr
+
+- name: Create and start container
+  docker_container:
+    name: jellyseerr
+    image: "fallenbagel/jellyseerr"
+    pull: yes
+    published_ports:
+      - "5055:5055"
+    user: "{{ uid }}:{{ gid }}"
+    env:
+      VIRTUAL_HOST: "jellyseerr.{{ user.domain }}" 
+      VIRTUAL_PORT: "5055"
+      LETSENCRYPT_HOST: "jellyseerr.{{ user.domain }}"
+      LETSENCRYPT_EMAIL: "{{ user.email }}"
+      TZ: "{{ tz }}"
+    volumes:
+      - "/opt/jellyseerr:/app/config"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - jellyseerr
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

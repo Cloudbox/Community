@@ -46,6 +46,7 @@ This is a partial list of roles available via Community; once the repo is instal
 - **invoiceninja**
 - **[jdownloader2](../../wiki/JDownloader2)** - [JDownloader2](https://github.com/jlesage/docker-jdownloader-2) Self-hosted free, open-source download management tool with GUI website frontend.
 - **jellyfin** - [jellyfin](https://github.com/jellyfin/jellyfin) emby fork
+- **jellyseerr** - [jellyseerr](https://github.com/Fallenbagel/jellyseerr) overseerr fork
 - **kitana** - A responsive Plex plugin web frontend
 - **[komga](https://komga.org/)** - comics server and online reader (similar to ubooquity, but actively developed as of today); to get the original admin username and passowrd, type docker logs komga and follow the [help](https://komga.org/installation/user-accounts.html#automatic-mode-default)
 - **lazylibrarian** - (uses calibre-rdp db)
